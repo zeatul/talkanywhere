@@ -10,6 +10,7 @@
 		<module>../taw-public</module>
 		<module>../taw-user-service</module>
 		<module>../taw-user-api</module>
+		<module>../taw-database</module>
 	</modules>
 
 	<profiles>
