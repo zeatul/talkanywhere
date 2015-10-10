@@ -1,4 +1,4 @@
-package com.baoflag.hawk.service;
+package com.hawk.codegen.service;
 
 
 import java.util.ArrayList;
@@ -8,9 +8,10 @@ import java.util.Map;
 
 
 
-import com.baoflag.hawk.config.IConfig;
-import com.baoflag.hawk.meta.Column;
-import com.baoflag.hawk.meta.Table;
+
+import com.hawk.codegen.config.IConfig;
+import com.hawk.codegen.meta.Column;
+import com.hawk.codegen.meta.Table;
 
 public class DomainHelper {
 	

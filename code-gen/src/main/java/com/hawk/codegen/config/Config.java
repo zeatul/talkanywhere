@@ -1,3 +1,4 @@
+package com.hawk.codegen.config;
 //package com.baoflag.hawk.config;
 //
 //

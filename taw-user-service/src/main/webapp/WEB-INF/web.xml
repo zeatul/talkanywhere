@@ -3,7 +3,7 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-	<display-name>esports webapp</display-name>
+	<display-name>talk anywhere user service</display-name>
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

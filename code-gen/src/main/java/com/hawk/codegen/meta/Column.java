@@ -1,4 +1,4 @@
-package com.baoflag.hawk.meta;
+package com.hawk.codegen.meta;
 
 public class Column {
 	

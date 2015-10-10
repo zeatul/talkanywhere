@@ -1,4 +1,4 @@
-package com.baoflag.hawk;
+package com.hawk.codegen;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,40 +13,44 @@ import org.slf4j.LoggerFactory;
 
 
 
-import com.baoflag.hawk.config.IConfig;
-import com.baoflag.hawk.meta.Table;
-import com.baoflag.hawk.service.CbankDomainHelper;
-import com.baoflag.hawk.service.DatabaseParser;
-import com.baoflag.hawk.service.DomainHelper;
+
+
+import com.hawk.codegen.config.IConfig;
+import com.hawk.codegen.meta.Table;
+import com.hawk.codegen.service.DatabaseParser;
+import com.hawk.codegen.service.DomainHelper;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-public class AppCbank {
+public class AppWeixin {
 	
 	
-	private static class Config implements IConfig {
+	private static class Config implements IConfig{
 		
 		/**
 		 * database
 		 */
-		public final static String DRIVER = "org.gjt.mm.mysql.Driver";
-		public final static String URL = "jdbc:mysql://127.0.0.1:3306/cbank?useUnicode=true&characterEncoding=utf-8";
-		public final static String USER = "root";
-		public final static String PASSWORD = "123456";
-		public final static String SCHEMA = "cbank";
-		public static String FILTER = "%";
-		public static String DIALECT = "oracle";
+		public static String DRIVER = "org.gjt.mm.mysql.Driver";
+		public static String URL = "jdbc:mysql://127.0.0.1:3306/weixin-cinema?useUnicode=true&characterEncoding=utf-8";
+		public static String USER = "root";
+		public static String PASSWORD = "123456";
+		public static String SCHEMA = "weixin-cinema";
+		//		public static String FILTER = "T_CINEMA%";
+									public static String FILTER = "T_SYSTEM%";
+		public static String DIALECT = "mysql";
 		
 		/**
 		 * 
 		 */
-		public final static String ROOT_PACKAGE = "com.cbank.account.demo";
-		public final static String ROOT_DIRECTORY = "C://mydata//clouddisk//360//workspace_cbank//account-engine//";
+		public static String ROOT_PACKAGE = "com.hante.weixin";
+		//	public final static String ROOT_DIRECTORY = "C://mydata//workspace//workspace_weixin//cinema-server//weixin-cinema-service//";
+					public final static String ROOT_DIRECTORY = "C://mydata//workspace//workspace_weixin//cinema-server//weixin-system-service//";
 		public final static String CODE_DIRECTORY = "src//main//java//";
 		public final static String RESOURCE_DIRECTORY = "src//main//resources//";
-		public final static String ROOT_PACKAGE_DIRECTORY = "com//cbank//account//demo//";
+		public final static String ROOT_PACKAGE_DIRECTORY = "com//hante//weixin//";
+		
 		public String getDriver() {
 			return DRIVER;
 		}
@@ -70,18 +74,17 @@ public class AppCbank {
 		}
 		public String getRootPackage() {
 			return ROOT_PACKAGE;
-		};
-		
+		}
 
 	}
 
 	
 	private static Logger logger = LoggerFactory.getLogger(DatabaseParser.class); 
 	
-	private static CbankDomainHelper domainHelper =  new CbankDomainHelper(new Config());
+	private static DomainHelper domainHelper =  new DomainHelper(new Config());
 	private static Configuration cfg = new Configuration();
 	static{		
-		cfg.setClassForTemplateLoading(AppCbank.class, "");
+		cfg.setClassForTemplateLoading(AppWeixin.class, "");
 	}
 
 	public static void main(String[] args) {
@@ -116,11 +119,18 @@ public class AppCbank {
 		Map<String,Object> root = domainHelper.transfer(table);
 		/* 将模板和数据模型合并 */
 		String className = root.get("className").toString();
+		String packageName = root.get("moduleName").toString();
 		
 		String filePath = "";
 		String directory ="";
-
-		directory = rootDirectory + codeDirectory+rootPackageDirectory  + "domain";
+//		if (packageName.equals("userinfo")){
+//			directory= "C://my data//develop//workspace//yiyundong//esports//project//esports-userinfo-service//src//main//java//com//baoflag//esports//userinfo//domain";
+//			
+//		}else if (packageName.equals("system")){
+//			directory= "C://my data//develop//workspace//yiyundong//esports//project//esports-system-service//src//main//java//com//baoflag//esports//system//domain";
+//		}
+		
+		directory = rootDirectory + codeDirectory+rootPackageDirectory + packageName + "//domain";
 		
 		filePath = directory+"/"+className+".java";
 		FileOutputStream fileOutputStream = new FileOutputStream(filePath,false);
@@ -149,11 +159,13 @@ public class AppCbank {
 		/* 创建数据模型 */
 		Map<String,Object> root = domainHelper.transfer(table);
 		/* 将模板和数据模型合并 */
-		String className = root.get("className").toString();		
+		String className = root.get("className").toString();
+		String packageName = root.get("moduleName").toString();
+		
 		String filePath = "";
 		String directory ="";
 
-		directory = rootDirectory + codeDirectory+rootPackageDirectory + "mapper";
+		directory = rootDirectory + codeDirectory+rootPackageDirectory + packageName + "//mapper";
 		
 		filePath = directory+"/"+className+"Mapper.java";
 		FileOutputStream fileOutputStream = new FileOutputStream(filePath,false);
@@ -170,11 +182,13 @@ public class AppCbank {
 		Map<String,Object> root = domainHelper.transfer(table);
 		/* 将模板和数据模型合并 */
 		String className = root.get("className").toString();
+		String packageName = root.get("moduleName").toString();
 		
 		String filePath = "";
 		String directory = "";
 
-		directory = rootDirectory + resourceDirectory+rootPackageDirectory + "mapper";
+		
+		directory = rootDirectory + resourceDirectory+rootPackageDirectory + packageName + "//mapper";
 		
 		filePath = directory+"/"+className+"Mapper.xml";
 		FileOutputStream fileOutputStream = new FileOutputStream(filePath,false);
