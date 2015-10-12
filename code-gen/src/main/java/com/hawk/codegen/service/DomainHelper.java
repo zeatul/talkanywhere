@@ -114,14 +114,14 @@ public class DomainHelper {
 		typeMap.put("char","String");
 		typeMap.put("nvarchar","String");
 		typeMap.put("decimal", "java.math.BigDecimal");
+		typeMap.put("tinyint", "Short");
 	}
 	
 	private String getFieldType(String columnType){
 		columnType = columnType.toLowerCase();
 		String fieldType = typeMap.get(columnType);
 		if (fieldType == null){
-			System.out.println("unknown column type = "+columnType);
-			throw new RuntimeException("unknown column type");
+			throw new RuntimeException("unknown column type = "+columnType);
 		}
 		return fieldType;
 	}

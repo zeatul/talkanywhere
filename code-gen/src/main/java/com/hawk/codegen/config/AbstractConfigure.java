@@ -18,7 +18,7 @@ public class AbstractConfigure implements IProjectConfigure {
 
 	public void setRootPackage(String rootPackage) {
 		this.rootPackage = rootPackage;
-		String[] strArray = rootPackage.split(".");
+		String[] strArray = rootPackage.split("\\.");
 
 		this.rootPackageDirPath = strArray[0];
 		for (int i = 1; i < strArray.length; i++) {
@@ -46,7 +46,7 @@ public class AbstractConfigure implements IProjectConfigure {
 	public void setSubPackage(String subPackage) {
 		this.subPackage = subPackage;
 
-		String[] strArray = subPackage.split(".");
+		String[] strArray = subPackage.split("\\.");
 
 		this.subPackageDirPath = strArray[0];
 		for (int i = 1; i < strArray.length; i++) {

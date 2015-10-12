@@ -10,16 +10,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
-
-
-
-
-import com.hawk.codegen.config.AbstractConfigure;
 import com.hawk.codegen.config.Configure;
 import com.hawk.codegen.config.EnumDialect;
-import com.hawk.codegen.config.IDatabaseConfigure;
 import com.hawk.codegen.meta.Table;
 import com.hawk.codegen.service.DatabaseParser;
 import com.hawk.codegen.service.DomainHelper;
@@ -49,8 +41,8 @@ public class AppTaw {
 	private static void generateUser() {
 		Configure configure = buildConfigure("um");
 		configure.setProjectName("taw-user-service");
-		configure.setRootPackage("com.taw.user");
-		configure.setSubPackage("um");
+		configure.setRootPackage("com.taw");
+		configure.setSubPackage("user");
 		
 		try {
 			DatabaseParser parser = new DatabaseParser(configure);
@@ -156,7 +148,7 @@ public class AppTaw {
 		String url = "jdbc:mysql://127.0.0.1:3306/" +dbname+ "?useUnicode=true&characterEncoding=utf-8";
 		configure.setUrl(url);
 
-		configure.setUrl("root");
+		configure.setUser("root");
 		configure.setPassword("password");
 		
 		configure.setSchema(dbname);
