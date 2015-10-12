@@ -6,24 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-import com.hawk.codegen.config.IConfig;
 import com.hawk.codegen.meta.Column;
 import com.hawk.codegen.meta.Table;
 
 public class DomainHelper {
 	
-	private IConfig config;
 	
-	public DomainHelper(IConfig config){
-		this.config = config;
+	
+	public DomainHelper(){
+		
 	}
 	
 	public Map<String,Object> transfer(Table table){
-		String className = "";
-		String packageName = "";
+		
 		String tableName = table.getName();
 		String tableSchema = table.getSchema();
 		String tableComment = table.getComment();
@@ -33,18 +28,11 @@ public class DomainHelper {
 		map.put("tableSchema", tableSchema);
 		map.put("tableComment", tableComment);
 		/**
-		 * 计算package 和 class name
+		 * 计算 class name
 		 */
-		String[] strArray = tableName.split("_");
-		packageName = strArray[1].toLowerCase();
-		for (int i=2; i<strArray.length; i++){
-			String str = strArray[i].toLowerCase();
-			str =str.replaceFirst(str.substring(0, 1), str.substring(0, 1).toUpperCase())  ;
-			className = className + str;
-		}
+
+		String className = computeClassName(tableName);
 		
-		map.put("moduleName", packageName);
-		map.put("packageName", config.getRootPackage() + "."+packageName);
 		map.put("className", className);
 		map.put("columnsLength", columnsLength);
 		
@@ -72,6 +60,20 @@ public class DomainHelper {
 		}
 		
 		return map;
+	}
+	
+	private String computeClassName(String tableName){
+		
+		String className = "";
+		String[] strArray = tableName.split("_");
+		
+		for (int i=2; i<strArray.length; i++){
+			String str = strArray[i].toLowerCase();
+			str =str.replaceFirst(str.substring(0, 1), str.substring(0, 1).toUpperCase())  ;
+			className = className + str;
+		}
+		
+		return className;
 	}
 	
 	private Map<String,Object> filedToMap(Column column){

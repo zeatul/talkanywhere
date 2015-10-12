@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 
 
-import com.hawk.codegen.config.IConfig;
+import com.hawk.codegen.config.IDatabaseConfigure;
 import com.hawk.codegen.meta.Column;
 import com.hawk.codegen.meta.Table;
 
@@ -25,9 +25,9 @@ public class DatabaseParser {
 	
 	private static Logger logger = LoggerFactory.getLogger(DatabaseParser.class); 
 	
-	private IConfig config;
+	private IDatabaseConfigure config;
 	
-	public DatabaseParser(IConfig config){
+	public DatabaseParser(IDatabaseConfigure config){
 		this.config = config;
 	}
 	

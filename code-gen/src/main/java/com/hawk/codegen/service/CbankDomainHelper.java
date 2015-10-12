@@ -7,15 +7,15 @@ import java.util.Map;
 
 
 
-import com.hawk.codegen.config.IConfig;
+import com.hawk.codegen.config.IProjectConfigure;
 import com.hawk.codegen.meta.Column;
 import com.hawk.codegen.meta.Table;
 
 public class CbankDomainHelper {
 
-	private IConfig config;
+	private IProjectConfigure config;
 
-	public CbankDomainHelper(IConfig config) {
+	public CbankDomainHelper(IProjectConfigure config) {
 		this.config = config;
 	}
 

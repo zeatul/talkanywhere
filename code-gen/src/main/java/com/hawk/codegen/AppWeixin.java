@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 
 
-import com.hawk.codegen.config.IConfig;
+import com.hawk.codegen.config.IProjectConfigure;
 import com.hawk.codegen.meta.Table;
 import com.hawk.codegen.service.DatabaseParser;
 import com.hawk.codegen.service.DomainHelper;
@@ -27,7 +27,7 @@ import freemarker.template.TemplateException;
 public class AppWeixin {
 	
 	
-	private static class Config implements IConfig{
+	private static class Config implements IProjectConfigure{
 		
 		/**
 		 * database
@@ -81,7 +81,7 @@ public class AppWeixin {
 	
 	private static Logger logger = LoggerFactory.getLogger(DatabaseParser.class); 
 	
-	private static DomainHelper domainHelper =  new DomainHelper(new Config());
+	private static DomainHelper domainHelper =  new DomainHelper();
 	private static Configuration cfg = new Configuration();
 	static{		
 		cfg.setClassForTemplateLoading(AppWeixin.class, "");
