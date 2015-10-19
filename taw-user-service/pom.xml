@@ -15,7 +15,18 @@
 
 	<dependencies>
 
-		<!-- project <dependency> <groupId>com.baoqi</groupId> <artifactId>esports-model</artifactId> <version>${project.version}</version> </dependency> -->
+		<!-- project -->
+		<dependency>
+			<groupId>com.hawk.taw</groupId>
+			<artifactId>taw-public</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.hawk.taw</groupId>
+			<artifactId>taw-utility</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<!-- logger -->
 		<dependency>
@@ -48,15 +59,15 @@
 
 
 		<!-- jackson -->
-<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-asl</artifactId>
-			</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+		</dependency>
 
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-asl</artifactId>
-			</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+		</dependency>
 
 		<!-- aspectj -->
 		<dependency>
@@ -164,10 +175,20 @@
 		</dependency>
 
 
-		<!-- others -->
+		<!-- db con pool -->
 		<dependency>
-		    <groupId>mysql</groupId>
-		    <artifactId>mysql-connector-java</artifactId>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>mchange-commons-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 	</dependencies>
 
