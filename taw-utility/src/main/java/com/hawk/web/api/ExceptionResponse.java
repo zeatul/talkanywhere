@@ -1,31 +1,24 @@
-package com.hawk.webapi;
+package com.hawk.web.api;
 
 import com.hawk.utility.JsonTools;
 
 
 
-public class SuccessResponse implements IResponse{
+public class ExceptionResponse implements IResponse{
 	
-	public Object getResult() {
-		return result;
+	public Exception getException() {
+		return exception;
 	}
 
-	public final static SuccessResponse SUCCESS_RESPONSE = new SuccessResponse(null);
 
-	private Object result;
-	@SuppressWarnings("unused")
-	private Integer size;
+	private Exception exception ;
 	
-	protected SuccessResponse(Object value){
-		this.result = value;
-	}
-	
-	protected SuccessResponse(Object value,Integer size){
-		this.result = value;
-		this.size = size;
+	public ExceptionResponse(Exception exception){
+		this.exception = exception;
 	}
 	
 	public static class OutPut{
+		
 		public String getOpenid() {
 			return openid;
 		}
@@ -70,25 +63,19 @@ public class SuccessResponse implements IResponse{
 		private Object obj = Boolean.TRUE;
 	}
 	
-	public String toJson(){
 
+	public String toJson(){
+//		Map<String,Object> rtn = new HashMap<String,Object>();
 		OutPut rtn = new OutPut();
-		if (result!=null)
-		rtn.setObj(result);
+		
+		int code = -1;
+		
+		String errmsg = "未知错误";
+		
+		rtn.setCode(code);
+		rtn.setErrmsg(errmsg);
 		String output = JsonTools.toJsonString(rtn);
 		return output;
 	}
-	
 
-	
-	public static SuccessResponse buildResponse(Object value){
-		SuccessResponse response = new SuccessResponse(value);
-		return response;
-	}
-	
-	public static SuccessResponse buildResponse(Object value,Integer size){
-		SuccessResponse response = new SuccessResponse(value,size);
-		return response;
-	}
-	
 }

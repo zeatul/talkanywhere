@@ -50,15 +50,20 @@
 		</set>
 	</sql>
 	
-	<select id="loadPartner" parameterType="integer" resultType="Partner">
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{id}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="PartnerDomain">
 		SELECT 
 		<include refid="columns" />
 		FROM t_um_partner
-		WHERE id = #{id}			
-		#end		
+		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadPartnerDynamic" parameterType="hashmap" resultType="Partner">
+	<select id="loadPartnerDynamic" parameterType="hashmap" resultType="PartnerDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_um_partner
@@ -68,34 +73,36 @@
 	</select>
 
 
-	<select id="countPartnerDynamic"  parameterType="hashmap" resultType="integer">
+	<select id="count"  parameterType="hashmap" resultType="integer">
 		SELECT count(*) 
 		FROM t_um_partner
 		<include refid="where" />
 	</select>
 	
-	<insert id="insertPartner" useGeneratedKeys="true" keyProperty="id" parameterType="Partner">
+	<insert id="insert"  parameterType="Partner">
 		INSERT INTO t_um_partner (			
-					channel,
-					channel_code,
-					user_id,
-					crdt
+				id,				
+				channel,				
+				channel_code,				
+				user_id,				
+				crdt				
 		)		
 		VALUES (	
-				#{channel},
-				#{channelCode},
-				#{userId},
-				#{crdt}
+			#{id},
+			#{channel},
+			#{channelCode},
+			#{userId},
+			#{crdt}
 		) 
 	</insert>
 	
-	<delete id="deletePartner" parameterType="integer">
+	<delete id="delete" >
 		DELETE FROM t_um_partner
-		WHERE  id = #{id}
+		<include refid="pkwhere" />	
 	#end
 	</delete>
 	
-	<delete id="deletePartnerDynamic" parameterType="hashmap">
+	<delete id="deleteDynamic" parameterType="hashmap">
 		DELETE FROM t_um_partner
 		<include refid="where" />
 	</delete>
@@ -103,7 +110,13 @@
 	<update id="updatePartner" parameterType="Partner">
 		UPDATE t_um_partner	
 		<include refid="update" />
-		WHERE id = #{id}	
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updatePartnerWithoutNull" parameterType="Partner">
+		UPDATE t_um_partner
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
 	</update>
 	
 	<update id="updatePartnerDynamic" parameterType="hashmap">
@@ -112,10 +125,6 @@
 		<include refid="where_old" />
 	</update>
 	
-	<update id="updatePartnerWithoutNull" parameterType="Partner">
-		UPDATE t_um_partner
-		<include refid="updateWithoutNull"/>
-		WHERE id = #{id}
-	</update>
+	
 	
 </mapper>

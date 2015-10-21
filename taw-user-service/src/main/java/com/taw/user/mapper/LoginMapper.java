@@ -1,7 +1,8 @@
 package com.taw.user.mapper;
 import java.util.List;
 import java.util.Map;
-import com.taw.user.domain.Login;
+import com.taw.user.domain.LoginDomain;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * t_um_login
@@ -11,23 +12,25 @@ import com.taw.user.domain.Login;
  */
 public interface LoginMapper  {
 
-	Login loadLogin(Integer id);
+	LoginDomain loadLogin(@Param("token")String token );
 	
-	List<Login> loadLoginDynamic(Map<String,Object> params);
+	List<LoginDomain> loadLoginDynamic(Map<String,Object> params);
 	
-	int countLoginDynamic(Map<String,Object> params);
+	int count(Map<String,Object> params);
 	
-	void insertLogin(Login login);
+	int insert(LoginDomain loginDomain);
 	
-	void deleteLogin(Integer id);
+	int delete(@Param("token")String token );
 	
-	void deleteLoginDynamic(Map<String,Object> params);
+	int deleteDynamic(Map<String,Object> params);
 	
-	void updateLogin(Login login);
+	int updateLogin(LoginDomain loginDomain);
 	
-	void updateLoginDynamic(Map<String,Object> params);
+	int updateLoginWithoutNull(LoginDomain loginDomain);
 	
-	void updateLoginWithoutNull(Login login);
+	int update(Map<String,Object> params);
+	
+	
 
 
 }

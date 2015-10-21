@@ -49,7 +49,7 @@ public class HelloWorldController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/hello.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public String home(Locale locale, Model model,HttpServletRequest request) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
@@ -64,7 +64,7 @@ public class HelloWorldController {
 		return "home";
 	}
 
-	@RequestMapping(value = "/webapp/root", method = RequestMethod.GET)
+	@RequestMapping(value = "/webapp/root.do", method = RequestMethod.GET)
 	public void helloWorld(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setHeader("Cache-Control", "no-cache");
 		response.setContentType("text/html; charset=utf-8");
@@ -89,34 +89,25 @@ public class HelloWorldController {
 		sb.append("</body>");
 		sb.append("</html>");
 		
-//		UserTokens userTokens = userTokensExMapper.queryLastLogin(83);
-		
-		/*临时修改stadium 的两个经纬度字段*/
-//		stadiumManager.updateLbs();
-//		httpClientHelper.get(null, null);
+
 		response.getWriter().print(sb.toString());
 	}
 	
-	@RequestMapping(value = "/helloJump", method = RequestMethod.GET)
+	@RequestMapping(value = "/helloJump.do", method = RequestMethod.GET)
 	public void helloJump(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.sendRedirect("http://www.sina.com.cn");
 	}
 
-	@RequestMapping(value = "/hello/cache", method = RequestMethod.GET)
+	@RequestMapping(value = "/hello/cache.do", method = RequestMethod.GET)
 	public void clearCache(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setHeader("Cache-Control", "no-cache");
 		StringBuilder sb = new StringBuilder();
-//		String[] cacheNames = cacheManager.getCacheNames();
-//		for (String cacheName : cacheNames) {
-//			Cache cache = cacheManager.getCache(cacheName);
-//			sb.append("cache:" + cacheName + ",size:" + cache.getSize());
-//			cache.removeAll();
-//		}
+
 		response.getWriter().print(sb.toString());
 
 	}
 
-	@RequestMapping(value = "/hello/get", method = RequestMethod.GET)
+	@RequestMapping(value = "/hello/get.do", method = RequestMethod.GET)
 	public void helloWorldGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setHeader("Cache-Control", "no-cache");		
 		
@@ -124,7 +115,7 @@ public class HelloWorldController {
 		response.getWriter().print("hello/get");
 	}
 
-	@RequestMapping(value = "/hello/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/hello/post.do", method = RequestMethod.POST)
 	public void helloWorldPost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setHeader("Cache-Control", "no-cache");
 
@@ -134,20 +125,20 @@ public class HelloWorldController {
 		response.getWriter().print("hello,post");
 	}
 
-	@RequestMapping(value = "/hello/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/hello/delete.do", method = RequestMethod.GET)
 	public void helloWorldDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setHeader("Cache-Control", "no-cache");
 
 		response.getWriter().print("Hello Delete,succeeded");
 	}
 
-	@RequestMapping(value = "/hello/put", method = RequestMethod.GET)
+	@RequestMapping(value = "/hello/put.do", method = RequestMethod.GET)
 	public void helloWorldPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setHeader("Cache-Control", "no-cache");
 		response.getWriter().print("Hello Put,Succeed");
 	}
 	
-	@RequestMapping(value = "/hello/test", method = RequestMethod.GET)
+	@RequestMapping(value = "/hello/test.do", method = RequestMethod.GET)
 	public void helloWorldTest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.getWriter().print("digitId=" +"userManager.createUser().getDigitId()");
 	}

@@ -1,7 +1,8 @@
 package com.taw.user.mapper;
 import java.util.List;
 import java.util.Map;
-import com.taw.user.domain.UserContact;
+import com.taw.user.domain.UserContactDomain;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * t_um_user_contact
@@ -11,23 +12,25 @@ import com.taw.user.domain.UserContact;
  */
 public interface UserContactMapper  {
 
-	UserContact loadUserContact(Integer id);
+	UserContactDomain loadUserContact(@Param("id")Integer id );
 	
-	List<UserContact> loadUserContactDynamic(Map<String,Object> params);
+	List<UserContactDomain> loadUserContactDynamic(Map<String,Object> params);
 	
-	int countUserContactDynamic(Map<String,Object> params);
+	int count(Map<String,Object> params);
 	
-	void insertUserContact(UserContact userContact);
+	int insert(UserContactDomain userContactDomain);
 	
-	void deleteUserContact(Integer id);
+	int delete(@Param("id")Integer id );
 	
-	void deleteUserContactDynamic(Map<String,Object> params);
+	int deleteDynamic(Map<String,Object> params);
 	
-	void updateUserContact(UserContact userContact);
+	int updateUserContact(UserContactDomain userContactDomain);
 	
-	void updateUserContactDynamic(Map<String,Object> params);
+	int updateUserContactWithoutNull(UserContactDomain userContactDomain);
 	
-	void updateUserContactWithoutNull(UserContact userContact);
+	int update(Map<String,Object> params);
+	
+	
 
 
 }

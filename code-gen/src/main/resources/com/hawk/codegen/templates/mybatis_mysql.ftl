@@ -46,15 +46,26 @@
 		</set>
 	</sql>
 	
-	<select id="load${className}" parameterType="integer" resultType="${className}">
+	<#if (key?? && key?size>0)>
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+		<#list key as field>
+			AND ${field.columnName} = ${r"#"}{${field.fieldName}}
+		</#list>
+		</trim>
+	</sql>
+	</#if>
+	
+	<#if (key?? && key?size>0)>
+	<select id="load"  resultType="${className}Domain">
 		SELECT 
 		<include refid="columns" />
 		FROM ${tableName}
-		WHERE id = ${r"#"}{id}			
-		#end		
+		<include refid="pkwhere" />		
 	</select>
+	</#if>
 	
-	<select id="load${className}Dynamic" parameterType="hashmap" resultType="${className}">
+	<select id="load${className}Dynamic" parameterType="hashmap" resultType="${className}Domain">
 		SELECT 		
 		<include refid="columns" />
 		FROM ${tableName}
@@ -64,45 +75,53 @@
 	</select>
 
 
-	<select id="count${className}Dynamic"  parameterType="hashmap" resultType="integer">
+	<select id="count"  parameterType="hashmap" resultType="integer">
 		SELECT count(*) 
 		FROM ${tableName}
 		<include refid="where" />
 	</select>
 	
-	<insert id="insert${className}" useGeneratedKeys="true" keyProperty="id" parameterType="${className}">
+	<insert id="insert"  parameterType="${className}">
 		INSERT INTO ${tableName} (			
 			<#list fields as field>
-				<#if field.columnName != "id">
-					${field.columnName}<#if field_index < columnsLength-1 >,</#if>
-				</#if>				
+				${field.columnName}<#if field_index < columnsLength-1 >,</#if>				
 			</#list>
 		)		
 		VALUES (	
 		<#list fields as field>
-			<#if field.columnName != "id">
-				${r"#"}{${field.fieldName}}<#if field_index < columnsLength-1 >,</#if>
-			</#if>
+			${r"#"}{${field.fieldName}}<#if field_index < columnsLength-1 >,</#if>
 		</#list>	
 		) 
 	</insert>
 	
-	<delete id="delete${className}" parameterType="integer">
+	<#if (key?? && key?size>0)>
+	<delete id="delete" >
 		DELETE FROM ${tableName}
-		WHERE  id = ${r"#"}{id}
+		<include refid="pkwhere" />	
 	#end
 	</delete>
+	</#if>
 	
-	<delete id="delete${className}Dynamic" parameterType="hashmap">
+	<delete id="deleteDynamic" parameterType="hashmap">
 		DELETE FROM ${tableName}
 		<include refid="where" />
 	</delete>
 
+	<#if (key?? && key?size>0)>
 	<update id="update${className}" parameterType="${className}">
 		UPDATE ${tableName}	
 		<include refid="update" />
-		WHERE id = ${r"#"}{id}	
+		<include refid="pkwhere" />	
 	</update>
+	</#if>
+	
+	<#if (key?? && key?size>0)>
+	<update id="update${className}WithoutNull" parameterType="${className}">
+		UPDATE ${tableName}
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
+	</update>
+	</#if>
 	
 	<update id="update${className}Dynamic" parameterType="hashmap">
 		UPDATE ${tableName}	
@@ -110,10 +129,6 @@
 		<include refid="where_old" />
 	</update>
 	
-	<update id="update${className}WithoutNull" parameterType="${className}">
-		UPDATE ${tableName}
-		<include refid="updateWithoutNull"/>
-		WHERE id = ${r"#"}{id}
-	</update>
+	
 	
 </mapper>

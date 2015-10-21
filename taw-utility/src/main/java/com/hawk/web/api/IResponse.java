@@ -1,4 +1,4 @@
-package com.hawk.webapi;
+package com.hawk.web.api;
 
 public interface IResponse {
 	

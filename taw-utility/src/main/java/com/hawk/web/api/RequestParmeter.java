@@ -1,4 +1,4 @@
-package com.hawk.webapi;
+package com.hawk.web.api;
 
 import java.util.Map;
 

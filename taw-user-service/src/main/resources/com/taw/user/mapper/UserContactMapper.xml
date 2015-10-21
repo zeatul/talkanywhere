@@ -60,15 +60,20 @@
 		</set>
 	</sql>
 	
-	<select id="loadUserContact" parameterType="integer" resultType="UserContact">
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{id}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="UserContactDomain">
 		SELECT 
 		<include refid="columns" />
 		FROM t_um_user_contact
-		WHERE id = #{id}			
-		#end		
+		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadUserContactDynamic" parameterType="hashmap" resultType="UserContact">
+	<select id="loadUserContactDynamic" parameterType="hashmap" resultType="UserContactDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_um_user_contact
@@ -78,38 +83,40 @@
 	</select>
 
 
-	<select id="countUserContactDynamic"  parameterType="hashmap" resultType="integer">
+	<select id="count"  parameterType="hashmap" resultType="integer">
 		SELECT count(*) 
 		FROM t_um_user_contact
 		<include refid="where" />
 	</select>
 	
-	<insert id="insertUserContact" useGeneratedKeys="true" keyProperty="id" parameterType="UserContact">
+	<insert id="insert"  parameterType="UserContact">
 		INSERT INTO t_um_user_contact (			
-					user_id,
-					co_user_id,
-					remark,
-					type,
-					crdt,
-					updt
+				id,				
+				user_id,				
+				co_user_id,				
+				remark,				
+				type,				
+				crdt,				
+				updt				
 		)		
 		VALUES (	
-				#{userId},
-				#{coUserId},
-				#{remark},
-				#{type},
-				#{crdt},
-				#{updt}
+			#{id},
+			#{userId},
+			#{coUserId},
+			#{remark},
+			#{type},
+			#{crdt},
+			#{updt}
 		) 
 	</insert>
 	
-	<delete id="deleteUserContact" parameterType="integer">
+	<delete id="delete" >
 		DELETE FROM t_um_user_contact
-		WHERE  id = #{id}
+		<include refid="pkwhere" />	
 	#end
 	</delete>
 	
-	<delete id="deleteUserContactDynamic" parameterType="hashmap">
+	<delete id="deleteDynamic" parameterType="hashmap">
 		DELETE FROM t_um_user_contact
 		<include refid="where" />
 	</delete>
@@ -117,7 +124,13 @@
 	<update id="updateUserContact" parameterType="UserContact">
 		UPDATE t_um_user_contact	
 		<include refid="update" />
-		WHERE id = #{id}	
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateUserContactWithoutNull" parameterType="UserContact">
+		UPDATE t_um_user_contact
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
 	</update>
 	
 	<update id="updateUserContactDynamic" parameterType="hashmap">
@@ -126,10 +139,6 @@
 		<include refid="where_old" />
 	</update>
 	
-	<update id="updateUserContactWithoutNull" parameterType="UserContact">
-		UPDATE t_um_user_contact
-		<include refid="updateWithoutNull"/>
-		WHERE id = #{id}
-	</update>
+	
 	
 </mapper>

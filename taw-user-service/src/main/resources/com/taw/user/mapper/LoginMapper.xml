@@ -87,15 +87,20 @@
 		</set>
 	</sql>
 	
-	<select id="loadLogin" parameterType="integer" resultType="Login">
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND token = #{token}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="LoginDomain">
 		SELECT 
 		<include refid="columns" />
 		FROM t_um_login
-		WHERE id = #{id}			
-		#end		
+		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadLoginDynamic" parameterType="hashmap" resultType="Login">
+	<select id="loadLoginDynamic" parameterType="hashmap" resultType="LoginDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_um_login
@@ -105,50 +110,50 @@
 	</select>
 
 
-	<select id="countLoginDynamic"  parameterType="hashmap" resultType="integer">
+	<select id="count"  parameterType="hashmap" resultType="integer">
 		SELECT count(*) 
 		FROM t_um_login
 		<include refid="where" />
 	</select>
 	
-	<insert id="insertLogin" useGeneratedKeys="true" keyProperty="id" parameterType="Login">
+	<insert id="insert"  parameterType="Login">
 		INSERT INTO t_um_login (			
-					token,
-					user_id,
-					login_date,
-					last_access_date,
-					expire_date,
-					kind,
-					imei,
-					device_kind,
-					os_version,
-					brand,
-					device_model,
-					ip
+				token,				
+				user_id,				
+				login_date,				
+				last_access_date,				
+				expire_date,				
+				kind,				
+				imei,				
+				device_kind,				
+				os_version,				
+				brand,				
+				device_model,				
+				ip				
 		)		
 		VALUES (	
-				#{token},
-				#{userId},
-				#{loginDate},
-				#{lastAccessDate},
-				#{expireDate},
-				#{kind},
-				#{imei},
-				#{deviceKind},
-				#{osVersion},
-				#{brand},
-				#{deviceModel},
-				#{ip}
+			#{token},
+			#{userId},
+			#{loginDate},
+			#{lastAccessDate},
+			#{expireDate},
+			#{kind},
+			#{imei},
+			#{deviceKind},
+			#{osVersion},
+			#{brand},
+			#{deviceModel},
+			#{ip}
 		) 
 	</insert>
 	
-	<delete id="deleteLogin" parameterType="integer">
+	<delete id="delete" >
 		DELETE FROM t_um_login
-		WHERE  id = #{id}
+		<include refid="pkwhere" />	
 	#end
 	</delete>
 	
-	<delete id="deleteLoginDynamic" parameterType="hashmap">
+	<delete id="deleteDynamic" parameterType="hashmap">
 		DELETE FROM t_um_login
 		<include refid="where" />
 	</delete>
@@ -156,7 +161,13 @@
 	<update id="updateLogin" parameterType="Login">
 		UPDATE t_um_login	
 		<include refid="update" />
-		WHERE id = #{id}	
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateLoginWithoutNull" parameterType="Login">
+		UPDATE t_um_login
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
 	</update>
 	
 	<update id="updateLoginDynamic" parameterType="hashmap">
@@ -165,10 +176,6 @@
 		<include refid="where_old" />
 	</update>
 	
-	<update id="updateLoginWithoutNull" parameterType="Login">
-		UPDATE t_um_login
-		<include refid="updateWithoutNull"/>
-		WHERE id = #{id}
-	</update>
+	
 	
 </mapper>

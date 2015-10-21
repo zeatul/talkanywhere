@@ -88,7 +88,7 @@ public class AppTaw {
 		String className = root.get("className").toString();	
 		
 		String directory = configure.computeEntireSourceCodeDir() + File.separator+ DOMAIN;		
-		String filePath = directory+ File.separator+className+".java";
+		String filePath = directory+ File.separator+className+"Domain.java";
 		
 		FileOutputStream fileOutputStream = new FileOutputStream(filePath,false);
 		OutputStreamWriter out = new OutputStreamWriter(fileOutputStream, "UTF-8"); 

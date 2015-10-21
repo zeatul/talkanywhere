@@ -1,7 +1,8 @@
 package com.taw.user.mapper;
 import java.util.List;
 import java.util.Map;
-import com.taw.user.domain.Partner;
+import com.taw.user.domain.PartnerDomain;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * t_um_partner
@@ -11,23 +12,25 @@ import com.taw.user.domain.Partner;
  */
 public interface PartnerMapper  {
 
-	Partner loadPartner(Integer id);
+	PartnerDomain loadPartner(@Param("id")Integer id );
 	
-	List<Partner> loadPartnerDynamic(Map<String,Object> params);
+	List<PartnerDomain> loadPartnerDynamic(Map<String,Object> params);
 	
-	int countPartnerDynamic(Map<String,Object> params);
+	int count(Map<String,Object> params);
 	
-	void insertPartner(Partner partner);
+	int insert(PartnerDomain partnerDomain);
 	
-	void deletePartner(Integer id);
+	int delete(@Param("id")Integer id );
 	
-	void deletePartnerDynamic(Map<String,Object> params);
+	int deleteDynamic(Map<String,Object> params);
 	
-	void updatePartner(Partner partner);
+	int updatePartner(PartnerDomain partnerDomain);
 	
-	void updatePartnerDynamic(Map<String,Object> params);
+	int updatePartnerWithoutNull(PartnerDomain partnerDomain);
 	
-	void updatePartnerWithoutNull(Partner partner);
+	int update(Map<String,Object> params);
+	
+	
 
 
 }

@@ -1,7 +1,8 @@
 package ${packageName}.mapper;
 import java.util.List;
 import java.util.Map;
-import ${packageName}.domain.${className};
+import ${packageName}.domain.${className}Domain;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * ${tableName}
@@ -11,23 +12,29 @@ import ${packageName}.domain.${className};
  */
 public interface ${className}Mapper  {
 
-	${className} load${className}(Integer id);
+	<#if (key?? && key?size>0)>
+	${className}Domain load${className}(<#list key as field>@Param("${field.fieldName}")${field.filedType} ${field.fieldName}<#if field_has_next>,</#if> </#list>);
+	</#if>
 	
-	List<${className}> load${className}Dynamic(Map<String,Object> params);
+	List<${className}Domain> load${className}Dynamic(Map<String,Object> params);
 	
-	int count${className}Dynamic(Map<String,Object> params);
+	int count(Map<String,Object> params);
 	
-	void insert${className}(${className} ${className?uncap_first});
+	int insert(${className}Domain ${className?uncap_first}Domain);
 	
-	void delete${className}(Integer id);
+	<#if (key?? && key?size>0)>
+	int delete(<#list key as field>@Param("${field.fieldName}")${field.filedType} ${field.fieldName}<#if field_has_next>,</#if> </#list>);
+	</#if>
 	
-	void delete${className}Dynamic(Map<String,Object> params);
+	int deleteDynamic(Map<String,Object> params);
 	
-	void update${className}(${className} ${className?uncap_first});
+	int update${className}(${className}Domain ${className?uncap_first}Domain);
 	
-	void update${className}Dynamic(Map<String,Object> params);
+	int update${className}WithoutNull(${className}Domain ${className?uncap_first}Domain);
 	
-	void update${className}WithoutNull(${className} ${className?uncap_first});
+	int update(Map<String,Object> params);
+	
+	
 
 
 }

@@ -1,7 +1,8 @@
 package com.taw.user.mapper;
 import java.util.List;
 import java.util.Map;
-import com.taw.user.domain.User;
+import com.taw.user.domain.UserDomain;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * t_um_user
@@ -11,23 +12,25 @@ import com.taw.user.domain.User;
  */
 public interface UserMapper  {
 
-	User loadUser(Integer id);
+	UserDomain loadUser(@Param("id")Integer id );
 	
-	List<User> loadUserDynamic(Map<String,Object> params);
+	List<UserDomain> loadUserDynamic(Map<String,Object> params);
 	
-	int countUserDynamic(Map<String,Object> params);
+	int count(Map<String,Object> params);
 	
-	void insertUser(User user);
+	int insert(UserDomain userDomain);
 	
-	void deleteUser(Integer id);
+	int delete(@Param("id")Integer id );
 	
-	void deleteUserDynamic(Map<String,Object> params);
+	int deleteDynamic(Map<String,Object> params);
 	
-	void updateUser(User user);
+	int updateUser(UserDomain userDomain);
 	
-	void updateUserDynamic(Map<String,Object> params);
+	int updateUserWithoutNull(UserDomain userDomain);
 	
-	void updateUserWithoutNull(User user);
+	int update(Map<String,Object> params);
+	
+	
 
 
 }
