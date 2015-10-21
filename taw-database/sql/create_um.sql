@@ -1,3 +1,9 @@
+/**
+ * 创建用户表
+ */
+
+use um;
+
 drop table if exists t_um_login;
 
 drop index u_um_partner2 on t_um_partner;
