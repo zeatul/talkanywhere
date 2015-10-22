@@ -20,6 +20,7 @@
 			<build>
 				<filters>
 					<filter>../taw-parent/taw-user-service/taw_user_service_dev.properties</filter>
+					<filter>../taw-parent/taw-pub/taw_pub_dev.properties</filter>
 				</filters>
 			</build>
 			<activation>
