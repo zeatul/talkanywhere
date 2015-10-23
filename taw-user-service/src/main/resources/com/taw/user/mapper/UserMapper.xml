@@ -139,7 +139,7 @@
 		<include refid="where" />
 	</select>
 	
-	<insert id="insert"  parameterType="User">
+	<insert id="insert"  parameterType="UserDomain">
 		INSERT INTO t_um_user (			
 				id,				
 				mobile,				
@@ -191,13 +191,13 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateUser" parameterType="User">
+	<update id="updateUser" parameterType="UserDomain">
 		UPDATE t_um_user	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateUserWithoutNull" parameterType="User">
+	<update id="updateUserWithoutNull" parameterType="UserDomain">
 		UPDATE t_um_user
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	

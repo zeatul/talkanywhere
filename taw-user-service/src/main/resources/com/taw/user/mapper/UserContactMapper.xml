@@ -89,7 +89,7 @@
 		<include refid="where" />
 	</select>
 	
-	<insert id="insert"  parameterType="UserContact">
+	<insert id="insert"  parameterType="UserContactDomain">
 		INSERT INTO t_um_user_contact (			
 				id,				
 				user_id,				
@@ -121,13 +121,13 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateUserContact" parameterType="UserContact">
+	<update id="updateUserContact" parameterType="UserContactDomain">
 		UPDATE t_um_user_contact	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateUserContactWithoutNull" parameterType="UserContact">
+	<update id="updateUserContactWithoutNull" parameterType="UserContactDomain">
 		UPDATE t_um_user_contact
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	

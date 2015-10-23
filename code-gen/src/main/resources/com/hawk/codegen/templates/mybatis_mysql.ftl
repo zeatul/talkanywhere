@@ -81,7 +81,7 @@
 		<include refid="where" />
 	</select>
 	
-	<insert id="insert"  parameterType="${className}">
+	<insert id="insert"  parameterType="${className}Domain">
 		INSERT INTO ${tableName} (			
 			<#list fields as field>
 				${field.columnName}<#if field_index < columnsLength-1 >,</#if>				
@@ -108,7 +108,7 @@
 	</delete>
 
 	<#if (key?? && key?size>0)>
-	<update id="update${className}" parameterType="${className}">
+	<update id="update${className}" parameterType="${className}Domain">
 		UPDATE ${tableName}	
 		<include refid="update" />
 		<include refid="pkwhere" />	
@@ -116,7 +116,7 @@
 	</#if>
 	
 	<#if (key?? && key?size>0)>
-	<update id="update${className}WithoutNull" parameterType="${className}">
+	<update id="update${className}WithoutNull" parameterType="${className}Domain">
 		UPDATE ${tableName}
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	

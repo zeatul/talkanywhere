@@ -116,7 +116,7 @@
 		<include refid="where" />
 	</select>
 	
-	<insert id="insert"  parameterType="Login">
+	<insert id="insert"  parameterType="LoginDomain">
 		INSERT INTO t_um_login (			
 				token,				
 				user_id,				
@@ -158,13 +158,13 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateLogin" parameterType="Login">
+	<update id="updateLogin" parameterType="LoginDomain">
 		UPDATE t_um_login	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateLoginWithoutNull" parameterType="Login">
+	<update id="updateLoginWithoutNull" parameterType="LoginDomain">
 		UPDATE t_um_login
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	

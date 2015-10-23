@@ -79,7 +79,7 @@
 		<include refid="where" />
 	</select>
 	
-	<insert id="insert"  parameterType="Partner">
+	<insert id="insert"  parameterType="PartnerDomain">
 		INSERT INTO t_um_partner (			
 				id,				
 				channel,				
@@ -107,13 +107,13 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updatePartner" parameterType="Partner">
+	<update id="updatePartner" parameterType="PartnerDomain">
 		UPDATE t_um_partner	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updatePartnerWithoutNull" parameterType="Partner">
+	<update id="updatePartnerWithoutNull" parameterType="PartnerDomain">
 		UPDATE t_um_partner
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
