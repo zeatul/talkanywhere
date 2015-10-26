@@ -1,46 +1,49 @@
 package com.taw.pub.user.request;
 
-import com.hawk.utility.check.AllowNull;
-import com.hawk.utility.check.MaxLength;
-import com.hawk.utility.check.Regex;
+import com.hawk.utility.check.CheckNull;
+import com.hawk.utility.check.CheckEnum;
+import com.hawk.utility.check.CheckMaxLength;
+import com.hawk.utility.check.CheckRegex;
+import com.taw.pub.user.enums.EnumChannel;
 
 public class CreateUserParam {
 	
 	/*手机号/自动生成号*/
-	@AllowNull(allow=false)
-	@MaxLength(max = 20)
-	@Regex(pattern="[0-9]{1,20}")
+	@CheckNull(allow=false)
+	@CheckMaxLength(max = 20)
+	@CheckRegex(pattern="[0-9]{1,20}")
 	private String mobile;
 	
 	/*登录密码*/
-	@AllowNull(allow=false)
-	@MaxLength(max = 20)
+	@CheckNull(allow=false)
+	@CheckMaxLength(max = 20)
 	private String password;
 	
 	/*微信/注册/QQ/微博*/
+	@CheckEnum(parser=EnumChannel.class)
 	private String channel;
 	
 	/*设备唯一的串号*/
-	@MaxLength(max = 50)
+	@CheckMaxLength(max = 50)
 	private String imei;
 	
 	/*设备类型:android/ios/winphone/pc/mpc*/
 	private String deviceKind;
 	
 	/*ios或安卓的版本号*/
-	@MaxLength(max = 20)
+	@CheckMaxLength(max = 20)
 	private String osVersion;
 	
 	/*三星/华为/苹果*/
-	@MaxLength(max = 50)
+	@CheckMaxLength(max = 50)
 	private String brand;
 	
 	/*厂商给设备定义的编号*/
-	@MaxLength(max = 50)
+	@CheckMaxLength(max = 50)
 	private String deviceModel;
 	
 	/*注册IP*/
-	@MaxLength(max = 50)
+	@CheckMaxLength(max = 50)
 	private String ip;
 
 	

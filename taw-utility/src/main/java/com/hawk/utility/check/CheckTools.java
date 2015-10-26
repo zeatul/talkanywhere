@@ -4,6 +4,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.hawk.enums.EnumTools;
+import com.hawk.enums.Parsable;
+
 public class CheckTools {
 
 	public static void check(Object object) throws Exception {
@@ -35,7 +38,7 @@ public class CheckTools {
 			/**
 			 * 校验空值
 			 */
-			AllowNull allowNull = field.getAnnotation(AllowNull.class);
+			CheckNull allowNull = field.getAnnotation(CheckNull.class);
 			if (allowNull != null && !allowNull.allow() && value == null) {
 				if (value == null)
 					throw new Exception("can't pass null check");				
@@ -46,7 +49,7 @@ public class CheckTools {
 			/**
 			 * 校验最大长度
 			 */
-			MaxLength maxLength = field.getAnnotation(MaxLength.class);
+			CheckMaxLength maxLength = field.getAnnotation(CheckMaxLength.class);
 			if (maxLength != null){
 				String str = (String)value;
 				if(str.length() > maxLength.max())
@@ -56,13 +59,21 @@ public class CheckTools {
 			/**
 			 * 校验正则
 			 */
-			Regex regex = field.getAnnotation(Regex.class);
+			CheckRegex regex = field.getAnnotation(CheckRegex.class);
 			if (regex != null){
 				String pattern = regex.pattern();
 				String str = (String)value;
 				if (! str.matches(pattern))
 					throw new Exception("can't pass regex check");
 			}
+			
+			/**
+			 * 校验枚举
+			 */
+			CheckEnum checkEnum = field.getAnnotation(CheckEnum.class);
+			if (checkEnum != null){
+				EnumTools.parse(value, checkEnum.parser());
+		}
 					
 		}
 
