@@ -36,7 +36,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/user/create.do", method = RequestMethod.POST)
 	public void createUser(Locale locale, Model model, HttpServletRequest request) {
-
+		
 	}
 
 }

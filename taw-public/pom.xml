@@ -14,6 +14,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.hawk.taw</groupId>
+			<artifactId>taw-utility</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
