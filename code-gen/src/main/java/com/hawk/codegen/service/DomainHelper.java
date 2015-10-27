@@ -115,6 +115,8 @@ public class DomainHelper {
 		typeMap.put("nvarchar","String");
 		typeMap.put("decimal", "java.math.BigDecimal");
 		typeMap.put("tinyint", "Short");
+		typeMap.put("bigint", "Long");
+		
 	}
 	
 	private String getFieldType(String columnType){

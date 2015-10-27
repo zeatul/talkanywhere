@@ -15,7 +15,7 @@ public class UserDomain implements Serializable {
 	private static final long serialVersionUID = -1L;
 	
 	/*用户主键*/
-	private Integer id;
+	private Long id;
 	
 	/*手机号/自动生成号*/
 	private String mobile;
@@ -56,21 +56,21 @@ public class UserDomain implements Serializable {
 	/*厂商给设备定义的编号*/
 	private String deviceModel;
 	
+	/*注册IP*/
+	private String ip;
+	
 	/*创建日期*/
 	private Date crdt;
 	
 	/*修改日期*/
 	private Date updt;
 	
-	/*注册IP*/
-	private String ip;
-	
 	
 	/**
 	 * 
 	 * @return 用户主键
 	 */
-	public Integer getId(){
+	public Long getId(){
 		return id;
 	}
 	
@@ -78,7 +78,7 @@ public class UserDomain implements Serializable {
 	 * 
 	 * @param id 用户主键
 	 */	
-	public void setId (Integer id) {
+	public void setId (Long id) {
 		this.id = id;
 	}
 	
@@ -292,6 +292,22 @@ public class UserDomain implements Serializable {
 	
 	/**
 	 * 
+	 * @return 注册IP
+	 */
+	public String getIp(){
+		return ip;
+	}
+	
+	/**
+	 * 
+	 * @param ip 注册IP
+	 */	
+	public void setIp (String ip) {
+		this.ip = ip;
+	}
+	
+	/**
+	 * 
 	 * @return 创建日期
 	 */
 	public Date getCrdt(){
@@ -320,22 +336,6 @@ public class UserDomain implements Serializable {
 	 */	
 	public void setUpdt (Date updt) {
 		this.updt = updt;
-	}
-	
-	/**
-	 * 
-	 * @return 注册IP
-	 */
-	public String getIp(){
-		return ip;
-	}
-	
-	/**
-	 * 
-	 * @param ip 注册IP
-	 */	
-	public void setIp (String ip) {
-		this.ip = ip;
 	}
 	
 

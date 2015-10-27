@@ -5,6 +5,7 @@ import com.hawk.utility.check.CheckEnum;
 import com.hawk.utility.check.CheckMaxLength;
 import com.hawk.utility.check.CheckRegex;
 import com.taw.pub.user.enums.EnumChannel;
+import com.taw.pub.user.enums.EnumDeviceKind;
 
 public class CreateUserParam {
 	
@@ -28,6 +29,7 @@ public class CreateUserParam {
 	private String imei;
 	
 	/*设备类型:android/ios/winphone/pc/mpc*/
+	@CheckEnum(parser=EnumDeviceKind.class)
 	private String deviceKind;
 	
 	/*ios或安卓的版本号*/

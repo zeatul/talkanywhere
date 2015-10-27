@@ -87,16 +87,16 @@ create table t_um_user
    status               char(1) comment '有效/无效',
    kind                 char(1) comment '普通用户/管理员',
    nickname             varchar(20) comment '用户昵称',
-   password             varchar(20) comment '登录密码',
+   password             varchar(200) comment '登录密码',
    channel              char(1) comment '微信/注册/QQ/微博',
    imei                 varchar(50) comment '设备唯一的串号',
    device_kind          char(1) comment '设备类型:android/ios/winphone/pc/mpc',
    os_version           varchar(20) comment 'ios或安卓的版本号',
    brand                varchar(50) comment '三星/华为/苹果',
    device_model         varchar(50) comment '厂商给设备定义的编号',
+   ip                   varchar(50) comment '注册IP',
    crdt                 datetime comment '创建日期',
    updt                 datetime comment '修改日期',
-   ip                   varchar(50) comment '注册IP',
    primary key (id)
 )
 engine=innodb default charset=utf8;

@@ -1,6 +1,5 @@
-package com.hawk.enums;
+package com.hawk.utility;
 
-import com.hawk.utility.StringTools;
 
 public class EnumTools {
 	

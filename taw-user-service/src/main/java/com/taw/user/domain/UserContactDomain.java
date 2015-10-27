@@ -15,7 +15,7 @@ public class UserContactDomain implements Serializable {
 	private static final long serialVersionUID = -1L;
 	
 	/*主键*/
-	private Integer id;
+	private Long id;
 	
 	/*用户ID*/
 	private Integer userId;
@@ -40,7 +40,7 @@ public class UserContactDomain implements Serializable {
 	 * 
 	 * @return 主键
 	 */
-	public Integer getId(){
+	public Long getId(){
 		return id;
 	}
 	
@@ -48,7 +48,7 @@ public class UserContactDomain implements Serializable {
 	 * 
 	 * @param id 主键
 	 */	
-	public void setId (Integer id) {
+	public void setId (Long id) {
 		this.id = id;
 	}
 	

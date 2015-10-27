@@ -4,8 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import com.hawk.enums.EnumTools;
-import com.hawk.enums.Parsable;
+import com.hawk.utility.EnumTools;
 
 public class CheckTools {
 
@@ -41,7 +40,7 @@ public class CheckTools {
 			CheckNull allowNull = field.getAnnotation(CheckNull.class);
 			if (allowNull != null && !allowNull.allow() && value == null) {
 				if (value == null)
-					throw new Exception("can't pass null check");				
+					throw new Exception(fieldName+" can't pass null check");				
 			}			
 			if (value == null)
 				continue;
@@ -53,7 +52,7 @@ public class CheckTools {
 			if (maxLength != null){
 				String str = (String)value;
 				if(str.length() > maxLength.max())
-					throw new Exception("can't pass max length check");
+					throw new Exception(fieldName + " can't pass max length check");
 			}
 			
 			/**
@@ -64,7 +63,7 @@ public class CheckTools {
 				String pattern = regex.pattern();
 				String str = (String)value;
 				if (! str.matches(pattern))
-					throw new Exception("can't pass regex check");
+					throw new Exception(fieldName +" can't pass regex check");
 			}
 			
 			/**

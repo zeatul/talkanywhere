@@ -1,31 +1,26 @@
 package com.taw.pub.user.enums;
 
-import com.hawk.enums.EnumTools;
-import com.hawk.enums.Parsable;
-
 /**
  * 注册来源
  * @author zhang_000
  *
  */
-public enum EnumChannel implements Parsable{
+public enum EnumChannel {
 	
 	REGISTERED("0"), WECHAT("1") , QQ("2") ,WEIBO("3");
 	
 	/*微信/注册/QQ/微博*/
 	
-	private String channel;
+	private String value;
 	
-	private EnumChannel (String channel){
-		this.channel = channel;
+	private EnumChannel (String value){
+		this.value = value;
 	}
 	
 	@Override
 	public String toString() {
-		return channel;
+		return value;
 	}
 
-	public EnumChannel parse(Object obj){
-		return EnumTools.parse(obj, EnumChannel.class);
-	}
+	
 }

@@ -9,7 +9,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath*:com/taw/user/spring/applicationContext-user-service-*.xml
-			<!-- ,classpath*:com/taw/pub/spring/applicationContext-pub-*.xml -->
+			,classpath*:com/taw/pub/spring/applicationContext-pub-*.xml 
 		</param-value>
 	</context-param>
 

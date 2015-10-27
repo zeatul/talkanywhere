@@ -1,26 +1,25 @@
 package com.taw.pub.user.enums;
 
-import com.hawk.enums.EnumTools;
-import com.hawk.enums.Parsable;
+import com.hawk.utility.EnumTools;
 
 /**
  * 设备类型
  * @author zhang_000
  *
  */
-public enum EnumDeviceKind implements Parsable{
+public enum EnumDeviceKind {
 	
 	ANDROID("0"),IOS("1"),WINPHONE("2"),HTML("3");
 	
-	private String deviceKind;
+	private String value;
 	
-	private EnumDeviceKind(String deviceKind){
-		this.deviceKind = deviceKind;
+	private EnumDeviceKind(String value){
+		this.value = value;
 	}
 	
 	@Override
 	public String toString() {
-		return deviceKind;		
+		return value;		
 	}
 	
 	public EnumDeviceKind parse(Object obj){

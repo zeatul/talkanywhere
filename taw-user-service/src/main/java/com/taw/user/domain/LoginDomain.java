@@ -18,7 +18,7 @@ public class LoginDomain implements Serializable {
 	private String token;
 	
 	/*用户ID*/
-	private Integer userId;
+	private Long userId;
 	
 	/*创建日期*/
 	private Date loginDate;
@@ -71,7 +71,7 @@ public class LoginDomain implements Serializable {
 	 * 
 	 * @return 用户ID
 	 */
-	public Integer getUserId(){
+	public Long getUserId(){
 		return userId;
 	}
 	
@@ -79,7 +79,7 @@ public class LoginDomain implements Serializable {
 	 * 
 	 * @param userId 用户ID
 	 */	
-	public void setUserId (Integer userId) {
+	public void setUserId (Long userId) {
 		this.userId = userId;
 	}
 	
