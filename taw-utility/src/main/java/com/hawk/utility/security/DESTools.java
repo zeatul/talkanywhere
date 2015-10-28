@@ -1,14 +1,6 @@
 package com.hawk.utility.security;
 
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -21,12 +13,12 @@ public class DESTools {
     
     public static final String CHART_SET="UTF-8";
         
-    // 还原密钥 
-    private static Key toKey(String key) throws Exception {  
-        DESKeySpec des = new DESKeySpec(key.getBytes(CHART_SET));  
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(KEY_ALGORITHM);  
-        return keyFactory.generateSecret(des);  
-    }  
+//    // 还原密钥 
+//    private static Key toKey(String key) throws Exception {  
+//        DESKeySpec des = new DESKeySpec(key.getBytes(CHART_SET));  
+//        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(KEY_ALGORITHM);  
+//        return keyFactory.generateSecret(des);  
+//    }  
 
     
     private static byte[] iv = { 1, 2, 3, 4, 5, 6, 7, 8 };

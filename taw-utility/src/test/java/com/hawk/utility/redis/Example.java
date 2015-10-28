@@ -24,6 +24,8 @@ public class Example {
 	 */
 	// @Test
 	public void testNormal() {
+	
+		
 		Jedis jedis = new Jedis("192.168.17.101", 6379);
 		String result = jedis.set("foo", "bar");
 		System.out.println("result=" + result);
@@ -75,7 +77,7 @@ public class Example {
 	/**
 	 * 管道中使用事务
 	 */
-	@Test
+//	@Test
 	public void testPipelineTrans() {
 		Jedis jedis = new Jedis("192.168.17.101", 6379);
 		Pipeline pipeline = jedis.pipelined();
@@ -96,7 +98,7 @@ public class Example {
 	/**
 	 * 分布式直连同步调用
 	 */
-	@Test
+//	@Test
 	public void testShardNormal() {
 		List<JedisShardInfo> shards = Arrays.asList(new JedisShardInfo("192.168.17.101", 6379));
 
@@ -115,7 +117,7 @@ public class Example {
 	/**
 	 * 分布式直连异步调用
 	 */
-	@Test
+//	@Test
 	public void testShardPipeline() {
 		List<JedisShardInfo> shards = Arrays.asList(new JedisShardInfo("192.168.17.101", 6379));
 
@@ -142,7 +144,9 @@ public class Example {
 	 */
 	@Test
 	public void testShardPoolNormal() {
-		List<JedisShardInfo> shards = Arrays.asList(new JedisShardInfo("192.168.17.101", 6379));
+//		List<JedisShardInfo> shards = Arrays.asList(new JedisShardInfo("192.168.17.101", 6379));
+		List<JedisShardInfo> shards = Arrays.asList(new JedisShardInfo("192.168.107.128", 6379));
+		
 		ShardedJedisPool pool = new ShardedJedisPool(new JedisPoolConfig(), shards);
 		ShardedJedis one = pool.getResource();
 		for (int i = 0; i < 10000; i++) {
@@ -158,7 +162,7 @@ public class Example {
 	/**
 	 * 分布式连接池异步调用
 	 */
-	@Test
+//	@Test
 	public void testShardPipelinePool() {
 		List<JedisShardInfo> shards = Arrays.asList(new JedisShardInfo("192.168.17.101", 6379));
 		ShardedJedisPool pool = new ShardedJedisPool(new JedisPoolConfig(), shards);

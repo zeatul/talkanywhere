@@ -1,4 +1,4 @@
-package com.taw.user.mapper.service;
+package com.taw.user.service;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ public class UserServiceTest extends AbstractJUnit4SpringContextTests{
 	
 	@Test
 	public void testCreateUser() throws Exception{
-		CreateUserParam createUserParam = new CreateUserParam();
 		CreateUserParam param = new CreateUserParam();
 		param.setMobile("13916082481");
 		param.setPassword("password");
@@ -33,7 +32,7 @@ public class UserServiceTest extends AbstractJUnit4SpringContextTests{
 		param.setIp("171.168.1.1");
 		param.setOsVersion("5.0");
 		
-		userService.createUser(createUserParam);
+		userService.createUser(param);
 	}
 
 }
