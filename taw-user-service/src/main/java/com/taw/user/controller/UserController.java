@@ -1,8 +1,6 @@
 package com.taw.user.controller;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +21,7 @@ public class UserController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/user/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String helloWorldDelete(Locale locale, Model model) throws IOException {
+	public String helloWorld(Locale locale, Model model) throws IOException {
 		model.addAttribute("msg", "/user/hello.do");
 		return "success";
 	}

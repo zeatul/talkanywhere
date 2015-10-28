@@ -1,4 +1,4 @@
-package com.taw.pub.pkgen;
+package com.hawk.pub.pkgen;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
-import com.taw.pub.spring.FrameworkContext;
+import com.hawk.pub.spring.FrameworkContext;
 
 public class PkGenerator {
 	

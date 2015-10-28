@@ -48,6 +48,39 @@ public class RedisClient {
 	}
 	
 	/**
+	 * 加入缓存
+	 * 
+	 * @param key
+	 * @param value
+	 * @param expire 有效期，单位秒
+	 * @param async true=异步
+	 */
+	public void set(String key, String value,int expire, boolean async) {
+		ShardedJedis shardedJedis = null;
+		try {
+			shardedJedis = pool.getResource();
+			if (async) {
+				ShardedJedisPipeline pipeline = shardedJedis.pipelined();
+				pipeline.set(key, value);
+			} else {
+				shardedJedis.set(key, value);
+				shardedJedis.expire(key, expire);
+			}
+		} finally {
+			if (shardedJedis != null) {
+				try {
+					shardedJedis.close();
+//					pool.returnResource(shardedJedis);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+	}
+	
+	/**
 	 * 从缓存取值
 	 * @param key
 	 * @return
@@ -57,6 +90,28 @@ public class RedisClient {
 		try {
 			shardedJedis = pool.getResource();
 			return shardedJedis.get(key);
+		} finally {
+			if (shardedJedis != null) {
+				try {
+					shardedJedis.close();
+				} catch (Exception e) {
+
+				}
+			}
+
+		}
+	}
+	
+	/**
+	 * 判断key值是否存在
+	 * @param key
+	 * @return
+	 */
+	public boolean exists(String key){
+		ShardedJedis shardedJedis = null;
+		try {
+			shardedJedis = pool.getResource();
+			return shardedJedis.exists(key);
 		} finally {
 			if (shardedJedis != null) {
 				try {

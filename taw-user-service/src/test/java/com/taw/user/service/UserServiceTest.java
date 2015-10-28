@@ -11,7 +11,7 @@ import com.taw.pub.user.request.CreateUserParam;
 import com.taw.user.service.UserService;
 
 @ContextConfiguration(locations={
-		"classpath*:com/taw/pub/spring/applicationContext-pub-*.xml",
+		"classpath*:com/hawk/pub/spring/applicationContext-pub-*.xml",
 		"classpath*:com/taw/user/spring/applicationContext-user-service-*.xml"
 		})
 public class UserServiceTest extends AbstractJUnit4SpringContextTests{
@@ -22,7 +22,7 @@ public class UserServiceTest extends AbstractJUnit4SpringContextTests{
 	@Test
 	public void testCreateUser() throws Exception{
 		CreateUserParam param = new CreateUserParam();
-		param.setMobile("13916082481");
+		param.setMobile("13311658157");
 		param.setPassword("password");
 		param.setChannel(EnumChannel.REGISTERED.toString());
 		param.setBrand("Samsung");

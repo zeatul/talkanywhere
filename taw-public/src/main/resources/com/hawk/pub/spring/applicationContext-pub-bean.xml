@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-	<bean class="com.taw.pub.spring.FrameworkContext" />
+	<bean class="com.hawk.pub.spring.FrameworkContext" />
 
 
 

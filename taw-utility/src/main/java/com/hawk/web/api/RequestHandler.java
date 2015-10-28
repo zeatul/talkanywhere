@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hawk.utility.JsonTools;
+import com.hawk.utility.StringTools;
 
 
 
@@ -18,11 +19,17 @@ public class RequestHandler {
 	private static Logger logger = LoggerFactory.getLogger(RequestHandler.class);
 
 	public static String handle(HttpServletRequest request) throws IOException {
-		InputStream stream = request.getInputStream();
-		String input = IOUtils.toString(stream, "utf-8");
+		String input = null;
+		if (request.getMethod().equalsIgnoreCase("get")) {
+			input = request.getParameter("query");
+		} else {
+			InputStream stream = request.getInputStream();
+			input = IOUtils.toString(stream);
+		}
 
-		if (input == null || input.trim().length() == 0) {
+		if (StringTools.isNullOrEmpty(input)) {
 			logger.debug("the request's input = null");
+			return null;
 		}
 
 		return input;
@@ -32,8 +39,9 @@ public class RequestHandler {
 
 		String input = handle(request);
 
-		if (input == null || input.trim().length() == 0)
+		if (StringTools.isNullOrEmpty(input)) {
 			return null;
+		}
 
 		T t = JsonTools.toObject(input, clazz);
 
