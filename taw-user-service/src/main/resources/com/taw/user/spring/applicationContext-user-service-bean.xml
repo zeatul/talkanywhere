@@ -7,7 +7,7 @@
 
 
 
-	<bean id="taw_user_service_smsHelper" class="com.taw.pub.sms.SMSHelper"/>
+	<bean id="taw_user_service_sms_service" class="com.hawk.pub.sms.SMSService"/>
 
 
 

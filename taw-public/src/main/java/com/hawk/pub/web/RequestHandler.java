@@ -20,7 +20,7 @@ public class RequestHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> T handle(HttpServletRequest request, Class<T> clazz) throws Exception {
+	public  static <T> T  handle(HttpServletRequest request, Class<T> clazz) throws Exception {
 
 		String input = null;
 		if (request.getMethod().equalsIgnoreCase("get")) {

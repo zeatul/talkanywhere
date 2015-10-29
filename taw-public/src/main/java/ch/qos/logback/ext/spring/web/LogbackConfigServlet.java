@@ -51,7 +51,12 @@ import java.io.IOException;
  */
 public class LogbackConfigServlet extends HttpServlet {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
     public void init() {
         WebLogbackConfigurer.initLogging(getServletContext());
     }

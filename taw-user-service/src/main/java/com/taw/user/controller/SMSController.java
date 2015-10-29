@@ -13,19 +13,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.hawk.pub.sms.SMSHelper;
+import com.hawk.pub.sms.SMSService;
+import com.hawk.pub.web.RequestHandler;
+import com.hawk.pub.web.ResponseHandler;
+import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.hawk.utility.redis.RedisClient;
-import com.hawk.web.api.RequestHandler;
 import com.taw.pub.user.request.SendAuthCodeParam;
 
 @Controller
 public class SMSController {
 	
 	@Autowired
-	@Qualifier("taw_user_service_smsHelper")
-	private SMSHelper smsHelper;
+	@Qualifier("taw_user_service_sms_service")
+	private SMSService smsService;
 	
 	@Autowired
 	@Qualifier("taw_user_service_redis_client")
@@ -67,11 +69,11 @@ public class SMSController {
 		
 		String authCode = StringTools.randomNumberString(4);
 		String msg = "autoCode = " + authCode;
-		smsHelper.SendMessage(param.getMobile(), msg);
+		smsService.SendMessage(param.getMobile(), msg);
 		
 		redisClient.set(mobile, authCode, 60,false);
 		
-		返回值待写
+		ResponseHandler.handle(response,SuccessResponse.SUCCESS_RESPONSE);
 	}
 
 }

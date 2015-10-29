@@ -16,28 +16,11 @@ public class ExceptionResponse implements IResponse{
 		this.exception = exception;
 	}
 	
-	public static class OutPut{
-		
-		
-		public String getCode() {
-			return code;
-		}
-		public void setCode(String code) {
-			this.code = code;
-		}
-		public String getErrMsg() {
-			return errMsg;
-		}
-		public void setErrMsg(String errMsg) {
-			this.errMsg = errMsg;
-		}
-		private String code;
-		private String errMsg;
-	}
+	
 	
 
 	public String toJson(){
-//		Map<String,Object> rtn = new HashMap<String,Object>();
+
 		OutPut rtn = new OutPut();
 		String code = "";
 		String message = exception.getMessage();
@@ -49,8 +32,8 @@ public class ExceptionResponse implements IResponse{
 			code = "-1";
 		}
 
-		rtn.setRetCode(code);
-		rtn.setMessage(message);
+		rtn.setCode(code);
+		rtn.setData(message);
 		String output = JsonTools.toJsonString(rtn);
 		return output;
 	}

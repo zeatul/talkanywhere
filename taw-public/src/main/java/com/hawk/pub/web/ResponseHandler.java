@@ -15,6 +15,14 @@ public class ResponseHandler {
 		return response;
 	}
 	
+	public static void handle(HttpServletResponse response,IResponse result) throws Exception {
+
+		String r = result.toJson();
+		env(response).getWriter().print(r);
+
+	}
+	
+	
 	/**
 	 * 直接向前台输出字符串
 	 * @param response

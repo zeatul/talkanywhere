@@ -23,6 +23,9 @@ import freemarker.template.TemplateException;
 public class AppTaw {
 
 	private static Logger logger = LoggerFactory.getLogger(DatabaseParser.class);
+	
+	private final static String DOMAIN = "domain";
+	private final static String MAPPER = "mapper";
 
 	private static DomainHelper domainHelper = new DomainHelper();
 	private static Configuration cfg = new Configuration();
@@ -31,19 +34,39 @@ public class AppTaw {
 	}
 
 	public static void main(String[] args) {
-		generateUser();
+//		generateUm();
+		generateSM();
+	}
+	
+	/**
+	 * 生成短信管理类
+	 */
+	private static void generateSM(){
+		Configure configure = buildConfigure("sm");
+		configure.setProjectName("taw-public");
+		configure.setRootPackage("com.hawk.pub");
+		configure.setSubPackage("sms");
+		
+		generate(configure);
 	}
 	
 	
 
-	private final static String DOMAIN = "domain";
-	private final static String MAPPER = "mapper";
-	private static void generateUser() {
+	/**
+	 * 生成用户管理类
+	 */
+	private static void generateUm() {
 		Configure configure = buildConfigure("um");
 		configure.setProjectName("taw-user-service");
 		configure.setRootPackage("com.taw");
 		configure.setSubPackage("user");
 		
+		generate(configure);
+		
+		
+	}
+	
+	private static void generate(Configure configure){
 		try {
 			DatabaseParser parser = new DatabaseParser(configure);
 			
@@ -67,7 +90,6 @@ public class AppTaw {
 		} catch (Exception e) {
 			logger.error("parse error",e);
 		}
-		
 	}
 	
 	

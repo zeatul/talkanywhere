@@ -90,10 +90,29 @@ public class DateTools {
 		return df.format(date);
 	}
 
-	public static Date addDay(Date date, int diff) {
+	/**
+	 * 返回指定时间加上指定天数
+	 * @param date
+	 * @param diff
+	 * @return
+	 */
+	public static Date addDays(Date date, int diff) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		c.add(Calendar.DAY_OF_MONTH, diff);
+		return c.getTime();
+	}
+	
+	/**
+	 * 返回指定时间加上指定分钟数
+	 * @param date
+	 * @param diff
+	 * @return
+	 */
+	public static Date addMinutes(Date date, int diff){
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.MINUTE, diff);
 		return c.getTime();
 	}
 
@@ -109,7 +128,7 @@ public class DateTools {
 		List<Date> result = new ArrayList<Date>(count);
 		Date now = DateTools.now();
 		for (int i = 0; i < count; i++) {
-			result.add(addDay(now,i));
+			result.add(addDays(now,i));
 		}
 		return result;
 	}
@@ -118,7 +137,7 @@ public class DateTools {
 		List<String> result = new ArrayList<String>(count);
 		Date now = DateTools.now();
 		for (int i = 0; i < count; i++) {
-			result.add(convert(addDay(now,i),pattern));
+			result.add(convert(addDays(now,i),pattern));
 		}
 		return result;
 	}
