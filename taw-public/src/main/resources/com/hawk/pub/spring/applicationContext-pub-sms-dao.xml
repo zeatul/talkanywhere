@@ -7,13 +7,14 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-	<bean id="dataSource_pkgen" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 
+	<bean id="dataSource_sms_service" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		
+		<property name="driverClass" value="${maven.taw-pub.sms.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${maven.taw-pub.sms.jdbc.url}" />
+		<property name="user" value="${maven.taw-pub.sms.jdbc.username}" />
+		<property name="password" value="${maven.taw-pub.sms.jdbc.password}" />
 
-		<property name="driverClass" value="${maven.taw-pub.jdbc.driverClassName}" />
-		<property name="jdbcUrl" value="${maven.taw-pub.jdbc.url}" />
-		<property name="user" value="${maven.taw-pub.jdbc.username}" />
-		<property name="password" value="${maven.taw-pub.jdbc.password}" />
 
 		<!-- 连接池中保留的最小连接数，默认为：3 -->
 		<property name="minPoolSize" value="20" />
@@ -48,9 +49,9 @@
 
 		<!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->
 		<property name="idleConnectionTestPeriod" value="60" />
-
+		
 		<!--定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。注意：测试的表必须在初始数据源的时候就存在。Default: null -->
-		<property name="preferredTestQuery" value="select 1 from t_km_global_sequence"/>
+		<property name="preferredTestQuery" value="select 1 from t_um_user limit 0,1"/>
 
 
 		<!-- JDBC的标准参数，用以控制数据源内加载的PreparedStatement数量。但由于预缓存的Statement属 于单个Connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素，如果maxStatements与 maxStatementsPerConnection均为0，则缓存被关闭。默认为0； -->
@@ -66,12 +67,22 @@
 		<property name="propertyCycle" value="600" />
 	</bean>
 
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource">
-			<ref bean="dataSource_pkgen" />
-		</property>
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager_sms_service" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_sms_service" />
 	</bean>
 
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource_sms_service" />
+		<property name="typeAliasesPackage" value="com.hawk.pub.sms.domain;com.hawk.pub.sms.domainex" />
+	</bean>
+
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.hawk.pub.sms.mapper;com.hawk.pub.sms.mapperex" />
+	</bean>
 
 
 

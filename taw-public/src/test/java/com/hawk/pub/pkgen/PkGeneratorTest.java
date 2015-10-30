@@ -1,4 +1,4 @@
-package com.taw.pub.pkgen;
+package com.hawk.pub.pkgen;
 
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;

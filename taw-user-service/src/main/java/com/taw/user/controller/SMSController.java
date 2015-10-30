@@ -13,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hawk.pub.sms.EnumMessageKind;
 import com.hawk.pub.sms.SMSService;
+import com.hawk.pub.sms.SendMessageParam;
 import com.hawk.pub.web.RequestHandler;
 import com.hawk.pub.web.ResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
@@ -69,7 +71,12 @@ public class SMSController {
 		
 		String authCode = StringTools.randomNumberString(4);
 		String msg = "autoCode = " + authCode;
-		smsService.SendMessage(param.getMobile(), msg);
+		
+		SendMessageParam sendMessageParam = new SendMessageParam();
+		sendMessageParam.setMobile(param.getMobile());
+		sendMessageParam.setMessage(msg);
+		sendMessageParam.setKind(EnumMessageKind.AUTH_CODE.toString());
+		smsService.SendMessage(sendMessageParam);
 		
 		redisClient.set(mobile, authCode, 60,false);
 		

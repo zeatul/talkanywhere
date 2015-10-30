@@ -1,2 +1,0 @@
-# talkanywhere
-talk anywhere

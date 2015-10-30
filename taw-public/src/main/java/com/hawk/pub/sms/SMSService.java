@@ -5,6 +5,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.pub.sms.domain.MessageDomain;
@@ -13,6 +14,7 @@ import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
 
+@Service
 public class SMSService {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -40,7 +42,7 @@ public class SMSService {
 		
 		messageMapper.insert(messageDomain);
 		
-		logger.info("Success to send msg");
+		logger.info("Success to persist sms message!");
 		
 	}
 	

@@ -4,13 +4,24 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hawk.pub.web.RequestHandler;
+import com.hawk.pub.web.ResponseHandler;
+import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.DomainTools;
+import com.hawk.utility.redis.RedisClient;
+import com.taw.pub.user.enums.EnumLoginKind;
+import com.taw.pub.user.request.CreateUserRequestParam;
+import com.taw.pub.user.request.LoginParam;
+import com.taw.user.service.LoginService;
 import com.taw.user.service.UserService;
 
 @Controller
@@ -18,6 +29,13 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LoginService loginService;
+	
+	@Autowired
+	@Qualifier("taw_user_service_redis_client")
+	private RedisClient redisClient;
 
 	/**
 	 * hello 测试用
@@ -37,10 +55,27 @@ public class UserController {
 	 * @param locale
 	 * @param model
 	 * @param request
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/user/create.do", method = RequestMethod.POST)
-	public void createUser(Locale locale, Model model, HttpServletRequest request) {
+	public void createUser(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		CreateUserRequestParam createUserRequestParam = RequestHandler.handle(request, CreateUserRequestParam.class);
+		String authCode = createUserRequestParam.getAuthCode();
+		String mobile = createUserRequestParam.getParam().getMobile();
+		String cachedAuthCode = redisClient.get(mobile);
+		if (cachedAuthCode == null || !cachedAuthCode.equals(authCode))
+			throw new Exception("auth code is error!");
 		
+		userService.createUser(createUserRequestParam.getParam());
+		
+		//登录
+		LoginParam loginParam = new LoginParam();
+		DomainTools.copy(createUserRequestParam.getParam(), loginParam);
+		loginParam.setKind(EnumLoginKind.PERMANENT.toString());
+		String token = loginService.login(loginParam);
+		
+		SuccessResponse result = SuccessResponse.build(token);
+		ResponseHandler.handle(response, result);
 	}
 
 }

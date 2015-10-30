@@ -1,5 +1,9 @@
 package com.taw.user.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +11,7 @@ import com.hawk.pub.enums.EnumBoolean;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
+import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.hawk.utility.security.MD5Tools;
 import com.taw.pub.user.enums.EnumUserKind;
@@ -24,6 +29,15 @@ public class UserService {
 	
 	@Autowired
 	private UserServiceConfigure userServiceConfigure;
+	
+	/**
+	 * 产生密码的md5签名
+	 * @param password
+	 * @return
+	 */
+	public String signedPassword(String password){
+		return MD5Tools.sign(password+userServiceConfigure.getPwdMd5Key());
+	}
 	
 	/**
 	 * 创建新用户
@@ -45,7 +59,7 @@ public class UserService {
 		/**
 		 * 赋特殊固定值
 		 */
-		userDomain.setPassword(MD5Tools.sign(createUserParam.getPassword()+userServiceConfigure.getPwdMd5Key() ));
+		userDomain.setPassword(signedPassword(createUserParam.getPassword()));
 		userDomain.setChcked(EnumBoolean.TRUE.getValue());
 		userDomain.setMobileKind(EnumBoolean.FALSE.getValue());
 		userDomain.setStatus(EnumUserStatus.VALID.toString());
@@ -63,6 +77,19 @@ public class UserService {
 		if (rowCount != 1)
 			throw new RuntimeException("Failed to insert userDomain");
 		
+		return userDomain;
+	}
+	
+	
+	public UserDomain queryUser(String mobile){
+		if (StringTools.isNullOrEmpty(mobile))
+			return null;
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("mobile", mobile);
+		List<UserDomain> list = userMapper.loadUserDynamic(params);
+		if (list.size() == 0)
+			return null;
+		UserDomain userDomain = list.get(0);
 		return userDomain;
 	}
 

@@ -7,25 +7,13 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-
-	<!-- enable autowire -->
-	<context:annotation-config />
-
-	<!-- enable transaction demarcation with annotations -->
-	<tx:annotation-driven />
+	<bean id="dataSource_pkgen" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 
 
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> <property name="driverClassName" value="${jdbc.driverClassName}" 
-		/> <property name="url" value="${jdbc.url}" /> <property name="username" value="${jdbc.username}" /> <property name="password" value="${jdbc.password}" /> <property 
-		name="maxActive" value="${jdbc.maxActive}" /> <property name="maxWait" value="${jdbc.maxWait}" /> <property name="poolPreparedStatements" value="true" /> <property 
-		name="defaultAutoCommit" value="true" /> </bean> -->
-
-	<bean id="dataSource_user_service" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		
-		<property name="driverClass" value="${maven.taw-user-service.jdbc.driverClassName}" />
-		<property name="jdbcUrl" value="${maven.taw-user-service.jdbc.url}" />
-		<property name="user" value="${maven.taw-user-service.jdbc.username}" />
-		<property name="password" value="${maven.taw-user-service.jdbc.password}" />
+		<property name="driverClass" value="${maven.taw-pub.pkgen.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${maven.taw-pub.pkgen.jdbc.url}" />
+		<property name="user" value="${maven.taw-pub.pkgen.jdbc.username}" />
+		<property name="password" value="${maven.taw-pub.pkgen.jdbc.password}" />
 
 		<!-- 连接池中保留的最小连接数，默认为：3 -->
 		<property name="minPoolSize" value="20" />
@@ -60,9 +48,9 @@
 
 		<!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->
 		<property name="idleConnectionTestPeriod" value="60" />
-		
+
 		<!--定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。注意：测试的表必须在初始数据源的时候就存在。Default: null -->
-		<property name="preferredTestQuery" value="select 1 from t_um_user limit 0,1"/>
+		<property name="preferredTestQuery" value="select 1 from t_km_global_sequence"/>
 
 
 		<!-- JDBC的标准参数，用以控制数据源内加载的PreparedStatement数量。但由于预缓存的Statement属 于单个Connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素，如果maxStatements与 maxStatementsPerConnection均为0，则缓存被关闭。默认为0； -->
@@ -78,51 +66,13 @@
 		<property name="propertyCycle" value="600" />
 	</bean>
 
-	<!-- transaction manager, use JtaTransactionManager for global tx -->
-	<bean id="transactionManager_user_service" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource_user_service" />
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="dataSource_pkgen" />
+		</property>
 	</bean>
 
 
-	<!-- define the SqlSessionFactory -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource_user_service" />
-		<property name="typeAliasesPackage" value="com.taw.user.domain;com.taw.user.domainex" />
-	</bean>
 
-	<!-- scan for mappers and let them be autowired -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.taw.user.mapper;com.taw.user.mapperex" />
-	</bean>
 
-	<!-- =================================================================== -->
-	<!-- AOP: Configuration and Aspects -->
-	<!-- =================================================================== -->
-	<!--
-	<aop:config>
-		<aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* com.hante.weixin.*.service.*Manager.*(..))" order="0" />
-	</aop:config>
-
-	<tx:advice id="txAdvice">
-		<tx:attributes>
-			
-			
-			<tx:method name="get*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="query*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="load*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="exist*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="count*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="insert*" propagation="REQUIRED" />
-			<tx:method name="create*" propagation="REQUIRED" />
-			<tx:method name="update*" propagation="REQUIRED" />
-			<tx:method name="delete*" propagation="REQUIRED" />
-			<tx:method name="cancel*" propagation="REQUIRED" />
-			<tx:method name="regist*" propagation="REQUIRED" />
-			<tx:method name="modify*" propagation="REQUIRED" />
-			<tx:method name="remove*" propagation="REQUIRED" />
-			<tx:method name="*" />
-		</tx:attributes>
-	</tx:advice>
-	-->
-	<!-- Read-only commented out to make things easier for end-users -->
 </beans>
