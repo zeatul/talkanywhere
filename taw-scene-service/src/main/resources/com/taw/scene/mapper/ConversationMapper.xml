@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.scene.mapper.ConversationMapper">
+
+	<sql id="columns">
+		id as "id" ,
+		scene_id as "sceneId" ,
+		post_user_id as "postUserId" ,
+		post_nickname as "postNickname" ,
+		message as "message" ,
+		r_post_id as "rPostId" ,
+		r_post_user_id as "rPostUserId" ,
+		r_post_nickname as "rPostNickname" ,
+		pic_count as "picCount" ,
+		post_date as "postDate" 
+	</sql>
+	
+	<sql id="where">
+		<trim prefix="WHERE" prefixOverrides="AND">		 
+			<if test="id != null"> AND id = #{id}  </if>
+			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
+			<if test="postUserId != null"> AND post_user_id = #{postUserId}  </if>
+			<if test="postNickname != null"> AND post_nickname = #{postNickname}  </if>
+			<if test="message != null"> AND message = #{message}  </if>
+			<if test="rPostId != null"> AND r_post_id = #{rPostId}  </if>
+			<if test="rPostUserId != null"> AND r_post_user_id = #{rPostUserId}  </if>
+			<if test="rPostNickname != null"> AND r_post_nickname = #{rPostNickname}  </if>
+			<if test="picCount != null"> AND pic_count = #{picCount}  </if>
+			<if test="postDate != null"> AND post_date = #{postDate}  </if>
+		</trim>	
+	</sql>
+	
+	<sql id="where_old">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{old_id}
+			AND scene_id = #{old_sceneId}
+			AND post_user_id = #{old_postUserId}
+			AND post_nickname = #{old_postNickname}
+			AND message = #{old_message}
+			AND r_post_id = #{old_rPostId}
+			AND r_post_user_id = #{old_rPostUserId}
+			AND r_post_nickname = #{old_rPostNickname}
+			AND pic_count = #{old_picCount}
+			AND post_date = #{old_postDate}
+		</trim>
+	</sql>
+	
+	<sql id="update">
+		<set>
+			scene_id = #{sceneId},
+			post_user_id = #{postUserId},
+			post_nickname = #{postNickname},
+			message = #{message},
+			r_post_id = #{rPostId},
+			r_post_user_id = #{rPostUserId},
+			r_post_nickname = #{rPostNickname},
+			pic_count = #{picCount},
+			post_date = #{postDate},
+		</set>
+	</sql>
+	
+	<sql id="updateWithoutNull">
+		<set>
+				<if test="sceneId != null">scene_id = #{sceneId},</if>
+				<if test="postUserId != null">post_user_id = #{postUserId},</if>
+				<if test="postNickname != null">post_nickname = #{postNickname},</if>
+				<if test="message != null">message = #{message},</if>
+				<if test="rPostId != null">r_post_id = #{rPostId},</if>
+				<if test="rPostUserId != null">r_post_user_id = #{rPostUserId},</if>
+				<if test="rPostNickname != null">r_post_nickname = #{rPostNickname},</if>
+				<if test="picCount != null">pic_count = #{picCount},</if>
+				<if test="postDate != null">post_date = #{postDate},</if>
+		</set>
+	</sql>
+	
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{id}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="ConversationDomain">
+		SELECT 
+		<include refid="columns" />
+		FROM t_tm_conversation
+		<include refid="pkwhere" />		
+	</select>
+	
+	<select id="loadConversationDynamic" parameterType="hashmap" resultType="ConversationDomain">
+		SELECT 		
+		<include refid="columns" />
+		FROM t_tm_conversation
+		<include refid="where" />
+		<if test="_orderby != null">ORDER BY ${_orderby}</if>
+		<if test="_offset != null">LIMIT #{_offset},#{_limit}</if>	
+	</select>
+
+
+	<select id="count"  parameterType="hashmap" resultType="integer">
+		SELECT count(*) 
+		FROM t_tm_conversation
+		<include refid="where" />
+	</select>
+	
+	<insert id="insert"  parameterType="ConversationDomain">
+		INSERT INTO t_tm_conversation (			
+				id,				
+				scene_id,				
+				post_user_id,				
+				post_nickname,				
+				message,				
+				r_post_id,				
+				r_post_user_id,				
+				r_post_nickname,				
+				pic_count,				
+				post_date				
+		)		
+		VALUES (	
+			#{id},
+			#{sceneId},
+			#{postUserId},
+			#{postNickname},
+			#{message},
+			#{rPostId},
+			#{rPostUserId},
+			#{rPostNickname},
+			#{picCount},
+			#{postDate}
+		) 
+	</insert>
+	
+	<delete id="delete" >
+		DELETE FROM t_tm_conversation
+		<include refid="pkwhere" />	
+	#end
+	</delete>
+	
+	<delete id="deleteDynamic" parameterType="hashmap">
+		DELETE FROM t_tm_conversation
+		<include refid="where" />
+	</delete>
+
+	<update id="updateConversation" parameterType="ConversationDomain">
+		UPDATE t_tm_conversation	
+		<include refid="update" />
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateConversationWithoutNull" parameterType="ConversationDomain">
+		UPDATE t_tm_conversation
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateConversationDynamic" parameterType="hashmap">
+		UPDATE t_tm_conversation	
+		<include refid="update" />
+		<include refid="where_old" />
+	</update>
+	
+	
+	
+</mapper>

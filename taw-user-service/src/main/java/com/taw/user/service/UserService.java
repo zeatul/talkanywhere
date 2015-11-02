@@ -1,5 +1,6 @@
 package com.taw.user.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import com.hawk.utility.security.MD5Tools;
 import com.taw.pub.user.enums.EnumUserKind;
 import com.taw.pub.user.enums.EnumUserStatus;
 import com.taw.pub.user.request.CreateUserParam;
+import com.taw.pub.user.request.UpdatePasswordParam;
 import com.taw.user.configure.UserServiceConfigure;
 import com.taw.user.domain.UserDomain;
 import com.taw.user.mapper.UserMapper;
@@ -80,7 +82,34 @@ public class UserService {
 		return userDomain;
 	}
 	
+	/**
+	 * 更新密码
+	 * @param updatePasswordParam
+	 * @throws Exception
+	 */
+	public void updatePasswor(UpdatePasswordParam updatePasswordParam) throws Exception{
+		CheckTools.check(updatePasswordParam);
+		
+		UserDomain userDomain = queryUser(updatePasswordParam.getMobile());
+		
+		if (userDomain == null)
+			throw new Exception("User doen't exist!");
+		
+		UserDomain update = new UserDomain();
+		update.setId(userDomain.getId());
+		update.setPassword(signedPassword(updatePasswordParam.getNewPwd()));
+		update.setUpdt(new Date());
+		
+		userMapper.updateUserWithoutNull(userDomain);
+				
+	}
 	
+	
+	/**
+	 * 查询用户
+	 * @param mobile
+	 * @return
+	 */
 	public UserDomain queryUser(String mobile){
 		if (StringTools.isNullOrEmpty(mobile))
 			return null;

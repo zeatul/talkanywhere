@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.scene.mapper.SceneMapper">
+
+	<sql id="columns">
+		id as "id" ,
+		name as "name" ,
+		kind as "kind" ,
+		lng as "lng" ,
+		lat as "lat" ,
+		country as "country" ,
+		province as "province" ,
+		city as "city" ,
+		county as "county" ,
+		town as "town" ,
+		region as "region" 
+	</sql>
+	
+	<sql id="where">
+		<trim prefix="WHERE" prefixOverrides="AND">		 
+			<if test="id != null"> AND id = #{id}  </if>
+			<if test="name != null"> AND name = #{name}  </if>
+			<if test="kind != null"> AND kind = #{kind}  </if>
+			<if test="lng != null"> AND lng = #{lng}  </if>
+			<if test="lat != null"> AND lat = #{lat}  </if>
+			<if test="country != null"> AND country = #{country}  </if>
+			<if test="province != null"> AND province = #{province}  </if>
+			<if test="city != null"> AND city = #{city}  </if>
+			<if test="county != null"> AND county = #{county}  </if>
+			<if test="town != null"> AND town = #{town}  </if>
+			<if test="region != null"> AND region = #{region}  </if>
+		</trim>	
+	</sql>
+	
+	<sql id="where_old">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{old_id}
+			AND name = #{old_name}
+			AND kind = #{old_kind}
+			AND lng = #{old_lng}
+			AND lat = #{old_lat}
+			AND country = #{old_country}
+			AND province = #{old_province}
+			AND city = #{old_city}
+			AND county = #{old_county}
+			AND town = #{old_town}
+			AND region = #{old_region}
+		</trim>
+	</sql>
+	
+	<sql id="update">
+		<set>
+			name = #{name},
+			kind = #{kind},
+			lng = #{lng},
+			lat = #{lat},
+			country = #{country},
+			province = #{province},
+			city = #{city},
+			county = #{county},
+			town = #{town},
+			region = #{region},
+		</set>
+	</sql>
+	
+	<sql id="updateWithoutNull">
+		<set>
+				<if test="name != null">name = #{name},</if>
+				<if test="kind != null">kind = #{kind},</if>
+				<if test="lng != null">lng = #{lng},</if>
+				<if test="lat != null">lat = #{lat},</if>
+				<if test="country != null">country = #{country},</if>
+				<if test="province != null">province = #{province},</if>
+				<if test="city != null">city = #{city},</if>
+				<if test="county != null">county = #{county},</if>
+				<if test="town != null">town = #{town},</if>
+				<if test="region != null">region = #{region},</if>
+		</set>
+	</sql>
+	
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{id}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="SceneDomain">
+		SELECT 
+		<include refid="columns" />
+		FROM t_tm_scene
+		<include refid="pkwhere" />		
+	</select>
+	
+	<select id="loadSceneDynamic" parameterType="hashmap" resultType="SceneDomain">
+		SELECT 		
+		<include refid="columns" />
+		FROM t_tm_scene
+		<include refid="where" />
+		<if test="_orderby != null">ORDER BY ${_orderby}</if>
+		<if test="_offset != null">LIMIT #{_offset},#{_limit}</if>	
+	</select>
+
+
+	<select id="count"  parameterType="hashmap" resultType="integer">
+		SELECT count(*) 
+		FROM t_tm_scene
+		<include refid="where" />
+	</select>
+	
+	<insert id="insert"  parameterType="SceneDomain">
+		INSERT INTO t_tm_scene (			
+				id,				
+				name,				
+				kind,				
+				lng,				
+				lat,				
+				country,				
+				province,				
+				city,				
+				county,				
+				town,				
+				region				
+		)		
+		VALUES (	
+			#{id},
+			#{name},
+			#{kind},
+			#{lng},
+			#{lat},
+			#{country},
+			#{province},
+			#{city},
+			#{county},
+			#{town},
+			#{region}
+		) 
+	</insert>
+	
+	<delete id="delete" >
+		DELETE FROM t_tm_scene
+		<include refid="pkwhere" />	
+	#end
+	</delete>
+	
+	<delete id="deleteDynamic" parameterType="hashmap">
+		DELETE FROM t_tm_scene
+		<include refid="where" />
+	</delete>
+
+	<update id="updateScene" parameterType="SceneDomain">
+		UPDATE t_tm_scene	
+		<include refid="update" />
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateSceneWithoutNull" parameterType="SceneDomain">
+		UPDATE t_tm_scene
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateSceneDynamic" parameterType="hashmap">
+		UPDATE t_tm_scene	
+		<include refid="update" />
+		<include refid="where_old" />
+	</update>
+	
+	
+	
+</mapper>

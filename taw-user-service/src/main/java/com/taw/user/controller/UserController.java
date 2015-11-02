@@ -17,10 +17,13 @@ import com.hawk.pub.web.RequestHandler;
 import com.hawk.pub.web.ResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.DomainTools;
+import com.hawk.utility.check.CheckTools;
 import com.hawk.utility.redis.RedisClient;
 import com.taw.pub.user.enums.EnumLoginKind;
 import com.taw.pub.user.request.CreateUserRequestParam;
 import com.taw.pub.user.request.LoginParam;
+import com.taw.pub.user.request.UpdatePasswordRequestParam;
+import com.taw.pub.user.response.LoginResp;
 import com.taw.user.service.LoginService;
 import com.taw.user.service.UserService;
 
@@ -49,6 +52,12 @@ public class UserController {
 		model.addAttribute("msg", "/user/hello.do");
 		return "success";
 	}
+	
+	private void checkAuthCode(String mobile, String authCode) throws Exception{
+		String cachedAuthCode = redisClient.get(mobile);
+		if (cachedAuthCode == null || !cachedAuthCode.equals(authCode))
+			throw new Exception("auth code is error!");
+	}
 
 	/**
 	 * 新建用户
@@ -58,13 +67,13 @@ public class UserController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/user/create.do", method = RequestMethod.POST)
-	public void createUser(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void create(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		CreateUserRequestParam createUserRequestParam = RequestHandler.handle(request, CreateUserRequestParam.class);
+		CheckTools.check(createUserRequestParam);
+		
 		String authCode = createUserRequestParam.getAuthCode();
 		String mobile = createUserRequestParam.getParam().getMobile();
-		String cachedAuthCode = redisClient.get(mobile);
-		if (cachedAuthCode == null || !cachedAuthCode.equals(authCode))
-			throw new Exception("auth code is error!");
+		checkAuthCode(mobile,authCode);
 		
 		userService.createUser(createUserRequestParam.getParam());
 		
@@ -72,10 +81,39 @@ public class UserController {
 		LoginParam loginParam = new LoginParam();
 		DomainTools.copy(createUserRequestParam.getParam(), loginParam);
 		loginParam.setKind(EnumLoginKind.PERMANENT.toString());
-		String token = loginService.login(loginParam);
+		String token = loginService.login(loginParam).getToken();
 		
-		SuccessResponse result = SuccessResponse.build(token);
-		ResponseHandler.handle(response, result);
+		//返回信息
+		LoginResp loginResp = new LoginResp();
+		loginResp.setToken(token);
+		ResponseHandler.handle(response, SuccessResponse.build(token));
+	}
+	
+	/**
+	 * 更新密码，根据短信验证码做校验
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/user/upwd.do", method = RequestMethod.POST)
+	public void upwd(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
+		UpdatePasswordRequestParam updatePasswordRequestParam = RequestHandler.handle(request, UpdatePasswordRequestParam.class);
+		CheckTools.check(updatePasswordRequestParam);
+		/**
+		 * 校验验证码
+		 */
+		checkAuthCode(updatePasswordRequestParam.getParam().getMobile(),updatePasswordRequestParam.getAuthCode());
+	
+		/**
+		 * 更新密码
+		 */
+		userService.updatePasswor(updatePasswordRequestParam.getParam());
+		/**
+		 * 返回信息
+		 */
+		ResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 
 }

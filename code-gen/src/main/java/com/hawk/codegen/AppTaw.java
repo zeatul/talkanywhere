@@ -35,7 +35,20 @@ public class AppTaw {
 
 	public static void main(String[] args) {
 //		generateUm();
-		generateSM();
+//		generateSM();
+		generateTM();
+	}
+	
+	/**
+	 * 生成场景管理类
+	 */
+	private static void generateTM(){
+		Configure configure = buildConfigure("tm");
+		configure.setProjectName("taw-scene-service");
+		configure.setRootPackage("com.taw");
+		configure.setSubPackage("scene");
+		
+		generate(configure);
 	}
 	
 	/**

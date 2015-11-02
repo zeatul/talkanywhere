@@ -124,6 +124,31 @@ public class RedisClient {
 		}
 	}
 
-	
+	/**
+	 * 删除可以
+	 * @param key
+	 * @param async
+	 */
+	public void delete(String key, boolean async){
+		ShardedJedis shardedJedis = null;
+		try {
+			shardedJedis = pool.getResource();
+			if (async) {
+				ShardedJedisPipeline pipeline = shardedJedis.pipelined();
+				pipeline.del(key);
+			} else {
+				shardedJedis.del(key);
+			}
+		} finally {
+			if (shardedJedis != null) {
+				try {
+					shardedJedis.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
 
 }

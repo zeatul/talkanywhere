@@ -10,6 +10,7 @@ import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.user.request.LoginParam;
+import com.taw.pub.user.request.LogoutParam;
 import com.taw.user.domain.LoginDomain;
 import com.taw.user.domain.UserDomain;
 import com.taw.user.mapper.LoginMapper;
@@ -23,13 +24,31 @@ public class LoginService {
 	@Autowired
 	private UserService userService;
 	
+	public static class LoginInfo{
+		public String getToken() {
+			return token;
+		}
+		public void setToken(String token) {
+			this.token = token;
+		}
+		public UserDomain getUserDomain() {
+			return userDomain;
+		}
+		public void setUserDomain(UserDomain userDomain) {
+			this.userDomain = userDomain;
+		}
+		private String token;
+		private UserDomain userDomain;
+	}
+	
+	
 	/**
 	 * 返回登录token
 	 * @param loginParam
 	 * @return
 	 * @throws Exception 
 	 */
-	public String login(LoginParam loginParam) throws Exception{
+	public LoginInfo login(LoginParam loginParam) throws Exception{
 		/**
 		 * 一般校验
 		 */
@@ -63,8 +82,25 @@ public class LoginService {
 		
 		loginMapper.insert(loginDomain);
 		
-		return token;
+		LoginInfo loginInfo = new LoginInfo();
+		loginInfo.setToken(token);
+		loginInfo.setUserDomain(userDomain);
+		return loginInfo;
 		
 	}
 
+	/**
+	 * 登出
+	 * @param logoutParam
+	 * @throws Exception
+	 */
+	public void logout(LogoutParam logoutParam) throws Exception{
+		CheckTools.check(logoutParam);
+		/**
+		 * 从数据库删除
+		 */
+		loginMapper.delete(logoutParam.getToken());
+		
+		
+	}
 }

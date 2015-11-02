@@ -12,6 +12,7 @@
 		<module>../taw-user-api</module>
 		<module>../taw-database</module>
 		<module>../taw-utility</module>
+		<module>../taw-scene-service</module>		
 	</modules>
 
 	<profiles>

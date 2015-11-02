@@ -35,6 +35,7 @@ public class RequestHandler {
 		}
 
 		T t = JsonTools.toObject(input, clazz);
+	
 
 		return t;
 		

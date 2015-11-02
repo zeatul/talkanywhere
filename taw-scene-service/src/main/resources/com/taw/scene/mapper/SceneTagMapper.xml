@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.scene.mapper.SceneTagMapper">
+
+	<sql id="columns">
+		id as "id" ,
+		scene_id as "sceneId" ,
+		tag_id as "tagId" ,
+		tag_name as "tagName" ,
+		crdt as "crdt" 
+	</sql>
+	
+	<sql id="where">
+		<trim prefix="WHERE" prefixOverrides="AND">		 
+			<if test="id != null"> AND id = #{id}  </if>
+			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
+			<if test="tagId != null"> AND tag_id = #{tagId}  </if>
+			<if test="tagName != null"> AND tag_name = #{tagName}  </if>
+			<if test="crdt != null"> AND crdt = #{crdt}  </if>
+		</trim>	
+	</sql>
+	
+	<sql id="where_old">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{old_id}
+			AND scene_id = #{old_sceneId}
+			AND tag_id = #{old_tagId}
+			AND tag_name = #{old_tagName}
+			AND crdt = #{old_crdt}
+		</trim>
+	</sql>
+	
+	<sql id="update">
+		<set>
+			scene_id = #{sceneId},
+			tag_id = #{tagId},
+			tag_name = #{tagName},
+			crdt = #{crdt},
+		</set>
+	</sql>
+	
+	<sql id="updateWithoutNull">
+		<set>
+				<if test="sceneId != null">scene_id = #{sceneId},</if>
+				<if test="tagId != null">tag_id = #{tagId},</if>
+				<if test="tagName != null">tag_name = #{tagName},</if>
+				<if test="crdt != null">crdt = #{crdt},</if>
+		</set>
+	</sql>
+	
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{id}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="SceneTagDomain">
+		SELECT 
+		<include refid="columns" />
+		FROM t_tm_scene_tag
+		<include refid="pkwhere" />		
+	</select>
+	
+	<select id="loadSceneTagDynamic" parameterType="hashmap" resultType="SceneTagDomain">
+		SELECT 		
+		<include refid="columns" />
+		FROM t_tm_scene_tag
+		<include refid="where" />
+		<if test="_orderby != null">ORDER BY ${_orderby}</if>
+		<if test="_offset != null">LIMIT #{_offset},#{_limit}</if>	
+	</select>
+
+
+	<select id="count"  parameterType="hashmap" resultType="integer">
+		SELECT count(*) 
+		FROM t_tm_scene_tag
+		<include refid="where" />
+	</select>
+	
+	<insert id="insert"  parameterType="SceneTagDomain">
+		INSERT INTO t_tm_scene_tag (			
+				id,				
+				scene_id,				
+				tag_id,				
+				tag_name,				
+				crdt				
+		)		
+		VALUES (	
+			#{id},
+			#{sceneId},
+			#{tagId},
+			#{tagName},
+			#{crdt}
+		) 
+	</insert>
+	
+	<delete id="delete" >
+		DELETE FROM t_tm_scene_tag
+		<include refid="pkwhere" />	
+	#end
+	</delete>
+	
+	<delete id="deleteDynamic" parameterType="hashmap">
+		DELETE FROM t_tm_scene_tag
+		<include refid="where" />
+	</delete>
+
+	<update id="updateSceneTag" parameterType="SceneTagDomain">
+		UPDATE t_tm_scene_tag	
+		<include refid="update" />
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateSceneTagWithoutNull" parameterType="SceneTagDomain">
+		UPDATE t_tm_scene_tag
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateSceneTagDynamic" parameterType="hashmap">
+		UPDATE t_tm_scene_tag	
+		<include refid="update" />
+		<include refid="where_old" />
+	</update>
+	
+	
+	
+</mapper>

@@ -23,6 +23,8 @@ import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.hawk.utility.redis.RedisClient;
 import com.taw.pub.user.request.SendAuthCodeParam;
+import com.taw.pub.user.response.AuthCodeResp;
+import com.taw.user.configure.UserServiceConfigure;
 
 @Controller
 public class SMSController {
@@ -34,6 +36,9 @@ public class SMSController {
 	@Autowired
 	@Qualifier("taw_user_service_redis_client")
 	private RedisClient redisClient;
+	
+	@Autowired
+	private UserServiceConfigure userServiceConfigure;
 	
 	
 	/**
@@ -83,4 +88,29 @@ public class SMSController {
 		ResponseHandler.handle(response,SuccessResponse.SUCCESS_RESPONSE);
 	}
 
+	/**
+	 * 返回手机验证码 ，只能用于测试环境
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/user/sms/query_auth_code.do", method = RequestMethod.POST)
+	public void queryAuthCode(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		if (userServiceConfigure.isProd())
+			throw new Exception("Not support product environment");
+		SendAuthCodeParam param = RequestHandler.handle(request, SendAuthCodeParam.class);
+		CheckTools.check(param);
+		String mobile = param.getMobile();
+		
+		String authCode = redisClient.get(mobile);
+		if (authCode == null)
+			throw new Exception("Found no auth code");
+		
+		AuthCodeResp authCodeResp = new AuthCodeResp();
+		authCodeResp.setAuthCode(authCode);
+		
+		ResponseHandler.handle(response,SuccessResponse.build(authCodeResp));
+	}
 }

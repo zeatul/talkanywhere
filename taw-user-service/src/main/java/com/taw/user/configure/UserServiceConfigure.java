@@ -4,6 +4,14 @@ import com.hawk.utility.security.DESTools;
 
 public class UserServiceConfigure {
 	
+	public boolean isProd() {
+		return prod;
+	}
+
+	public void setProd(boolean prod) {
+		this.prod = prod;
+	}
+
 	public String getPwdMd5Key() {
 		return pwdMd5Key;
 	}
@@ -20,5 +28,11 @@ public class UserServiceConfigure {
 	 * 生成密码加密字符串的key
 	 */
 	private String pwdMd5Key;
+	
+	
+	/**
+	 * 是否为生成环境，默认为false
+	 */
+	private boolean prod=false;
 
 }
