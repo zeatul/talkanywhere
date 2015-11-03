@@ -10,7 +10,7 @@
 
 
 	<artifactId>taw-user-service</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>taw-user-service</name>
 
 	<dependencies>
@@ -105,10 +105,7 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
+		
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -161,24 +158,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Servlet -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<scope>provided</scope>
-		</dependency>
+		
 
 
 		<!-- db con pool -->
@@ -237,26 +217,14 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<webResources>
-						<resource>
-							<filtering>true</filtering>
-							<directory>src/main/webapp</directory>
-							<includes>
-								<!-- <include>* */*.css</include> <include>* */*.js</include> <include>* */*.xml</include> -->
-								<!-- web 资源过滤 -->
-								<include>WEB-INF/web.xml</include>
-							</includes>
-
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+						<compilerArgument>-Xlint:all</compilerArgument>
+						<showWarnings>true</showWarnings>
+						<showDeprecation>true</showDeprecation>
+					</configuration>
 			</plugin>
 
 		</plugins>

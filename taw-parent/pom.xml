@@ -9,6 +9,7 @@
 	<modules>
 		<module>../taw-public</module>
 		<module>../taw-user-service</module>
+		<module>../taw-user-webservice</module>
 		<module>../taw-user-api</module>
 		<module>../taw-database</module>
 		<module>../taw-utility</module>
