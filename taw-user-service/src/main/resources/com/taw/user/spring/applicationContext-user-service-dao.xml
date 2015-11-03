@@ -85,7 +85,7 @@
 
 
 	<!-- define the SqlSessionFactory -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory_user_service" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource_user_service" />
 		<property name="typeAliasesPackage" value="com.taw.user.domain;com.taw.user.domainex" />
 	</bean>
@@ -93,6 +93,7 @@
 	<!-- scan for mappers and let them be autowired -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.taw.user.mapper;com.taw.user.mapperex" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_user_service"/>  
 	</bean>
 
 	<!-- =================================================================== -->

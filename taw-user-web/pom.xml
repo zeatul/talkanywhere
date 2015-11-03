@@ -9,9 +9,9 @@
 	</parent>
 
 
-	<artifactId>taw-user-webservice</artifactId>
+	<artifactId>taw-user-web</artifactId>
 	<packaging>war</packaging>
-	<name>taw-user-webservice</name>
+	<name>taw-user-web</name>
 
 	<dependencies>
 
@@ -27,14 +27,14 @@
 			<artifactId>taw-utility</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-user-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
-		
+
+
 
 		<!-- redis java client -->
 		<dependency>
@@ -90,16 +90,7 @@
 		</dependency>
 
 
-		<!-- mybatis -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-		</dependency>
 
 		<!-- spring -->
 		<dependency>
@@ -189,22 +180,6 @@
 		</dependency>
 
 
-		<!-- db con pool -->
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>mchange-commons-java</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-
 		<!-- test -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -265,6 +240,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<compilerArgument>-Xlint:all</compilerArgument>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
 			</plugin>
 
 		</plugins>
