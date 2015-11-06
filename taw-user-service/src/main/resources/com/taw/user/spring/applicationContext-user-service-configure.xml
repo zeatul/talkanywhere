@@ -16,8 +16,9 @@
 	<bean class="com.taw.user.configure.UserServiceConfigure">
 		<property name="pwdMd5Key" value="${maven.taw-user-service.pwd_md5_key}"/>
 		<property name="prod" value="${maven.taw-user-service.prod}"/>
+		<property name="tokenKey" value="${maven.taw-user-service.tokenKey}"/>
 	</bean>
-
+ 
 
 
 

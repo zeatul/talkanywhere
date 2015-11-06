@@ -62,7 +62,7 @@ public class SMSController {
 	 * @param response
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "/user/sms/auth_code.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/sms/auth_code.do", method = {  RequestMethod.POST })
 	public void authCode(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		SendAuthCodeParam param = RequestHandler.handle(request, SendAuthCodeParam.class);
 		CheckTools.check(param);

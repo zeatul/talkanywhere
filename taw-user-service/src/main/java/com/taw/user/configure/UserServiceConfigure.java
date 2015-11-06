@@ -4,6 +4,14 @@ import com.hawk.utility.security.DESTools;
 
 public class UserServiceConfigure {
 	
+	public String getTokenKey() {
+		return tokenKey;
+	}
+
+	public void setTokenKey(String tokenKey) {
+		this.tokenKey = tokenKey;
+	}
+
 	public boolean isProd() {
 		return prod;
 	}
@@ -28,6 +36,11 @@ public class UserServiceConfigure {
 	 * 生成密码加密字符串的key
 	 */
 	private String pwdMd5Key;
+	
+	/**
+	 * 生成token加密的key
+	 */
+	private String tokenKey;
 	
 	
 	/**
