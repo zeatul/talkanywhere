@@ -13,8 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.hawk.pub.web.RequestHandler;
-import com.hawk.pub.web.ResponseHandler;
+import com.hawk.pub.web.HttpRequestHandler;
+import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
@@ -68,7 +68,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/user/create.do", method = RequestMethod.POST)
 	public void create(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		CreateUserRequestParam createUserRequestParam = RequestHandler.handle(request, CreateUserRequestParam.class);
+		CreateUserRequestParam createUserRequestParam = HttpRequestHandler.handle(request, CreateUserRequestParam.class);
 		CheckTools.check(createUserRequestParam);
 		
 		String authCode = createUserRequestParam.getAuthCode();
@@ -86,7 +86,7 @@ public class UserController {
 		//返回信息
 		LoginResp loginResp = new LoginResp();
 		loginResp.setToken(token);
-		ResponseHandler.handle(response, SuccessResponse.build(token));
+		HttpResponseHandler.handle(response, SuccessResponse.build(token));
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/user/upwd.do", method = RequestMethod.POST)
 	public void upwd(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
-		UpdatePasswordRequestParam updatePasswordRequestParam = RequestHandler.handle(request, UpdatePasswordRequestParam.class);
+		UpdatePasswordRequestParam updatePasswordRequestParam = HttpRequestHandler.handle(request, UpdatePasswordRequestParam.class);
 		CheckTools.check(updatePasswordRequestParam);
 		/**
 		 * 校验验证码
@@ -113,7 +113,7 @@ public class UserController {
 		/**
 		 * 返回信息
 		 */
-		ResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 
 }

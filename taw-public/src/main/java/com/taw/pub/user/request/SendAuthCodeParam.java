@@ -14,7 +14,7 @@ public class SendAuthCodeParam {
 		this.mobile = mobile;
 	}
 
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckMaxLength(max = 20)
 	@CheckRegex(pattern="[0-9]{1,20}")
 	private String mobile;

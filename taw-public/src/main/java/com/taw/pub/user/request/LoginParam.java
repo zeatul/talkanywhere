@@ -18,17 +18,17 @@ public class LoginParam {
 	}
 
 	/*手机号/自动生成号*/
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckMaxLength(max = 20)
 	@CheckRegex(pattern="[0-9]{1,20}")
 	private String mobile;
 	
 	/*登录密码*/
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckMaxLength(max = 20)
 	private String password;
 	
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckEnum(parser=EnumLoginKind.class)
 	private String kind;
 	

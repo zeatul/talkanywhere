@@ -20,18 +20,6 @@ public class LoginDomain implements Serializable {
 	/*用户ID*/
 	private Long userId;
 	
-	/*创建日期*/
-	private Date loginDate;
-	
-	/*最近访问日期*/
-	private Date lastAccessDate;
-	
-	/*token失效日期*/
-	private Date expireDate;
-	
-	/*长期/短期*/
-	private Short kind;
-	
 	/*设备唯一的串号*/
 	private String imei;
 	
@@ -49,6 +37,18 @@ public class LoginDomain implements Serializable {
 	
 	/*登录IP*/
 	private String ip;
+	
+	/*长期/短期*/
+	private String kind;
+	
+	/*创建日期*/
+	private Date loginDate;
+	
+	/*最近访问日期*/
+	private Date lastAccessDate;
+	
+	/*token失效日期*/
+	private Date expireDate;
 	
 	
 	/**
@@ -81,70 +81,6 @@ public class LoginDomain implements Serializable {
 	 */	
 	public void setUserId (Long userId) {
 		this.userId = userId;
-	}
-	
-	/**
-	 * 
-	 * @return 创建日期
-	 */
-	public Date getLoginDate(){
-		return loginDate;
-	}
-	
-	/**
-	 * 
-	 * @param loginDate 创建日期
-	 */	
-	public void setLoginDate (Date loginDate) {
-		this.loginDate = loginDate;
-	}
-	
-	/**
-	 * 
-	 * @return 最近访问日期
-	 */
-	public Date getLastAccessDate(){
-		return lastAccessDate;
-	}
-	
-	/**
-	 * 
-	 * @param lastAccessDate 最近访问日期
-	 */	
-	public void setLastAccessDate (Date lastAccessDate) {
-		this.lastAccessDate = lastAccessDate;
-	}
-	
-	/**
-	 * 
-	 * @return token失效日期
-	 */
-	public Date getExpireDate(){
-		return expireDate;
-	}
-	
-	/**
-	 * 
-	 * @param expireDate token失效日期
-	 */	
-	public void setExpireDate (Date expireDate) {
-		this.expireDate = expireDate;
-	}
-	
-	/**
-	 * 
-	 * @return 长期/短期
-	 */
-	public Short getKind(){
-		return kind;
-	}
-	
-	/**
-	 * 
-	 * @param kind 长期/短期
-	 */	
-	public void setKind (Short kind) {
-		this.kind = kind;
 	}
 	
 	/**
@@ -241,6 +177,70 @@ public class LoginDomain implements Serializable {
 	 */	
 	public void setIp (String ip) {
 		this.ip = ip;
+	}
+	
+	/**
+	 * 
+	 * @return 长期/短期
+	 */
+	public String getKind(){
+		return kind;
+	}
+	
+	/**
+	 * 
+	 * @param kind 长期/短期
+	 */	
+	public void setKind (String kind) {
+		this.kind = kind;
+	}
+	
+	/**
+	 * 
+	 * @return 创建日期
+	 */
+	public Date getLoginDate(){
+		return loginDate;
+	}
+	
+	/**
+	 * 
+	 * @param loginDate 创建日期
+	 */	
+	public void setLoginDate (Date loginDate) {
+		this.loginDate = loginDate;
+	}
+	
+	/**
+	 * 
+	 * @return 最近访问日期
+	 */
+	public Date getLastAccessDate(){
+		return lastAccessDate;
+	}
+	
+	/**
+	 * 
+	 * @param lastAccessDate 最近访问日期
+	 */	
+	public void setLastAccessDate (Date lastAccessDate) {
+		this.lastAccessDate = lastAccessDate;
+	}
+	
+	/**
+	 * 
+	 * @return token失效日期
+	 */
+	public Date getExpireDate(){
+		return expireDate;
+	}
+	
+	/**
+	 * 
+	 * @param expireDate token失效日期
+	 */	
+	public void setExpireDate (Date expireDate) {
+		this.expireDate = expireDate;
 	}
 	
 

@@ -20,10 +20,10 @@ public class CreateUserRequestParam {
 		this.param = param;
 	}
 
-	@CheckNull(allow=false)
+	@CheckNull
 	private String authCode;
 	
-	@CheckNull(allow=false)
+	@CheckNull
 	private CreateUserParam param;
 
 }

@@ -3,14 +3,14 @@ package com.hawk.utility.check;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
+import java.util.Collection;
 import com.hawk.utility.EnumTools;
 
 public class CheckTools {
 
 	public static void check(Object object) throws Exception {
 		if (object == null)
-			return;
+			throw new Exception("The param object is null");
 		Class<?> clazz = object.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 
@@ -37,8 +37,8 @@ public class CheckTools {
 			/**
 			 * 校验空值
 			 */
-			CheckNull allowNull = field.getAnnotation(CheckNull.class);
-			if (allowNull != null && !allowNull.allow() && value == null) {
+			CheckNull checkNull = field.getAnnotation(CheckNull.class);
+			if (checkNull != null && !checkNull.allowNull() && value == null) {
 				if (value == null)
 					throw new Exception(fieldName+" can't pass null check");				
 			}			
@@ -72,6 +72,16 @@ public class CheckTools {
 			CheckEnum checkEnum = field.getAnnotation(CheckEnum.class);
 			if (checkEnum != null){
 				EnumTools.parse(value, checkEnum.parser());
+				
+			/**
+			 * 校验集合非空
+			 */
+			CheckSize checkSize = field.getAnnotation(CheckSize.class);
+			if (checkSize != null){
+				Collection<?> c = (Collection<?>)value;
+				if (c.size() == 0)
+					throw new Exception(fieldName + " can't be empty!");
+			}
 		}
 					
 		}

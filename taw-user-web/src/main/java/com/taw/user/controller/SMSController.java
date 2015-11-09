@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.sms.EnumMessageKind;
 import com.hawk.pub.sms.SMSService;
 import com.hawk.pub.sms.SendMessageParam;
-import com.hawk.pub.web.RequestHandler;
-import com.hawk.pub.web.ResponseHandler;
+import com.hawk.pub.web.HttpRequestHandler;
+import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
@@ -64,7 +64,7 @@ public class SMSController {
 	 */
 	@RequestMapping(value = "/user/sms/auth_code.do", method = {  RequestMethod.POST })
 	public void authCode(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		SendAuthCodeParam param = RequestHandler.handle(request, SendAuthCodeParam.class);
+		SendAuthCodeParam param = HttpRequestHandler.handle(request, SendAuthCodeParam.class);
 		CheckTools.check(param);
 		String mobile = param.getMobile();
 		/**
@@ -85,7 +85,7 @@ public class SMSController {
 		
 		redisClient.set(mobile, authCode, 60,false);
 		
-		ResponseHandler.handle(response,SuccessResponse.SUCCESS_RESPONSE);
+		HttpResponseHandler.handle(response,SuccessResponse.SUCCESS_RESPONSE);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class SMSController {
 	public void queryAuthCode(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		if (userServiceConfigure.isProd())
 			throw new Exception("Not support product environment");
-		SendAuthCodeParam param = RequestHandler.handle(request, SendAuthCodeParam.class);
+		SendAuthCodeParam param = HttpRequestHandler.handle(request, SendAuthCodeParam.class);
 		CheckTools.check(param);
 		String mobile = param.getMobile();
 		
@@ -111,6 +111,6 @@ public class SMSController {
 		AuthCodeResp authCodeResp = new AuthCodeResp();
 		authCodeResp.setAuthCode(authCode);
 		
-		ResponseHandler.handle(response,SuccessResponse.build(authCodeResp));
+		HttpResponseHandler.handle(response,SuccessResponse.build(authCodeResp));
 	}
 }

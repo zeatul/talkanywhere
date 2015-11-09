@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-public class ResponseHandler {
+public class HttpResponseHandler {
 	
 	private  static HttpServletResponse env(HttpServletResponse response){
 		response.setContentType("text/json;charset=UTF-8");

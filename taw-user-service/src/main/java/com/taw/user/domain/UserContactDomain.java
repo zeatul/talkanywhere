@@ -18,10 +18,10 @@ public class UserContactDomain implements Serializable {
 	private Long id;
 	
 	/*用户ID*/
-	private Integer userId;
+	private Long userId;
 	
 	/*关系用户ID*/
-	private Integer coUserId;
+	private Long coUserId;
 	
 	/*关系用户备注*/
 	private String remark;
@@ -56,7 +56,7 @@ public class UserContactDomain implements Serializable {
 	 * 
 	 * @return 用户ID
 	 */
-	public Integer getUserId(){
+	public Long getUserId(){
 		return userId;
 	}
 	
@@ -64,7 +64,7 @@ public class UserContactDomain implements Serializable {
 	 * 
 	 * @param userId 用户ID
 	 */	
-	public void setUserId (Integer userId) {
+	public void setUserId (Long userId) {
 		this.userId = userId;
 	}
 	
@@ -72,7 +72,7 @@ public class UserContactDomain implements Serializable {
 	 * 
 	 * @return 关系用户ID
 	 */
-	public Integer getCoUserId(){
+	public Long getCoUserId(){
 		return coUserId;
 	}
 	
@@ -80,7 +80,7 @@ public class UserContactDomain implements Serializable {
 	 * 
 	 * @param coUserId 关系用户ID
 	 */	
-	public void setCoUserId (Integer coUserId) {
+	public void setCoUserId (Long coUserId) {
 		this.coUserId = coUserId;
 	}
 	

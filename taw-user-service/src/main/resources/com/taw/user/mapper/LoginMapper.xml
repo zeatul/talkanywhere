@@ -7,32 +7,32 @@
 	<sql id="columns">
 		token as "token" ,
 		user_id as "userId" ,
-		login_date as "loginDate" ,
-		last_access_date as "lastAccessDate" ,
-		expire_date as "expireDate" ,
-		kind as "kind" ,
 		imei as "imei" ,
 		device_kind as "deviceKind" ,
 		os_version as "osVersion" ,
 		brand as "brand" ,
 		device_model as "deviceModel" ,
-		ip as "ip" 
+		ip as "ip" ,
+		kind as "kind" ,
+		login_date as "loginDate" ,
+		last_access_date as "lastAccessDate" ,
+		expire_date as "expireDate" 
 	</sql>
 	
 	<sql id="where">
 		<trim prefix="WHERE" prefixOverrides="AND">		 
 			<if test="token != null"> AND token = #{token}  </if>
 			<if test="userId != null"> AND user_id = #{userId}  </if>
-			<if test="loginDate != null"> AND login_date = #{loginDate}  </if>
-			<if test="lastAccessDate != null"> AND last_access_date = #{lastAccessDate}  </if>
-			<if test="expireDate != null"> AND expire_date = #{expireDate}  </if>
-			<if test="kind != null"> AND kind = #{kind}  </if>
 			<if test="imei != null"> AND imei = #{imei}  </if>
 			<if test="deviceKind != null"> AND device_kind = #{deviceKind}  </if>
 			<if test="osVersion != null"> AND os_version = #{osVersion}  </if>
 			<if test="brand != null"> AND brand = #{brand}  </if>
 			<if test="deviceModel != null"> AND device_model = #{deviceModel}  </if>
 			<if test="ip != null"> AND ip = #{ip}  </if>
+			<if test="kind != null"> AND kind = #{kind}  </if>
+			<if test="loginDate != null"> AND login_date = #{loginDate}  </if>
+			<if test="lastAccessDate != null"> AND last_access_date = #{lastAccessDate}  </if>
+			<if test="expireDate != null"> AND expire_date = #{expireDate}  </if>
 		</trim>	
 	</sql>
 	
@@ -40,16 +40,16 @@
 		<trim prefix="WHERE" prefixOverrides="AND">
 			AND token = #{old_token}
 			AND user_id = #{old_userId}
-			AND login_date = #{old_loginDate}
-			AND last_access_date = #{old_lastAccessDate}
-			AND expire_date = #{old_expireDate}
-			AND kind = #{old_kind}
 			AND imei = #{old_imei}
 			AND device_kind = #{old_deviceKind}
 			AND os_version = #{old_osVersion}
 			AND brand = #{old_brand}
 			AND device_model = #{old_deviceModel}
 			AND ip = #{old_ip}
+			AND kind = #{old_kind}
+			AND login_date = #{old_loginDate}
+			AND last_access_date = #{old_lastAccessDate}
+			AND expire_date = #{old_expireDate}
 		</trim>
 	</sql>
 	
@@ -57,16 +57,16 @@
 		<set>
 			token = #{token},
 			user_id = #{userId},
-			login_date = #{loginDate},
-			last_access_date = #{lastAccessDate},
-			expire_date = #{expireDate},
-			kind = #{kind},
 			imei = #{imei},
 			device_kind = #{deviceKind},
 			os_version = #{osVersion},
 			brand = #{brand},
 			device_model = #{deviceModel},
 			ip = #{ip},
+			kind = #{kind},
+			login_date = #{loginDate},
+			last_access_date = #{lastAccessDate},
+			expire_date = #{expireDate},
 		</set>
 	</sql>
 	
@@ -74,16 +74,16 @@
 		<set>
 				<if test="token != null">token = #{token},</if>
 				<if test="userId != null">user_id = #{userId},</if>
-				<if test="loginDate != null">login_date = #{loginDate},</if>
-				<if test="lastAccessDate != null">last_access_date = #{lastAccessDate},</if>
-				<if test="expireDate != null">expire_date = #{expireDate},</if>
-				<if test="kind != null">kind = #{kind},</if>
 				<if test="imei != null">imei = #{imei},</if>
 				<if test="deviceKind != null">device_kind = #{deviceKind},</if>
 				<if test="osVersion != null">os_version = #{osVersion},</if>
 				<if test="brand != null">brand = #{brand},</if>
 				<if test="deviceModel != null">device_model = #{deviceModel},</if>
 				<if test="ip != null">ip = #{ip},</if>
+				<if test="kind != null">kind = #{kind},</if>
+				<if test="loginDate != null">login_date = #{loginDate},</if>
+				<if test="lastAccessDate != null">last_access_date = #{lastAccessDate},</if>
+				<if test="expireDate != null">expire_date = #{expireDate},</if>
 		</set>
 	</sql>
 	
@@ -120,30 +120,30 @@
 		INSERT INTO t_um_login (			
 				token,				
 				user_id,				
-				login_date,				
-				last_access_date,				
-				expire_date,				
-				kind,				
 				imei,				
 				device_kind,				
 				os_version,				
 				brand,				
 				device_model,				
-				ip				
+				ip,				
+				kind,				
+				login_date,				
+				last_access_date,				
+				expire_date				
 		)		
 		VALUES (	
 			#{token},
 			#{userId},
-			#{loginDate},
-			#{lastAccessDate},
-			#{expireDate},
-			#{kind},
 			#{imei},
 			#{deviceKind},
 			#{osVersion},
 			#{brand},
 			#{deviceModel},
-			#{ip}
+			#{ip},
+			#{kind},
+			#{loginDate},
+			#{lastAccessDate},
+			#{expireDate}
 		) 
 	</insert>
 	

@@ -27,16 +27,16 @@ create table t_um_login
 (
    token                varchar(50) not null comment '登录唯一标识',
    user_id              bigint(20) not null comment '用户ID',
-   login_date           datetime comment '创建日期',
-   last_access_date     datetime comment '最近访问日期',
-   expire_date          datetime comment 'token失效日期',
-   kind                 tinyint comment '长期/短期',
    imei                 varchar(50) comment '设备唯一的串号',
    device_kind          char(1) comment '设备类型:android/ios/winphone/pc/mpc',
    os_version           varchar(20) comment 'ios或安卓的版本号',
    brand                varchar(50) comment '三星/华为/苹果',
    device_model         varchar(50) comment '厂商给设备定义的编号',
    ip                   varchar(50) comment '登录IP',
+   kind                 char(1) comment '长期/短期',
+   login_date           datetime comment '创建日期',
+   last_access_date     datetime comment '最近访问日期',
+   expire_date          datetime comment 'token失效日期',
    primary key (token)
 )
 engine=innodb default charset=utf8;
@@ -117,8 +117,8 @@ create unique index u_um_user1 on t_um_user
 create table t_um_user_contact
 (
    id                   bigint(20) not null comment '主键',
-   user_id              integer not null comment '用户ID',
-   co_user_id           integer not null comment '关系用户ID',
+   user_id              bigint(20) not null comment '用户ID',
+   co_user_id           bigint(20) not null comment '关系用户ID',
    remark               varchar(20) comment '关系用户备注',
    type                 char(1) comment '关系类型',
    crdt                 datetime comment '创建日期',

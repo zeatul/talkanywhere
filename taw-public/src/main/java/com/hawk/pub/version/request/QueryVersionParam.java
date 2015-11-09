@@ -14,7 +14,7 @@ public class QueryVersionParam {
 		this.module = module;
 	}
 
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckEnum(parser=EnumModel.class)
 	private String module;
 

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.hawk.pub.spring.FrameworkContext;
 import com.hawk.pub.version.request.QueryVersionParam;
-import com.hawk.pub.web.RequestHandler;
-import com.hawk.pub.web.ResponseHandler;
+import com.hawk.pub.web.HttpRequestHandler;
+import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.check.CheckTools;
 
@@ -25,11 +25,11 @@ public class VersionController {
 
 	@RequestMapping(value = "/version.do", method = {RequestMethod.POST,RequestMethod.GET})
 	public void version(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		QueryVersionParam queryVersionParam = RequestHandler.handle(request, QueryVersionParam.class);
+		QueryVersionParam queryVersionParam = HttpRequestHandler.handle(request, QueryVersionParam.class);
 		CheckTools.check(queryVersionParam);
 		
 		HashMap<?,?> map = FrameworkContext.getApplicationContext().getBean("versionMap", HashMap.class);
 		
-		ResponseHandler.handle(response, SuccessResponse.build(map.get(queryVersionParam.getModule())));
+		HttpResponseHandler.handle(response, SuccessResponse.build(map.get(queryVersionParam.getModule())));
 	}
 }

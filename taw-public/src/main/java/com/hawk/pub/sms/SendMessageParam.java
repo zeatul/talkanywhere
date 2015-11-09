@@ -34,7 +34,7 @@ public class SendMessageParam {
 	/**
 	 * 手机号
 	 */
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckMaxLength(max = 20)
 	@CheckRegex(pattern="[0-9]{1,20}")
 	private String mobile;
@@ -42,7 +42,7 @@ public class SendMessageParam {
 	/**
 	 * 消息内容
 	 */
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckMaxLength(max = 250)
 	private String message;
 	
@@ -50,7 +50,7 @@ public class SendMessageParam {
 	/**
 	 * 消息类型
 	 */
-	@CheckNull(allow=false)
+	@CheckNull
 	@CheckEnum(parser=EnumMessageKind.class)
 	private String kind;
 

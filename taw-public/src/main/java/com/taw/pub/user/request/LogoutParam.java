@@ -15,7 +15,7 @@ public class LogoutParam {
 	/**
 	 * 登陆token
 	 */
-	@CheckNull(allow=false)
+	@CheckNull
 	private String token;
 
 }

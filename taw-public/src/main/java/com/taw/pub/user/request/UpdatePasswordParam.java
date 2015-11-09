@@ -16,9 +16,9 @@ public class UpdatePasswordParam {
 	public void setNewPwd(String newPwd) {
 		this.newPwd = newPwd;
 	}
-	@CheckNull(allow=false)
+	@CheckNull
 	private String mobile;
-	@CheckNull(allow=false)
+	@CheckNull
 	private String newPwd;
 
 }
