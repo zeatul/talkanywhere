@@ -1,5 +1,7 @@
 package com.taw.pub.scene.com;
 
+import com.hawk.utility.check.CheckNull;
+
 /**
  * 地图坐标点
  * @author pzhang1
@@ -24,8 +26,10 @@ public class MapPoint {
 	}
 
 	/*经度*/
+	@CheckNull
 	private java.math.BigDecimal lng;
 	
 	/*纬度*/
+	@CheckNull
 	private java.math.BigDecimal lat;
 }

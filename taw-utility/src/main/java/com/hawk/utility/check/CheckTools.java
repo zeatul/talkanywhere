@@ -38,9 +38,8 @@ public class CheckTools {
 			 * 校验空值
 			 */
 			CheckNull checkNull = field.getAnnotation(CheckNull.class);
-			if (checkNull != null && !checkNull.allowNull() && value == null) {
-				if (value == null)
-					throw new Exception(fieldName+" can't pass null check");				
+			if (checkNull != null  && value == null) {
+				throw new Exception(fieldName+" can't pass null check");				
 			}			
 			if (value == null)
 				continue;

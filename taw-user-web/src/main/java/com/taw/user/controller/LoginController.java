@@ -1,5 +1,6 @@
 package com.taw.user.controller;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,21 @@ public class LoginController {
 	@Autowired
 	@Qualifier("taw_user_service_redis_client")
 	private RedisClient redisClient;
+	
+	
+	/**
+	 * hello 测试用
+	 * @param locale
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/user/login/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String helloWorld(Locale locale, Model model) throws IOException {
+		model.addAttribute("msg", "/user/contact/hello.do");
+		return "success";
+	}
+	
 	
 	@RequestMapping(value = "/user/login.do", method = RequestMethod.POST)
 	public void login(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{

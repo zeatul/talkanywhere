@@ -33,6 +33,12 @@
 			<artifactId>taw-user-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.hawk.taw</groupId>
+			<artifactId>taw-scene-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 
 

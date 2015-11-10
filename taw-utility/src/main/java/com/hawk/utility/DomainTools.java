@@ -3,6 +3,7 @@ package com.hawk.utility;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 public class DomainTools {
 	
@@ -54,6 +55,31 @@ public class DomainTools {
 				
 			}
 		}
+	}
+	
+	/**
+	 * 集合复制
+	 * @param sources 源对象集合
+	 * @param targets 目标对象的空集合 size()=0
+	 * @param clazz 目标对象类型
+	 */
+	public static <K,V> void copy(Collection<K> sources ,Collection<V> targets , Class<V> clazz){
+		
+		targets.clear();
+		
+		for (K source : sources){
+			
+			V target;
+			try {
+				target = clazz.newInstance();
+				copy(source,target);				
+				targets.add(target);
+			} catch (InstantiationException | IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+			
+		}
+		
 	}
 
 }

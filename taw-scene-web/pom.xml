@@ -8,9 +8,9 @@
 		<relativePath>../taw-parent/pom.xml</relativePath>
 	</parent>	
 
-	<artifactId>taw-scene-service</artifactId>
-	<packaging>jar</packaging>
-	<name>taw-scene-service</name>
+	<artifactId>taw-scene-web</artifactId>
+	<packaging>war</packaging>
+	<name>taw-scene-web</name>
 
 	<dependencies>
 
@@ -26,6 +26,20 @@
 			<artifactId>taw-utility</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.hawk.taw</groupId>
+			<artifactId>taw-user-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.hawk.taw</groupId>
+			<artifactId>taw-scene-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
 
 		<!-- redis java client -->
 		<dependency>
@@ -81,16 +95,7 @@
 		</dependency>
 
 
-		<!-- mybatis -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-		</dependency>
 
 		<!-- spring -->
 		<dependency>
@@ -104,7 +109,10 @@
 			</exclusions>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -157,24 +165,25 @@
 			<scope>test</scope>
 		</dependency>
 
-
-
-
-		<!-- db con pool -->
+		<!-- Servlet -->
 		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>mchange-commons-java</artifactId>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<scope>provided</scope>
 		</dependency>
+
 
 		<!-- test -->
 		<dependency>
@@ -188,7 +197,24 @@
 			<artifactId>hamcrest-all</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
+
 
 
 	<build>
@@ -216,6 +242,25 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<!-- <include>* */*.css</include> <include>* */*.js</include> <include>* */*.xml</include> -->
+								<!-- web 资源过滤 -->
+								<include>WEB-INF/web.xml</include>
+							</includes>
+
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.7</source>
@@ -230,5 +275,4 @@
 
 
 	</build>
-
 </project>
