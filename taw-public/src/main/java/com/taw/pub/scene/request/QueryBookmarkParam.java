@@ -2,7 +2,7 @@ package com.taw.pub.scene.request;
 
 import com.hawk.utility.check.CheckNull;
 
-public class QueryFootPrintParam {
+public class QueryBookmarkParam {
 	
 	public Long getUserId() {
 		return userId;

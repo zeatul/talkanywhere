@@ -12,6 +12,7 @@ import com.taw.pub.scene.com.MapPoint;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.domain.SceneDomain;
+import com.taw.scene.mapper.SceneMapper;
 import com.taw.scene.mapperex.SceneExMapper;
 
 @Service
@@ -19,6 +20,9 @@ public class SceneService {
 	
 	@Autowired
 	private SceneExMapper sceneExMapper;
+	
+	@Autowired
+	private SceneMapper sceneMapper;
 	
 	private java.math.BigDecimal min(java.math.BigDecimal p1,java.math.BigDecimal p2 ){
 		if (p1.compareTo(p2)==-1)
@@ -32,6 +36,10 @@ public class SceneService {
 			return p1;
 		else
 			return p2;
+	}
+	
+	public SceneDomain query(long sceneId){
+		return sceneMapper.loadScene(sceneId);
 	}
 
 	public List<SceneDomain> query(QuerySceneInRegionParam querySceneInRegionParam) throws Exception{

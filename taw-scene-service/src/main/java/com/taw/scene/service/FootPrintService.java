@@ -20,11 +20,12 @@ public class FootPrintService {
 	private FootPrintMapper footPrintMapper;
 	
 	
-	public List<FootPrintDomain> search(long userId, QueryFootPrintParam queryFootPrintParam) throws Exception{
+	public List<FootPrintDomain> search(QueryFootPrintParam queryFootPrintParam) throws Exception{
 		CheckTools.check(queryFootPrintParam);
 		Map<String,Object> params = SqlParamHelper.generatePageParams("last_enter_time desc", queryFootPrintParam.getOffset(),queryFootPrintParam.getLimit());
-		params.put("userId", userId);
+		params.put("userId", queryFootPrintParam.getUserId());
 		return footPrintMapper.loadFootPrintDynamic(params);
 	}
+	
 
 }

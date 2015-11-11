@@ -36,7 +36,7 @@ public class SceneController {
 	 */
 	@RequestMapping(value = "/scene/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String helloWorld(Locale locale, Model model) throws IOException {
-		model.addAttribute("msg", "/user/contact/hello.do");
+		model.addAttribute("msg", "/scene/hello.do");
 		return "success";
 	}
 	
