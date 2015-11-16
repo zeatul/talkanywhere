@@ -86,6 +86,7 @@ create table t_um_user
    mobile_kind          tinyint comment '0-手机号; 1-自动生成号',
    status               char(1) comment '有效/无效',
    kind                 char(1) comment '普通用户/管理员',
+   sex                  char(1) comment '用户性别',
    nickname             varchar(20) comment '用户昵称',
    password             varchar(200) comment '登录密码',
    channel              char(1) comment '微信/注册/QQ/微博',
