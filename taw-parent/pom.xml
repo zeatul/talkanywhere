@@ -50,6 +50,8 @@
 		<dom4j-version>1.6.1</dom4j-version>
 		<junit-version>4.12</junit-version>
 		<jetty-version>9.3.4.RC1</jetty-version>
+		<spdy-version>9.3.0.M1</spdy-version>
+		<mina-version>2.0.9</mina-version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -310,12 +312,7 @@
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-server</artifactId>
 				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-http-server</artifactId>
-				<version>9.3.0.M1</version>
-			</dependency>
+			</dependency>			
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-webapp</artifactId>
@@ -365,6 +362,65 @@
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-xml</artifactId>
 				<version>${jetty-version}</version>
+			</dependency>
+			
+			<!-- jetty-spdy -->
+			<dependency>
+				<groupId>org.eclipse.jetty.spdy</groupId>
+				<artifactId>spdy-client</artifactId>
+				<version>${spdy-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.spdy</groupId>
+				<artifactId>spdy-core</artifactId>
+				<version>${spdy-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.spdy</groupId>
+				<artifactId>spdy-http</artifactId>
+				<version>${spdy-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.spdy</groupId>
+				<artifactId>spdy-http-common</artifactId>
+				<version>${spdy-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.spdy</groupId>
+				<artifactId>spdy-http-server</artifactId>
+				<version>${spdy-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.spdy</groupId>
+				<artifactId>spdy-server</artifactId>
+				<version>${spdy-version}</version>
+			</dependency>
+
+			<!-- mina -->
+			<dependency>
+				<groupId>org.apache.mina</groupId>
+				<artifactId>mina-core</artifactId>
+				<version>${mina-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.mina</groupId>
+				<artifactId>mina-filter-compression</artifactId>
+				<version>${mina-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.mina</groupId>
+				<artifactId>mina-integration-beans</artifactId>
+				<version>${mina-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.mina</groupId>
+				<artifactId>mina-integration-jmx</artifactId>
+				<version>${mina-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.mina</groupId>
+				<artifactId>mina-integration-ognl</artifactId>
+				<version>${mina-version}</version>
 			</dependency>
 
 			<!-- openfire -->

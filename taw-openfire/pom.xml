@@ -14,14 +14,32 @@
 
 	<dependencies>
 
+		<!-- mina -->
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-filter-compression</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-integration-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-integration-jmx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-integration-ognl</artifactId>
+		</dependency>
+
 		<!-- jetty -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.spdy</groupId>
-			<artifactId>spdy-http-server</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -62,6 +80,31 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-xml</artifactId>
+		</dependency>
+		<!-- jetty-spdy -->
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-http-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-http-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-server</artifactId>
 		</dependency>
 		<!-- openfire -->
 		<dependency>
