@@ -312,7 +312,7 @@
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-server</artifactId>
 				<version>${jetty-version}</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-webapp</artifactId>
@@ -363,7 +363,7 @@
 				<artifactId>jetty-xml</artifactId>
 				<version>${jetty-version}</version>
 			</dependency>
-			
+
 			<!-- jetty-spdy -->
 			<dependency>
 				<groupId>org.eclipse.jetty.spdy</groupId>
@@ -377,7 +377,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-http</artifactId>
+				<artifactId>spdy-http-client-transport</artifactId>
 				<version>${spdy-version}</version>
 			</dependency>
 			<dependency>
@@ -396,6 +396,7 @@
 				<version>${spdy-version}</version>
 			</dependency>
 
+
 			<!-- mina -->
 			<dependency>
 				<groupId>org.apache.mina</groupId>
@@ -407,6 +408,7 @@
 				<artifactId>mina-filter-compression</artifactId>
 				<version>${mina-version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.apache.mina</groupId>
 				<artifactId>mina-integration-beans</artifactId>
@@ -444,6 +446,11 @@
 				<artifactId>xpp3</artifactId>
 				<version>1.1.4c</version>
 			</dependency>
+			<dependency>
+			    <groupId>commons-httpclient</groupId>
+			    <artifactId>commons-httpclient</artifactId>
+			    <version>3.1</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -469,6 +476,12 @@
 				</plugin>
 
 
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>3.0.1</version>
+					<extensions>true</extensions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>

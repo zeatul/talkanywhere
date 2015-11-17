@@ -119,7 +119,7 @@ public class MulticastRouter extends BasicModule implements ServerFeaturesProvid
         String localDomain = "@" + server.getServerInfo().getXMPPDomain();
         // Build the <addresses> element to be included for local users and identify
         // remote domains that should receive the packet too
-        for (Iterator it=addresses.elementIterator("address");it.hasNext();) {
+        for (Iterator<?> it=addresses.elementIterator("address");it.hasNext();) {
             Element address = (Element) it.next();
             // Skip addresses of type noreply since they don't have any address
             if (Type.noreply.toString().equals(address.attributeValue("type"))) {
@@ -237,7 +237,7 @@ public class MulticastRouter extends BasicModule implements ServerFeaturesProvid
             // multicast service
             for (Packet packet : packets) {
                 Element addresses = getAddresses(packet);
-                for (Iterator it=addresses.elementIterator("address");it.hasNext();) {
+                for (Iterator<?> it=addresses.elementIterator("address");it.hasNext();) {
                     Element address = (Element) it.next();
                     String jid = address.attributeValue("jid");
                     if (!jid.contains("@"+domain)) {
@@ -262,7 +262,7 @@ public class MulticastRouter extends BasicModule implements ServerFeaturesProvid
                 Element addresses = getAddresses(packet);
                 List<String> targets = new ArrayList<String>();
 
-                for (Iterator it=addresses.elementIterator("address");it.hasNext();) {
+                for (Iterator<?> it=addresses.elementIterator("address");it.hasNext();) {
                     Element address = (Element) it.next();
                     String jid = address.attributeValue("jid");
                     // Keep a list of the remote users that are going to receive the packet
@@ -301,7 +301,7 @@ public class MulticastRouter extends BasicModule implements ServerFeaturesProvid
 
             // Check if the node supports JEP-33
             boolean supports = false;
-            for (Iterator it = packet.getChildElement().elementIterator("feature"); it.hasNext();) {
+            for (Iterator<?> it = packet.getChildElement().elementIterator("feature"); it.hasNext();) {
                 if (NAMESPACE.equals(((Element)it.next()).attributeValue("var"))) {
                     supports = true;
                     break;

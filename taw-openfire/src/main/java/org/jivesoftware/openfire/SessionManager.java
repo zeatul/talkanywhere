@@ -22,16 +22,13 @@ package org.jivesoftware.openfire;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -44,11 +41,6 @@ import org.jivesoftware.openfire.cluster.ClusterEventListener;
 import org.jivesoftware.openfire.cluster.ClusterManager;
 import org.jivesoftware.openfire.component.InternalComponentManager;
 import org.jivesoftware.openfire.container.BasicModule;
-import org.jivesoftware.openfire.disco.DiscoInfoProvider;
-import org.jivesoftware.openfire.disco.DiscoItem;
-import org.jivesoftware.openfire.disco.DiscoItemsProvider;
-import org.jivesoftware.openfire.disco.DiscoServerItem;
-import org.jivesoftware.openfire.disco.ServerItemsProvider;
 import org.jivesoftware.openfire.event.SessionEventDispatcher;
 import org.jivesoftware.openfire.http.HttpConnection;
 import org.jivesoftware.openfire.http.HttpSession;
@@ -71,16 +63,14 @@ import org.jivesoftware.openfire.session.Session;
 import org.jivesoftware.openfire.spi.BasicStreamIDFactory;
 import org.jivesoftware.openfire.streammanagement.StreamManager;
 import org.jivesoftware.openfire.user.UserManager;
-import org.jivesoftware.openfire.user.UserNotFoundException;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.JiveGlobals;
 import org.jivesoftware.util.LocaleUtils;
-import org.jivesoftware.util.Log;
 import org.jivesoftware.util.XMPPDateTimeFormat;
 import org.jivesoftware.util.cache.Cache;
 import org.jivesoftware.util.cache.CacheFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xmpp.forms.DataForm;
 import org.xmpp.packet.JID;
 import org.xmpp.packet.Message;
 import org.xmpp.packet.Packet;
@@ -701,9 +691,8 @@ public class SessionManager extends BasicModule implements ClusterEventListener/
             // Do nothing if new presence priority is not positive and old presence negative
             return;
         }
-
         // Check presence's priority of other available resources
-        JID searchJID = session.getAddress().asBareJID();
+        JID searchJID = JIDUtils.asBareJID(session.getAddress());
         for (JID address : routingTable.getRoutes(searchJID, null)) {
             if (address.equals(session.getAddress())) {
                 continue;

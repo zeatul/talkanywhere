@@ -30,6 +30,7 @@ import org.jivesoftware.openfire.session.ClientSession;
 import org.jivesoftware.openfire.session.LocalClientSession;
 import org.jivesoftware.openfire.session.Session;
 import org.jivesoftware.openfire.user.UserManager;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.JiveGlobals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +97,7 @@ public class MessageRouter extends BasicModule {
 
                 // If the server receives a message stanza with no 'to' attribute, it MUST treat the message as if the 'to' address were the bare JID <localpart@domainpart> of the sending entity.
                 if (recipientJID == null) {
-                    recipientJID = packet.getFrom().asBareJID();
+                    recipientJID = JIDUtils.asBareJID(packet.getFrom());
                 }
 
                 // Check if the message was sent to the server hostname
@@ -144,7 +145,7 @@ public class MessageRouter extends BasicModule {
                     // Sent carbon copies to other resources of the sender:
                     // When a client sends a <message/> of type "chat"
                     if (packet.getType() == Message.Type.chat && !isPrivate && session != null) { // && session.isMessageCarbonsEnabled() ??? // must the own session also be carbon enabled?
-                        List<JID> routes = routingTable.getRoutes(packet.getFrom().asBareJID(), null);
+                        List<JID> routes = routingTable.getRoutes(JIDUtils.asBareJID(packet.getFrom()), null);
                         for (JID route : routes) {
                             // The sending server SHOULD NOT send a forwarded copy to the sending full JID if it is a Carbons-enabled resource.
                             if (!route.equals(session.getAddress())) {
@@ -154,7 +155,7 @@ public class MessageRouter extends BasicModule {
                                     // The wrapping message SHOULD maintain the same 'type' attribute value
                                     message.setType(packet.getType());
                                     // the 'from' attribute MUST be the Carbons-enabled user's bare JID
-                                    message.setFrom(packet.getFrom().asBareJID());
+                                    message.setFrom(JIDUtils.asBareJID(packet.getFrom()));
                                     // and the 'to' attribute SHOULD be the full JID of the resource receiving the copy
                                     message.setTo(route);
                                     // The content of the wrapping message MUST contain a <sent/> element qualified by the namespace "urn:xmpp:carbons:2", which itself contains a <forwarded/> qualified by the namespace "urn:xmpp:forward:0" that contains the original <message/> stanza.
@@ -252,7 +253,7 @@ public class MessageRouter extends BasicModule {
                 userManager.isRegisteredUser(recipient.getNode())) {
             Message msg = (Message)packet;
             if (msg.getType().equals(Message.Type.chat)) {
-                routingTable.routePacket(recipient.asBareJID(), packet, false);
+                routingTable.routePacket(JIDUtils.asBareJID(recipient), packet, false);
             } else {
                 // Delegate to offline message strategy, which will either bounce or ignore the message depending on user settings.
                 messageStrategy.storeOffline((Message) packet);
