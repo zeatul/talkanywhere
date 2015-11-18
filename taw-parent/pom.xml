@@ -308,93 +308,22 @@
 			</dependency>
 
 			<!-- jetty -->
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-server</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-webapp</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-servlet</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-continuation</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-http</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-io</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-jmx</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-security</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-servlets</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-util</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-xml</artifactId>
-				<version>${jetty-version}</version>
-			</dependency>
+			<!-- <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-server</artifactId> <version>${jetty-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
+				<artifactId>jetty-webapp</artifactId> <version>${jetty-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-servlet</artifactId> 
+				<version>${jetty-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-continuation</artifactId> <version>${jetty-version}</version> 
+				</dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-http</artifactId> <version>${jetty-version}</version> </dependency> <dependency> 
+				<groupId>org.eclipse.jetty</groupId> <artifactId>jetty-io</artifactId> <version>${jetty-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
+				<artifactId>jetty-jmx</artifactId> <version>${jetty-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-security</artifactId> 
+				<version>${jetty-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-servlets</artifactId> <version>${jetty-version}</version> 
+				</dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-util</artifactId> <version>${jetty-version}</version> </dependency> <dependency> 
+				<groupId>org.eclipse.jetty</groupId> <artifactId>jetty-xml</artifactId> <version>${jetty-version}</version> </dependency> -->
 
 			<!-- jetty-spdy -->
-			<dependency>
-				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-client</artifactId>
-				<version>${spdy-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-core</artifactId>
-				<version>${spdy-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-http-client-transport</artifactId>
-				<version>${spdy-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-http-common</artifactId>
-				<version>${spdy-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-http-server</artifactId>
-				<version>${spdy-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty.spdy</groupId>
-				<artifactId>spdy-server</artifactId>
-				<version>${spdy-version}</version>
-			</dependency>
+			<!-- <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-client</artifactId> <version>${spdy-version}</version> </dependency> <dependency> 
+				<groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-core</artifactId> <version>${spdy-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> 
+				<artifactId>spdy-http-client-transport</artifactId> <version>${spdy-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-http-common</artifactId> 
+				<version>${spdy-version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-http-server</artifactId> <version>${spdy-version}</version> 
+				</dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-server</artifactId> <version>${spdy-version}</version> </dependency> -->
 
 
 			<!-- mina -->
@@ -447,9 +376,14 @@
 				<version>1.1.4c</version>
 			</dependency>
 			<dependency>
-			    <groupId>commons-httpclient</groupId>
-			    <artifactId>commons-httpclient</artifactId>
-			    <version>3.1</version>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>3.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcpkix-jdk15on</artifactId>
+				<version>1.53</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

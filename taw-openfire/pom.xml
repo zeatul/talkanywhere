@@ -37,76 +37,19 @@
 		</dependency>
 
 		<!-- jetty -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-webapp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlet</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-continuation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-http</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-jmx</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlets</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-xml</artifactId>
-		</dependency>
+		<!-- <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-server</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-webapp</artifactId> 
+			</dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-servlet</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
+			<artifactId>jetty-continuation</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-http</artifactId> </dependency> <dependency> 
+			<groupId>org.eclipse.jetty</groupId> <artifactId>jetty-io</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-jmx</artifactId> 
+			</dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-security</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
+			<artifactId>jetty-servlets</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-util</artifactId> </dependency> <dependency> 
+			<groupId>org.eclipse.jetty</groupId> <artifactId>jetty-xml</artifactId> </dependency> -->
 
 		<!-- jetty-spdy -->
-		<dependency>
-			<groupId>org.eclipse.jetty.spdy</groupId>
-			<artifactId>spdy-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.spdy</groupId>
-			<artifactId>spdy-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.spdy</groupId>
-			<artifactId>spdy-http-client-transport</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.spdy</groupId>
-			<artifactId>spdy-http-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.spdy</groupId>
-			<artifactId>spdy-http-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.spdy</groupId>
-			<artifactId>spdy-server</artifactId>
-		</dependency>
+		<!-- <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-client</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> 
+			<artifactId>spdy-core</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-http-client-transport</artifactId> </dependency> 
+			<dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-http-common</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> 
+			<artifactId>spdy-http-server</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-server</artifactId> </dependency> -->
 
 		<!-- openfire -->
 		<dependency>
@@ -128,11 +71,15 @@
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3</artifactId>
 		</dependency>
-		
+
 		<dependency>
-			    <groupId>commons-httpclient</groupId>
-			    <artifactId>commons-httpclient</artifactId>
-			</dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+		</dependency>
 		<!-- xml -->
 		<dependency>
 			<groupId>dom4j</groupId>
