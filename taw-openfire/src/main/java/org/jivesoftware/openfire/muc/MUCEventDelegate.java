@@ -16,6 +16,7 @@
 
 package org.jivesoftware.openfire.muc;
 
+import org.jivesoftware.util.JIDUtils;
 import org.xmpp.packet.JID;
 
 import java.util.Map;
@@ -117,7 +118,7 @@ public abstract class MUCEventDelegate {
                 String jids[] = property.split(",");
                 for (String jid : jids) {
                     if (jid != null && jid.trim().length() != 0) {
-                	    room.addFirstOwner(new JID(jid.trim().toLowerCase()).asBareJID());
+                	    room.addFirstOwner(JIDUtils.asBareJID(new JID(jid.trim().toLowerCase())));
                     }
                 }
             }

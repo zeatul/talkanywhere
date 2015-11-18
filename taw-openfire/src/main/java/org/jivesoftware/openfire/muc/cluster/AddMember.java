@@ -25,6 +25,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 import org.jivesoftware.openfire.muc.spi.LocalMUCRoom;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.cache.ExternalizableUtil;
 import org.xmpp.packet.JID;
 
@@ -43,13 +44,13 @@ public class AddMember extends MUCRoomTask {
 
     public AddMember(LocalMUCRoom room, JID bareJID, String nickname) {
         super(room);
-        this.bareJID = bareJID.asBareJID();
+        this.bareJID = JIDUtils.asBareJID(bareJID);
         this.nickname = nickname;
     }
     
     public AddMember(LocalMUCRoom room, String bareJID, String nickname) {
         super(room);
-        this.bareJID = new JID(bareJID).asBareJID();
+        this.bareJID = JIDUtils.asBareJID(new JID(bareJID));
         this.nickname = nickname;
     }
 

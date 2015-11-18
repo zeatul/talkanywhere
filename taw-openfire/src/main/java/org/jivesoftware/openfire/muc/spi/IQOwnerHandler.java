@@ -36,6 +36,7 @@ import org.jivesoftware.openfire.muc.ConflictException;
 import org.jivesoftware.openfire.muc.ForbiddenException;
 import org.jivesoftware.openfire.muc.MUCRole;
 import org.jivesoftware.openfire.muc.cluster.RoomUpdatedEvent;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.JiveGlobals;
 import org.jivesoftware.util.LocaleUtils;
 import org.jivesoftware.util.cache.CacheFactory;
@@ -224,7 +225,7 @@ public class IQOwnerHandler {
         		// maintained based on the user's bare JID, (...)"
                 if (value != null && value.trim().length() != 0) {
                 	// could be a group jid
-                    admins.add(GroupJID.fromString((value.trim())).asBareJID());
+                    admins.add(JIDUtils.asBareJID(GroupJID.fromString((value.trim()))));
                 }
         	}
         }
@@ -239,7 +240,7 @@ public class IQOwnerHandler {
         		// maintained based on the user's bare JID, (...)"
                 if (value != null && value.trim().length() != 0) {
                 	// could be a group jid
-        		    owners.add(GroupJID.fromString((value.trim())).asBareJID());
+        		    owners.add(JIDUtils.asBareJID(GroupJID.fromString((value.trim()))));
                 }
         	}
         }

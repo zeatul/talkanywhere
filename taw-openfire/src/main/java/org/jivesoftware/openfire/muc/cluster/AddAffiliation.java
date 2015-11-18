@@ -27,6 +27,7 @@ import java.io.ObjectOutput;
 import org.jivesoftware.openfire.muc.MUCRole;
 import org.jivesoftware.openfire.muc.MUCRole.Affiliation;
 import org.jivesoftware.openfire.muc.spi.LocalMUCRoom;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.cache.ExternalizableUtil;
 import org.xmpp.packet.JID;
 
@@ -45,13 +46,13 @@ public class AddAffiliation extends MUCRoomTask {
 
     public AddAffiliation(LocalMUCRoom room, JID bareJID, MUCRole.Affiliation affiliation) {
         super(room);
-        this.bareJID = bareJID.asBareJID();
+        this.bareJID = JIDUtils.asBareJID( bareJID);
         this.affiliation = affiliation;
     }
     
     public AddAffiliation(LocalMUCRoom room, String bareJID, MUCRole.Affiliation affiliation) {
         super(room);
-        this.bareJID = new JID(bareJID).asBareJID();
+        this.bareJID =  JIDUtils.asBareJID(new JID(bareJID));
         this.affiliation = affiliation;
     }
 

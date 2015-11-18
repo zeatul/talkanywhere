@@ -60,6 +60,7 @@ import org.jivesoftware.openfire.muc.cluster.GetNumberConnectedUsers;
 import org.jivesoftware.openfire.muc.cluster.OccupantAddedEvent;
 import org.jivesoftware.openfire.muc.cluster.RoomAvailableEvent;
 import org.jivesoftware.openfire.muc.cluster.RoomRemovedEvent;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.JiveProperties;
 import org.jivesoftware.util.LocaleUtils;
 import org.jivesoftware.util.TaskEngine;
@@ -557,7 +558,7 @@ public class MultiUserChatServiceImpl implements Component, MultiUserChatService
                     else {
                         // The room does not exist so check for creation permissions
                         // Room creation is always allowed for sysadmin
-                        final JID bareJID = userjid.asBareJID();
+                        final JID bareJID = JIDUtils.asBareJID( userjid);
 						if (isRoomCreationRestricted() && !sysadmins.includes(bareJID)) {
                             // The room creation is only allowed for certain JIDs
                             if (!allowedToCreate.includes(bareJID)) {
@@ -841,7 +842,7 @@ public class MultiUserChatServiceImpl implements Component, MultiUserChatService
     }
 
     public void addSysadmin(JID userJID) {
-    	final JID bareJID = userJID.asBareJID();
+    	final JID bareJID = JIDUtils.asBareJID(userJID);
 
         if (!sysadmins.contains(userJID)) {
         	sysadmins.add(bareJID);
@@ -861,7 +862,7 @@ public class MultiUserChatServiceImpl implements Component, MultiUserChatService
     }
 
     public void removeSysadmin(JID userJID) {
-    	final JID bareJID = userJID.asBareJID();
+    	final JID bareJID = JIDUtils.asBareJID(userJID);
 
         sysadmins.remove(bareJID);
 
@@ -1007,7 +1008,7 @@ public class MultiUserChatServiceImpl implements Component, MultiUserChatService
                 }
                 try {
                 	// could be a group jid
-                    sysadmins.add(GroupJID.fromString(jid.trim().toLowerCase()).asBareJID());
+                    sysadmins.add(JIDUtils.asBareJID(GroupJID.fromString(jid.trim().toLowerCase())));
                 } catch (IllegalArgumentException e) {
                     Log.warn("The 'sysadmin.jid' property contains a value that is not a valid JID. It is ignored. Offending value: '" + jid + "'.", e);
                 }
@@ -1030,7 +1031,7 @@ public class MultiUserChatServiceImpl implements Component, MultiUserChatService
                 }
                 try {
                 	// could be a group jid
-            	    allowedToCreate.add(GroupJID.fromString(jid.trim().toLowerCase()).asBareJID());
+            	    allowedToCreate.add(JIDUtils.asBareJID(GroupJID.fromString(jid.trim().toLowerCase())));
                 } catch (IllegalArgumentException e) {
                     Log.warn("The 'create.jid' property contains a value that is not a valid JID. It is ignored. Offending value: '" + jid + "'.", e);
                 }
@@ -1536,7 +1537,7 @@ public class MultiUserChatServiceImpl implements Component, MultiUserChatService
             if (!allowToDiscoverMembersOnlyRooms && room.isMembersOnly()) {
                 return false;
             }
-            MUCRole.Affiliation affiliation = room.getAffiliation(senderJID.asBareJID());
+            MUCRole.Affiliation affiliation = room.getAffiliation(JIDUtils.asBareJID(senderJID));
             if (affiliation != MUCRole.Affiliation.owner
                     && affiliation != MUCRole.Affiliation.admin
                     && affiliation != MUCRole.Affiliation.member) {
