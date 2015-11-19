@@ -35,6 +35,7 @@ import java.util.Set;
 
 import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.openfire.event.GroupEventDispatcher;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.PersistableMap;
 import org.jivesoftware.util.cache.CacheSizes;
 import org.jivesoftware.util.cache.Cacheable;
@@ -294,7 +295,7 @@ public class Group implements Cacheable, Externalizable {
     public boolean isUser(JID user) {
         // Make sure that we are always checking bare JIDs 
         if (user != null && user.getResource() != null) {
-            user = user.asBareJID();
+            user = JIDUtils.asBareJID(user);
         }
         return user != null && (members.contains(user) || administrators.contains(user));
     }

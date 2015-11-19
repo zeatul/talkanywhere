@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.jivesoftware.openfire.XMPPServer;
 import org.jivesoftware.util.ClassUtils;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.JiveGlobals;
 import org.jivesoftware.util.PropertyEventDispatcher;
 import org.jivesoftware.util.PropertyEventListener;
@@ -187,7 +188,7 @@ public class AdminManager {
         if (adminList == null) {
             loadAdminList();
         }
-        JID bareJID = jid.asBareJID();
+        JID bareJID = JIDUtils.asBareJID(jid);
         if (adminList.contains(bareJID)) {
             // Already have them.
             return;
@@ -228,7 +229,7 @@ public class AdminManager {
             loadAdminList();
         }
         
-        JID bareJID = jid.asBareJID();
+        JID bareJID = JIDUtils.asBareJID(jid);
         if (!adminList.contains(bareJID)) {
             return;
         }
@@ -270,7 +271,7 @@ public class AdminManager {
         if (allowAdminIfEmpty && adminList.isEmpty()) {
             return "admin".equals(jid.getNode());
         }
-        JID bareJID = jid.asBareJID();
+        JID bareJID = JIDUtils.asBareJID(jid);
         return adminList.contains(bareJID);
     }
 
@@ -326,7 +327,7 @@ public class AdminManager {
         for (JID jid : jids)
 		{
             if (jid != null) {
-        	    admins.add(jid.asBareJID());
+        	    admins.add(JIDUtils.asBareJID(jid));
             }
 		}
         adminList.addAll(admins);

@@ -37,19 +37,76 @@
 		</dependency>
 
 		<!-- jetty -->
-		<!-- <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-server</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-webapp</artifactId> 
-			</dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-servlet</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
-			<artifactId>jetty-continuation</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-http</artifactId> </dependency> <dependency> 
-			<groupId>org.eclipse.jetty</groupId> <artifactId>jetty-io</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-jmx</artifactId> 
-			</dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-security</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
-			<artifactId>jetty-servlets</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-util</artifactId> </dependency> <dependency> 
-			<groupId>org.eclipse.jetty</groupId> <artifactId>jetty-xml</artifactId> </dependency> -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-continuation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jmx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlets</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-xml</artifactId>
+		</dependency>
 
 		<!-- jetty-spdy -->
-		<!-- <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-client</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> 
-			<artifactId>spdy-core</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-http-client-transport</artifactId> </dependency> 
-			<dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-http-common</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> 
-			<artifactId>spdy-http-server</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty.spdy</groupId> <artifactId>spdy-server</artifactId> </dependency> -->
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-http-client-transport</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-http-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-http-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.spdy</groupId>
+			<artifactId>spdy-server</artifactId>
+		</dependency>
 
 		<!-- openfire -->
 		<dependency>
@@ -80,10 +137,28 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-		</dependency> -->
+
+		<dependency>
+			<groupId>org.jivesoftware.database</groupId>
+			<artifactId>dbutil</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>			
+			<systemPath>${project.basedir}/lib/dbutil.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>proxool</groupId>
+			<artifactId>proxool</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>tomcat</groupId>
+			<artifactId>jasper-compiler</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>tomcat</groupId>
+			<artifactId>jasper-runtime</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>org.bouncycastle</groupId> <artifactId>bcprov-jdk15on</artifactId> </dependency> -->
 		<!-- xml -->
 		<dependency>
 			<groupId>dom4j</groupId>
@@ -234,11 +309,7 @@
 		</dependency>
 
 		<!-- Servlet -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
+
 
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -249,8 +320,14 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- db con pool -->
 		<dependency>

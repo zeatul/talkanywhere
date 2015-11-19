@@ -39,6 +39,7 @@ import org.jivesoftware.openfire.user.PresenceEventDispatcher;
 import org.jivesoftware.openfire.user.UserAlreadyExistsException;
 import org.jivesoftware.openfire.user.UserManager;
 import org.jivesoftware.openfire.user.UserNotFoundException;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -208,7 +209,7 @@ public class PresenceSubscribeHandler extends BasicModule implements ChannelHand
                     if (type == Presence.Type.subscribed) {
                         // Send the presence of the local user to the remote user. The remote user
                         // subscribed to the presence of the local user and the local user accepted
-                        JID prober = localServer.isLocal(recipientJID) ? recipientJID.asBareJID() : recipientJID;
+                        JID prober = localServer.isLocal(recipientJID) ? JIDUtils.asBareJID(recipientJID) : recipientJID;
                         presenceManager.probePresence(prober, senderJID);
                         PresenceEventDispatcher.subscribedToPresence(recipientJID, senderJID);
                     }

@@ -48,6 +48,7 @@ import org.jivesoftware.openfire.session.LocalSession;
 import org.jivesoftware.openfire.session.Session;
 import org.jivesoftware.openfire.user.UserManager;
 import org.jivesoftware.openfire.user.UserNotFoundException;
+import org.jivesoftware.util.JIDUtils;
 import org.jivesoftware.util.LocaleUtils;
 import org.jivesoftware.util.cache.Cache;
 import org.jivesoftware.util.cache.CacheFactory;
@@ -245,10 +246,10 @@ public class PresenceUpdateHandler extends BasicModule implements ChannelHandler
                 for (RosterItem item : roster.getRosterItems()) {
                     if (item.getRecvStatus() == RosterItem.RECV_SUBSCRIBE) {
                         session.process(createSubscribePresence(item.getJid(),
-                                session.getAddress().asBareJID(), true));
+                                JIDUtils.asBareJID(session.getAddress()), true));
                     } else if (item.getRecvStatus() == RosterItem.RECV_UNSUBSCRIBE) {
                         session.process(createSubscribePresence(item.getJid(),
-                                session.getAddress().asBareJID(), false));
+                        		JIDUtils.asBareJID(session.getAddress()), false));
                     }
                     if (item.getSubStatus() == RosterItem.SUB_TO
                             || item.getSubStatus() == RosterItem.SUB_BOTH) {

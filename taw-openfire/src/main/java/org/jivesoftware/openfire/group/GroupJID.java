@@ -77,7 +77,7 @@ public class GroupJID extends JID {
      *
      * @return This JID, as a group JID
      */
-	@Override
+	
     public JID asBareJID() {
         return this;
     }
