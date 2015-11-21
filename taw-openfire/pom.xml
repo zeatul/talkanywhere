@@ -142,7 +142,7 @@
 			<groupId>org.jivesoftware.database</groupId>
 			<artifactId>dbutil</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>			
+			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/dbutil.jar</systemPath>
 		</dependency>
 
@@ -152,12 +152,25 @@
 		</dependency>
 		<dependency>
 			<groupId>tomcat</groupId>
-			<artifactId>jasper-compiler</artifactId>
+			<artifactId>jasper-runtime</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>tomcat</groupId>
-			<artifactId>jasper-runtime</artifactId>
+			<artifactId>jasper-compiler</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+
 		<!-- <dependency> <groupId>org.bouncycastle</groupId> <artifactId>bcprov-jdk15on</artifactId> </dependency> -->
 		<!-- xml -->
 		<dependency>
@@ -165,19 +178,8 @@
 			<artifactId>dom4j</artifactId>
 		</dependency>
 
-		<!-- project -->
-		<dependency>
-			<groupId>com.hawk.taw</groupId>
-			<artifactId>taw-public</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.hawk.taw</groupId>
-			<artifactId>taw-utility</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
+		<!-- project <dependency> <groupId>com.hawk.taw</groupId> <artifactId>taw-public</artifactId> <version>${project.version}</version> </dependency> <dependency> 
+			<groupId>com.hawk.taw</groupId> <artifactId>taw-utility</artifactId> <version>${project.version}</version> </dependency> -->
 		<!-- redis java client -->
 		<dependency>
 			<groupId>redis.clients</groupId>

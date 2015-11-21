@@ -33,7 +33,7 @@
 			<artifactId>taw-user-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-scene-service</artifactId>
@@ -169,7 +169,7 @@
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 

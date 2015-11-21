@@ -48,10 +48,11 @@
 		<org.mybatis-version>3.3.0</org.mybatis-version>
 		<org.mybatis-spring-version>1.2.3</org.mybatis-spring-version>
 		<dom4j-version>1.6.1</dom4j-version>
-		<jetty-version>9.2.0.RC0</jetty-version> 
+		<junit-version>4.12</junit-version>
+		<jetty-version>9.2.14.v20151106</jetty-version>
 		<!-- <jetty-version>9.3.4.RC1</jetty-version> -->
-		
-		<spdy-version>9.3.0.M1</spdy-version>
+
+		<spdy-version>9.2.14.v20151106</spdy-version>
 		<mina-version>2.0.9</mina-version>
 		<jasper-version>5.5.23</jasper-version>
 	</properties>
@@ -461,7 +462,7 @@
 				<artifactId>bcpkix-jdk15on</artifactId>
 				<version>1.53</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>proxool</groupId>
 				<artifactId>proxool</artifactId>
@@ -471,11 +472,21 @@
 				<groupId>tomcat</groupId>
 				<artifactId>jasper-compiler</artifactId>
 				<version>${jasper-version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>tomcat</groupId>
 				<artifactId>jasper-runtime</artifactId>
 				<version>${jasper-version}</version>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
 			</dependency>
 			<!-- <dependency> <groupId>org.bouncycastle</groupId> <artifactId>bcprov-jdk15on</artifactId> <version>1.53</version> </dependency> -->
 		</dependencies>
