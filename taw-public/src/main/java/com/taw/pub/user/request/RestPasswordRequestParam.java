@@ -2,7 +2,7 @@ package com.taw.pub.user.request;
 
 import com.hawk.utility.check.CheckNull;
 
-public class UpdatePasswordRequestParam {
+public class RestPasswordRequestParam {
 	
 	public String getAuthCode() {
 		return authCode;
@@ -12,11 +12,11 @@ public class UpdatePasswordRequestParam {
 		this.authCode = authCode;
 	}
 
-	public UpdatePasswordParam getParam() {
+	public ResetPasswordParam getParam() {
 		return param;
 	}
 
-	public void setParam(UpdatePasswordParam param) {
+	public void setParam(ResetPasswordParam param) {
 		this.param = param;
 	}
 
@@ -24,6 +24,6 @@ public class UpdatePasswordRequestParam {
 	private String authCode;
 	
 	@CheckNull
-	private UpdatePasswordParam param;
+	private ResetPasswordParam param;
 
 }

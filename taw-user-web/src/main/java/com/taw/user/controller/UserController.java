@@ -22,7 +22,7 @@ import com.hawk.utility.redis.RedisClient;
 import com.taw.pub.user.enums.EnumLoginKind;
 import com.taw.pub.user.request.CreateUserRequestParam;
 import com.taw.pub.user.request.LoginParam;
-import com.taw.pub.user.request.UpdatePasswordRequestParam;
+import com.taw.pub.user.request.RestPasswordRequestParam;
 import com.taw.pub.user.response.LoginResp;
 import com.taw.user.service.LoginService;
 import com.taw.user.service.UserService;
@@ -97,9 +97,9 @@ public class UserController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/upwd.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/rest.do", method = RequestMethod.POST)
 	public void upwd(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
-		UpdatePasswordRequestParam updatePasswordRequestParam = HttpRequestHandler.handle(request, UpdatePasswordRequestParam.class);
+		RestPasswordRequestParam updatePasswordRequestParam = HttpRequestHandler.handle(request, RestPasswordRequestParam.class);
 		CheckTools.check(updatePasswordRequestParam);
 		/**
 		 * 校验验证码

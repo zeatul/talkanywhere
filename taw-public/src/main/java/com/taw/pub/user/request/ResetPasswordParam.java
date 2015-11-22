@@ -2,7 +2,7 @@ package com.taw.pub.user.request;
 
 import com.hawk.utility.check.CheckNull;
 
-public class UpdatePasswordParam {
+public class ResetPasswordParam {
 	
 	public String getMobile() {
 		return mobile;

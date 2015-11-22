@@ -12,24 +12,10 @@ public class TokenSecurityHelper {
 	@Autowired
 	private UserServiceConfigure userServiceConfigure;
 
-	private final String encryptKey;
-
-	private String computeTokenKey() {
-		String tokenKey = userServiceConfigure.getTokenKey();
-		StringBuilder sb = new StringBuilder();
-		sb.append(tokenKey.charAt(0));
-		sb.append(tokenKey.charAt(2));
-		sb.append(tokenKey.charAt(7));
-		sb.append("#");
-		sb.append(tokenKey.charAt(3));
-		sb.append(tokenKey.charAt(18));
-		sb.append("!");
-		sb.append(tokenKey.charAt(19));
-		return sb.toString();
-	}
+		
 
 	public TokenSecurityHelper() {
-		this.encryptKey = computeTokenKey();
+		
 	}
 
 	/**
@@ -47,7 +33,7 @@ public class TokenSecurityHelper {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append(token).append("|").append(time).append("|").append(imei);
-			return DESTools.encrypt(sb.toString(), this.encryptKey);
+			return DESTools.encrypt(sb.toString(), userServiceConfigure.getTokenKey());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -65,7 +51,7 @@ public class TokenSecurityHelper {
 			if (StringTools.isNullOrEmpty(ticket))
 				throw new RuntimeException("the ticket is null");
 
-			String[] strArray = DESTools.decrypt(ticket, this.encryptKey).split("|");
+			String[] strArray = DESTools.decrypt(ticket, userServiceConfigure.getTokenKey()).split("|");
 			long now = DateTools.now().getTime();
 
 			long send = new Long(strArray[1]);

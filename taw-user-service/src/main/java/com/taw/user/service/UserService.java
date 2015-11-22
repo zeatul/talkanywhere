@@ -18,7 +18,7 @@ import com.hawk.utility.security.MD5Tools;
 import com.taw.pub.user.enums.EnumUserKind;
 import com.taw.pub.user.enums.EnumUserStatus;
 import com.taw.pub.user.request.CreateUserParam;
-import com.taw.pub.user.request.UpdatePasswordParam;
+import com.taw.pub.user.request.ResetPasswordParam;
 import com.taw.user.configure.UserServiceConfigure;
 import com.taw.user.domain.UserDomain;
 import com.taw.user.mapper.UserMapper;
@@ -87,7 +87,7 @@ public class UserService {
 	 * @param updatePasswordParam
 	 * @throws Exception
 	 */
-	public void updatePasswor(UpdatePasswordParam updatePasswordParam) throws Exception{
+	public void updatePasswor(ResetPasswordParam updatePasswordParam) throws Exception{
 		CheckTools.check(updatePasswordParam);
 		
 		UserDomain userDomain = queryUser(updatePasswordParam.getMobile());

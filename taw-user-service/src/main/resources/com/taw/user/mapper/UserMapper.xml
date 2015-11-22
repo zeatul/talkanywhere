@@ -11,6 +11,7 @@
 		mobile_kind as "mobileKind" ,
 		status as "status" ,
 		kind as "kind" ,
+		sex as "sex" ,
 		nickname as "nickname" ,
 		password as "password" ,
 		channel as "channel" ,
@@ -32,6 +33,7 @@
 			<if test="mobileKind != null"> AND mobile_kind = #{mobileKind}  </if>
 			<if test="status != null"> AND status = #{status}  </if>
 			<if test="kind != null"> AND kind = #{kind}  </if>
+			<if test="sex != null"> AND sex = #{sex}  </if>
 			<if test="nickname != null"> AND nickname = #{nickname}  </if>
 			<if test="password != null"> AND password = #{password}  </if>
 			<if test="channel != null"> AND channel = #{channel}  </if>
@@ -54,6 +56,7 @@
 			AND mobile_kind = #{old_mobileKind}
 			AND status = #{old_status}
 			AND kind = #{old_kind}
+			AND sex = #{old_sex}
 			AND nickname = #{old_nickname}
 			AND password = #{old_password}
 			AND channel = #{old_channel}
@@ -75,6 +78,7 @@
 			mobile_kind = #{mobileKind},
 			status = #{status},
 			kind = #{kind},
+			sex = #{sex},
 			nickname = #{nickname},
 			password = #{password},
 			channel = #{channel},
@@ -96,6 +100,7 @@
 				<if test="mobileKind != null">mobile_kind = #{mobileKind},</if>
 				<if test="status != null">status = #{status},</if>
 				<if test="kind != null">kind = #{kind},</if>
+				<if test="sex != null">sex = #{sex},</if>
 				<if test="nickname != null">nickname = #{nickname},</if>
 				<if test="password != null">password = #{password},</if>
 				<if test="channel != null">channel = #{channel},</if>
@@ -147,6 +152,7 @@
 				mobile_kind,				
 				status,				
 				kind,				
+				sex,				
 				nickname,				
 				password,				
 				channel,				
@@ -166,6 +172,7 @@
 			#{mobileKind},
 			#{status},
 			#{kind},
+			#{sex},
 			#{nickname},
 			#{password},
 			#{channel},

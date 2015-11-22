@@ -6,6 +6,7 @@ import com.hawk.utility.check.CheckMaxLength;
 import com.hawk.utility.check.CheckRegex;
 import com.taw.pub.user.enums.EnumChannel;
 import com.taw.pub.user.enums.EnumDeviceKind;
+import com.taw.pub.user.enums.EnumSex;
 
 public class CreateUserParam {
 	
@@ -47,6 +48,12 @@ public class CreateUserParam {
 	/*注册IP*/
 	@CheckMaxLength(max = 50)
 	private String ip;
+	
+	/**
+	 * 用户性别
+	 */
+	@CheckEnum(parser=EnumSex.class)
+	private String sex;
 
 	
 	/**

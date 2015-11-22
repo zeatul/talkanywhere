@@ -5,21 +5,21 @@ package com.taw.pub.user.enums;
  * @author pzhang1
  *
  */
-public enum EnumUserKind {
+public enum EnumSex {
 	
 	/**
 	 * 普通用户
 	 */
-	NORMAL("0"),
+	MALE("M"),
 	
 	/**
 	 * 管理员
 	 */
-	ADMIN("1");
+	FEMALE("F");
 
 	private String value;
 	
-	private EnumUserKind(String value){
+	private EnumSex(String value){
 		this.value = value;
 	}
 	

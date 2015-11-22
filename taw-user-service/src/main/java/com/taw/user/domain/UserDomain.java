@@ -32,6 +32,9 @@ public class UserDomain implements Serializable {
 	/*普通用户/管理员*/
 	private String kind;
 	
+	/*用户性别*/
+	private String sex;
+	
 	/*用户昵称*/
 	private String nickname;
 	
@@ -160,6 +163,22 @@ public class UserDomain implements Serializable {
 	 */	
 	public void setKind (String kind) {
 		this.kind = kind;
+	}
+	
+	/**
+	 * 
+	 * @return 用户性别
+	 */
+	public String getSex(){
+		return sex;
+	}
+	
+	/**
+	 * 
+	 * @param sex 用户性别
+	 */	
+	public void setSex (String sex) {
+		this.sex = sex;
 	}
 	
 	/**

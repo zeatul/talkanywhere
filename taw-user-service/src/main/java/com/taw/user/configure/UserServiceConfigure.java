@@ -34,11 +34,13 @@ public class UserServiceConfigure {
 
 	/**
 	 * 生成密码加密字符串的key
+	 * TODO: 改成加密数据放在配置文件里
 	 */
 	private String pwdMd5Key;
 	
 	/**
 	 * 生成token加密的key
+	 * TODO: 改成加密数据放在配置文件里
 	 */
 	private String tokenKey;
 	
