@@ -93,15 +93,17 @@ public class Log {
     }
 
     public static void setDebugEnabled(boolean enabled) {
-        // SLF4J doesn't provide a hook into the logging implementation. We'll have to do this 'direct', bypassing slf4j.
-    	final org.apache.log4j.Level newLevel;
-    	if (enabled) {
-    		newLevel = org.apache.log4j.Level.ALL;
-    	} else {
-    		newLevel = org.apache.log4j.Level.INFO;
-    	}
-    		
-    	org.apache.log4j.LogManager.getRootLogger().setLevel(newLevel);
+//        // SLF4J doesn't provide a hook into the logging implementation. We'll have to do this 'direct', bypassing slf4j.
+//    	
+//    	
+//    	final org.apache.log4j.Level newLevel;
+//    	if (enabled) {
+//    		newLevel = org.apache.log4j.Level.ALL;
+//    	} else {
+//    		newLevel = org.apache.log4j.Level.INFO;
+//    	}
+//    		
+//    	org.apache.log4j.LogManager.getRootLogger().setLevel(newLevel);
     }
 
 	/**

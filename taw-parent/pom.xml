@@ -483,10 +483,12 @@
 				<groupId>tomcat</groupId>
 				<artifactId>jasper-runtime</artifactId>
 				<version>${jasper-version}</version>
+				<exclusions>
 				<exclusion>
 					<groupId>javax.servlet</groupId>
 					<artifactId>servlet-api</artifactId>
 				</exclusion>
+				</exclusions>
 			</dependency>
 			<!-- <dependency> <groupId>org.bouncycastle</groupId> <artifactId>bcprov-jdk15on</artifactId> <version>1.53</version> </dependency> -->
 		</dependencies>
