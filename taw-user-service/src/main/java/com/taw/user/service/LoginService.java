@@ -16,6 +16,7 @@ import com.taw.pub.user.request.LoginParam;
 import com.taw.pub.user.request.LogoutParam;
 import com.taw.user.domain.LoginDomain;
 import com.taw.user.domain.UserDomain;
+import com.taw.user.exception.UnMatchUserPasswordException;
 import com.taw.user.mapper.LoginMapper;
 
 @Service
@@ -80,10 +81,10 @@ public class LoginService {
 		 */
 		UserDomain userDomain = userService.queryUser(loginParam.getMobile());
 		if (userDomain == null)
-			throw new Exception("user account doesn't match password");
+			throw new UnMatchUserPasswordException();
 		String signedPassword = userService.signedPassword(loginParam.getPassword());
 		if (!signedPassword.equals(userDomain.getPassword()))
-			throw new Exception("user account doesn't match password");
+			throw new UnMatchUserPasswordException();
 		
 		/**
 		 * 转换为domain

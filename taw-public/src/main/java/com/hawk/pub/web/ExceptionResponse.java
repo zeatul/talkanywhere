@@ -1,6 +1,6 @@
 package com.hawk.pub.web;
 
-import com.hawk.pub.exception.BasicException;
+import com.hawk.exception.BasicException;
 import com.hawk.utility.JsonTools;
 
 public class ExceptionResponse implements IResponse{

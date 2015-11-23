@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hawk.pub.exception.IncorrectAuthCodeException;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
@@ -56,7 +57,7 @@ public class UserController {
 	private void checkAuthCode(String mobile, String authCode) throws Exception{
 		String cachedAuthCode = redisClient.get(mobile);
 		if (cachedAuthCode == null || !cachedAuthCode.equals(authCode))
-			throw new Exception("auth code is error!");
+			throw new IncorrectAuthCodeException();
 	}
 
 	/**
@@ -86,7 +87,7 @@ public class UserController {
 		//返回信息
 		LoginResp loginResp = new LoginResp();
 		loginResp.setToken(token);
-		HttpResponseHandler.handle(response, SuccessResponse.build(token));
+		HttpResponseHandler.handle(response, SuccessResponse.build(loginResp));
 	}
 	
 	/**
@@ -98,7 +99,7 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/user/rest.do", method = RequestMethod.POST)
-	public void upwd(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
+	public void resetPassword(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
 		RestPasswordRequestParam updatePasswordRequestParam = HttpRequestHandler.handle(request, RestPasswordRequestParam.class);
 		CheckTools.check(updatePasswordRequestParam);
 		/**

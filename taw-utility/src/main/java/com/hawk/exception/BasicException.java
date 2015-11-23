@@ -1,6 +1,6 @@
-package com.hawk.pub.exception;
+package com.hawk.exception;
 
-public class BasicException extends Exception{
+public class BasicException extends Exception implements IException{
 
 	public String getErrCode() {
 		return errCode;
@@ -30,15 +30,17 @@ public class BasicException extends Exception{
 	private String errmsg;
 
 	public BasicException(String errCode, String errmsg) {
-		super();
+		super(errmsg);
 		this.errCode = errCode;
 		this.errmsg = errmsg;
 	}
-
-	public BasicException(String errCode) {
-		super();
-		this.errCode = errCode;
+	
+	public BasicException(String errmsg) {
+		super(errmsg);
+		this.errmsg = errmsg;
 	}
+
+	
 	
 	
 }

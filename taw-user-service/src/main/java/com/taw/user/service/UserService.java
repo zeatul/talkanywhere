@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.hawk.pub.enums.EnumBoolean;
@@ -21,6 +22,7 @@ import com.taw.pub.user.request.CreateUserParam;
 import com.taw.pub.user.request.ResetPasswordParam;
 import com.taw.user.configure.UserServiceConfigure;
 import com.taw.user.domain.UserDomain;
+import com.taw.user.exception.UserExistsException;
 import com.taw.user.mapper.UserMapper;
 
 @Service
@@ -74,7 +76,12 @@ public class UserService {
 		/**
 		 * 入库
 		 */
-		int rowCount = userMapper.insert(userDomain);
+		int rowCount =0;
+		try {
+			rowCount = userMapper.insert(userDomain);
+		} catch (DuplicateKeyException e) {
+			throw new UserExistsException(e);
+		}
 		
 		if (rowCount != 1)
 			throw new RuntimeException("Failed to insert userDomain");

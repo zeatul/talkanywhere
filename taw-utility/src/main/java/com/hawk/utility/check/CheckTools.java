@@ -4,13 +4,15 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+
+import com.hawk.exception.BasicException;
 import com.hawk.utility.EnumTools;
 
 public class CheckTools {
 
 	public static void check(Object object) throws Exception {
 		if (object == null)
-			throw new Exception("The param object is null");
+			throw new BasicException("The param object is null");
 		Class<?> clazz = object.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 
@@ -39,7 +41,7 @@ public class CheckTools {
 			 */
 			CheckNull checkNull = field.getAnnotation(CheckNull.class);
 			if (checkNull != null  && value == null) {
-				throw new Exception(fieldName+" can't pass null check");				
+				throw new BasicException(fieldName+" can't pass null check");				
 			}			
 			if (value == null)
 				continue;
@@ -51,7 +53,7 @@ public class CheckTools {
 			if (maxLength != null){
 				String str = (String)value;
 				if(str.length() > maxLength.max())
-					throw new Exception(fieldName + " can't pass max length check");
+					throw new BasicException(fieldName + " can't pass max length check");
 			}
 			
 			/**
@@ -62,7 +64,7 @@ public class CheckTools {
 				String pattern = regex.pattern();
 				String str = (String)value;
 				if (! str.matches(pattern))
-					throw new Exception(fieldName +" can't pass regex check");
+					throw new BasicException(fieldName +" can't pass regex check");
 			}
 			
 			/**
@@ -79,7 +81,7 @@ public class CheckTools {
 			if (checkSize != null){
 				Collection<?> c = (Collection<?>)value;
 				if (c.size() == 0)
-					throw new Exception(fieldName + " can't be empty!");
+					throw new BasicException(fieldName + " can't be empty!");
 			}
 		}
 					

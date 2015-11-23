@@ -1,5 +1,8 @@
 package com.taw.user.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 
 import com.hawk.utility.JsonTools;
@@ -14,7 +17,7 @@ public class SMSControllerTest extends AbstractControllerTest{
 
 	
 	
-	@Test
+//	@Test
 	public void testAuthCode() throws Exception{
 		/**
 		 * taw-user-web/user/sms/auth_code.do
@@ -23,15 +26,45 @@ public class SMSControllerTest extends AbstractControllerTest{
 									 
 		
 		SendAuthCodeParam param = new SendAuthCodeParam();
-		param.setMobile("13811998761");
+		param.setMobile("13811998762");
 		
 		String content = JsonTools.toJsonString(param);
 		
-		System.out.println(content);
+		printSend(content);
 		
 		String result = httpClientHelper.post(path, content, null);
 		
-		System.out.println(result);
+		printResult(result);
+	}
+	
+	public String queryAuthCode() throws Exception{
+		/**
+		 * taw-user-web/user/sms/query_auth_code.do
+		 */
+		String path = contextPath + "/user/sms/query_auth_code.do";
+									 
+		
+		SendAuthCodeParam param = new SendAuthCodeParam();
+		param.setMobile("13811998762");
+		
+		String content = JsonTools.toJsonString(param);
+		
+		printSend(content);
+		
+		String result = httpClientHelper.post(path, content, null);
+		
+		printResult(result);
+		
+//		{"code":"1","data":{"authCode":"9367"}}
+		
+		Map<String,Object > map = JsonTools.toObject(result, HashMap.class);
+		
+		return ((Map<?,?>)map.get("data")).get("authCode").toString();
+	}
+	
+	@Test
+	public void testQueryAuthCode() throws Exception{
+		queryAuthCode();
 	}
 
 }

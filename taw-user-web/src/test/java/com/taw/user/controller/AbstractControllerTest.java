@@ -16,5 +16,12 @@ public abstract class AbstractControllerTest {
 		httpClientHelper.setScheme("http");
 	}
 	
+	protected void printSend(String content){
+		System.out.println("send="+content.trim());
+	}
+	
+	protected void printResult(String result){
+		System.out.println("result="+result.trim());
+	}
 	
 }

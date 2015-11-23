@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hawk.exception.BasicException;
+import com.hawk.pub.exception.SendMessageQuickerException;
 import com.hawk.pub.sms.EnumMessageKind;
 import com.hawk.pub.sms.SMSService;
 import com.hawk.pub.sms.SendMessageParam;
@@ -67,11 +69,12 @@ public class SMSController {
 		SendAuthCodeParam param = HttpRequestHandler.handle(request, SendAuthCodeParam.class);
 		CheckTools.check(param);
 		String mobile = param.getMobile();
+		String timeControlKey = mobile + "-exist";
 		/**
 		 * 一分钟内不重发
 		 */
-		if (redisClient.exists(mobile)){
-			throw new Exception("短消息一分钟内只能发送一次");
+		if (redisClient.exists(timeControlKey)){
+			throw new SendMessageQuickerException();
 		}
 		
 		String authCode = StringTools.randomNumberString(4);
@@ -83,7 +86,8 @@ public class SMSController {
 		sendMessageParam.setKind(EnumMessageKind.AUTH_CODE.toString());
 		smsService.SendMessage(sendMessageParam);
 		
-		redisClient.set(mobile, authCode, 60,false);
+		redisClient.set(timeControlKey, authCode, 60,false); //控制时间
+		redisClient.set(mobile, authCode, 60*30,false); //保留30分钟验证码
 		
 		HttpResponseHandler.handle(response,SuccessResponse.SUCCESS_RESPONSE);
 	}
