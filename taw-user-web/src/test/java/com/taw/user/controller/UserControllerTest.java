@@ -28,15 +28,17 @@ public class UserControllerTest extends AbstractControllerTest {
 		createUserParam.setDeviceKind(EnumDeviceKind.ANDROID.toString());
 		createUserParam.setImei("hwll");
 		createUserParam.setIp("127.0.0.1");
-		createUserParam.setMobile("13811998765");
+		createUserParam.setMobile("13811998761");
 		createUserParam.setOsVersion("1111.11");
 		createUserParam.setPassword("123456");
 
 		CreateUserRequestParam createUserRequestParam = new CreateUserRequestParam();
 		createUserRequestParam.setParam(createUserParam);
-		createUserRequestParam.setAuthCode("7506");
+		createUserRequestParam.setAuthCode("9735");
 
 		String content = JsonTools.toJsonString(createUserRequestParam);
+		
+		System.out.println(content);
 
 		String result = httpClientHelper.post(path, content, null);
 

@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hawk.pub.web.ExceptionResponse;
+
 
 
 
@@ -22,8 +24,8 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
 
 
 		logger.error("caught exception", ex);
-//		ExceptionResponse r = new ExceptionResponse(ex);
-		String output = "error";//r.toJson();
+		ExceptionResponse r = new ExceptionResponse(ex);
+		String output = r.toJson();
 
 		ModelAndView modelAndView = new ModelAndView();
 		
