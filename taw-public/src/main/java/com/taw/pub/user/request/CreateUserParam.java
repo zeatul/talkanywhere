@@ -10,6 +10,14 @@ import com.taw.pub.user.enums.EnumSex;
 
 public class CreateUserParam {
 	
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	/*手机号/自动生成号*/
 	@CheckNull
 	@CheckMaxLength(max = 20)

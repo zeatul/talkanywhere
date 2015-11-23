@@ -33,7 +33,8 @@ public class UserControllerTest extends AbstractControllerTest {
 		createUserParam.setPassword("123456");
 
 		CreateUserRequestParam createUserRequestParam = new CreateUserRequestParam();
-		createUserRequestParam.setAuthCode("123456");
+		createUserRequestParam.setParam(createUserParam);
+		createUserRequestParam.setAuthCode("7506");
 
 		String content = JsonTools.toJsonString(createUserRequestParam);
 

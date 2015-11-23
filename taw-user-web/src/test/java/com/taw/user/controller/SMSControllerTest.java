@@ -23,7 +23,7 @@ public class SMSControllerTest extends AbstractControllerTest{
 									 
 		
 		SendAuthCodeParam param = new SendAuthCodeParam();
-		param.setMobile("13311658157");
+		param.setMobile("13811998765");
 		
 		String content = JsonTools.toJsonString(param);
 		
