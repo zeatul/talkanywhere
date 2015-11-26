@@ -38,7 +38,7 @@
 					<filter>../taw-parent/taw-user-service/taw_user_service_test.properties</filter>
 					<filter>../taw-parent/taw-pub/taw_pub_test.properties</filter>
 				</filters>
-			</build>			
+			</build>
 		</profile>
 
 	</profiles>
@@ -411,6 +411,12 @@
 				<version>${spdy-version}</version>
 			</dependency>
 
+			<!-- netty -->
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-all</artifactId>
+				<version>5.0.0.Alpha2</version>
+			</dependency>
 
 			<!-- mina -->
 			<dependency>
@@ -493,10 +499,10 @@
 				<artifactId>jasper-runtime</artifactId>
 				<version>${jasper-version}</version>
 				<exclusions>
-				<exclusion>
-					<groupId>javax.servlet</groupId>
-					<artifactId>servlet-api</artifactId>
-				</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 			<!-- <dependency> <groupId>org.bouncycastle</groupId> <artifactId>bcprov-jdk15on</artifactId> <version>1.53</version> </dependency> -->
