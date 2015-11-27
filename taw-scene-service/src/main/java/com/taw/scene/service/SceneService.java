@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.com.MapPoint;
+import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.domain.SceneDomain;
@@ -42,6 +43,12 @@ public class SceneService {
 		return sceneMapper.loadScene(sceneId);
 	}
 
+	/**
+	 * 查询指定区域范围内的场景
+	 * @param querySceneInRegionParam
+	 * @return
+	 * @throws Exception
+	 */
 	public List<SceneDomain> query(QuerySceneInRegionParam querySceneInRegionParam) throws Exception{
 		
 		CheckTools.check(querySceneInRegionParam);
@@ -78,7 +85,13 @@ public class SceneService {
 		
 	}
 
-
+	
+	/**
+	 * 查询指定区域范围内的场景
+	 * @param querySceneInRegionParam
+	 * @return 给前端返回结果用
+	 * @throws Exception
+	 */
 	public List<SceneResp> queryForWeb(QuerySceneInRegionParam querySceneInRegionParam) throws Exception{
 		List<SceneResp> sceneRespList = new ArrayList<SceneResp>();
 		
@@ -87,6 +100,14 @@ public class SceneService {
 		DomainTools.copy(sources, sceneRespList, SceneResp.class);
 		
 		return sceneRespList;
+	}
+	
+	public void enterScene(EnterSceneParam enterSceneParam) throws Exception{
+		
+		CheckTools.check(enterSceneParam);
+		
+		
+		
 	}
 	
 }

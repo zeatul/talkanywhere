@@ -7,6 +7,7 @@ import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.request.SendMessageParam;
+import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.MessageDomain;
 import com.taw.scene.mapper.MessageMapper;
 
@@ -15,6 +16,9 @@ public class MessageService {
 	
 	@Autowired
 	private MessageMapper messageMapper;
+	
+	@Autowired
+	private FootPrintService footPrintService;
 
 	/**
 	 * 发送私信
@@ -30,7 +34,12 @@ public class MessageService {
 		messageDomain.setReceiverId(sendMessageParam.getReceiverId());
 		messageDomain.setSceneId(sendMessageParam.getSceneId());
 		messageDomain.setSenderId(sendMessageParam.getSceneId());
-		messageDomain.setSenderNickname(nickName);
+		
+		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(sendMessageParam.getFpdId());
+		
+		messageDomain.setSenderNickname(footPrintDetailDomain.getNickname());
+		
+		footPrintService.loadFootPrintDetailDomain(sendMessageParam.getFpdId());
 		
 		messageDomain.setId(PkGenerator.genPk());
 		messageDomain.setSendTime(DateTools.now());

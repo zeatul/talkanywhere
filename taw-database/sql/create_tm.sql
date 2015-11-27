@@ -16,6 +16,10 @@ drop index u_tm_fp1 on t_tm_foot_print;
 
 drop table if exists t_tm_foot_print;
 
+drop index i_tm_fp1 on t_tm_foot_print_detail;
+
+drop table if exists t_tm_foot_print_detail;
+
 drop index i_tm_message1 on t_tm_message;
 
 drop table if exists t_tm_message;
@@ -96,6 +100,7 @@ create table t_tm_foot_print
    scene_name           varchar(20) comment '场景名称',
    last_enter_time      datetime comment '最后进入时间',
    enter_times          integer comment '进入次数累计',
+   stay_span            integer comment '总停留时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -112,17 +117,46 @@ create unique index u_tm_fp1 on t_tm_foot_print
 );
 
 /*==============================================================*/
+/* Table: t_tm_foot_print_detail                                */
+/*==============================================================*/
+create table t_tm_foot_print_detail
+(
+   id                   bigint(20) not null comment '主键',
+   user_id              bigint(20) not null comment '用户主键',
+   scene_id             bigint(20) not null comment '场景主键',
+   scene_name           varchar(20) comment '场景名称',
+   nickname             varchar(20) comment '分配昵称',
+   in_time              datetime comment '最后进入时间',
+   out_time             datetime comment '进入次数累计',
+   stay_span            integer comment '总停留时间',
+   leave_type           char(1) comment '离开类型',
+   primary key (id)
+)
+engine=innodb default charset=utf8;
+
+alter table t_tm_foot_print_detail comment '场景足迹明细';
+
+/*==============================================================*/
+/* Index: i_tm_fp1                                              */
+/*==============================================================*/
+create index i_tm_fp1 on t_tm_foot_print_detail
+(
+   user_id,
+   scene_id
+);
+
+/*==============================================================*/
 /* Table: t_tm_message                                          */
 /*==============================================================*/
 create table t_tm_message
 (
-   id                   bigint(20) not null,
-   receiver_id          bigint(20),
-   scene_id             bigint(20),
-   content              varchar(500),
-   sender_id            bigint(20),
-   sender_nickname      varchar(20),
-   send_time            datetime,
+   id                   bigint(20) not null comment '主键',
+   receiver_id          bigint(20) comment '接收者ID',
+   scene_id             bigint(20) comment '场景ID',
+   content              varchar(500) comment '内容',
+   sender_id            bigint(20) comment '发送者ID',
+   sender_nickname      varchar(20) comment '发送者昵称',
+   send_time            datetime comment '发送时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;

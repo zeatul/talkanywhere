@@ -47,7 +47,7 @@ public class ConversationService {
 		Long rPostId = sendConverstaionParam.getrPostId();
 		if (rPostId != null){
 			conversationDomain.setRPostId(rPostId);
-			conversationDomain.setRPostNickname(rPostNickname);
+			conversationDomain.setRPostNickname(sendConverstaionParam.getr);
 		}
 		
 		/**

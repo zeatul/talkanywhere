@@ -14,31 +14,31 @@ public class MessageDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 	
-	/**/
+	/*主键*/
 	private Long id;
 	
-	/**/
+	/*接收者ID*/
 	private Long receiverId;
 	
-	/**/
+	/*场景ID*/
 	private Long sceneId;
 	
-	/**/
+	/*内容*/
 	private String content;
 	
-	/**/
+	/*发送者ID*/
 	private Long senderId;
 	
-	/**/
+	/*发送者昵称*/
 	private String senderNickname;
 	
-	/**/
+	/*发送时间*/
 	private Date sendTime;
 	
 	
 	/**
 	 * 
-	 * @return 
+	 * @return 主键
 	 */
 	public Long getId(){
 		return id;
@@ -46,7 +46,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param id 
+	 * @param id 主键
 	 */	
 	public void setId (Long id) {
 		this.id = id;
@@ -54,7 +54,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 
+	 * @return 接收者ID
 	 */
 	public Long getReceiverId(){
 		return receiverId;
@@ -62,7 +62,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param receiverId 
+	 * @param receiverId 接收者ID
 	 */	
 	public void setReceiverId (Long receiverId) {
 		this.receiverId = receiverId;
@@ -70,7 +70,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 
+	 * @return 场景ID
 	 */
 	public Long getSceneId(){
 		return sceneId;
@@ -78,7 +78,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param sceneId 
+	 * @param sceneId 场景ID
 	 */	
 	public void setSceneId (Long sceneId) {
 		this.sceneId = sceneId;
@@ -86,7 +86,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 
+	 * @return 内容
 	 */
 	public String getContent(){
 		return content;
@@ -94,7 +94,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param content 
+	 * @param content 内容
 	 */	
 	public void setContent (String content) {
 		this.content = content;
@@ -102,7 +102,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 
+	 * @return 发送者ID
 	 */
 	public Long getSenderId(){
 		return senderId;
@@ -110,7 +110,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param senderId 
+	 * @param senderId 发送者ID
 	 */	
 	public void setSenderId (Long senderId) {
 		this.senderId = senderId;
@@ -118,7 +118,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 
+	 * @return 发送者昵称
 	 */
 	public String getSenderNickname(){
 		return senderNickname;
@@ -126,7 +126,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param senderNickname 
+	 * @param senderNickname 发送者昵称
 	 */	
 	public void setSenderNickname (String senderNickname) {
 		this.senderNickname = senderNickname;
@@ -134,7 +134,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 
+	 * @return 发送时间
 	 */
 	public Date getSendTime(){
 		return sendTime;
@@ -142,7 +142,7 @@ public class MessageDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param sendTime 
+	 * @param sendTime 发送时间
 	 */	
 	public void setSendTime (Date sendTime) {
 		this.sendTime = sendTime;

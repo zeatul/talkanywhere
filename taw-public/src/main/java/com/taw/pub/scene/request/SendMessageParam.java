@@ -1,9 +1,17 @@
-package com.taw.pub.scene.request;
+	package com.taw.pub.scene.request;
 
 import com.hawk.utility.check.CheckNull;
 
 public class SendMessageParam {
 	
+	public Long getFpdId() {
+		return fpdId;
+	}
+
+	public void setFpdId(Long fpdId) {
+		this.fpdId = fpdId;
+	}
+
 	public Long getReceiverId() {
 		return receiverId;
 	}
@@ -61,6 +69,11 @@ public class SendMessageParam {
 	private Long senderId;
 	
 	
+	/**
+	 * 分配给用户在场景的代理Id ，每次用户进入场景时分配
+	 */
+	@CheckNull
+	private Long fpdId;
 	
 	
 	

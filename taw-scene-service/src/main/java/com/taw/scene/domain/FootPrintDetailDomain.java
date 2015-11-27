@@ -5,12 +5,12 @@ import java.util.Date;
 
 
 /**
- * t_tm_foot_print
+ * t_tm_foot_print_detail
  * 
  * 
  * @author Code-Gen
  */
-public class FootPrintDomain implements Serializable {
+public class FootPrintDetailDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 	
@@ -26,14 +26,20 @@ public class FootPrintDomain implements Serializable {
 	/*场景名称*/
 	private String sceneName;
 	
+	/*分配昵称*/
+	private String nickname;
+	
 	/*最后进入时间*/
-	private Date lastEnterTime;
+	private Date inTime;
 	
 	/*进入次数累计*/
-	private Integer enterTimes;
+	private Date outTime;
 	
 	/*总停留时间*/
 	private Integer staySpan;
+	
+	/*离开类型*/
+	private String leaveType;
 	
 	
 	/**
@@ -102,34 +108,50 @@ public class FootPrintDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 最后进入时间
+	 * @return 分配昵称
 	 */
-	public Date getLastEnterTime(){
-		return lastEnterTime;
+	public String getNickname(){
+		return nickname;
 	}
 	
 	/**
 	 * 
-	 * @param lastEnterTime 最后进入时间
+	 * @param nickname 分配昵称
 	 */	
-	public void setLastEnterTime (Date lastEnterTime) {
-		this.lastEnterTime = lastEnterTime;
+	public void setNickname (String nickname) {
+		this.nickname = nickname;
+	}
+	
+	/**
+	 * 
+	 * @return 最后进入时间
+	 */
+	public Date getInTime(){
+		return inTime;
+	}
+	
+	/**
+	 * 
+	 * @param inTime 最后进入时间
+	 */	
+	public void setInTime (Date inTime) {
+		this.inTime = inTime;
 	}
 	
 	/**
 	 * 
 	 * @return 进入次数累计
 	 */
-	public Integer getEnterTimes(){
-		return enterTimes;
+	public Date getOutTime(){
+		return outTime;
 	}
 	
 	/**
 	 * 
-	 * @param enterTimes 进入次数累计
+	 * @param outTime 进入次数累计
 	 */	
-	public void setEnterTimes (Integer enterTimes) {
-		this.enterTimes = enterTimes;
+	public void setOutTime (Date outTime) {
+		this.outTime = outTime;
 	}
 	
 	/**
@@ -146,6 +168,22 @@ public class FootPrintDomain implements Serializable {
 	 */	
 	public void setStaySpan (Integer staySpan) {
 		this.staySpan = staySpan;
+	}
+	
+	/**
+	 * 
+	 * @return 离开类型
+	 */
+	public String getLeaveType(){
+		return leaveType;
+	}
+	
+	/**
+	 * 
+	 * @param leaveType 离开类型
+	 */	
+	public void setLeaveType (String leaveType) {
+		this.leaveType = leaveType;
 	}
 	
 
