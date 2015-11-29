@@ -18,13 +18,11 @@
 		<dependency>
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-public</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-utility</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 		<!-- redis java client -->
