@@ -29,6 +29,9 @@ public class FootPrintDomain implements Serializable {
 	/*最后进入时间*/
 	private Date lastEnterTime;
 	
+	/*最后离开时间*/
+	private Date lastLeaveTime;
+	
 	/*进入次数累计*/
 	private Integer enterTimes;
 	
@@ -114,6 +117,22 @@ public class FootPrintDomain implements Serializable {
 	 */	
 	public void setLastEnterTime (Date lastEnterTime) {
 		this.lastEnterTime = lastEnterTime;
+	}
+	
+	/**
+	 * 
+	 * @return 最后离开时间
+	 */
+	public Date getLastLeaveTime(){
+		return lastLeaveTime;
+	}
+	
+	/**
+	 * 
+	 * @param lastLeaveTime 最后离开时间
+	 */	
+	public void setLastLeaveTime (Date lastLeaveTime) {
+		this.lastLeaveTime = lastLeaveTime;
 	}
 	
 	/**

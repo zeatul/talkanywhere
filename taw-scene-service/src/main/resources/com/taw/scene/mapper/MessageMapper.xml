@@ -7,6 +7,7 @@
 	<sql id="columns">
 		id as "id" ,
 		receiver_id as "receiverId" ,
+		receiver_nickname as "receiverNickname" ,
 		scene_id as "sceneId" ,
 		content as "content" ,
 		sender_id as "senderId" ,
@@ -18,6 +19,7 @@
 		<trim prefix="WHERE" prefixOverrides="AND">		 
 			<if test="id != null"> AND id = #{id}  </if>
 			<if test="receiverId != null"> AND receiver_id = #{receiverId}  </if>
+			<if test="receiverNickname != null"> AND receiver_nickname = #{receiverNickname}  </if>
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
 			<if test="content != null"> AND content = #{content}  </if>
 			<if test="senderId != null"> AND sender_id = #{senderId}  </if>
@@ -30,6 +32,7 @@
 		<trim prefix="WHERE" prefixOverrides="AND">
 			AND id = #{old_id}
 			AND receiver_id = #{old_receiverId}
+			AND receiver_nickname = #{old_receiverNickname}
 			AND scene_id = #{old_sceneId}
 			AND content = #{old_content}
 			AND sender_id = #{old_senderId}
@@ -41,6 +44,7 @@
 	<sql id="update">
 		<set>
 			receiver_id = #{receiverId},
+			receiver_nickname = #{receiverNickname},
 			scene_id = #{sceneId},
 			content = #{content},
 			sender_id = #{senderId},
@@ -52,6 +56,7 @@
 	<sql id="updateWithoutNull">
 		<set>
 				<if test="receiverId != null">receiver_id = #{receiverId},</if>
+				<if test="receiverNickname != null">receiver_nickname = #{receiverNickname},</if>
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
 				<if test="content != null">content = #{content},</if>
 				<if test="senderId != null">sender_id = #{senderId},</if>
@@ -93,6 +98,7 @@
 		INSERT INTO t_tm_message (			
 				id,				
 				receiver_id,				
+				receiver_nickname,				
 				scene_id,				
 				content,				
 				sender_id,				
@@ -102,6 +108,7 @@
 		VALUES (	
 			#{id},
 			#{receiverId},
+			#{receiverNickname},
 			#{sceneId},
 			#{content},
 			#{senderId},

@@ -20,6 +20,9 @@ public class MessageDomain implements Serializable {
 	/*接收者ID*/
 	private Long receiverId;
 	
+	/*接收者昵称*/
+	private String receiverNickname;
+	
 	/*场景ID*/
 	private Long sceneId;
 	
@@ -66,6 +69,22 @@ public class MessageDomain implements Serializable {
 	 */	
 	public void setReceiverId (Long receiverId) {
 		this.receiverId = receiverId;
+	}
+	
+	/**
+	 * 
+	 * @return 接收者昵称
+	 */
+	public String getReceiverNickname(){
+		return receiverNickname;
+	}
+	
+	/**
+	 * 
+	 * @param receiverNickname 接收者昵称
+	 */	
+	public void setReceiverNickname (String receiverNickname) {
+		this.receiverNickname = receiverNickname;
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.utility.check.CheckTools;
@@ -32,9 +33,69 @@ public class FootPrintService {
 	}
 	
 
-	public FootPrintDetailDomain loadFootPrintDetailDomain(Long id){
+	public FootPrintDetailDomain loadFootPrintDetailDomain(Long id,boolean cached){
 		if (id == null)
 			return null;
-		return footPrintDetailMapper.loadFootPrintDetail(id);
+		
+		FootPrintDetailDomain footPrintDetailDomain = null;
+		if (cached){
+			/**
+			 * TODO:读取缓存
+			 */
+		}
+		
+		footPrintDetailDomain = footPrintDetailMapper.loadFootPrintDetail(id);
+		
+		if (cached && footPrintDetailDomain != null){
+			/**
+			 * TODO:异步写入缓存
+			 */
+		}
+		
+		return footPrintDetailDomain;
+	}
+	
+	
+	public FootPrintDomain loadFootPrintDomain(Long userId , Long sceneId){
+		if (userId == null || sceneId == null)
+			return null;		
+		
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("sceneId", sceneId);
+		
+		List<FootPrintDomain> list = footPrintMapper.loadFootPrintDynamic(params);
+		
+		if (list.size() == 0)
+			return null;
+		
+		if (list.size() != 1)
+			throw new RuntimeException("database data error");
+		
+		return list.get(0);		
+		
+	}
+	
+	public FootPrintDomain loadFootPrintDomain(Long id, boolean cached){ 
+		if (id == null)
+			return null;
+		
+		FootPrintDomain footPrintDomain = null;
+		
+		if (cached){
+			/**
+			 * TODO:读取缓存
+			 */
+		}
+		
+		footPrintDomain = footPrintMapper.loadFootPrint(id);
+		
+		if (cached && footPrintDomain != null){
+			/**
+			 * TODO:异步写入缓存
+			 */
+		}
+		
+		return footPrintDomain;
 	}
 }

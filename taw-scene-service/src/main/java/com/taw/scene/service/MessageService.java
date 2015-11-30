@@ -9,6 +9,7 @@ import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.request.SendMessageParam;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.MessageDomain;
+import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.mapper.MessageMapper;
 
 @Service
@@ -28,18 +29,36 @@ public class MessageService {
 	public void send(SendMessageParam sendMessageParam) throws Exception{
 		CheckTools.check(sendMessageParam);
 		
+		Long receiverId = sendMessageParam.getReceiverId();
+		Long senderId = sendMessageParam.getSenderId();
+		Long sceneId = sendMessageParam.getSceneId();
+		Long fpdId = sendMessageParam.getFpdId();
+		
+		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(fpdId,true);
+		
+		if (footPrintDetailDomain == null)
+			throw new FootPrintDetailNotExistsException();
+		
+		if (senderId != footPrintDetailDomain.getUserId())
+			throw new RuntimeException("UnMathed UserId");
+		
+		if (sceneId != footPrintDetailDomain.getSceneId())
+			throw new RuntimeException("UnMathed SceneId");
+		
+		/**
+		 * 消息入库
+		 * TODO:检测接收者是否在场
+		 */
+		
 		MessageDomain messageDomain = new MessageDomain();
 		
 		messageDomain.setContent(sendMessageParam.getContent());
-		messageDomain.setReceiverId(sendMessageParam.getReceiverId());
-		messageDomain.setSceneId(sendMessageParam.getSceneId());
-		messageDomain.setSenderId(sendMessageParam.getSceneId());
+		messageDomain.setReceiverId(receiverId);
+		messageDomain.setReceiverNickname(sendMessageParam.getReceiverNickname());
+		messageDomain.setSceneId(sceneId);
+		messageDomain.setSenderId(senderId);
+		messageDomain.setSenderNickname(footPrintDetailDomain.getNickname());	
 		
-		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(sendMessageParam.getFpdId());
-		
-		messageDomain.setSenderNickname(footPrintDetailDomain.getNickname());
-		
-		footPrintService.loadFootPrintDetailDomain(sendMessageParam.getFpdId());
 		
 		messageDomain.setId(PkGenerator.genPk());
 		messageDomain.setSendTime(DateTools.now());
@@ -47,7 +66,7 @@ public class MessageService {
 		messageMapper.insert(messageDomain);
 		
 		/**
-		 * TODO:通知在线用户
+		 * TODO:通知在线用户 或者 push 用户
 		 */
 	}
 }

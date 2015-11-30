@@ -6,6 +6,22 @@ public class SendConverstaionParam {
 	
 	
 	
+	public String getPostNickname() {
+		return postNickname;
+	}
+
+	public void setPostNickname(String postNickname) {
+		this.postNickname = postNickname;
+	}
+
+	public Long getrPostUserId() {
+		return rPostUserId;
+	}
+
+	public void setrPostUserId(Long rPostUserId) {
+		this.rPostUserId = rPostUserId;
+	}
+
 	public String getrPostNickname() {
 		return rPostNickname;
 	}
@@ -67,6 +83,12 @@ public class SendConverstaionParam {
 	private Long postUserId;
 	
 	/**
+	 * 发言者昵称
+	 */
+	@CheckNull
+	private String postNickname;
+	
+	/**
 	 * 发言内容	
 	 */
 	@CheckNull
@@ -76,6 +98,11 @@ public class SendConverstaionParam {
 	 * 被回复的发言ID
 	 */
 	private Long rPostId;
+	
+	/**
+	 * 被回复的发言者ID
+	 */
+	private Long rPostUserId;
 	
 	
 	/**

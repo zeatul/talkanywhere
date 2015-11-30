@@ -67,11 +67,11 @@ create table t_tm_conversation
    id                   bigint(20) not null comment '主键',
    scene_id             bigint(20) comment '场景主键',
    post_user_id         bigint(20) comment '发言者主键',
-   post_nickname        varchar(20) comment '发言者昵称',
+   post_nickname        varchar(50) comment '发言者昵称',
    message              varchar(500) comment '发言内容',
    r_post_id            bigint(20) comment '被回复的发言ID',
    r_post_user_id       bigint(20) comment '被回复的发言者ID',
-   r_post_nickname      varchar(20) comment '被回复的发言者昵称',
+   r_post_nickname      varchar(50) comment '被回复的发言者昵称',
    pic_count            integer comment '包含的图片数量',
    post_date            datetime comment '发言时间',
    primary key (id)
@@ -99,6 +99,7 @@ create table t_tm_foot_print
    scene_id             bigint(20) not null comment '场景主键',
    scene_name           varchar(20) comment '场景名称',
    last_enter_time      datetime comment '最后进入时间',
+   last_leave_time      datetime comment '最后离开时间',
    enter_times          integer comment '进入次数累计',
    stay_span            integer comment '总停留时间',
    primary key (id)
@@ -152,10 +153,11 @@ create table t_tm_message
 (
    id                   bigint(20) not null comment '主键',
    receiver_id          bigint(20) comment '接收者ID',
+   receiver_nickname    varchar(50) comment '接收者昵称',
    scene_id             bigint(20) comment '场景ID',
    content              varchar(500) comment '内容',
    sender_id            bigint(20) comment '发送者ID',
-   sender_nickname      varchar(20) comment '发送者昵称',
+   sender_nickname      varchar(50) comment '发送者昵称',
    send_time            datetime comment '发送时间',
    primary key (id)
 )
@@ -242,3 +244,4 @@ create unique index u_tm_sctag1 on t_tm_scene_tag
    scene_id,
    tag_id
 );
+

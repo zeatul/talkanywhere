@@ -1,9 +1,26 @@
 	package com.taw.pub.scene.request;
 
+import com.hawk.utility.check.CheckMaxLength;
 import com.hawk.utility.check.CheckNull;
 
 public class SendMessageParam {
 	
+	public String getReceiverNickname() {
+		return receiverNickname;
+	}
+
+	public void setReceiverNickname(String receiverNickname) {
+		this.receiverNickname = receiverNickname;
+	}
+
+	public String getSenderNickname() {
+		return senderNickname;
+	}
+
+	public void setSenderNickname(String senderNickname) {
+		this.senderNickname = senderNickname;
+	}
+
 	public Long getFpdId() {
 		return fpdId;
 	}
@@ -75,6 +92,20 @@ public class SendMessageParam {
 	@CheckNull
 	private Long fpdId;
 	
+	/**
+	 * 接收者昵称
+	 */
+	@CheckNull
+	@CheckMaxLength(max=50)
+	private String receiverNickname;
+	
+	
+	/**
+	 * 发送者昵称
+	 */
+	@CheckNull
+	@CheckMaxLength(max=50)
+	private String senderNickname;
 	
 	
 }

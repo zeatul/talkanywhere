@@ -10,6 +10,7 @@
 		scene_id as "sceneId" ,
 		scene_name as "sceneName" ,
 		last_enter_time as "lastEnterTime" ,
+		last_leave_time as "lastLeaveTime" ,
 		enter_times as "enterTimes" ,
 		stay_span as "staySpan" 
 	</sql>
@@ -21,6 +22,7 @@
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
 			<if test="sceneName != null"> AND scene_name = #{sceneName}  </if>
 			<if test="lastEnterTime != null"> AND last_enter_time = #{lastEnterTime}  </if>
+			<if test="lastLeaveTime != null"> AND last_leave_time = #{lastLeaveTime}  </if>
 			<if test="enterTimes != null"> AND enter_times = #{enterTimes}  </if>
 			<if test="staySpan != null"> AND stay_span = #{staySpan}  </if>
 		</trim>	
@@ -33,6 +35,7 @@
 			AND scene_id = #{old_sceneId}
 			AND scene_name = #{old_sceneName}
 			AND last_enter_time = #{old_lastEnterTime}
+			AND last_leave_time = #{old_lastLeaveTime}
 			AND enter_times = #{old_enterTimes}
 			AND stay_span = #{old_staySpan}
 		</trim>
@@ -44,6 +47,7 @@
 			scene_id = #{sceneId},
 			scene_name = #{sceneName},
 			last_enter_time = #{lastEnterTime},
+			last_leave_time = #{lastLeaveTime},
 			enter_times = #{enterTimes},
 			stay_span = #{staySpan},
 		</set>
@@ -55,6 +59,7 @@
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
 				<if test="sceneName != null">scene_name = #{sceneName},</if>
 				<if test="lastEnterTime != null">last_enter_time = #{lastEnterTime},</if>
+				<if test="lastLeaveTime != null">last_leave_time = #{lastLeaveTime},</if>
 				<if test="enterTimes != null">enter_times = #{enterTimes},</if>
 				<if test="staySpan != null">stay_span = #{staySpan},</if>
 		</set>
@@ -96,6 +101,7 @@
 				scene_id,				
 				scene_name,				
 				last_enter_time,				
+				last_leave_time,				
 				enter_times,				
 				stay_span				
 		)		
@@ -105,6 +111,7 @@
 			#{sceneId},
 			#{sceneName},
 			#{lastEnterTime},
+			#{lastLeaveTime},
 			#{enterTimes},
 			#{staySpan}
 		) 
