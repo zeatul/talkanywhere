@@ -17,6 +17,9 @@ public class MessageDomain implements Serializable {
 	/*主键*/
 	private Long id;
 	
+	/*接收者在场景唯一标识*/
+	private Long receiverFpdId;
+	
 	/*接收者ID*/
 	private Long receiverId;
 	
@@ -31,6 +34,9 @@ public class MessageDomain implements Serializable {
 	
 	/*内容*/
 	private String content;
+	
+	/*发送者者在场景唯一标识*/
+	private Long senderFpdId;
 	
 	/*发送者ID*/
 	private Long senderId;
@@ -56,6 +62,22 @@ public class MessageDomain implements Serializable {
 	 */	
 	public void setId (Long id) {
 		this.id = id;
+	}
+	
+	/**
+	 * 
+	 * @return 接收者在场景唯一标识
+	 */
+	public Long getReceiverFpdId(){
+		return receiverFpdId;
+	}
+	
+	/**
+	 * 
+	 * @param receiverFpdId 接收者在场景唯一标识
+	 */	
+	public void setReceiverFpdId (Long receiverFpdId) {
+		this.receiverFpdId = receiverFpdId;
 	}
 	
 	/**
@@ -136,6 +158,22 @@ public class MessageDomain implements Serializable {
 	 */	
 	public void setContent (String content) {
 		this.content = content;
+	}
+	
+	/**
+	 * 
+	 * @return 发送者者在场景唯一标识
+	 */
+	public Long getSenderFpdId(){
+		return senderFpdId;
+	}
+	
+	/**
+	 * 
+	 * @param senderFpdId 发送者者在场景唯一标识
+	 */	
+	public void setSenderFpdId (Long senderFpdId) {
+		this.senderFpdId = senderFpdId;
 	}
 	
 	/**

@@ -17,6 +17,9 @@ public class FootPrintDetailDomain implements Serializable {
 	/*主键*/
 	private Long id;
 	
+	/*登录TOKEN*/
+	private String token;
+	
 	/*用户主键*/
 	private Long userId;
 	
@@ -56,6 +59,22 @@ public class FootPrintDetailDomain implements Serializable {
 	 */	
 	public void setId (Long id) {
 		this.id = id;
+	}
+	
+	/**
+	 * 
+	 * @return 登录TOKEN
+	 */
+	public String getToken(){
+		return token;
+	}
+	
+	/**
+	 * 
+	 * @param token 登录TOKEN
+	 */	
+	public void setToken (String token) {
+		this.token = token;
 	}
 	
 	/**

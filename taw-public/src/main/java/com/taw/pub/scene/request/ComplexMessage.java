@@ -6,12 +6,14 @@ import com.hawk.utility.check.CheckNull;
 
 public class ComplexMessage {
 	
-	public String getTextMessage() {
-		return textMessage;
+	
+
+	public String getText() {
+		return text;
 	}
 
-	public void setTextMessage(String textMessage) {
-		this.textMessage = textMessage;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public List<String> getPics() {
@@ -28,7 +30,7 @@ public class ComplexMessage {
 	 * 文本消息
 	 */
 	@CheckNull
-	private String textMessage;
+	private String text;
 	
 	/**
 	 * 图片集合

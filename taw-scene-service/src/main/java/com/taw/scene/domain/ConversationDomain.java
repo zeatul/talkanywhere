@@ -20,6 +20,9 @@ public class ConversationDomain implements Serializable {
 	/*场景主键*/
 	private Long sceneId;
 	
+	/*发言者在场景唯一标识*/
+	private Long postUserFpdId;
+	
 	/*发言者主键*/
 	private Long postUserId;
 	
@@ -30,13 +33,16 @@ public class ConversationDomain implements Serializable {
 	private String message;
 	
 	/*被回复的发言ID*/
-	private Long rPostId;
+	private Long rePostId;
+	
+	/*被回复的发言者在场景唯一标识*/
+	private Long rePostUserFpdId;
 	
 	/*被回复的发言者ID*/
-	private Long rPostUserId;
+	private Long rePostUserId;
 	
 	/*被回复的发言者昵称*/
-	private String rPostNickname;
+	private String rePostNickname;
 	
 	/*包含的图片数量*/
 	private Integer picCount;
@@ -75,6 +81,22 @@ public class ConversationDomain implements Serializable {
 	 */	
 	public void setSceneId (Long sceneId) {
 		this.sceneId = sceneId;
+	}
+	
+	/**
+	 * 
+	 * @return 发言者在场景唯一标识
+	 */
+	public Long getPostUserFpdId(){
+		return postUserFpdId;
+	}
+	
+	/**
+	 * 
+	 * @param postUserFpdId 发言者在场景唯一标识
+	 */	
+	public void setPostUserFpdId (Long postUserFpdId) {
+		this.postUserFpdId = postUserFpdId;
 	}
 	
 	/**
@@ -129,48 +151,64 @@ public class ConversationDomain implements Serializable {
 	 * 
 	 * @return 被回复的发言ID
 	 */
-	public Long getRPostId(){
-		return rPostId;
+	public Long getRePostId(){
+		return rePostId;
 	}
 	
 	/**
 	 * 
-	 * @param rPostId 被回复的发言ID
+	 * @param rePostId 被回复的发言ID
 	 */	
-	public void setRPostId (Long rPostId) {
-		this.rPostId = rPostId;
+	public void setRePostId (Long rePostId) {
+		this.rePostId = rePostId;
+	}
+	
+	/**
+	 * 
+	 * @return 被回复的发言者在场景唯一标识
+	 */
+	public Long getRePostUserFpdId(){
+		return rePostUserFpdId;
+	}
+	
+	/**
+	 * 
+	 * @param rePostUserFpdId 被回复的发言者在场景唯一标识
+	 */	
+	public void setRePostUserFpdId (Long rePostUserFpdId) {
+		this.rePostUserFpdId = rePostUserFpdId;
 	}
 	
 	/**
 	 * 
 	 * @return 被回复的发言者ID
 	 */
-	public Long getRPostUserId(){
-		return rPostUserId;
+	public Long getRePostUserId(){
+		return rePostUserId;
 	}
 	
 	/**
 	 * 
-	 * @param rPostUserId 被回复的发言者ID
+	 * @param rePostUserId 被回复的发言者ID
 	 */	
-	public void setRPostUserId (Long rPostUserId) {
-		this.rPostUserId = rPostUserId;
+	public void setRePostUserId (Long rePostUserId) {
+		this.rePostUserId = rePostUserId;
 	}
 	
 	/**
 	 * 
 	 * @return 被回复的发言者昵称
 	 */
-	public String getRPostNickname(){
-		return rPostNickname;
+	public String getRePostNickname(){
+		return rePostNickname;
 	}
 	
 	/**
 	 * 
-	 * @param rPostNickname 被回复的发言者昵称
+	 * @param rePostNickname 被回复的发言者昵称
 	 */	
-	public void setRPostNickname (String rPostNickname) {
-		this.rPostNickname = rPostNickname;
+	public void setRePostNickname (String rePostNickname) {
+		this.rePostNickname = rePostNickname;
 	}
 	
 	/**

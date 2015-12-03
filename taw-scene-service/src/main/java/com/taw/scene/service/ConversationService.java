@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
-import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.request.ComplexMessage;
 import com.taw.pub.scene.request.SendConverstaionParam;
@@ -37,23 +36,45 @@ public class ConversationService {
 		List<String> pics = complexMessage.getPics();
 		CheckTools.check(complexMessage);
 
-		Long fpdId = sendConverstaionParam.getFpdId();
+		Long postUserFpdId = sendConverstaionParam.getPostUserFpdId();
 		Long postUserId = sendConverstaionParam.getPostUserId();
 		Long sceneId = sendConverstaionParam.getSceneId();
 
-		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(fpdId, true);
+		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(postUserFpdId, true);
 
 		if (footPrintDetailDomain == null)
 			throw new FootPrintDetailNotExistsException();
 
-		if (postUserId != footPrintDetailDomain.getUserId())
-			throw new RuntimeException("UnMathed UserId");
+		if (!postUserId.equals(footPrintDetailDomain.getUserId()))
+			throw new RuntimeException("UnMathed post UserId");
 
-		if (sceneId != footPrintDetailDomain.getSceneId())
-			throw new RuntimeException("UnMathed SceneId");
+		if (!sceneId.equals(footPrintDetailDomain.getSceneId()))
+			throw new RuntimeException("UnMathed post SceneId");
+		
+		
+		Long rePostUserFpdId = sendConverstaionParam.getRePostUserFpdId();
+		
+		Long rePostId = sendConverstaionParam.getRePostId();
+		Long rePostUserId = null;
+		if (rePostId != null){
+			
+			if (rePostUserFpdId == null)
+				throw new FootPrintDetailNotExistsException();
+			
+			footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(rePostUserFpdId, true);
+			
+			if (footPrintDetailDomain == null)
+				throw new FootPrintDetailNotExistsException();
+			
+			rePostUserId = footPrintDetailDomain.getUserId();
+			
+			if (!footPrintDetailDomain.getSceneId().equals(sceneId))
+				throw new RuntimeException("UnMathed rePost SceneId");
+		}
+		
 
 		ConversationDomain conversationDomain = new ConversationDomain();
-		conversationDomain.setMessage(complexMessage.getTextMessage());
+		conversationDomain.setMessage(complexMessage.getText());
 		conversationDomain.setPicCount(pics == null ? 0 : pics.size());
 		conversationDomain.setSceneId(sendConverstaionParam.getSceneId());
 
@@ -61,16 +82,18 @@ public class ConversationService {
 		 * poster信息
 		 */
 		conversationDomain.setPostUserId(sendConverstaionParam.getPostUserId());
-		conversationDomain.setPostNickname(sendConverstaionParam.getrPostNickname());
+		conversationDomain.setPostNickname(sendConverstaionParam.getPostNickname());
+		conversationDomain.setPostUserFpdId(sendConverstaionParam.getPostUserFpdId());
 
 		/**
-		 * rposter信息
+		 * rePoster信息
 		 */
-		Long rPostId = sendConverstaionParam.getrPostId();
-		if (rPostId != null) {
-			conversationDomain.setRPostId(rPostId);
-			conversationDomain.setRPostNickname(sendConverstaionParam.getrPostNickname());
-			conversationDomain.setRPostUserId(sendConverstaionParam.getrPostUserId());
+		
+		if (rePostId != null) {
+			conversationDomain.setRePostId(rePostId);
+			conversationDomain.setRePostNickname(sendConverstaionParam.getRePostNickname());
+			conversationDomain.setRePostUserId(rePostUserId);
+			conversationDomain.setRePostUserFpdId(sendConverstaionParam.getRePostUserFpdId());
 		}
 
 		/**

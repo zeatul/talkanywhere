@@ -66,12 +66,14 @@ create table t_tm_conversation
 (
    id                   bigint(20) not null comment '主键',
    scene_id             bigint(20) comment '场景主键',
+   post_user_fpd_id     bigint(20) comment '发言者在场景唯一标识',
    post_user_id         bigint(20) comment '发言者主键',
    post_nickname        varchar(50) comment '发言者昵称',
    message              varchar(500) comment '发言内容',
-   r_post_id            bigint(20) comment '被回复的发言ID',
-   r_post_user_id       bigint(20) comment '被回复的发言者ID',
-   r_post_nickname      varchar(50) comment '被回复的发言者昵称',
+   re_post_id           bigint(20) comment '被回复的发言ID',
+   re_post_user_fpd_id  bigint(20) comment '被回复的发言者在场景唯一标识',
+   re_post_user_id      bigint(20) comment '被回复的发言者ID',
+   re_post_nickname     varchar(50) comment '被回复的发言者昵称',
    pic_count            integer comment '包含的图片数量',
    post_date            datetime comment '发言时间',
    primary key (id)
@@ -123,6 +125,7 @@ create unique index u_tm_fp1 on t_tm_foot_print
 create table t_tm_foot_print_detail
 (
    id                   bigint(20) not null comment '主键',
+   token                varchar(50) comment '登录TOKEN',
    user_id              bigint(20) not null comment '用户主键',
    scene_id             bigint(20) not null comment '场景主键',
    scene_name           varchar(50) comment '场景名称',
@@ -152,11 +155,13 @@ create index i_tm_fp1 on t_tm_foot_print_detail
 create table t_tm_message
 (
    id                   bigint(20) not null comment '主键',
+   receiver_fpd_id      bigint(20) comment '接收者在场景唯一标识',
    receiver_id          bigint(20) comment '接收者ID',
    receiver_nickname    varchar(50) comment '接收者昵称',
    scene_id             bigint(20) comment '场景ID',
    name                 varchar(50) comment '场景名称',
    content              varchar(500) comment '内容',
+   sender_fpd_id        bigint(20) comment '发送者者在场景唯一标识',
    sender_id            bigint(20) comment '发送者ID',
    sender_nickname      varchar(50) comment '发送者昵称',
    send_time            datetime comment '发送时间',

@@ -4,6 +4,14 @@ import com.hawk.utility.check.CheckNull;
 
 public class EnterSceneParam {
 	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -25,6 +33,12 @@ public class EnterSceneParam {
 	 */
 	@CheckNull
 	private Long userId;
+	
+	/**
+	 * 登录token
+	 */
+	@CheckNull
+	private String token;
 	
 	/**
 	 * 场景ID

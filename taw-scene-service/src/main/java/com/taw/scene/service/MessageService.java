@@ -29,21 +29,33 @@ public class MessageService {
 	public Long send(SendMessageParam sendMessageParam) throws Exception{
 		CheckTools.check(sendMessageParam);
 		
-		Long receiverId = sendMessageParam.getReceiverId();
+		
 		Long senderId = sendMessageParam.getSenderId();
 		Long sceneId = sendMessageParam.getSceneId();
-		Long fpdId = sendMessageParam.getFpdId();
+		Long senderFpdId = sendMessageParam.getSenderFpdId();
 		
-		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(fpdId,true);
+		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(senderFpdId,true);
 		
 		if (footPrintDetailDomain == null)
 			throw new FootPrintDetailNotExistsException();
 		
-		if (senderId != footPrintDetailDomain.getUserId())
-			throw new RuntimeException("UnMathed UserId");
+		if (!senderId.equals(footPrintDetailDomain.getUserId()))
+			throw new RuntimeException("UnMathed Sender UserId");
 		
-		if (sceneId != footPrintDetailDomain.getSceneId())
-			throw new RuntimeException("UnMathed SceneId");
+		if (!sceneId.equals(footPrintDetailDomain.getSceneId()))
+			throw new RuntimeException("UnMathed Sender SceneId");
+		
+		Long receiverFpdId = sendMessageParam.getReceiverFpdId();
+		
+		
+		footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(receiverFpdId,true);
+		if (footPrintDetailDomain == null)
+			throw new FootPrintDetailNotExistsException();		
+		
+		if (!sceneId.equals(footPrintDetailDomain.getSceneId()))
+			throw new RuntimeException("UnMathed Receiver SceneId");
+		
+		Long receiverId = footPrintDetailDomain.getUserId();
 		
 		/**
 		 * 消息入库
@@ -53,9 +65,11 @@ public class MessageService {
 		MessageDomain messageDomain = new MessageDomain();
 		
 		messageDomain.setContent(sendMessageParam.getContent());
+		messageDomain.setReceiverFpdId(receiverFpdId);
 		messageDomain.setReceiverId(receiverId);
 		messageDomain.setReceiverNickname(sendMessageParam.getReceiverNickname());
 		messageDomain.setSceneId(sceneId);
+		messageDomain.setSenderFpdId(senderFpdId);
 		messageDomain.setSenderId(senderId);
 		messageDomain.setSenderNickname(footPrintDetailDomain.getNickname());	
 		

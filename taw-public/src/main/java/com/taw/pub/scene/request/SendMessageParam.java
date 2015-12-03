@@ -5,6 +5,22 @@ import com.hawk.utility.check.CheckNull;
 
 public class SendMessageParam {
 	
+	public Long getReceiverFpdId() {
+		return receiverFpdId;
+	}
+
+	public void setReceiverFpdId(Long receiverFpdId) {
+		this.receiverFpdId = receiverFpdId;
+	}
+
+	public Long getSenderFpdId() {
+		return senderFpdId;
+	}
+
+	public void setSenderFpdId(Long senderFpdId) {
+		this.senderFpdId = senderFpdId;
+	}
+
 	public String getReceiverNickname() {
 		return receiverNickname;
 	}
@@ -21,21 +37,15 @@ public class SendMessageParam {
 		this.senderNickname = senderNickname;
 	}
 
-	public Long getFpdId() {
-		return fpdId;
-	}
+	
 
-	public void setFpdId(Long fpdId) {
-		this.fpdId = fpdId;
-	}
-
-	public Long getReceiverId() {
-		return receiverId;
-	}
-
-	public void setReceiverId(Long receiverId) {
-		this.receiverId = receiverId;
-	}
+//	public Long getReceiverId() {
+//		return receiverId;
+//	}
+//
+//	public void setReceiverId(Long receiverId) {
+//		this.receiverId = receiverId;
+//	}
 
 	public Long getSceneId() {
 		return sceneId;
@@ -61,11 +71,17 @@ public class SendMessageParam {
 		this.senderId = senderId;
 	}
 
+//	/**
+//	 * 接收者ID
+//	 */
+//	@CheckNull
+//	private Long receiverId;
+	
 	/**
-	 * 接收者ID
+	 * 接收者在场景唯一标识
 	 */
 	@CheckNull
-	private Long receiverId;
+	private Long receiverFpdId;
 	
 	/**
 	 * 场景ID
@@ -87,10 +103,10 @@ public class SendMessageParam {
 	
 	
 	/**
-	 * 分配给用户在场景的代理Id ，每次用户进入场景时分配
+	 * 发送者者在场景唯一标识
 	 */
 	@CheckNull
-	private Long fpdId;
+	private Long senderFpdId;
 	
 	/**
 	 * 接收者昵称

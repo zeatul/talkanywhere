@@ -181,6 +181,7 @@ public class SceneService {
 		footPrintDetailDomain.setSceneName(sceneDomain.getName());
 		footPrintDetailDomain.setStaySpan(0);
 		footPrintDetailDomain.setUserId(userId);
+		footPrintDetailDomain.setToken(enterSceneParam.getToken());
 		
 		footPrintDetailDomain.setId(PkGenerator.genPk());		
 		footPrintDetailMapper.insert(footPrintDetailDomain);

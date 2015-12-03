@@ -45,7 +45,8 @@ public abstract class AbstractControllerTest {
 	
 	protected Map<String,String> genAuthMap(){
 		TokenSecurityHelper tokenSecurityHelper = context.getBean(TokenSecurityHelper.class);
-		String token = "cde91645dbed4e08b6585aa2a7d4790f";
+		String token = "cde91645dbed4e08b6585aa2a7d4790f";  //sender
+//		String token = "a8576d6e804d4916a753e03d8a68b2c0";  //receiver
 		String imei = "imei001";
 		String t = tokenSecurityHelper.generate(token, DateTools.now().getTime(), imei);
 		Map<String,String> map = new HashMap<String, String>();

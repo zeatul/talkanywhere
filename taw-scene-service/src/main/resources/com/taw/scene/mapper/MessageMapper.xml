@@ -6,11 +6,13 @@
 
 	<sql id="columns">
 		id as "id" ,
+		receiver_fpd_id as "receiverFpdId" ,
 		receiver_id as "receiverId" ,
 		receiver_nickname as "receiverNickname" ,
 		scene_id as "sceneId" ,
 		name as "name" ,
 		content as "content" ,
+		sender_fpd_id as "senderFpdId" ,
 		sender_id as "senderId" ,
 		sender_nickname as "senderNickname" ,
 		send_time as "sendTime" 
@@ -19,11 +21,13 @@
 	<sql id="where">
 		<trim prefix="WHERE" prefixOverrides="AND">		 
 			<if test="id != null"> AND id = #{id}  </if>
+			<if test="receiverFpdId != null"> AND receiver_fpd_id = #{receiverFpdId}  </if>
 			<if test="receiverId != null"> AND receiver_id = #{receiverId}  </if>
 			<if test="receiverNickname != null"> AND receiver_nickname = #{receiverNickname}  </if>
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
 			<if test="name != null"> AND name = #{name}  </if>
 			<if test="content != null"> AND content = #{content}  </if>
+			<if test="senderFpdId != null"> AND sender_fpd_id = #{senderFpdId}  </if>
 			<if test="senderId != null"> AND sender_id = #{senderId}  </if>
 			<if test="senderNickname != null"> AND sender_nickname = #{senderNickname}  </if>
 			<if test="sendTime != null"> AND send_time = #{sendTime}  </if>
@@ -33,11 +37,13 @@
 	<sql id="where_old">
 		<trim prefix="WHERE" prefixOverrides="AND">
 			AND id = #{old_id}
+			AND receiver_fpd_id = #{old_receiverFpdId}
 			AND receiver_id = #{old_receiverId}
 			AND receiver_nickname = #{old_receiverNickname}
 			AND scene_id = #{old_sceneId}
 			AND name = #{old_name}
 			AND content = #{old_content}
+			AND sender_fpd_id = #{old_senderFpdId}
 			AND sender_id = #{old_senderId}
 			AND sender_nickname = #{old_senderNickname}
 			AND send_time = #{old_sendTime}
@@ -46,11 +52,13 @@
 	
 	<sql id="update">
 		<set>
+			receiver_fpd_id = #{receiverFpdId},
 			receiver_id = #{receiverId},
 			receiver_nickname = #{receiverNickname},
 			scene_id = #{sceneId},
 			name = #{name},
 			content = #{content},
+			sender_fpd_id = #{senderFpdId},
 			sender_id = #{senderId},
 			sender_nickname = #{senderNickname},
 			send_time = #{sendTime},
@@ -59,11 +67,13 @@
 	
 	<sql id="updateWithoutNull">
 		<set>
+				<if test="receiverFpdId != null">receiver_fpd_id = #{receiverFpdId},</if>
 				<if test="receiverId != null">receiver_id = #{receiverId},</if>
 				<if test="receiverNickname != null">receiver_nickname = #{receiverNickname},</if>
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
 				<if test="name != null">name = #{name},</if>
 				<if test="content != null">content = #{content},</if>
+				<if test="senderFpdId != null">sender_fpd_id = #{senderFpdId},</if>
 				<if test="senderId != null">sender_id = #{senderId},</if>
 				<if test="senderNickname != null">sender_nickname = #{senderNickname},</if>
 				<if test="sendTime != null">send_time = #{sendTime},</if>
@@ -102,22 +112,26 @@
 	<insert id="insert"  parameterType="MessageDomain">
 		INSERT INTO t_tm_message (			
 				id,				
+				receiver_fpd_id,				
 				receiver_id,				
 				receiver_nickname,				
 				scene_id,				
 				name,				
 				content,				
+				sender_fpd_id,				
 				sender_id,				
 				sender_nickname,				
 				send_time				
 		)		
 		VALUES (	
 			#{id},
+			#{receiverFpdId},
 			#{receiverId},
 			#{receiverNickname},
 			#{sceneId},
 			#{name},
 			#{content},
+			#{senderFpdId},
 			#{senderId},
 			#{senderNickname},
 			#{sendTime}

@@ -77,6 +77,7 @@ public class SceneController {
 	public void enter(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		EnterSceneParam enterSceneParam = HttpRequestHandler.handle(request, EnterSceneParam.class);
 		enterSceneParam.setUserId(AuthThreadLocal.getUserId());
+		enterSceneParam.setToken(AuthThreadLocal.getToken());
 		EnterSceneResp enterSceneResp = sceneService.enterScene(enterSceneParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(enterSceneResp));
 	}

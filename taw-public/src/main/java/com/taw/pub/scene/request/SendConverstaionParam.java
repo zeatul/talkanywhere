@@ -4,71 +4,97 @@ import com.hawk.utility.check.CheckNull;
 
 public class SendConverstaionParam {
 	
-	
-	
-	public String getPostNickname() {
-		return postNickname;
-	}
 
-	public void setPostNickname(String postNickname) {
-		this.postNickname = postNickname;
-	}
-
-	public Long getrPostUserId() {
-		return rPostUserId;
-	}
-
-	public void setrPostUserId(Long rPostUserId) {
-		this.rPostUserId = rPostUserId;
-	}
-
-	public String getrPostNickname() {
-		return rPostNickname;
-	}
-
-	public void setrPostNickname(String rPostNickname) {
-		this.rPostNickname = rPostNickname;
-	}
-
-	public Long getFpdId() {
-		return fpdId;
-	}
-
-	public void setFpdId(Long fpdId) {
-		this.fpdId = fpdId;
-	}
 
 	public Long getSceneId() {
 		return sceneId;
 	}
 
+
 	public void setSceneId(Long sceneId) {
 		this.sceneId = sceneId;
 	}
+
 
 	public Long getPostUserId() {
 		return postUserId;
 	}
 
+
 	public void setPostUserId(Long postUserId) {
 		this.postUserId = postUserId;
 	}
+
+
+	public String getPostNickname() {
+		return postNickname;
+	}
+
+
+	public void setPostNickname(String postNickname) {
+		this.postNickname = postNickname;
+	}
+
 
 	public ComplexMessage getMessage() {
 		return message;
 	}
 
+
 	public void setMessage(ComplexMessage message) {
 		this.message = message;
 	}
 
-	public Long getrPostId() {
-		return rPostId;
+
+	public Long getRePostId() {
+		return rePostId;
 	}
 
-	public void setrPostId(Long rPostId) {
-		this.rPostId = rPostId;
+
+	public void setRePostId(Long rePostId) {
+		this.rePostId = rePostId;
 	}
+
+
+//	public Long getRePostUserId() {
+//		return rePostUserId;
+//	}
+//
+//
+//	public void setRePostUserId(Long rePostUserId) {
+//		this.rePostUserId = rePostUserId;
+//	}
+
+
+	public String getRePostNickname() {
+		return rePostNickname;
+	}
+
+
+	public void setRePostNickname(String rePostNickname) {
+		this.rePostNickname = rePostNickname;
+	}
+
+
+	public Long getPostUserFpdId() {
+		return postUserFpdId;
+	}
+
+
+	public void setPostUserFpdId(Long postUserFpdId) {
+		this.postUserFpdId = postUserFpdId;
+	}
+
+
+	public Long getRePostUserFpdId() {
+		return rePostUserFpdId;
+	}
+
+
+	public void setRePostUserFpdId(Long rePostUserFpdId) {
+		this.rePostUserFpdId = rePostUserFpdId;
+	}
+
 
 	/**
 	 * 场景主键
@@ -97,24 +123,30 @@ public class SendConverstaionParam {
 	/**
 	 * 被回复的发言ID
 	 */
-	private Long rPostId;
+	private Long rePostId;
 	
-	/**
-	 * 被回复的发言者ID
-	 */
-	private Long rPostUserId;
+//	/**
+//	 * 被回复的发言者ID
+//	 */
+//	private Long rePostUserId;
 	
 	
 	/**
 	 * 被回复的发言者昵称
 	 */
-	private String rPostNickname;
+	private String rePostNickname;
 		
 	/**
-	 * 分配给用户在场景的代理Id ，每次用户进入场景时分配
+	 * 发言者在场景唯一标识
 	 */
 	@CheckNull
-	private Long fpdId;
+	private Long postUserFpdId;
+	
+	
+	/**
+	 * 被回复的发言者在场景唯一标识
+	 */
+	private Long rePostUserFpdId;
 	
 
 }

@@ -9,12 +9,22 @@ public class AuthThreadLocal {
 	
 	private static ThreadLocal<Long> threadLoaclUserId = new ThreadLocal<Long>();
 	
+	private static ThreadLocal<String> threadLocalToken = new ThreadLocal<String>();
+	
 	public static Long getUserId(){
 		return threadLoaclUserId.get();
 	}
 	
 	public static void setUserId(Long userId){
 		threadLoaclUserId.set(userId);
+	}
+	
+	public static String getToken(){
+		return threadLocalToken.get();
+	}
+	
+	public static void setToken(String token){
+		threadLocalToken.set(token);
 	}
 
 }
