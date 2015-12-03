@@ -50,7 +50,7 @@ public class BookmarkService {
 		CheckTools.check(queryBookmarkParam);
 		Map<String,Object> params = SqlParamHelper.generatePageParams("last_enter_time desc", queryBookmarkParam.getOffset(),queryBookmarkParam.getLimit());
 		params.put("userId", queryBookmarkParam.getUserId());
-		return bookmarkMapper.loadBookmarkDynamic(params);
+		return bookmarkMapper.loadDynamic(params);
 	}
 	
 

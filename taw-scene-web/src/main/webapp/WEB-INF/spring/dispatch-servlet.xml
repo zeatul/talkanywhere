@@ -19,15 +19,15 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<bean class="com.taw.scene.spring.web.CommonExceptionResolver" />
+	<bean class="com.taw.user.spring.web.CommonExceptionResolver" />
 
 	<!-- 注解请求映射 -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="order" value="1"></property>
 		<property name="interceptors">
 			<list>
-				<bean class="com.taw.scene.spring.web.LoggingInterceptor"/>
-				<bean class="com.taw.scene.spring.web.AccessInterceptor"/>
+				<bean class="com.taw.user.spring.web.LoggingInterceptor"/>
+				<bean class="com.taw.user.spring.web.AccessInterceptor"/>
 			</list>
 		</property>
 	</bean>

@@ -63,7 +63,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadPartnerDynamic" parameterType="hashmap" resultType="PartnerDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="PartnerDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_um_partner
@@ -107,19 +107,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updatePartner" parameterType="PartnerDomain">
+	<update id="update" parameterType="PartnerDomain">
 		UPDATE t_um_partner	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updatePartnerWithoutNull" parameterType="PartnerDomain">
+	<update id="updateWithoutNull" parameterType="PartnerDomain">
 		UPDATE t_um_partner
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updatePartnerDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_um_partner	
 		<include refid="update" />
 		<include refid="where_old" />

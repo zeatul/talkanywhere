@@ -88,7 +88,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadConversationDynamic" parameterType="hashmap" resultType="ConversationDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="ConversationDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_tm_conversation
@@ -142,19 +142,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateConversation" parameterType="ConversationDomain">
+	<update id="update" parameterType="ConversationDomain">
 		UPDATE t_tm_conversation	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateConversationWithoutNull" parameterType="ConversationDomain">
+	<update id="updateWithoutNull" parameterType="ConversationDomain">
 		UPDATE t_tm_conversation
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateConversationDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_tm_conversation	
 		<include refid="update" />
 		<include refid="where_old" />

@@ -147,7 +147,7 @@ public class LoginService {
 		String useIdStr = redisClient.get(token);
 		
 		if (StringTools.isNullOrEmpty(useIdStr)){
-			LoginDomain loginDomain = loginMapper.loadLogin(token);			
+			LoginDomain loginDomain = loginMapper.load(token);			
 			if (loginDomain == null){
 				return null;
 			}else{

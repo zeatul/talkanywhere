@@ -100,7 +100,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadLoginDynamic" parameterType="hashmap" resultType="LoginDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="LoginDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_um_login
@@ -158,19 +158,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateLogin" parameterType="LoginDomain">
+	<update id="update" parameterType="LoginDomain">
 		UPDATE t_um_login	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateLoginWithoutNull" parameterType="LoginDomain">
+	<update id="updateWithoutNull" parameterType="LoginDomain">
 		UPDATE t_um_login
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateLoginDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_um_login	
 		<include refid="update" />
 		<include refid="where_old" />

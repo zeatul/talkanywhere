@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface LoginMapper  {
 
-	LoginDomain loadLogin(@Param("token")String token );
+	LoginDomain load(@Param("token")String token );
 	
-	List<LoginDomain> loadLoginDynamic(Map<String,Object> params);
+	List<LoginDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface LoginMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updateLogin(LoginDomain loginDomain);
+	int update(LoginDomain loginDomain);
 	
-	int updateLoginWithoutNull(LoginDomain loginDomain);
+	int updateWithoutNull(LoginDomain loginDomain);
 	
 	int update(Map<String,Object> params);
 	

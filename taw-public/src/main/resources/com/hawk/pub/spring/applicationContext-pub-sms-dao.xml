@@ -7,6 +7,12 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
+	<!-- enable autowire -->
+	<context:annotation-config />
+
+	<!-- enable transaction demarcation with annotations -->
+	<tx:annotation-driven transaction-manager="transactionManager_sms_service"/>
+
 
 	<bean id="dataSource_sms_service" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		

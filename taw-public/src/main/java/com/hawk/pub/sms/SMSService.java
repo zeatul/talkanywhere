@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hawk.pub.pkgen.PkGenerator;
-import com.hawk.pub.sms.domain.MessageDomain;
-import com.hawk.pub.sms.mapper.MessageMapper;
+import com.hawk.pub.sms.domain.SmsDomain;
+import com.hawk.pub.sms.mapper.SmsMapper;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
@@ -20,13 +20,13 @@ public class SMSService {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private MessageMapper messageMapper;
+	private SmsMapper smsMapper;
 	
 	public void SendMessage(SendMessageParam param) throws Exception{
 		
 		CheckTools.check(param);
 		
-		MessageDomain messageDomain = new MessageDomain();
+		SmsDomain messageDomain = new SmsDomain();
 		
 		DomainTools.copy(param, messageDomain);
 
@@ -40,7 +40,7 @@ public class SMSService {
 		messageDomain.setSendTime(null);
 		messageDomain.setStatus(EnumMessageStatus.UNSENT.toString());
 		
-		messageMapper.insert(messageDomain);
+		smsMapper.insert(messageDomain);
 		
 		logger.info("Success to persist sms message!");
 		

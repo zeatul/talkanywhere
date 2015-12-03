@@ -26,7 +26,7 @@ public class MessageService {
 	 * @param sendMessageParam
 	 * @throws Exception 
 	 */
-	public void send(SendMessageParam sendMessageParam) throws Exception{
+	public Long send(SendMessageParam sendMessageParam) throws Exception{
 		CheckTools.check(sendMessageParam);
 		
 		Long receiverId = sendMessageParam.getReceiverId();
@@ -68,5 +68,7 @@ public class MessageService {
 		/**
 		 * TODO:通知在线用户 或者 push 用户
 		 */
+		
+		return messageDomain.getId();
 	}
 }

@@ -39,7 +39,7 @@ public class BookmarkController {
 	 */
 	@RequestMapping(value = "/scene/bookmark/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String helloWorld(Locale locale, Model model) throws IOException {
-		model.addAttribute("msg", "/user/bookmark/hello.do");
+		model.addAttribute("msg", "/scene/bookmark/hello.do");
 		return "success";
 	}
 	

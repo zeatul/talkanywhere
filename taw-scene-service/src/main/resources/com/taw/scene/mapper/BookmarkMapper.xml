@@ -63,7 +63,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadBookmarkDynamic" parameterType="hashmap" resultType="BookmarkDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="BookmarkDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_tm_bookmark
@@ -107,19 +107,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateBookmark" parameterType="BookmarkDomain">
+	<update id="update" parameterType="BookmarkDomain">
 		UPDATE t_tm_bookmark	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateBookmarkWithoutNull" parameterType="BookmarkDomain">
+	<update id="updateWithoutNull" parameterType="BookmarkDomain">
 		UPDATE t_tm_bookmark
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateBookmarkDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_tm_bookmark	
 		<include refid="update" />
 		<include refid="where_old" />

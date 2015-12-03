@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.hawk.pub.sms.mapper.FeedbackMapper">
+<mapper namespace="com.hawk.pub.sms.mapper.SmsFeedbackMapper">
 
 	<sql id="columns">
 		id as "id" ,
@@ -51,17 +51,17 @@
 		</trim>
 	</sql>
 	
-	<select id="load"  resultType="FeedbackDomain">
+	<select id="load"  resultType="SmsFeedbackDomain">
 		SELECT 
 		<include refid="columns" />
-		FROM t_sm_feedback
+		FROM t_sm_sms_feedback
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadFeedbackDynamic" parameterType="hashmap" resultType="FeedbackDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="SmsFeedbackDomain">
 		SELECT 		
 		<include refid="columns" />
-		FROM t_sm_feedback
+		FROM t_sm_sms_feedback
 		<include refid="where" />
 		<if test="_orderby != null">ORDER BY ${_orderby}</if>
 		<if test="_offset != null">LIMIT #{_offset},#{_limit}</if>	
@@ -70,12 +70,12 @@
 
 	<select id="count"  parameterType="hashmap" resultType="integer">
 		SELECT count(*) 
-		FROM t_sm_feedback
+		FROM t_sm_sms_feedback
 		<include refid="where" />
 	</select>
 	
-	<insert id="insert"  parameterType="FeedbackDomain">
-		INSERT INTO t_sm_feedback (			
+	<insert id="insert"  parameterType="SmsFeedbackDomain">
+		INSERT INTO t_sm_sms_feedback (			
 				id,				
 				message_id,				
 				send_time,				
@@ -90,30 +90,30 @@
 	</insert>
 	
 	<delete id="delete" >
-		DELETE FROM t_sm_feedback
+		DELETE FROM t_sm_sms_feedback
 		<include refid="pkwhere" />	
 	#end
 	</delete>
 	
 	<delete id="deleteDynamic" parameterType="hashmap">
-		DELETE FROM t_sm_feedback
+		DELETE FROM t_sm_sms_feedback
 		<include refid="where" />
 	</delete>
 
-	<update id="updateFeedback" parameterType="FeedbackDomain">
-		UPDATE t_sm_feedback	
+	<update id="update" parameterType="SmsFeedbackDomain">
+		UPDATE t_sm_sms_feedback	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateFeedbackWithoutNull" parameterType="FeedbackDomain">
-		UPDATE t_sm_feedback
+	<update id="updateWithoutNull" parameterType="SmsFeedbackDomain">
+		UPDATE t_sm_sms_feedback
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateFeedbackDynamic" parameterType="hashmap">
-		UPDATE t_sm_feedback	
+	<update id="updateDynamic" parameterType="hashmap">
+		UPDATE t_sm_sms_feedback	
 		<include refid="update" />
 		<include refid="where_old" />
 	</update>

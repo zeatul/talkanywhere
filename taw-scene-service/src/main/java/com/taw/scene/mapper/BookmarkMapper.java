@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface BookmarkMapper  {
 
-	BookmarkDomain loadBookmark(@Param("id")Long id );
+	BookmarkDomain load(@Param("id")Long id );
 	
-	List<BookmarkDomain> loadBookmarkDynamic(Map<String,Object> params);
+	List<BookmarkDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface BookmarkMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updateBookmark(BookmarkDomain bookmarkDomain);
+	int update(BookmarkDomain bookmarkDomain);
 	
-	int updateBookmarkWithoutNull(BookmarkDomain bookmarkDomain);
+	int updateWithoutNull(BookmarkDomain bookmarkDomain);
 	
 	int update(Map<String,Object> params);
 	

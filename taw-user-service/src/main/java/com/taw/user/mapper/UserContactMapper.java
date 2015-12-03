@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface UserContactMapper  {
 
-	UserContactDomain loadUserContact(@Param("id")Long id );
+	UserContactDomain load(@Param("id")Long id );
 	
-	List<UserContactDomain> loadUserContactDynamic(Map<String,Object> params);
+	List<UserContactDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface UserContactMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updateUserContact(UserContactDomain userContactDomain);
+	int update(UserContactDomain userContactDomain);
 	
-	int updateUserContactWithoutNull(UserContactDomain userContactDomain);
+	int updateWithoutNull(UserContactDomain userContactDomain);
 	
 	int update(Map<String,Object> params);
 	

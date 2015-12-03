@@ -1,5 +1,7 @@
 package com.taw.pub.scene.com;
 
+import java.math.BigDecimal;
+
 import com.hawk.utility.check.CheckNull;
 
 /**
@@ -23,6 +25,15 @@ public class MapPoint {
 
 	public void setLat(java.math.BigDecimal lat) {
 		this.lat = lat;
+	}
+
+	public MapPoint(BigDecimal lng, BigDecimal lat) {
+		this.lng = lng;
+		this.lat = lat;
+	}
+	
+	public MapPoint() {
+		
 	}
 
 	/*经度*/

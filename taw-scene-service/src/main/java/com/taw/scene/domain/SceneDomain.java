@@ -30,22 +30,25 @@ public class SceneDomain implements Serializable {
 	private java.math.BigDecimal lat;
 	
 	/*国家*/
-	private String country;
+	private Long country;
 	
 	/*省*/
-	private String province;
+	private Long province;
 	
 	/*市*/
-	private String city;
+	private Long city;
 	
 	/*区县*/
-	private String county;
+	private Long county;
 	
 	/*乡镇*/
-	private String town;
+	private Long town;
 	
 	/*地区/商圈*/
-	private String region;
+	private Long region;
+	
+	/*全地址*/
+	private String address;
 	
 	
 	/**
@@ -132,7 +135,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @return 国家
 	 */
-	public String getCountry(){
+	public Long getCountry(){
 		return country;
 	}
 	
@@ -140,7 +143,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @param country 国家
 	 */	
-	public void setCountry (String country) {
+	public void setCountry (Long country) {
 		this.country = country;
 	}
 	
@@ -148,7 +151,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @return 省
 	 */
-	public String getProvince(){
+	public Long getProvince(){
 		return province;
 	}
 	
@@ -156,7 +159,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @param province 省
 	 */	
-	public void setProvince (String province) {
+	public void setProvince (Long province) {
 		this.province = province;
 	}
 	
@@ -164,7 +167,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @return 市
 	 */
-	public String getCity(){
+	public Long getCity(){
 		return city;
 	}
 	
@@ -172,7 +175,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @param city 市
 	 */	
-	public void setCity (String city) {
+	public void setCity (Long city) {
 		this.city = city;
 	}
 	
@@ -180,7 +183,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @return 区县
 	 */
-	public String getCounty(){
+	public Long getCounty(){
 		return county;
 	}
 	
@@ -188,7 +191,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @param county 区县
 	 */	
-	public void setCounty (String county) {
+	public void setCounty (Long county) {
 		this.county = county;
 	}
 	
@@ -196,7 +199,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @return 乡镇
 	 */
-	public String getTown(){
+	public Long getTown(){
 		return town;
 	}
 	
@@ -204,7 +207,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @param town 乡镇
 	 */	
-	public void setTown (String town) {
+	public void setTown (Long town) {
 		this.town = town;
 	}
 	
@@ -212,7 +215,7 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @return 地区/商圈
 	 */
-	public String getRegion(){
+	public Long getRegion(){
 		return region;
 	}
 	
@@ -220,8 +223,24 @@ public class SceneDomain implements Serializable {
 	 * 
 	 * @param region 地区/商圈
 	 */	
-	public void setRegion (String region) {
+	public void setRegion (Long region) {
 		this.region = region;
+	}
+	
+	/**
+	 * 
+	 * @return 全地址
+	 */
+	public String getAddress(){
+		return address;
+	}
+	
+	/**
+	 * 
+	 * @param address 全地址
+	 */	
+	public void setAddress (String address) {
+		this.address = address;
 	}
 	
 

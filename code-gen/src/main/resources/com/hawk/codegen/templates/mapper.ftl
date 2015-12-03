@@ -13,10 +13,10 @@ import org.apache.ibatis.annotations.Param;
 public interface ${className}Mapper  {
 
 	<#if (key?? && key?size>0)>
-	${className}Domain load${className}(<#list key as field>@Param("${field.fieldName}")${field.filedType} ${field.fieldName}<#if field_has_next>,</#if> </#list>);
+	${className}Domain load(<#list key as field>@Param("${field.fieldName}")${field.filedType} ${field.fieldName}<#if field_has_next>,</#if> </#list>);
 	</#if>
 	
-	List<${className}Domain> load${className}Dynamic(Map<String,Object> params);
+	List<${className}Domain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -28,9 +28,9 @@ public interface ${className}Mapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int update${className}(${className}Domain ${className?uncap_first}Domain);
+	int update(${className}Domain ${className?uncap_first}Domain);
 	
-	int update${className}WithoutNull(${className}Domain ${className?uncap_first}Domain);
+	int updateWithoutNull(${className}Domain ${className?uncap_first}Domain);
 	
 	int update(Map<String,Object> params);
 	

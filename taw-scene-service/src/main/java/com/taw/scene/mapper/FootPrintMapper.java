@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface FootPrintMapper  {
 
-	FootPrintDomain loadFootPrint(@Param("id")Long id );
+	FootPrintDomain load(@Param("id")Long id );
 	
-	List<FootPrintDomain> loadFootPrintDynamic(Map<String,Object> params);
+	List<FootPrintDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface FootPrintMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updateFootPrint(FootPrintDomain footPrintDomain);
+	int update(FootPrintDomain footPrintDomain);
 	
-	int updateFootPrintWithoutNull(FootPrintDomain footPrintDomain);
+	int updateWithoutNull(FootPrintDomain footPrintDomain);
 	
 	int update(Map<String,Object> params);
 	

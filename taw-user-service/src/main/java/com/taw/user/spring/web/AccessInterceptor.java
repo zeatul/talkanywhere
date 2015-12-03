@@ -33,6 +33,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	
 	public AccessInterceptor(){
 		protectedPaths = new HashSet<String>();
+		protectedPaths.add("/scene/enter.do");
 	}
 
 

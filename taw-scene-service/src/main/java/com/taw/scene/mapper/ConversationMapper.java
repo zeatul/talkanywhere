@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ConversationMapper  {
 
-	ConversationDomain loadConversation(@Param("id")Long id );
+	ConversationDomain load(@Param("id")Long id );
 	
-	List<ConversationDomain> loadConversationDynamic(Map<String,Object> params);
+	List<ConversationDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface ConversationMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updateConversation(ConversationDomain conversationDomain);
+	int update(ConversationDomain conversationDomain);
 	
-	int updateConversationWithoutNull(ConversationDomain conversationDomain);
+	int updateWithoutNull(ConversationDomain conversationDomain);
 	
 	int update(Map<String,Object> params);
 	

@@ -107,7 +107,7 @@ public class UserService {
 		update.setPassword(signedPassword(updatePasswordParam.getNewPwd()));
 		update.setUpdt(new Date());
 		
-		userMapper.updateUserWithoutNull(userDomain);
+		userMapper.updateWithoutNull(userDomain);
 				
 	}
 	
@@ -122,7 +122,7 @@ public class UserService {
 			return null;
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("mobile", mobile);
-		List<UserDomain> list = userMapper.loadUserDynamic(params);
+		List<UserDomain> list = userMapper.loadDynamic(params);
 		if (list.size() == 0)
 			return null;
 		UserDomain userDomain = list.get(0);

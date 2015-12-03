@@ -97,7 +97,7 @@ create table t_tm_foot_print
    id                   bigint(20) not null comment '主键',
    user_id              bigint(20) not null comment '用户主键',
    scene_id             bigint(20) not null comment '场景主键',
-   scene_name           varchar(20) comment '场景名称',
+   scene_name           varchar(50) comment '场景名称',
    last_enter_time      datetime comment '最后进入时间',
    last_leave_time      datetime comment '最后离开时间',
    enter_times          integer comment '进入次数累计',
@@ -125,8 +125,8 @@ create table t_tm_foot_print_detail
    id                   bigint(20) not null comment '主键',
    user_id              bigint(20) not null comment '用户主键',
    scene_id             bigint(20) not null comment '场景主键',
-   scene_name           varchar(20) comment '场景名称',
-   nickname             varchar(20) comment '分配昵称',
+   scene_name           varchar(50) comment '场景名称',
+   nickname             varchar(50) comment '分配昵称',
    in_time              datetime comment '最后进入时间',
    out_time             datetime comment '进入次数累计',
    stay_span            integer comment '总停留时间',
@@ -155,6 +155,7 @@ create table t_tm_message
    receiver_id          bigint(20) comment '接收者ID',
    receiver_nickname    varchar(50) comment '接收者昵称',
    scene_id             bigint(20) comment '场景ID',
+   name                 varchar(50) comment '场景名称',
    content              varchar(500) comment '内容',
    sender_id            bigint(20) comment '发送者ID',
    sender_nickname      varchar(50) comment '发送者昵称',
@@ -185,12 +186,13 @@ create table t_tm_scene
    kind                 char(1) comment '场景类型',
    lng                  decimal(17,10) comment '经度',
    lat                  decimal(17,10) comment '纬度',
-   country              varchar(20) comment '国家',
-   province             varchar(20) comment '省',
-   city                 varchar(20) comment '市',
-   county               varchar(20) comment '区县',
-   town                 varchar(20) comment '乡镇',
-   region               varchar(20) comment '地区/商圈',
+   country              bigint(20) comment '国家',
+   province             bigint(20) comment '省',
+   city                 bigint(20) comment '市',
+   county               bigint(20) comment '区县',
+   town                 bigint(20) comment '乡镇',
+   region               bigint(20) comment '地区/商圈',
+   address              varchar(500) comment '全地址',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -228,7 +230,7 @@ create table t_tm_scene_tag
    id                   bigint(20) not null comment '主键',
    scene_id             bigint(20) not null comment '场景主键',
    tag_id               bigint(20) not null comment '标签主键',
-   tag_name             varchar(20) comment '标签内容',
+   tag_name             varchar(50) comment '标签内容',
    crdt                 datetime comment '创建日期',
    primary key (id)
 )
@@ -244,4 +246,3 @@ create unique index u_tm_sctag1 on t_tm_scene_tag
    scene_id,
    tag_id
 );
-

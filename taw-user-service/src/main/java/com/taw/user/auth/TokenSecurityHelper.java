@@ -1,7 +1,5 @@
 package com.taw.user.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.hawk.utility.DateTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.security.DESTools;
@@ -9,7 +7,12 @@ import com.taw.user.configure.UserServiceConfigure;
 
 public class TokenSecurityHelper {
 
-	@Autowired
+	
+
+	public void setUserServiceConfigure(UserServiceConfigure userServiceConfigure) {
+		this.userServiceConfigure = userServiceConfigure;
+	}
+
 	private UserServiceConfigure userServiceConfigure;
 
 		
@@ -51,7 +54,7 @@ public class TokenSecurityHelper {
 			if (StringTools.isNullOrEmpty(ticket))
 				throw new RuntimeException("the ticket is null");
 
-			String[] strArray = DESTools.decrypt(ticket, userServiceConfigure.getTokenKey()).split("|");
+			String[] strArray = DESTools.decrypt(ticket, userServiceConfigure.getTokenKey()).split("\\|");
 			long now = DateTools.now().getTime();
 
 			long send = new Long(strArray[1]);

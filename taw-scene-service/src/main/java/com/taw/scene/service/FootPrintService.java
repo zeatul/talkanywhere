@@ -29,7 +29,7 @@ public class FootPrintService {
 		CheckTools.check(queryFootPrintParam);
 		Map<String,Object> params = SqlParamHelper.generatePageParams("last_enter_time desc", queryFootPrintParam.getOffset(),queryFootPrintParam.getLimit());
 		params.put("userId", queryFootPrintParam.getUserId());
-		return footPrintMapper.loadFootPrintDynamic(params);
+		return footPrintMapper.loadDynamic(params);
 	}
 	
 
@@ -44,7 +44,7 @@ public class FootPrintService {
 			 */
 		}
 		
-		footPrintDetailDomain = footPrintDetailMapper.loadFootPrintDetail(id);
+		footPrintDetailDomain = footPrintDetailMapper.load(id);
 		
 		if (cached && footPrintDetailDomain != null){
 			/**
@@ -64,7 +64,7 @@ public class FootPrintService {
 		params.put("userId", userId);
 		params.put("sceneId", sceneId);
 		
-		List<FootPrintDomain> list = footPrintMapper.loadFootPrintDynamic(params);
+		List<FootPrintDomain> list = footPrintMapper.loadDynamic(params);
 		
 		if (list.size() == 0)
 			return null;
@@ -88,7 +88,7 @@ public class FootPrintService {
 			 */
 		}
 		
-		footPrintDomain = footPrintMapper.loadFootPrint(id);
+		footPrintDomain = footPrintMapper.load(id);
 		
 		if (cached && footPrintDomain != null){
 			/**

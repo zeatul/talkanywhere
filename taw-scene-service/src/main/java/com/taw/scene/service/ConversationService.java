@@ -31,7 +31,7 @@ public class ConversationService {
 	 * @param sendConverstaionParam
 	 * @throws Exception
 	 */
-	public void send(SendConverstaionParam sendConverstaionParam) throws Exception {
+	public Long send(SendConverstaionParam sendConverstaionParam) throws Exception {
 		CheckTools.check(sendConverstaionParam);
 		ComplexMessage complexMessage = sendConverstaionParam.getMessage();
 		List<String> pics = complexMessage.getPics();
@@ -87,6 +87,8 @@ public class ConversationService {
 		/**
 		 * TODO:通知在线用户 或者 push 用户
 		 */
+		
+		return conversationDomain.getId();
 
 	}
 

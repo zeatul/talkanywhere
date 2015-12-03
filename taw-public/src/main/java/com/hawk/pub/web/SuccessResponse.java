@@ -76,7 +76,7 @@ public class SuccessResponse implements IResponse{
 	}
 	
 	/**
-	 * 构建集合对象
+	 * 构建集合对象 ,size = 集合size ，这个说明是查询的全数据的大小
 	 * @param values
 	 * @return
 	 */
@@ -88,5 +88,20 @@ public class SuccessResponse implements IResponse{
 		return response;
 		
 	}
+	
+	/**
+	 * 构建集合对象 ，分页查询时，返回部分结果，和总数据量大小
+	 * @param values 数据集合
+	 * @param size 数据库内的符合查询条件的数据大小
+	 * @return
+	 */
+	public static <K> SuccessResponse build(Collection<K> values ,int size){
+		CollectData<K> c = new CollectData<K>();
+		c.setValues(values);
+		c.setSize(size);
+		SuccessResponse response = new SuccessResponse(c);
+		return response;
+		
+	} 
 	
 }

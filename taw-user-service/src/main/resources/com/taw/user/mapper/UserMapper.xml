@@ -128,7 +128,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadUserDynamic" parameterType="hashmap" resultType="UserDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="UserDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_um_user
@@ -198,19 +198,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateUser" parameterType="UserDomain">
+	<update id="update" parameterType="UserDomain">
 		UPDATE t_um_user	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateUserWithoutNull" parameterType="UserDomain">
+	<update id="updateWithoutNull" parameterType="UserDomain">
 		UPDATE t_um_user
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateUserDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_um_user	
 		<include refid="update" />
 		<include refid="where_old" />

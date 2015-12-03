@@ -78,7 +78,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadFootPrintDynamic" parameterType="hashmap" resultType="FootPrintDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="FootPrintDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_tm_foot_print
@@ -128,19 +128,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateFootPrint" parameterType="FootPrintDomain">
+	<update id="update" parameterType="FootPrintDomain">
 		UPDATE t_tm_foot_print	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateFootPrintWithoutNull" parameterType="FootPrintDomain">
+	<update id="updateWithoutNull" parameterType="FootPrintDomain">
 		UPDATE t_tm_foot_print
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateFootPrintDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_tm_foot_print	
 		<include refid="update" />
 		<include refid="where_old" />

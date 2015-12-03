@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface MessageMapper  {
 
-	MessageDomain loadMessage(@Param("id")Long id );
+	MessageDomain load(@Param("id")Long id );
 	
-	List<MessageDomain> loadMessageDynamic(Map<String,Object> params);
+	List<MessageDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface MessageMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updateMessage(MessageDomain messageDomain);
+	int update(MessageDomain messageDomain);
 	
-	int updateMessageWithoutNull(MessageDomain messageDomain);
+	int updateWithoutNull(MessageDomain messageDomain);
 	
 	int update(Map<String,Object> params);
 	

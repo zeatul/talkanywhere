@@ -63,7 +63,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadSceneTagDynamic" parameterType="hashmap" resultType="SceneTagDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="SceneTagDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_tm_scene_tag
@@ -107,19 +107,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateSceneTag" parameterType="SceneTagDomain">
+	<update id="update" parameterType="SceneTagDomain">
 		UPDATE t_tm_scene_tag	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateSceneTagWithoutNull" parameterType="SceneTagDomain">
+	<update id="updateWithoutNull" parameterType="SceneTagDomain">
 		UPDATE t_tm_scene_tag
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateSceneTagDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_tm_scene_tag	
 		<include refid="update" />
 		<include refid="where_old" />

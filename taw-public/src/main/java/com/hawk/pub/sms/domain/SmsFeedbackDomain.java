@@ -5,12 +5,12 @@ import java.util.Date;
 
 
 /**
- * t_sm_feedback
+ * t_sm_sms_feedback
  * 
  * 
  * @author Code-Gen
  */
-public class FeedbackDomain implements Serializable {
+public class SmsFeedbackDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 	

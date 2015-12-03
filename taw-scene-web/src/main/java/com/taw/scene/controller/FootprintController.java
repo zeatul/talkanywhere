@@ -49,4 +49,5 @@ public class FootprintController {
 		HttpResponseHandler.handle(response, SuccessResponse.build(list));
 	}
 
+	
 }

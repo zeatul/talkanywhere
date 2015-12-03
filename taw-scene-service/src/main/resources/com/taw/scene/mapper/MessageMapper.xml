@@ -9,6 +9,7 @@
 		receiver_id as "receiverId" ,
 		receiver_nickname as "receiverNickname" ,
 		scene_id as "sceneId" ,
+		name as "name" ,
 		content as "content" ,
 		sender_id as "senderId" ,
 		sender_nickname as "senderNickname" ,
@@ -21,6 +22,7 @@
 			<if test="receiverId != null"> AND receiver_id = #{receiverId}  </if>
 			<if test="receiverNickname != null"> AND receiver_nickname = #{receiverNickname}  </if>
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
+			<if test="name != null"> AND name = #{name}  </if>
 			<if test="content != null"> AND content = #{content}  </if>
 			<if test="senderId != null"> AND sender_id = #{senderId}  </if>
 			<if test="senderNickname != null"> AND sender_nickname = #{senderNickname}  </if>
@@ -34,6 +36,7 @@
 			AND receiver_id = #{old_receiverId}
 			AND receiver_nickname = #{old_receiverNickname}
 			AND scene_id = #{old_sceneId}
+			AND name = #{old_name}
 			AND content = #{old_content}
 			AND sender_id = #{old_senderId}
 			AND sender_nickname = #{old_senderNickname}
@@ -46,6 +49,7 @@
 			receiver_id = #{receiverId},
 			receiver_nickname = #{receiverNickname},
 			scene_id = #{sceneId},
+			name = #{name},
 			content = #{content},
 			sender_id = #{senderId},
 			sender_nickname = #{senderNickname},
@@ -58,6 +62,7 @@
 				<if test="receiverId != null">receiver_id = #{receiverId},</if>
 				<if test="receiverNickname != null">receiver_nickname = #{receiverNickname},</if>
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
+				<if test="name != null">name = #{name},</if>
 				<if test="content != null">content = #{content},</if>
 				<if test="senderId != null">sender_id = #{senderId},</if>
 				<if test="senderNickname != null">sender_nickname = #{senderNickname},</if>
@@ -78,7 +83,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadMessageDynamic" parameterType="hashmap" resultType="MessageDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="MessageDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_tm_message
@@ -100,6 +105,7 @@
 				receiver_id,				
 				receiver_nickname,				
 				scene_id,				
+				name,				
 				content,				
 				sender_id,				
 				sender_nickname,				
@@ -110,6 +116,7 @@
 			#{receiverId},
 			#{receiverNickname},
 			#{sceneId},
+			#{name},
 			#{content},
 			#{senderId},
 			#{senderNickname},
@@ -128,19 +135,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateMessage" parameterType="MessageDomain">
+	<update id="update" parameterType="MessageDomain">
 		UPDATE t_tm_message	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateMessageWithoutNull" parameterType="MessageDomain">
+	<update id="updateWithoutNull" parameterType="MessageDomain">
 		UPDATE t_tm_message
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateMessageDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_tm_message	
 		<include refid="update" />
 		<include refid="where_old" />

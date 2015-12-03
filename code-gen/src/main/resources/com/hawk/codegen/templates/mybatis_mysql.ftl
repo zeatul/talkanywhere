@@ -65,7 +65,7 @@
 	</select>
 	</#if>
 	
-	<select id="load${className}Dynamic" parameterType="hashmap" resultType="${className}Domain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="${className}Domain">
 		SELECT 		
 		<include refid="columns" />
 		FROM ${tableName}
@@ -108,7 +108,7 @@
 	</delete>
 
 	<#if (key?? && key?size>0)>
-	<update id="update${className}" parameterType="${className}Domain">
+	<update id="update" parameterType="${className}Domain">
 		UPDATE ${tableName}	
 		<include refid="update" />
 		<include refid="pkwhere" />	
@@ -116,14 +116,14 @@
 	</#if>
 	
 	<#if (key?? && key?size>0)>
-	<update id="update${className}WithoutNull" parameterType="${className}Domain">
+	<update id="updateWithoutNull" parameterType="${className}Domain">
 		UPDATE ${tableName}
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	</#if>
 	
-	<update id="update${className}Dynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE ${tableName}	
 		<include refid="update" />
 		<include refid="where_old" />

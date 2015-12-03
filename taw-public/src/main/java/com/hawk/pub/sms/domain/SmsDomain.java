@@ -5,12 +5,12 @@ import java.util.Date;
 
 
 /**
- * t_sm_message
+ * t_sm_sms
  * 
  * 
  * @author Code-Gen
  */
-public class MessageDomain implements Serializable {
+public class SmsDomain implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 	

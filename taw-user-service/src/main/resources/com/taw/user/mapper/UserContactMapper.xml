@@ -73,7 +73,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadUserContactDynamic" parameterType="hashmap" resultType="UserContactDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="UserContactDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_um_user_contact
@@ -121,19 +121,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateUserContact" parameterType="UserContactDomain">
+	<update id="update" parameterType="UserContactDomain">
 		UPDATE t_um_user_contact	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateUserContactWithoutNull" parameterType="UserContactDomain">
+	<update id="updateWithoutNull" parameterType="UserContactDomain">
 		UPDATE t_um_user_contact
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateUserContactDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_um_user_contact	
 		<include refid="update" />
 		<include refid="where_old" />

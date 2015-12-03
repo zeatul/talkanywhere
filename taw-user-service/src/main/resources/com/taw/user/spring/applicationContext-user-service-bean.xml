@@ -10,7 +10,16 @@
 	<bean id="taw_user_service_sms_service" class="com.hawk.pub.sms.SMSService"/>
 
 
-	<bean class="com.taw.user.auth.TokenSecurityHelper"/>
+	<bean class="com.taw.user.auth.TokenSecurityHelper">
+		<property name="userServiceConfigure" ref="userServiceConfigure"/>
+	</bean>
+	
+	
+	<bean id="userServiceConfigure" class="com.taw.user.configure.UserServiceConfigure">
+		<property name="pwdMd5Key" value="${maven.taw-user-service.pwd_md5_key}"/>
+		<property name="prod" value="${maven.taw-user-service.prod}"/>
+		<property name="tokenKey" value="${maven.taw-user-service.tokenKey}"/>
+	</bean>
 
 
 

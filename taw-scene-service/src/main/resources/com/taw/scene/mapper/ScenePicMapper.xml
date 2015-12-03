@@ -55,7 +55,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadScenePicDynamic" parameterType="hashmap" resultType="ScenePicDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="ScenePicDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_tm_scene_pic
@@ -95,19 +95,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateScenePic" parameterType="ScenePicDomain">
+	<update id="update" parameterType="ScenePicDomain">
 		UPDATE t_tm_scene_pic	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateScenePicWithoutNull" parameterType="ScenePicDomain">
+	<update id="updateWithoutNull" parameterType="ScenePicDomain">
 		UPDATE t_tm_scene_pic
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateScenePicDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_tm_scene_pic	
 		<include refid="update" />
 		<include refid="where_old" />

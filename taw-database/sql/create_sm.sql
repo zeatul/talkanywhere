@@ -4,29 +4,16 @@
 
 use sm;
 
-drop table if exists t_sm_feedback;
+drop index i_sm_m1 on t_sm_sms;
 
-drop index i_sm_m1 on t_sm_message;
+drop table if exists t_sm_sms;
 
-drop table if exists t_sm_message;
-
-/*==============================================================*/
-/* Table: t_sm_feedback                                         */
-/*==============================================================*/
-create table t_sm_feedback
-(
-   id                   bigint(20) not null comment '主键',
-   message_id           bigint(20) not null comment '消息主键',
-   send_time            datetime comment '发送时间',
-   feedback             varchar(500) comment '失败反馈',
-   primary key (id)
-)
-engine=innodb default charset=utf8;
+drop table if exists t_sm_sms_feedback;
 
 /*==============================================================*/
-/* Table: t_sm_message                                          */
+/* Table: t_sm_sms                                              */
 /*==============================================================*/
-create table t_sm_message
+create table t_sm_sms
 (
    id                   bigint(20) not null comment '主键',
    mobile               varchar(20) comment '手机号',
@@ -46,7 +33,20 @@ engine=innodb default charset=utf8;
 /*==============================================================*/
 /* Index: i_sm_m1                                               */
 /*==============================================================*/
-create index i_sm_m1 on t_sm_message
+create index i_sm_m1 on t_sm_sms
 (
    mobile
 );
+
+/*==============================================================*/
+/* Table: t_sm_sms_feedback                                     */
+/*==============================================================*/
+create table t_sm_sms_feedback
+(
+   id                   bigint(20) not null comment '主键',
+   message_id           bigint(20) not null comment '消息主键',
+   send_time            datetime comment '发送时间',
+   feedback             varchar(500) comment '失败反馈',
+   primary key (id)
+)
+engine=innodb default charset=utf8;

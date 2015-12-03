@@ -6,7 +6,7 @@
 	
 	<select id="querySceneInRegion"  resultType="SceneDomain">
 		SELECT 
-		<include refid="com.taw.scene.mapper.SceneMapper" />
+		<include refid="com.taw.scene.mapper.SceneMapper.columns" />
 		FROM t_tm_scene
 		WHERE lng &lt;= #{maxLng} 
 		  AND lng &gt;= #{minLng}

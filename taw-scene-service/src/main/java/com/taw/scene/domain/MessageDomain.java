@@ -26,6 +26,9 @@ public class MessageDomain implements Serializable {
 	/*场景ID*/
 	private Long sceneId;
 	
+	/*场景名称*/
+	private String name;
+	
 	/*内容*/
 	private String content;
 	
@@ -101,6 +104,22 @@ public class MessageDomain implements Serializable {
 	 */	
 	public void setSceneId (Long sceneId) {
 		this.sceneId = sceneId;
+	}
+	
+	/**
+	 * 
+	 * @return 场景名称
+	 */
+	public String getName(){
+		return name;
+	}
+	
+	/**
+	 * 
+	 * @param name 场景名称
+	 */	
+	public void setName (String name) {
+		this.name = name;
 	}
 	
 	/**

@@ -15,7 +15,8 @@
 		city as "city" ,
 		county as "county" ,
 		town as "town" ,
-		region as "region" 
+		region as "region" ,
+		address as "address" 
 	</sql>
 	
 	<sql id="where">
@@ -31,6 +32,7 @@
 			<if test="county != null"> AND county = #{county}  </if>
 			<if test="town != null"> AND town = #{town}  </if>
 			<if test="region != null"> AND region = #{region}  </if>
+			<if test="address != null"> AND address = #{address}  </if>
 		</trim>	
 	</sql>
 	
@@ -47,6 +49,7 @@
 			AND county = #{old_county}
 			AND town = #{old_town}
 			AND region = #{old_region}
+			AND address = #{old_address}
 		</trim>
 	</sql>
 	
@@ -62,6 +65,7 @@
 			county = #{county},
 			town = #{town},
 			region = #{region},
+			address = #{address},
 		</set>
 	</sql>
 	
@@ -77,6 +81,7 @@
 				<if test="county != null">county = #{county},</if>
 				<if test="town != null">town = #{town},</if>
 				<if test="region != null">region = #{region},</if>
+				<if test="address != null">address = #{address},</if>
 		</set>
 	</sql>
 	
@@ -93,7 +98,7 @@
 		<include refid="pkwhere" />		
 	</select>
 	
-	<select id="loadSceneDynamic" parameterType="hashmap" resultType="SceneDomain">
+	<select id="loadDynamic" parameterType="hashmap" resultType="SceneDomain">
 		SELECT 		
 		<include refid="columns" />
 		FROM t_tm_scene
@@ -121,7 +126,8 @@
 				city,				
 				county,				
 				town,				
-				region				
+				region,				
+				address				
 		)		
 		VALUES (	
 			#{id},
@@ -134,7 +140,8 @@
 			#{city},
 			#{county},
 			#{town},
-			#{region}
+			#{region},
+			#{address}
 		) 
 	</insert>
 	
@@ -149,19 +156,19 @@
 		<include refid="where" />
 	</delete>
 
-	<update id="updateScene" parameterType="SceneDomain">
+	<update id="update" parameterType="SceneDomain">
 		UPDATE t_tm_scene	
 		<include refid="update" />
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateSceneWithoutNull" parameterType="SceneDomain">
+	<update id="updateWithoutNull" parameterType="SceneDomain">
 		UPDATE t_tm_scene
 		<include refid="updateWithoutNull"/>
 		<include refid="pkwhere" />	
 	</update>
 	
-	<update id="updateSceneDynamic" parameterType="hashmap">
+	<update id="updateDynamic" parameterType="hashmap">
 		UPDATE t_tm_scene	
 		<include refid="update" />
 		<include refid="where_old" />

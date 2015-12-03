@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ScenePicMapper  {
 
-	ScenePicDomain loadScenePic(@Param("主键")Long 主键 );
+	ScenePicDomain load(@Param("主键")Long 主键 );
 	
-	List<ScenePicDomain> loadScenePicDynamic(Map<String,Object> params);
+	List<ScenePicDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface ScenePicMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updateScenePic(ScenePicDomain scenePicDomain);
+	int update(ScenePicDomain scenePicDomain);
 	
-	int updateScenePicWithoutNull(ScenePicDomain scenePicDomain);
+	int updateWithoutNull(ScenePicDomain scenePicDomain);
 	
 	int update(Map<String,Object> params);
 	

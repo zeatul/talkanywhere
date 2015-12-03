@@ -16,6 +16,7 @@ import com.taw.pub.scene.enums.EnumLeaveType;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
+import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.FootPrintDomain;
@@ -64,7 +65,7 @@ public class SceneService {
 	}
 	
 	public SceneDomain query(long sceneId){
-		return sceneMapper.loadScene(sceneId);
+		return sceneMapper.load(sceneId);
 	}
 
 	/**
@@ -138,7 +139,7 @@ public class SceneService {
 			 */
 		}
 		
-		SceneDomain sceneDomain = sceneMapper.loadScene(sceneId);
+		SceneDomain sceneDomain = sceneMapper.load(sceneId);
 		
 		if (cached && sceneDomain != null){
 			/**
@@ -157,7 +158,7 @@ public class SceneService {
 	 * @throws Exception
 	 */
 	@Transactional
-	public Long enterScene(EnterSceneParam enterSceneParam) throws Exception{
+	public EnterSceneResp enterScene(EnterSceneParam enterSceneParam) throws Exception{
 		
 		CheckTools.check(enterSceneParam);
 		
@@ -204,14 +205,17 @@ public class SceneService {
 		}else{
 			footPrintDomain.setLastEnterTime(footPrintDetailDomain.getInTime());
 			footPrintDomain.setEnterTimes(footPrintDomain.getEnterTimes()+1);
-			footPrintMapper.updateFootPrint(footPrintDomain);
+			footPrintMapper.update(footPrintDomain);
 		}
 		
 		/**
 		 * TODO:更新场景在线人数
 		 */
 		
-		return footPrintDetailDomain.getId();
+		EnterSceneResp enterSceneResp = new EnterSceneResp();
+		enterSceneResp.setFpdId(footPrintDetailDomain.getId());
+		enterSceneResp.setNickName(footPrintDetailDomain.getNickname());
+		return enterSceneResp;
 	}
 	
 	/**
@@ -244,7 +248,7 @@ public class SceneService {
 		footPrintDetailDomain.setOutTime(DateTools.now());
 		Long staySpan = (footPrintDetailDomain.getOutTime().getTime() - footPrintDetailDomain.getInTime().getTime())/1000;
 		footPrintDetailDomain.setStaySpan(new Integer(staySpan.toString()));
-		footPrintDetailMapper.updateFootPrintDetail(footPrintDetailDomain);
+		footPrintDetailMapper.update(footPrintDetailDomain);
 		 	
 		/**
 		 * 修改足迹历史
@@ -254,7 +258,7 @@ public class SceneService {
 			throw new FootPrintNotExistsException();
 		footPrintDomain.setLastLeaveTime(footPrintDetailDomain.getOutTime());
 		footPrintDomain.setStaySpan(footPrintDomain.getStaySpan()+footPrintDetailDomain.getStaySpan());
-		footPrintMapper.updateFootPrint(footPrintDomain);
+		footPrintMapper.update(footPrintDomain);
 		
 		/**
 		 * 修改场景在线人数

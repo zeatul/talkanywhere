@@ -12,9 +12,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface PartnerMapper  {
 
-	PartnerDomain loadPartner(@Param("id")Long id );
+	PartnerDomain load(@Param("id")Long id );
 	
-	List<PartnerDomain> loadPartnerDynamic(Map<String,Object> params);
+	List<PartnerDomain> loadDynamic(Map<String,Object> params);
 	
 	int count(Map<String,Object> params);
 	
@@ -24,9 +24,9 @@ public interface PartnerMapper  {
 	
 	int deleteDynamic(Map<String,Object> params);
 	
-	int updatePartner(PartnerDomain partnerDomain);
+	int update(PartnerDomain partnerDomain);
 	
-	int updatePartnerWithoutNull(PartnerDomain partnerDomain);
+	int updateWithoutNull(PartnerDomain partnerDomain);
 	
 	int update(Map<String,Object> params);
 	
