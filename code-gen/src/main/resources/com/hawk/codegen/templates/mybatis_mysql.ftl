@@ -98,7 +98,6 @@
 	<delete id="delete" >
 		DELETE FROM ${tableName}
 		<include refid="pkwhere" />	
-	#end
 	</delete>
 	</#if>
 	

@@ -35,7 +35,17 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		protectedPaths = new HashSet<String>();
 		protectedPaths.add("/scene/enter.do");
 		protectedPaths.add("/scene/message/send.do");
+		protectedPaths.add("/scene/message/search.do");
+		protectedPaths.add("/scene/message/delete.do");
+		
+		
 		protectedPaths.add("/scene/conversation/send.do");
+		protectedPaths.add("/scene/conversation/search.do");
+		protectedPaths.add("/scene/conversation/delete.do");
+		
+		
+		
+		
 	}
 
 

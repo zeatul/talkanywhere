@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.scene.mapperex.ConversationExMapper">
+	
+	<select id="searchConversationInScene" parameterType="hashmap"  resultType="ConversationDomain">
+		SELECT 
+		<include refid="com.taw.scene.mapper.ConversationMapper.columns" />
+		FROM t_tm_conversation
+		WHERE scene_id = #{sceneId}
+		 <if test="maxPostDate != null"> AND post_date &lt;= #{maxPostDate}  </if>
+		 <if test="minPostDate != null"> AND post_date &gt;= #{minPostDate}  </if>
+		 <if test="_orderby != null">ORDER BY ${_orderby}</if>
+		 <if test="_offset != null">LIMIT #{_offset},#{_limit}</if>			
+	</select>
+	
+	<delete id="deleteByIds" >
+		DELETE FROM t_tm_conversation
+		WHERE post_user_id = #{postUserId} and id in
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			 #{item}
+			</foreach>	
+	</delete>
+	
+</mapper>

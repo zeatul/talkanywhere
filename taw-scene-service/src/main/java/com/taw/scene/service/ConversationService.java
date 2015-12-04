@@ -1,25 +1,34 @@
 package com.taw.scene.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.request.ComplexMessage;
+import com.taw.pub.scene.request.DeleteConversationParam;
+import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
 import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.mapper.ConversationMapper;
+import com.taw.scene.mapperex.ConversationExMapper;
 
 @Service
 public class ConversationService {
 
 	@Autowired
 	private ConversationMapper conversationMapper;
+	
+	@Autowired
+	private ConversationExMapper conversationExMapper;
 	
 	@Autowired
 	private FootPrintService footPrintService;
@@ -113,6 +122,41 @@ public class ConversationService {
 		
 		return conversationDomain.getId();
 
+	}
+	
+	/**
+	 * 查询指定场景的会话，按发送时间倒排序
+	 * @param searchConverstaionParam
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ConversationDomain> search(SearchConversationParam searchConverstaionParam) throws Exception{
+		CheckTools.check(searchConverstaionParam);
+		Date minPostDate = searchConverstaionParam.getMinPostDate();
+		Date maxPostDate = searchConverstaionParam.getMaxPostDate();
+		if (minPostDate == null && maxPostDate == null )
+			throw new RuntimeException("MinPostDate and MaxPostDate shouldn't be null at the same time");
+		String orderBy = "post_date desc";
+		Map<String,Object> params = SqlParamHelper.generatePageParams(orderBy, searchConverstaionParam.getOffset(), searchConverstaionParam.getLimit());
+		params.put("minPostDate", minPostDate);
+		params.put("maxPostDate", maxPostDate);
+		params.put("sceneId", searchConverstaionParam.getSceneId());
+		List<ConversationDomain> list = conversationExMapper.searchConversationInScene(params);
+		
+		return list;
+	}
+	
+	/**
+	 * 删除指定场景的我发表的会话
+	 * @param deleteConversationParam
+	 * @throws Exception
+	 */
+	public void delete(DeleteConversationParam deleteConversationParam) throws Exception{
+		CheckTools.check(deleteConversationParam);
+		conversationExMapper.deleteByIds(deleteConversationParam.getIds(), deleteConversationParam.getUserId());
+		/**
+		 * TODO:删除图片？
+		 */
 	}
 
 }

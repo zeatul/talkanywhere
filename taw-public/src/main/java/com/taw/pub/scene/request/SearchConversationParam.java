@@ -1,0 +1,98 @@
+package com.taw.pub.scene.request;
+
+import java.util.Date;
+
+import com.hawk.utility.check.CheckNull;
+
+public class SearchConversationParam {
+	
+
+
+
+	public Long getSceneId() {
+		return sceneId;
+	}
+
+
+	public void setSceneId(Long sceneId) {
+		this.sceneId = sceneId;
+	}
+
+
+	public Date getMinPostDate() {
+		return minPostDate;
+	}
+
+
+	public void setMinPostDate(Date minPostDate) {
+		this.minPostDate = minPostDate;
+	}
+
+
+	public Date getMaxPostDate() {
+		return maxPostDate;
+	}
+
+
+	public void setMaxPostDate(Date maxPostDate) {
+		this.maxPostDate = maxPostDate;
+	}
+
+
+	public Integer getOffset() {
+		return offset;
+	}
+
+
+	public void setOffset(Integer offset) {
+		this.offset = offset;
+	}
+
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+
+	/**
+	 * 场景主键
+	 */
+	@CheckNull
+	private Long sceneId;
+	
+	
+	/**
+	 * 最小发言时间
+	 */	
+	private Date minPostDate;
+	
+	/**
+	 * 最大发言时间
+	 */
+	private Date maxPostDate;
+	
+	
+	
+	/**
+	 * offset 分页参数
+	 */
+	@CheckNull
+	private Integer offset;
+	
+	
+	/**
+	 * limit 分页参数
+	 */
+	@CheckNull
+	private Integer limit;
+	
+	
+	
+	
+
+}

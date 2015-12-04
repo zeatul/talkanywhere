@@ -1,6 +1,7 @@
 package com.taw.scene.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.taw.pub.scene.request.DeleteConversationParam;
+import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
 import com.taw.pub.scene.response.SendConverstaionResp;
+import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.service.ConversationService;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -56,5 +60,19 @@ public class ConversationController {
 		SendConverstaionResp sendConverstaionResp = new SendConverstaionResp();
 		sendConverstaionResp.setId(id);
 		HttpResponseHandler.handle(response, SuccessResponse.build(sendConverstaionResp));
+	}
+	
+	@RequestMapping(value = "/scene/conversation/search.do", method = RequestMethod.POST)
+	public void searchConversation(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		SearchConversationParam searchConverstaionParam =  HttpRequestHandler.handle(request, SearchConversationParam.class);
+		List<ConversationDomain> list = conversationService.search(searchConverstaionParam);
+		HttpResponseHandler.handle(response, SuccessResponse.build(list));
+	}
+	
+	@RequestMapping(value = "/scene/conversation/delete.do", method = RequestMethod.POST)
+	public void deleteConversation(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		DeleteConversationParam deleteConversationParam =  HttpRequestHandler.handle(request, DeleteConversationParam.class);
+		conversationService.delete(deleteConversationParam);
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 }
