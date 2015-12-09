@@ -99,7 +99,6 @@
 	<delete id="delete" >
 		DELETE FROM t_tm_bookmark
 		<include refid="pkwhere" />	
-	#end
 	</delete>
 	
 	<delete id="deleteDynamic" parameterType="hashmap">

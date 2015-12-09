@@ -16,6 +16,7 @@ import com.hawk.pub.web.HttpRequestInfo;
 import com.hawk.utility.JsonTools;
 import com.taw.user.auth.AuthThreadLocal;
 import com.taw.user.auth.TokenSecurityHelper;
+import com.taw.user.exception.InvalidTokenException;
 import com.taw.user.service.LoginService;
 
 public class AccessInterceptor extends HandlerInterceptorAdapter {
@@ -33,7 +34,17 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	
 	public AccessInterceptor(){
 		protectedPaths = new HashSet<String>();
+		
+		protectedPaths.add("/user/logout.do");
+		
+		protectedPaths.add("/user/contact/add.do");
+		protectedPaths.add("/user/contact/remove.do");
+		protectedPaths.add("/user/contact/search.do");
+		
 		protectedPaths.add("/scene/enter.do");
+		protectedPaths.add("/scene/leave.do");
+		
+		
 		protectedPaths.add("/scene/message/send.do");
 		protectedPaths.add("/scene/message/search.do");
 		protectedPaths.add("/scene/message/delete.do");
@@ -42,6 +53,14 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		protectedPaths.add("/scene/conversation/send.do");
 		protectedPaths.add("/scene/conversation/search.do");
 		protectedPaths.add("/scene/conversation/delete.do");
+		
+		protectedPaths.add("/scene/bookmark/add.do");
+		protectedPaths.add("/scene/bookmark/search.do");
+		protectedPaths.add("/scene/bookmark/remove.do");
+		
+		protectedPaths.add("/scene/footprint/search.do");
+		
+		
 		
 		
 		
@@ -70,12 +89,13 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 			Long userId = loginService.queryUserId(token);
 			
 			if (userId == null){
-				throw new RuntimeException("token is invalid!");
+				throw new InvalidTokenException();
 			}else{
 				/**
 				 * userId 加入threadlocal
 				 */
 				AuthThreadLocal.setUserId(userId);
+				AuthThreadLocal.setToken(token);
 			}
 		}
 		

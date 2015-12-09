@@ -15,14 +15,14 @@ public class LoginControllerTest extends AbstractControllerTest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	@Test
-	public void testLogin() throws Exception{
+
+	// @Test
+	public void testLogin() throws Exception {
 		/**
 		 * taw-user-web/user/login.do
 		 */
 		String path = contextPath + "/user/login.do";
-		
+
 		LoginParam param = new LoginParam();
 		param.setBrand("brand");
 		param.setDeviceKind(EnumDeviceKind.ANDROID.toString());
@@ -32,14 +32,22 @@ public class LoginControllerTest extends AbstractControllerTest {
 		param.setOsVersion("1111.11");
 		param.setPassword("123456111");
 		param.setKind(EnumLoginKind.PERMANENT.toString());
-		
-		
+
 		String content = JsonTools.toJsonString(param);
-		
+
 		printSend(content);
-		
+
 		String result = httpClientHelper.post(path, content, null);
+
+		printResult(result);
+	}
+
+	@Test
+	public void testLogout() throws Exception {
+		String path = contextPath + "/user/logout.do";
 		
+		String result = httpClientHelper.post(path, null, genAuthMap());
+
 		printResult(result);
 	}
 

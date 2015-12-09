@@ -20,6 +20,7 @@ import com.hawk.utility.redis.RedisClient;
 import com.taw.pub.user.request.LoginParam;
 import com.taw.pub.user.request.LogoutParam;
 import com.taw.pub.user.response.LoginResp;
+import com.taw.user.auth.AuthThreadLocal;
 import com.taw.user.service.LoginService;
 import com.taw.user.service.LoginService.LoginInfo;
 
@@ -67,7 +68,7 @@ public class LoginController {
 	@RequestMapping(value = "/user/logout.do", method = RequestMethod.POST)
 	public void logout(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
-		String token = "从登陆信息解码出来";
+		String token = AuthThreadLocal.getToken();
 		
 		LogoutParam logoutParam = new LogoutParam();		
 		logoutParam.setToken(token);

@@ -1,10 +1,24 @@
 package com.taw.user.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.hawk.utility.DateTools;
 import com.hawk.utility.httpclient.HttpClientHelper;
+import com.taw.user.auth.TokenSecurityHelper;
 
 public abstract class AbstractControllerTest {
 	
-//	http://localhost:8080/taw-user-web/user/create.do
+	private final  static ClassPathXmlApplicationContext context ;
+	
+	static{
+		String[] configPath = {"classpath*:com/taw/user/spring/applicationContext-user-service-bean.xml"
+		};
+		
+		context = new ClassPathXmlApplicationContext(configPath);
+	}
 	
 	protected HttpClientHelper httpClientHelper;
 	protected String contextPath = "/taw-user-web"; //开发环境
@@ -25,6 +39,17 @@ public abstract class AbstractControllerTest {
 	
 	protected void printResult(String result){
 		System.out.println("result="+result.trim());
+	}
+	
+	protected Map<String,String> genAuthMap(){
+		TokenSecurityHelper tokenSecurityHelper = context.getBean(TokenSecurityHelper.class);
+		String token = "cde91645dbed4e08b6585aa2a7d4790f";  //sender
+//		String token = "a8576d6e804d4916a753e03d8a68b2c0";  //receiver
+		String imei = "imei001";
+		String t = tokenSecurityHelper.generate(token, DateTools.now().getTime(), imei);
+		Map<String,String> map = new HashMap<String, String>();
+		map.put("t", t);
+		return map;
 	}
 	
 }

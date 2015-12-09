@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import com.hawk.pub.mybatis.SqlParamHelper;
@@ -22,6 +25,8 @@ import com.taw.scene.mapper.BookmarkMapper;
 @Service
 public class BookmarkService {
 	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private SceneService sceneService;
 	
@@ -33,16 +38,20 @@ public class BookmarkService {
 		Long userId = addBookmarkParam.getUserId();
 		
 		for (Long sceneId : addBookmarkParam.getSceneIds()){
-			SceneDomain sceneDomain = sceneService.query(sceneId);
+			SceneDomain sceneDomain = sceneService.loadSceneDomain(sceneId, true);
 			if (sceneDomain == null)
 				continue;
-			BookmarkDomain bookmarkDomain = new BookmarkDomain();
-			bookmarkDomain.setBookTime(DateTools.now());
-			bookmarkDomain.setSceneId(sceneId);
-			bookmarkDomain.setSceneName(sceneDomain.getName());
-			bookmarkDomain.setUserId(userId);
-			bookmarkDomain.setId(PkGenerator.genPk());
-			bookmarkMapper.insert(bookmarkDomain);
+			try {
+				BookmarkDomain bookmarkDomain = new BookmarkDomain();
+				bookmarkDomain.setBookTime(DateTools.now());
+				bookmarkDomain.setSceneId(sceneId);
+				bookmarkDomain.setSceneName(sceneDomain.getName());
+				bookmarkDomain.setUserId(userId);
+				bookmarkDomain.setId(PkGenerator.genPk());
+				bookmarkMapper.insert(bookmarkDomain);
+			} catch (DuplicateKeyException e) {
+				logger.error("The Scene={}"+sceneId +" is booked before",e);
+			}
 		}
 	}
 	

@@ -1,6 +1,8 @@
 package com.taw.user.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,10 @@ import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.taw.pub.user.request.AddUserContactParam;
 import com.taw.pub.user.request.RemoveUserContactParam;
+import com.taw.pub.user.request.SearchUserContactParam;
+import com.taw.pub.user.response.UserContactResp;
 import com.taw.user.auth.AuthThreadLocal;
+import com.taw.user.domain.UserContactDomain;
 import com.taw.user.service.UserContactService;
 
 
@@ -54,5 +59,21 @@ public class UserContactController {
 		removeUserContactParam.setUserId(AuthThreadLocal.getUserId());
 		userContactService.remove(removeUserContactParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	@RequestMapping(value = "/user/contact/search.do", method = { RequestMethod.POST })
+	public void search(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response)throws Exception {
+		SearchUserContactParam searchUserContactParam = new SearchUserContactParam();
+		searchUserContactParam.setUserId(AuthThreadLocal.getUserId());
+		List<UserContactDomain> list = userContactService.search(searchUserContactParam);		
+		List<UserContactResp> result = new ArrayList<UserContactResp>(list.size());
+		for (UserContactDomain userContactDomain : list){
+			UserContactResp userContactResp = new UserContactResp();
+			userContactResp.setCoUserId(userContactDomain.getUserId());
+			userContactResp.setRemark(userContactDomain.getRemark());
+			result.add(userContactResp);
+		}
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(result));
 	}
 }

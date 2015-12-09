@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.taw.scene.mapperex.SceneExMapper">
+<mapper namespace="com.taw.scene.mapperex.MessageExMapper">
 	
 	<delete id="deleteByIds" >
 		DELETE FROM t_tm_message

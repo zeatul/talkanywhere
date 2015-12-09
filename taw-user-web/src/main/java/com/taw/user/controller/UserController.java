@@ -98,7 +98,7 @@ public class UserController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/rest.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/reset.do", method = RequestMethod.POST)
 	public void resetPassword(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
 		RestPasswordRequestParam updatePasswordRequestParam = HttpRequestHandler.handle(request, RestPasswordRequestParam.class);
 		CheckTools.check(updatePasswordRequestParam);

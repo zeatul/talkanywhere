@@ -4,6 +4,8 @@ import com.hawk.utility.DateTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.security.DESTools;
 import com.taw.user.configure.UserServiceConfigure;
+import com.taw.user.exception.FailedDecryptTokenException;
+import com.taw.user.exception.InvalidTokenException;
 
 public class TokenSecurityHelper {
 
@@ -47,30 +49,32 @@ public class TokenSecurityHelper {
 	 * 
 	 * @param ticket 前后台交互验证的票据
 	 * @return
+	 * @throws Exception 
 	 */
-	public String computeToken(String ticket) {
+	public String computeToken(String ticket) throws Exception {
+		
+		if (StringTools.isNullOrEmpty(ticket))
+			throw new InvalidTokenException();
+		
+		String decryptedTicket ;
 		try {
-
-			if (StringTools.isNullOrEmpty(ticket))
-				throw new RuntimeException("the ticket is null");
-
-			String[] strArray = DESTools.decrypt(ticket, userServiceConfigure.getTokenKey()).split("\\|");
-			long now = DateTools.now().getTime();
-
-			long send = new Long(strArray[1]);
-
-			long diff = Math.abs(now - send);
-
-			if (diff > 1000 * 60 * 5)
-				throw new RuntimeException("The time in decryptString is illegal");
-
-			return strArray[0];
+			decryptedTicket = DESTools.decrypt(ticket, userServiceConfigure.getTokenKey());
 		} catch (Exception e) {
-			if (e instanceof RuntimeException)
-				throw (RuntimeException) e;
-			else
-				throw new RuntimeException(e);
+			throw new FailedDecryptTokenException();
 		}
+
+		String[] strArray = decryptedTicket.split("\\|");
+		long now = DateTools.now().getTime();
+
+		long send = new Long(strArray[1]);
+
+		long diff = Math.abs(now - send);
+
+		if (diff > 1000 * 60 * 5)
+			throw new InvalidTokenException();
+
+		return strArray[0];
+
 	}
 
 }

@@ -120,7 +120,6 @@
 	<delete id="delete" >
 		DELETE FROM t_tm_foot_print
 		<include refid="pkwhere" />	
-	#end
 	</delete>
 	
 	<delete id="deleteDynamic" parameterType="hashmap">

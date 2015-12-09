@@ -16,7 +16,8 @@
 		kind as "kind" ,
 		login_date as "loginDate" ,
 		last_access_date as "lastAccessDate" ,
-		expire_date as "expireDate" 
+		expire_date as "expireDate" ,
+		logout_date as "logoutDate" 
 	</sql>
 	
 	<sql id="where">
@@ -33,6 +34,7 @@
 			<if test="loginDate != null"> AND login_date = #{loginDate}  </if>
 			<if test="lastAccessDate != null"> AND last_access_date = #{lastAccessDate}  </if>
 			<if test="expireDate != null"> AND expire_date = #{expireDate}  </if>
+			<if test="logoutDate != null"> AND logout_date = #{logoutDate}  </if>
 		</trim>	
 	</sql>
 	
@@ -50,6 +52,7 @@
 			AND login_date = #{old_loginDate}
 			AND last_access_date = #{old_lastAccessDate}
 			AND expire_date = #{old_expireDate}
+			AND logout_date = #{old_logoutDate}
 		</trim>
 	</sql>
 	
@@ -67,6 +70,7 @@
 			login_date = #{loginDate},
 			last_access_date = #{lastAccessDate},
 			expire_date = #{expireDate},
+			logout_date = #{logoutDate},
 		</set>
 	</sql>
 	
@@ -84,6 +88,7 @@
 				<if test="loginDate != null">login_date = #{loginDate},</if>
 				<if test="lastAccessDate != null">last_access_date = #{lastAccessDate},</if>
 				<if test="expireDate != null">expire_date = #{expireDate},</if>
+				<if test="logoutDate != null">logout_date = #{logoutDate},</if>
 		</set>
 	</sql>
 	
@@ -129,7 +134,8 @@
 				kind,				
 				login_date,				
 				last_access_date,				
-				expire_date				
+				expire_date,				
+				logout_date				
 		)		
 		VALUES (	
 			#{token},
@@ -143,14 +149,14 @@
 			#{kind},
 			#{loginDate},
 			#{lastAccessDate},
-			#{expireDate}
+			#{expireDate},
+			#{logoutDate}
 		) 
 	</insert>
 	
 	<delete id="delete" >
 		DELETE FROM t_um_login
 		<include refid="pkwhere" />	
-	#end
 	</delete>
 	
 	<delete id="deleteDynamic" parameterType="hashmap">

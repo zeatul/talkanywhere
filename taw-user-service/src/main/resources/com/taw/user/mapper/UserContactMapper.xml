@@ -113,7 +113,6 @@
 	<delete id="delete" >
 		DELETE FROM t_um_user_contact
 		<include refid="pkwhere" />	
-	#end
 	</delete>
 	
 	<delete id="deleteDynamic" parameterType="hashmap">

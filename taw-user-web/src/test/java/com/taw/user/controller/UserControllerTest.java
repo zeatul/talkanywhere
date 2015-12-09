@@ -8,6 +8,8 @@ import com.taw.pub.user.enums.EnumDeviceKind;
 import com.taw.pub.user.enums.EnumSex;
 import com.taw.pub.user.request.CreateUserParam;
 import com.taw.pub.user.request.CreateUserRequestParam;
+import com.taw.pub.user.request.ResetPasswordParam;
+import com.taw.pub.user.request.RestPasswordRequestParam;
 
 public class UserControllerTest extends AbstractControllerTest {
 
@@ -16,7 +18,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Test
+//	@Test
 	public void testCreateUser() throws Exception {
 		/**
 		 * taw-user-web/user/create.do
@@ -44,6 +46,27 @@ public class UserControllerTest extends AbstractControllerTest {
 		createUserRequestParam.setAuthCode(authCode);
 
 		String content = JsonTools.toJsonString(createUserRequestParam);
+		
+		printSend(content);
+
+		String result = httpClientHelper.post(path, content, null);
+
+		printResult(result);
+	}
+	
+	@Test
+	public void testRestPassowrd() throws Exception{
+		String path = contextPath + "/user/reset.do";
+		
+		ResetPasswordParam resetPasswordParam = new ResetPasswordParam();
+		resetPasswordParam.setMobile("13311658157");
+		resetPasswordParam.setNewPwd("newpwd");
+		
+		RestPasswordRequestParam param = new RestPasswordRequestParam();
+		param.setAuthCode("123456");
+		param.setParam(resetPasswordParam);
+		
+		String content = JsonTools.toJsonString(param);
 		
 		printSend(content);
 

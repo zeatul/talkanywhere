@@ -87,7 +87,6 @@
 	<delete id="delete" >
 		DELETE FROM t_tm_scene_pic
 		<include refid="pkwhere" />	
-	#end
 	</delete>
 	
 	<delete id="deleteDynamic" parameterType="hashmap">

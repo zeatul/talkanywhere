@@ -64,9 +64,7 @@ public class SceneService {
 			return p2;
 	}
 	
-	public SceneDomain query(long sceneId){
-		return sceneMapper.load(sceneId);
-	}
+	
 
 	/**
 	 * 查询指定区域范围内的场景

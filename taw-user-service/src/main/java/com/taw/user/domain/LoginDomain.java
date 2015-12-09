@@ -50,6 +50,9 @@ public class LoginDomain implements Serializable {
 	/*token失效日期*/
 	private Date expireDate;
 	
+	/**/
+	private Date logoutDate;
+	
 	
 	/**
 	 * 
@@ -241,6 +244,22 @@ public class LoginDomain implements Serializable {
 	 */	
 	public void setExpireDate (Date expireDate) {
 		this.expireDate = expireDate;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public Date getLogoutDate(){
+		return logoutDate;
+	}
+	
+	/**
+	 * 
+	 * @param logoutDate 
+	 */	
+	public void setLogoutDate (Date logoutDate) {
+		this.logoutDate = logoutDate;
 	}
 	
 

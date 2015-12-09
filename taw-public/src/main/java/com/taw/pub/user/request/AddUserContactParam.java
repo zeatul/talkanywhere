@@ -3,21 +3,22 @@ package com.taw.pub.user.request;
 import java.util.List;
 
 import com.hawk.utility.check.CheckEnum;
+import com.hawk.utility.check.CheckMaxLength;
 import com.hawk.utility.check.CheckNull;
 import com.hawk.utility.check.CheckSize;
 import com.taw.pub.user.enums.EnumContactType;
 
 public class AddUserContactParam {
 	
+
 	
 
-
-	public List<Long> getCoUserIds() {
-		return coUserIds;
+	public List<CoUser> getCoUsers() {
+		return coUsers;
 	}
 
-	public void setCoUserIds(List<Long> coUserIds) {
-		this.coUserIds = coUserIds;
+	public void setCoUsers(List<CoUser> coUsers) {
+		this.coUsers = coUsers;
 	}
 
 	public String getContactType() {
@@ -41,7 +42,7 @@ public class AddUserContactParam {
 	/**
 	 * 联系人Id
 	 */
-	private List<Long> coUserIds;
+	private List<CoUser> coUsers;
 	
 	@CheckNull
 	/**
@@ -55,5 +56,24 @@ public class AddUserContactParam {
 	@CheckNull
 	@CheckEnum(parser=EnumContactType.class)
 	private String contactType;
+	
+	public static class CoUser{
+		public Long getCoUserId() {
+			return coUserId;
+		}
+		public void setCoUserId(Long coUserId) {
+			this.coUserId = coUserId;
+		}
+		public String getRemark() {
+			return remark;
+		}
+		public void setRemark(String remark) {
+			this.remark = remark;
+		}
+		@CheckNull
+		private Long coUserId;
+		@CheckMaxLength(max=50)
+		private String remark;
+	}
 
 }

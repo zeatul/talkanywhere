@@ -128,5 +128,12 @@ public class UserService {
 		UserDomain userDomain = list.get(0);
 		return userDomain;
 	}
+	
+	public UserDomain loadUser(Long userId,boolean cached){
+		if (userId == null)
+			return null;
+		
+		return userMapper.load(userId);
+	}
 
 }

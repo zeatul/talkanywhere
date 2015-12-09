@@ -118,6 +118,8 @@ public class LoginService {
 		
 	}
 
+	
+	
 	/**
 	 * 登出
 	 * @param logoutParam
@@ -129,7 +131,11 @@ public class LoginService {
 		/**
 		 * TODO:从数据库删除 ？ 是物理删除？还是逻辑删除
 		 */
-		loginMapper.delete(token);		
+		LoginDomain loginDomain = loginMapper.load(token);
+		if (loginDomain != null){
+			loginDomain.setLogoutDate(DateTools.now());
+			loginMapper.update(loginDomain);	
+		}
 		/**
 		 * 从缓存删除 
 		 */
@@ -151,6 +157,8 @@ public class LoginService {
 			if (loginDomain == null){
 				return null;
 			}else{
+				if (loginDomain.getLogoutDate() != null)
+					return null;
 				useIdStr = loginDomain.getUserId().toString();
 				/**
 				 * 加入缓存,72小时
