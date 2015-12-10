@@ -16,7 +16,7 @@ drop index u_um_user1 on t_um_user;
 
 drop table if exists t_um_user;
 
-drop index i_um_r_m on t_um_user_contact;
+drop index u_um_uc1 on t_um_user_contact;
 
 drop table if exists t_um_user_contact;
 
@@ -37,6 +37,7 @@ create table t_um_login
    login_date           datetime comment '创建日期',
    last_access_date     datetime comment '最近访问日期',
    expire_date          datetime comment 'token失效日期',
+   logout_date          datetime comment '注销日期',
    primary key (token)
 )
 engine=innodb default charset=utf8;
@@ -120,7 +121,7 @@ create table t_um_user_contact
    id                   bigint(20) not null comment '主键',
    user_id              bigint(20) not null comment '用户ID',
    co_user_id           bigint(20) not null comment '关系用户ID',
-   remark               varchar(20) comment '关系用户备注',
+   remark               varchar(50) comment '关系用户备注',
    type                 char(1) comment '关系类型',
    crdt                 datetime comment '创建日期',
    updt                 datetime comment '修改日期',
@@ -131,9 +132,10 @@ engine=innodb default charset=utf8;
 alter table t_um_user_contact comment '用户关系表';
 
 /*==============================================================*/
-/* Index: i_um_r_m                                              */
+/* Index: u_um_uc1                                              */
 /*==============================================================*/
-create index i_um_r_m on t_um_user_contact
+create unique index u_um_uc1 on t_um_user_contact
 (
-   user_id
+   user_id,
+   co_user_id
 );
