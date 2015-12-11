@@ -52,7 +52,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		
 		protectedPaths.add("/scene/conversation/send.do");
 		protectedPaths.add("/scene/conversation/search.do");
-		protectedPaths.add("/scene/conversation/delete.do");
+		protectedPaths.add("/scene/conversation/remove.do");
 		
 		protectedPaths.add("/scene/bookmark/add.do");
 		protectedPaths.add("/scene/bookmark/search.do");

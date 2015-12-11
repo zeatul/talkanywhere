@@ -18,6 +18,7 @@ import com.taw.pub.scene.request.SendConverstaionParam;
 import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
+import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.mapper.ConversationMapper;
 import com.taw.scene.mapperex.ConversationExMapper;
 
@@ -41,7 +42,7 @@ public class ConversationService {
 	 */
 	public Long send(SendConverstaionParam sendConverstaionParam) throws Exception {
 		CheckTools.check(sendConverstaionParam);
-		ComplexMessage complexMessage = sendConverstaionParam.getMessage();
+		ComplexMessage complexMessage = sendConverstaionParam.getComplexMessage();
 		List<String> pics = complexMessage.getPics();
 		CheckTools.check(complexMessage);
 
@@ -53,6 +54,8 @@ public class ConversationService {
 
 		if (footPrintDetailDomain == null)
 			throw new FootPrintDetailNotExistsException();
+		else if (footPrintDetailDomain.getOutTime() !=null)
+			throw new InvalidFootPrintDetailException();
 
 		if (!postUserId.equals(footPrintDetailDomain.getUserId()))
 			throw new RuntimeException("UnMathed post UserId");
@@ -79,6 +82,9 @@ public class ConversationService {
 			
 			if (!footPrintDetailDomain.getSceneId().equals(sceneId))
 				throw new RuntimeException("UnMathed rePost SceneId");
+			
+			if (!rePostUserId.equals(sendConverstaionParam.getRePostUserId()))
+				throw new RuntimeException("UnMathed rePost UserId");
 		}
 		
 
@@ -99,6 +105,11 @@ public class ConversationService {
 		 */
 		
 		if (rePostId != null) {
+			
+			/**
+			 * TODO: 是否需要 校验这几个参数？
+			 */
+			
 			conversationDomain.setRePostId(rePostId);
 			conversationDomain.setRePostNickname(sendConverstaionParam.getRePostNickname());
 			conversationDomain.setRePostUserId(rePostUserId);
@@ -141,6 +152,7 @@ public class ConversationService {
 		params.put("minPostDate", minPostDate);
 		params.put("maxPostDate", maxPostDate);
 		params.put("sceneId", searchConverstaionParam.getSceneId());
+		params.put("postUserId", searchConverstaionParam.getPostUserId());
 		List<ConversationDomain> list = conversationExMapper.searchConversationInScene(params);
 		
 		return list;
@@ -156,6 +168,9 @@ public class ConversationService {
 		conversationExMapper.deleteByIds(deleteConversationParam.getIds(), deleteConversationParam.getUserId());
 		/**
 		 * TODO:删除图片？
+		 */
+		/**
+		 * TODO: 删除回复？
 		 */
 	}
 

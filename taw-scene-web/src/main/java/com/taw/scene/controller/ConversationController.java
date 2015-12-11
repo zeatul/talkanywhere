@@ -1,6 +1,7 @@
 package com.taw.scene.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.DomainTools;
+import com.taw.pub.scene.request.ComplexMessage;
 import com.taw.pub.scene.request.DeleteConversationParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
+import com.taw.pub.scene.response.ConversationResp;
 import com.taw.pub.scene.response.SendConverstaionResp;
 import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.service.ConversationService;
@@ -66,12 +70,22 @@ public class ConversationController {
 	public void searchConversation(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		SearchConversationParam searchConverstaionParam =  HttpRequestHandler.handle(request, SearchConversationParam.class);
 		List<ConversationDomain> list = conversationService.search(searchConverstaionParam);
-		HttpResponseHandler.handle(response, SuccessResponse.build(list));
+		List<ConversationResp> result = new ArrayList<ConversationResp>(list.size());
+		for (ConversationDomain conversationDomain : list){
+			ConversationResp conversationResp = new ConversationResp();
+			DomainTools.copy(conversationDomain, conversationResp);
+			ComplexMessage complexMessage = new ComplexMessage();
+			complexMessage.setText(conversationDomain.getMessage());
+			conversationResp.setComplexMessage(complexMessage);
+			result.add(conversationResp);
+		}
+		HttpResponseHandler.handle(response, SuccessResponse.build(result));
 	}
 	
-	@RequestMapping(value = "/scene/conversation/delete.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/scene/conversation/remove.do", method = RequestMethod.POST)
 	public void deleteConversation(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		DeleteConversationParam deleteConversationParam =  HttpRequestHandler.handle(request, DeleteConversationParam.class);
+		deleteConversationParam.setUserId(AuthThreadLocal.getUserId());
 		conversationService.delete(deleteConversationParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}

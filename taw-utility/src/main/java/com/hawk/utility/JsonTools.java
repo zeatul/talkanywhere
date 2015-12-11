@@ -16,7 +16,7 @@ public class JsonTools {
 	static {
 		objectMapper = new ObjectMapper();
 		objectMapper.getSerializationConfig().setSerializationInclusion(Inclusion.NON_EMPTY);
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		objectMapper.getSerializationConfig().setDateFormat(df);
 		objectMapper.getDeserializationConfig().setDateFormat(df);
 		objectMapper.getDeserializationConfig().set(org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);

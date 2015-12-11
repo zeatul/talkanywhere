@@ -16,6 +16,7 @@ import com.taw.pub.scene.request.SendMessageParam;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.MessageDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
+import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.mapper.MessageMapper;
 import com.taw.scene.mapperex.MessageExMapper;
 
@@ -48,6 +49,9 @@ public class MessageService {
 		
 		if (footPrintDetailDomain == null)
 			throw new FootPrintDetailNotExistsException();
+		else if (footPrintDetailDomain.getOutTime() !=null)
+			throw new InvalidFootPrintDetailException();
+			
 		
 		if (!senderId.equals(footPrintDetailDomain.getUserId()))
 			throw new RuntimeException("UnMathed Sender UserId");
@@ -56,14 +60,6 @@ public class MessageService {
 			throw new RuntimeException("UnMathed Sender SceneId");
 		
 		Long receiverFpdId = sendMessageParam.getReceiverFpdId();
-		
-		
-		footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(receiverFpdId,true);
-		if (footPrintDetailDomain == null)
-			throw new FootPrintDetailNotExistsException();		
-		
-		if (!sceneId.equals(footPrintDetailDomain.getSceneId()))
-			throw new RuntimeException("UnMathed Receiver SceneId");
 		
 		Long receiverId = footPrintDetailDomain.getUserId();
 		

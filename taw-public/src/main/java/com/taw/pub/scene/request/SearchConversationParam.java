@@ -9,6 +9,16 @@ public class SearchConversationParam {
 
 
 
+	public Long getPostUserId() {
+		return postUserId;
+	}
+
+
+	public void setPostUserId(Long postUserId) {
+		this.postUserId = postUserId;
+	}
+
+
 	public Long getSceneId() {
 		return sceneId;
 	}
@@ -90,6 +100,12 @@ public class SearchConversationParam {
 	 */
 	@CheckNull
 	private Integer limit;
+	
+	
+	/**
+	 * 发言者Id
+	 */
+	private Long postUserId;
 	
 	
 	

@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.hawk.utility.JsonTools;
 import com.taw.pub.scene.com.MapPoint;
 import com.taw.pub.scene.request.EnterSceneParam;
+import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 
 public class SceneControllerTest extends AbstractControllerTest{
@@ -34,7 +35,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testEnterScene() throws Exception{
 		String path = contextPath + "/scene/enter.do";
 		EnterSceneParam enterSceneParam = new EnterSceneParam();
@@ -43,6 +44,18 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());
 		
+		printResult(result);
+	}
+	
+	@Test
+	public void testLeaveScene() throws Exception{
+		String path = contextPath + "/scene/leave.do";
+		LeaveSceneParam param = new LeaveSceneParam();
+		param.setFpdId(94L);
+		param.setSceneId(1L);
+		String content = JsonTools.toJsonString(param);
+		printSend(content);
+		String result = httpClientHelper.post(path, content, genAuthMap());		
 		printResult(result);
 	}
 

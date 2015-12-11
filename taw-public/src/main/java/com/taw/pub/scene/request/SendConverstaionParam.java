@@ -6,6 +6,16 @@ public class SendConverstaionParam {
 	
 
 
+	public ComplexMessage getComplexMessage() {
+		return complexMessage;
+	}
+
+
+	public void setComplexMessage(ComplexMessage complexMessage) {
+		this.complexMessage = complexMessage;
+	}
+
+
 	public Long getSceneId() {
 		return sceneId;
 	}
@@ -36,14 +46,7 @@ public class SendConverstaionParam {
 	}
 
 
-	public ComplexMessage getMessage() {
-		return message;
-	}
-
-
-	public void setMessage(ComplexMessage message) {
-		this.message = message;
-	}
+	
 
 
 	public Long getRePostId() {
@@ -56,14 +59,14 @@ public class SendConverstaionParam {
 	}
 
 
-//	public Long getRePostUserId() {
-//		return rePostUserId;
-//	}
-//
-//
-//	public void setRePostUserId(Long rePostUserId) {
-//		this.rePostUserId = rePostUserId;
-//	}
+	public Long getRePostUserId() {
+		return rePostUserId;
+	}
+
+
+	public void setRePostUserId(Long rePostUserId) {
+		this.rePostUserId = rePostUserId;
+	}
 
 
 	public String getRePostNickname() {
@@ -118,17 +121,17 @@ public class SendConverstaionParam {
 	 * 发言内容	
 	 */
 	@CheckNull
-	private ComplexMessage message;
+	private ComplexMessage complexMessage;
 	
 	/**
 	 * 被回复的发言ID
 	 */
 	private Long rePostId;
 	
-//	/**
-//	 * 被回复的发言者ID
-//	 */
-//	private Long rePostUserId;
+	/**
+	 * 被回复的发言者ID
+	 */
+	private Long rePostUserId;
 	
 	
 	/**

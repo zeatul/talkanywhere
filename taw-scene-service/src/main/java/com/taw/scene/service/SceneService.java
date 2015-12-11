@@ -234,7 +234,7 @@ public class SceneService {
 		if (footPrintDetailDomain == null)
 			throw new FootPrintDetailNotExistsException();
 		
-		if (userId != footPrintDetailDomain.getUserId())
+		if (!userId.equals(footPrintDetailDomain.getUserId()))
 			throw new RuntimeException("UnMathed UserId");
 		
 		if (sceneId != footPrintDetailDomain.getSceneId())

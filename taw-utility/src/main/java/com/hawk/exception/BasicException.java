@@ -38,6 +38,7 @@ public class BasicException extends Exception implements IException{
 	public BasicException(String errmsg) {
 		super(errmsg);
 		this.errmsg = errmsg;
+		this.errCode = "-1";
 	}
 
 	
