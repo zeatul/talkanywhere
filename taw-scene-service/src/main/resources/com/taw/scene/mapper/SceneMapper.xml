@@ -10,6 +10,7 @@
 		kind as "kind" ,
 		lng as "lng" ,
 		lat as "lat" ,
+		radius as "radius" ,
 		country as "country" ,
 		province as "province" ,
 		city as "city" ,
@@ -26,6 +27,7 @@
 			<if test="kind != null"> AND kind = #{kind}  </if>
 			<if test="lng != null"> AND lng = #{lng}  </if>
 			<if test="lat != null"> AND lat = #{lat}  </if>
+			<if test="radius != null"> AND radius = #{radius}  </if>
 			<if test="country != null"> AND country = #{country}  </if>
 			<if test="province != null"> AND province = #{province}  </if>
 			<if test="city != null"> AND city = #{city}  </if>
@@ -43,6 +45,7 @@
 			AND kind = #{old_kind}
 			AND lng = #{old_lng}
 			AND lat = #{old_lat}
+			AND radius = #{old_radius}
 			AND country = #{old_country}
 			AND province = #{old_province}
 			AND city = #{old_city}
@@ -59,6 +62,7 @@
 			kind = #{kind},
 			lng = #{lng},
 			lat = #{lat},
+			radius = #{radius},
 			country = #{country},
 			province = #{province},
 			city = #{city},
@@ -75,6 +79,7 @@
 				<if test="kind != null">kind = #{kind},</if>
 				<if test="lng != null">lng = #{lng},</if>
 				<if test="lat != null">lat = #{lat},</if>
+				<if test="radius != null">radius = #{radius},</if>
 				<if test="country != null">country = #{country},</if>
 				<if test="province != null">province = #{province},</if>
 				<if test="city != null">city = #{city},</if>
@@ -121,6 +126,7 @@
 				kind,				
 				lng,				
 				lat,				
+				radius,				
 				country,				
 				province,				
 				city,				
@@ -135,6 +141,7 @@
 			#{kind},
 			#{lng},
 			#{lat},
+			#{radius},
 			#{country},
 			#{province},
 			#{city},

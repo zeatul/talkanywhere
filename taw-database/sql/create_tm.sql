@@ -191,6 +191,7 @@ create table t_tm_scene
    kind                 char(1) comment '场景类型',
    lng                  decimal(17,10) comment '经度',
    lat                  decimal(17,10) comment '纬度',
+   radius               decimal(17,10) comment '半径',
    country              bigint(20) comment '国家',
    province             bigint(20) comment '省',
    city                 bigint(20) comment '市',

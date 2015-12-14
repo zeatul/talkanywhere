@@ -29,6 +29,9 @@ public class SceneDomain implements Serializable {
 	/*纬度*/
 	private java.math.BigDecimal lat;
 	
+	/*半径*/
+	private java.math.BigDecimal radius;
+	
 	/*国家*/
 	private Long country;
 	
@@ -129,6 +132,22 @@ public class SceneDomain implements Serializable {
 	 */	
 	public void setLat (java.math.BigDecimal lat) {
 		this.lat = lat;
+	}
+	
+	/**
+	 * 
+	 * @return 半径
+	 */
+	public java.math.BigDecimal getRadius(){
+		return radius;
+	}
+	
+	/**
+	 * 
+	 * @param radius 半径
+	 */	
+	public void setRadius (java.math.BigDecimal radius) {
+		this.radius = radius;
 	}
 	
 	/**
