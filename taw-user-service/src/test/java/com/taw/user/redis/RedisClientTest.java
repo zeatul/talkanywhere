@@ -12,8 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @ContextConfiguration(locations={
-		"classpath*:com/taw/pub/spring/applicationContext-pub-*.xml",
-		"classpath*:com/taw/user/spring/applicationContext-user-service-*.xml"
+		"classpath*:com/taw/user/spring/applicationContext-user-service-redis.xml"
 		})
 public class RedisClientTest extends AbstractJUnit4SpringContextTests{
 	
@@ -24,10 +23,12 @@ public class RedisClientTest extends AbstractJUnit4SpringContextTests{
 	@Test
 	public void testNormal(){
 		String key = "hello";
-		String value = "world";
+		String value = "world1111";
 		redisClient.set(key, value, false);
 		
 		String cachedValue = redisClient.get(key);
+		
+		System.out.println(cachedValue);
 		
 		assertThat(cachedValue, is(value));
 	}

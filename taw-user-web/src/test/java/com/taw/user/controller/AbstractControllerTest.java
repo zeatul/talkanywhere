@@ -21,14 +21,14 @@ public abstract class AbstractControllerTest {
 	}
 	
 	protected HttpClientHelper httpClientHelper;
-	protected String contextPath = "/taw-user-web"; //开发环境
+//	protected String contextPath = "/taw-user-web"; //开发环境
 	
-//	protected String contextPath = "/taw";  //测试环境
+	protected String contextPath = "/taw";  //测试环境
 	
 	public AbstractControllerTest() throws Exception{
 		httpClientHelper = new HttpClientHelper();
-		httpClientHelper.setHostname("localhost");	//开发环境
-//		httpClientHelper.setHostname("211.157.19.83");	//测试环境
+//		httpClientHelper.setHostname("localhost");	//开发环境
+		httpClientHelper.setHostname("211.157.19.83");	//测试环境
 		httpClientHelper.setPort(8080);
 		httpClientHelper.setScheme("http");
 	}
