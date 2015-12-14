@@ -15,6 +15,12 @@ public class SMSControllerTest extends AbstractControllerTest{
 	}
 
 
+	@Test
+	public void testGet() throws Exception{
+		String path = contextPath + "/user/hello.do";
+		String result = httpClientHelper.get(path, null);
+		printResult(result);
+	}
 	
 	
 	@Test

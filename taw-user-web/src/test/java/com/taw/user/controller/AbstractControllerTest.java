@@ -28,7 +28,7 @@ public abstract class AbstractControllerTest {
 	public AbstractControllerTest() throws Exception{
 		httpClientHelper = new HttpClientHelper();
 		httpClientHelper.setHostname("localhost");	//开发环境
-//		httpClientHelper.setHostname("211.157.19.70");	//测试环境
+//		httpClientHelper.setHostname("211.157.19.83");	//测试环境
 		httpClientHelper.setPort(8080);
 		httpClientHelper.setScheme("http");
 	}

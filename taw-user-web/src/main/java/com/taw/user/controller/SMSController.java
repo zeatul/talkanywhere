@@ -6,6 +6,8 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -20,8 +22,10 @@ import com.hawk.pub.sms.SendMessageParam;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
+import com.hawk.utility.httpclient.HttpClientHelper;
 import com.hawk.utility.redis.RedisClient;
 import com.taw.pub.user.request.SendAuthCodeParam;
 import com.taw.pub.user.response.AuthCodeResp;
@@ -29,6 +33,8 @@ import com.taw.user.configure.UserServiceConfigure;
 
 @Controller
 public class SMSController {
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
 	@Qualifier("taw_user_service_sms_service")
@@ -99,7 +105,7 @@ public class SMSController {
 	 * @param response
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "/user/sms/query_auth_code.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/sms/query_auth_code.do", method = {RequestMethod.GET,RequestMethod.POST})
 	public void queryAuthCode(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		if (userServiceConfigure.isProd())
 			throw new Exception("Not support product environment");
@@ -115,5 +121,28 @@ public class SMSController {
 		authCodeResp.setAuthCode(authCode);
 		
 		HttpResponseHandler.handle(response,SuccessResponse.build(authCodeResp));
+	}
+	
+	@RequestMapping(value = "/user/sms/test_auth_code.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String testPostAuthCode(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		HttpClientHelper httpClientHelper = new HttpClientHelper();
+		httpClientHelper.setHostname("127.0.0.1");	//测试环境
+		httpClientHelper.setPort(8080);
+		httpClientHelper.setScheme("http");
+		
+		String path = "/taw-user-web/user/sms/auth_code.do";
+		SendAuthCodeParam param = new SendAuthCodeParam();
+		param.setMobile("18909082489");
+		
+		String content = JsonTools.toJsonString(param);
+		
+		logger.info("content={}",content);
+		
+		String result = httpClientHelper.post(path, content, null);
+		
+		logger.info("result={}",result);
+		
+		model.addAttribute("msg", result);
+		return "success";
 	}
 }
