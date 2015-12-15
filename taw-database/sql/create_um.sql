@@ -4,77 +4,9 @@
 
 use um;
 
-drop table if exists t_um_login;
-
-drop index u_um_partner2 on t_um_partner;
-
-drop index u_um_partner1 on t_um_partner;
-
-drop table if exists t_um_partner;
-
 drop index u_um_user1 on t_um_user;
 
 drop table if exists t_um_user;
-
-drop index u_um_uc1 on t_um_user_contact;
-
-drop table if exists t_um_user_contact;
-
-/*==============================================================*/
-/* Table: t_um_login                                            */
-/*==============================================================*/
-create table t_um_login
-(
-   token                varchar(50) not null comment '登录唯一标识',
-   user_id              bigint(20) not null comment '用户ID',
-   imei                 varchar(50) comment '设备唯一的串号',
-   device_kind          char(1) comment '设备类型:android/ios/winphone/pc/mpc',
-   os_version           varchar(20) comment 'ios或安卓的版本号',
-   brand                varchar(50) comment '三星/华为/苹果',
-   device_model         varchar(50) comment '厂商给设备定义的编号',
-   ip                   varchar(50) comment '登录IP',
-   kind                 char(1) comment '长期/短期',
-   login_date           timestamp(3) comment '创建日期',
-   last_access_date     timestamp(3) comment '最近访问日期',
-   expire_date          timestamp(3) comment 'token失效日期',
-   logout_date          timestamp(3) comment '注销日期',
-   primary key (token)
-)
-engine=innodb default charset=utf8;
-
-alter table t_um_login comment '维护登录信息,';
-
-/*==============================================================*/
-/* Table: t_um_partner                                          */
-/*==============================================================*/
-create table t_um_partner
-(
-   id                   bigint(20) not null comment '主键',
-   channel              char(1) comment '微信/QQ/微博',
-   channel_code         varchar(50) comment '第三方分配的用户编号',
-   user_id              integer comment '用户ID',
-   crdt                 timestamp(3) comment '创建日期',
-   primary key (id)
-)
-engine=innodb default charset=utf8;
-
-alter table t_um_partner comment '第三方用户表';
-
-/*==============================================================*/
-/* Index: u_um_partner1                                         */
-/*==============================================================*/
-create unique index u_um_partner1 on t_um_partner
-(
-   channel_code
-);
-
-/*==============================================================*/
-/* Index: u_um_partner2                                         */
-/*==============================================================*/
-create unique index u_um_partner2 on t_um_partner
-(
-   user_id
-);
 
 /*==============================================================*/
 /* Table: t_um_user                                             */
@@ -111,31 +43,4 @@ alter table t_um_user comment '用户表';
 create unique index u_um_user1 on t_um_user
 (
    mobile
-);
-
-/*==============================================================*/
-/* Table: t_um_user_contact                                     */
-/*==============================================================*/
-create table t_um_user_contact
-(
-   id                   bigint(20) not null comment '主键',
-   user_id              bigint(20) not null comment '用户ID',
-   co_user_id           bigint(20) not null comment '关系用户ID',
-   remark               varchar(50) comment '关系用户备注',
-   type                 char(1) comment '关系类型',
-   crdt                 timestamp(3) comment '创建日期',
-   updt                 timestamp(3) comment '修改日期',
-   primary key (id)
-)
-engine=innodb default charset=utf8;
-
-alter table t_um_user_contact comment '用户关系表';
-
-/*==============================================================*/
-/* Index: u_um_uc1                                              */
-/*==============================================================*/
-create unique index u_um_uc1 on t_um_user_contact
-(
-   user_id,
-   co_user_id
 );
