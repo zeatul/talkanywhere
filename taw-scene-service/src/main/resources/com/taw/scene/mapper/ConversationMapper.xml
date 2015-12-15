@@ -7,6 +7,7 @@
 	<sql id="columns">
 		id as "id" ,
 		scene_id as "sceneId" ,
+		scene_name as "sceneName" ,
 		post_user_fpd_id as "postUserFpdId" ,
 		post_user_id as "postUserId" ,
 		post_nickname as "postNickname" ,
@@ -23,6 +24,7 @@
 		<trim prefix="WHERE" prefixOverrides="AND">		 
 			<if test="id != null"> AND id = #{id}  </if>
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
+			<if test="sceneName != null"> AND scene_name = #{sceneName}  </if>
 			<if test="postUserFpdId != null"> AND post_user_fpd_id = #{postUserFpdId}  </if>
 			<if test="postUserId != null"> AND post_user_id = #{postUserId}  </if>
 			<if test="postNickname != null"> AND post_nickname = #{postNickname}  </if>
@@ -40,6 +42,7 @@
 		<trim prefix="WHERE" prefixOverrides="AND">
 			AND id = #{old_id}
 			AND scene_id = #{old_sceneId}
+			AND scene_name = #{old_sceneName}
 			AND post_user_fpd_id = #{old_postUserFpdId}
 			AND post_user_id = #{old_postUserId}
 			AND post_nickname = #{old_postNickname}
@@ -56,6 +59,7 @@
 	<sql id="update">
 		<set>
 			scene_id = #{sceneId},
+			scene_name = #{sceneName},
 			post_user_fpd_id = #{postUserFpdId},
 			post_user_id = #{postUserId},
 			post_nickname = #{postNickname},
@@ -72,6 +76,7 @@
 	<sql id="updateWithoutNull">
 		<set>
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
+				<if test="sceneName != null">scene_name = #{sceneName},</if>
 				<if test="postUserFpdId != null">post_user_fpd_id = #{postUserFpdId},</if>
 				<if test="postUserId != null">post_user_id = #{postUserId},</if>
 				<if test="postNickname != null">post_nickname = #{postNickname},</if>
@@ -118,6 +123,7 @@
 		INSERT INTO t_tm_conversation (			
 				id,				
 				scene_id,				
+				scene_name,				
 				post_user_fpd_id,				
 				post_user_id,				
 				post_nickname,				
@@ -132,6 +138,7 @@
 		VALUES (	
 			#{id},
 			#{sceneId},
+			#{sceneName},
 			#{postUserFpdId},
 			#{postUserId},
 			#{postNickname},

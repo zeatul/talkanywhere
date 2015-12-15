@@ -30,7 +30,7 @@ public class MessageDomain implements Serializable {
 	private Long sceneId;
 	
 	/*场景名称*/
-	private String name;
+	private String sceneName;
 	
 	/*内容*/
 	private String content;
@@ -132,16 +132,16 @@ public class MessageDomain implements Serializable {
 	 * 
 	 * @return 场景名称
 	 */
-	public String getName(){
-		return name;
+	public String getSceneName(){
+		return sceneName;
 	}
 	
 	/**
 	 * 
-	 * @param name 场景名称
+	 * @param sceneName 场景名称
 	 */	
-	public void setName (String name) {
-		this.name = name;
+	public void setSceneName (String sceneName) {
+		this.sceneName = sceneName;
 	}
 	
 	/**

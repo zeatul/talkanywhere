@@ -1,6 +1,7 @@
 package com.taw.scene.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.DomainTools;
 import com.taw.pub.scene.request.AddBookmarkParam;
 import com.taw.pub.scene.request.QueryBookmarkParam;
 import com.taw.pub.scene.request.RemoveBookmarkParam;
+import com.taw.pub.scene.response.BookmarkResp;
 import com.taw.scene.domain.BookmarkDomain;
 import com.taw.scene.service.BookmarkService;
 import com.taw.user.auth.AuthThreadLocal;
@@ -76,7 +79,12 @@ public class BookmarkController {
 		QueryBookmarkParam queryBookmarkParam = HttpRequestHandler.handle(request, QueryBookmarkParam.class);
 		queryBookmarkParam.setUserId(AuthThreadLocal.getUserId());
 		List<BookmarkDomain> list =  bookmarkService.search(queryBookmarkParam);
-		HttpResponseHandler.handle(response, SuccessResponse.build(list));
+		
+		List<BookmarkResp> result = new ArrayList<BookmarkResp>();
+		
+		DomainTools.copy(list, result, BookmarkResp.class);
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(result));
 	}
 	
 	/**

@@ -26,6 +26,8 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
 		logger.error("caught exception", ex);
 		ExceptionResponse r = new ExceptionResponse(ex);
 		String output = r.toJson();
+		
+		
 
 		ModelAndView modelAndView = new ModelAndView();
 		
@@ -35,6 +37,9 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
 		
 		
 		return modelAndView;
+		
 	}
+	
+	
 
 }

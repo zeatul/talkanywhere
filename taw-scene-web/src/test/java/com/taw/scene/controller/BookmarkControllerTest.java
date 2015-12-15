@@ -23,7 +23,6 @@ public class BookmarkControllerTest extends AbstractControllerTest {
 		List<Long> list = new ArrayList<Long>();
 		list.add(1l);
 		list.add(2l);
-		list.add(3l);
 		addBookmarkParam.setSceneIds(list);
 		
 		String content = JsonTools.toJsonString(addBookmarkParam);
@@ -33,7 +32,7 @@ public class BookmarkControllerTest extends AbstractControllerTest {
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testSearchBookmark() throws Exception{
 		String path = contextPath + "/scene/bookmark/search.do";
 		QueryBookmarkParam queryBookmarkParam = new QueryBookmarkParam();
@@ -52,9 +51,8 @@ public class BookmarkControllerTest extends AbstractControllerTest {
 		String path = contextPath + "/scene/bookmark/remove.do";
 		RemoveBookmarkParam param = new RemoveBookmarkParam();
 		List<Long> list = new ArrayList<Long>();
-		list.add(1l);
-		list.add(2l);
-		list.add(3l);
+		list.add(6l);
+		list.add(12l);
 		param.setSceneIds(list);
 		
 		String content = JsonTools.toJsonString(param);

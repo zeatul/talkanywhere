@@ -18,7 +18,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		// TODO Auto-generated constructor stub
 	}
 
-//	@Test
+	@Test
 	public void testCreateUser() throws Exception {
 		/**
 		 * taw-user-web/user/create.do
@@ -54,7 +54,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testRestPassowrd() throws Exception{
 		String path = contextPath + "/user/reset.do";
 		

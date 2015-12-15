@@ -35,11 +35,11 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-//	@Test
+	@Test
 	public void testEnterScene() throws Exception{
 		String path = contextPath + "/scene/enter.do";
 		EnterSceneParam enterSceneParam = new EnterSceneParam();
-		enterSceneParam.setSceneId(1L);
+		enterSceneParam.setSceneId(2L);
 		String content = JsonTools.toJsonString(enterSceneParam);
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());
@@ -47,7 +47,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testLeaveScene() throws Exception{
 		String path = contextPath + "/scene/leave.do";
 		LeaveSceneParam param = new LeaveSceneParam();

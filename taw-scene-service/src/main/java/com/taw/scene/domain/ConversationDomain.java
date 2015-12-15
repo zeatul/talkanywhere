@@ -20,6 +20,9 @@ public class ConversationDomain implements Serializable {
 	/*场景主键*/
 	private Long sceneId;
 	
+	/*场景名称*/
+	private String sceneName;
+	
 	/*发言者在场景唯一标识*/
 	private Long postUserFpdId;
 	
@@ -81,6 +84,22 @@ public class ConversationDomain implements Serializable {
 	 */	
 	public void setSceneId (Long sceneId) {
 		this.sceneId = sceneId;
+	}
+	
+	/**
+	 * 
+	 * @return 场景名称
+	 */
+	public String getSceneName(){
+		return sceneName;
+	}
+	
+	/**
+	 * 
+	 * @param sceneName 场景名称
+	 */	
+	public void setSceneName (String sceneName) {
+		this.sceneName = sceneName;
 	}
 	
 	/**

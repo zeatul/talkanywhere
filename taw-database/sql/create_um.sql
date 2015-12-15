@@ -34,10 +34,10 @@ create table t_um_login
    device_model         varchar(50) comment '厂商给设备定义的编号',
    ip                   varchar(50) comment '登录IP',
    kind                 char(1) comment '长期/短期',
-   login_date           datetime comment '创建日期',
-   last_access_date     datetime comment '最近访问日期',
-   expire_date          datetime comment 'token失效日期',
-   logout_date          datetime comment '注销日期',
+   login_date           timestamp(3) comment '创建日期',
+   last_access_date     timestamp(3) comment '最近访问日期',
+   expire_date          timestamp(3) comment 'token失效日期',
+   logout_date          timestamp(3) comment '注销日期',
    primary key (token)
 )
 engine=innodb default charset=utf8;
@@ -53,7 +53,7 @@ create table t_um_partner
    channel              char(1) comment '微信/QQ/微博',
    channel_code         varchar(50) comment '第三方分配的用户编号',
    user_id              integer comment '用户ID',
-   crdt                 datetime comment '创建日期',
+   crdt                 timestamp(3) comment '创建日期',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -97,8 +97,8 @@ create table t_um_user
    brand                varchar(50) comment '三星/华为/苹果',
    device_model         varchar(50) comment '厂商给设备定义的编号',
    ip                   varchar(50) comment '注册IP',
-   crdt                 datetime comment '创建日期',
-   updt                 datetime comment '修改日期',
+   crdt                 timestamp(3) comment '创建日期',
+   updt                 timestamp(3) comment '修改日期',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -123,8 +123,8 @@ create table t_um_user_contact
    co_user_id           bigint(20) not null comment '关系用户ID',
    remark               varchar(50) comment '关系用户备注',
    type                 char(1) comment '关系类型',
-   crdt                 datetime comment '创建日期',
-   updt                 datetime comment '修改日期',
+   crdt                 timestamp(3) comment '创建日期',
+   updt                 timestamp(3) comment '修改日期',
    primary key (id)
 )
 engine=innodb default charset=utf8;

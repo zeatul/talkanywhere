@@ -44,10 +44,11 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		protectedPaths.add("/scene/enter.do");
 		protectedPaths.add("/scene/leave.do");
 		
+		protectedPaths.add("/scene/footprint/search.do");
 		
 		protectedPaths.add("/scene/message/send.do");
 		protectedPaths.add("/scene/message/search.do");
-		protectedPaths.add("/scene/message/delete.do");
+		protectedPaths.add("/scene/message/remove.do");
 		
 		
 		protectedPaths.add("/scene/conversation/send.do");

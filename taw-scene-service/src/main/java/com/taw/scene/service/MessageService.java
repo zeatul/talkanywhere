@@ -15,8 +15,10 @@ import com.taw.pub.scene.request.SearchMessageParam;
 import com.taw.pub.scene.request.SendMessageParam;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.MessageDomain;
+import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
+import com.taw.scene.exception.SceneNotExistsException;
 import com.taw.scene.mapper.MessageMapper;
 import com.taw.scene.mapperex.MessageExMapper;
 
@@ -31,6 +33,9 @@ public class MessageService {
 	
 	@Autowired
 	private FootPrintService footPrintService;
+	
+	@Autowired
+	private SceneService sceneService;
 
 	/**
 	 * 发送私信
@@ -63,6 +68,11 @@ public class MessageService {
 		
 		Long receiverId = footPrintDetailDomain.getUserId();
 		
+		SceneDomain sceneDomain = sceneService.loadSceneDomain(sceneId, true);
+		
+		if (sceneDomain == null)
+			throw new SceneNotExistsException();
+		
 		/**
 		 * 消息入库
 		 * TODO:检测接收者是否在场
@@ -75,6 +85,7 @@ public class MessageService {
 		messageDomain.setReceiverId(receiverId);
 		messageDomain.setReceiverNickname(sendMessageParam.getReceiverNickname());
 		messageDomain.setSceneId(sceneId);
+		messageDomain.setSceneName(sceneDomain.getName());
 		messageDomain.setSenderFpdId(senderFpdId);
 		messageDomain.setSenderId(senderId);
 		messageDomain.setSenderNickname(footPrintDetailDomain.getNickname());	

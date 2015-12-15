@@ -17,8 +17,10 @@ import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
 import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.domain.FootPrintDetailDomain;
+import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
+import com.taw.scene.exception.SceneNotExistsException;
 import com.taw.scene.mapper.ConversationMapper;
 import com.taw.scene.mapperex.ConversationExMapper;
 
@@ -33,6 +35,9 @@ public class ConversationService {
 	
 	@Autowired
 	private FootPrintService footPrintService;
+	
+	@Autowired
+	private SceneService sceneService;
 
 	/**
 	 * 发送场景消息
@@ -87,11 +92,17 @@ public class ConversationService {
 				throw new RuntimeException("UnMathed rePost UserId");
 		}
 		
+		SceneDomain sceneDomain = sceneService.loadSceneDomain(sceneId, true);
+		
+		if (sceneDomain == null)
+			throw new SceneNotExistsException();
+		
 
 		ConversationDomain conversationDomain = new ConversationDomain();
 		conversationDomain.setMessage(complexMessage.getText());
 		conversationDomain.setPicCount(pics == null ? 0 : pics.size());
 		conversationDomain.setSceneId(sendConverstaionParam.getSceneId());
+		conversationDomain.setSceneName(sceneDomain.getName());
 
 		/**
 		 * poster信息

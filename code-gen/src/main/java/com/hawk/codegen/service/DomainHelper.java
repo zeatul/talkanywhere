@@ -116,6 +116,8 @@ public class DomainHelper {
 		typeMap.put("decimal", "java.math.BigDecimal");
 		typeMap.put("tinyint", "Short");
 		typeMap.put("bigint", "Long");
+		typeMap.put("timestamp","Date");
+		
 		
 	}
 	

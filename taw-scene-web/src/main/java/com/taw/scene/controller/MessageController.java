@@ -1,6 +1,7 @@
 package com.taw.scene.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.DomainTools;
 import com.taw.pub.scene.request.DeleteMessageParam;
 import com.taw.pub.scene.request.SearchMessageParam;
 import com.taw.pub.scene.request.SendMessageParam;
+import com.taw.pub.scene.response.MessageResp;
 import com.taw.pub.scene.response.SendMessageResp;
 import com.taw.scene.domain.MessageDomain;
 import com.taw.scene.service.MessageService;
@@ -74,7 +77,9 @@ public class MessageController {
 		SearchMessageParam searchMessageParam = HttpRequestHandler.handle(request, SearchMessageParam.class);
 		searchMessageParam.setUserId(AuthThreadLocal.getUserId());/*查询登录用户的消息*/
 		List<MessageDomain> list = messageService.search(searchMessageParam);
-		HttpResponseHandler.handle(response, SuccessResponse.build(list));
+		List<MessageResp> result = new ArrayList<MessageResp>(list.size());
+		DomainTools.copy(list, result, MessageResp.class);
+		HttpResponseHandler.handle(response, SuccessResponse.build(result));
 	}
 	
 	/**
@@ -85,7 +90,7 @@ public class MessageController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/scene/message/delete.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/scene/message/remove.do", method = RequestMethod.POST)
 	public void deleteMessage(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		DeleteMessageParam deleteMessageParam = HttpRequestHandler.handle(request, DeleteMessageParam.class);
 		deleteMessageParam.setUserId(AuthThreadLocal.getUserId());/*删除登录用户的消息*/

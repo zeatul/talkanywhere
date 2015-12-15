@@ -43,7 +43,7 @@ create table t_tm_bookmark
    user_id              bigint(20) comment '用户主键',
    scene_id             bigint(20) comment '场景主键',
    scene_name           varchar(50) comment '场景名称',
-   book_time            datetime comment '收藏时间',
+   book_time            timestamp(3) comment '收藏时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -66,6 +66,7 @@ create table t_tm_conversation
 (
    id                   bigint(20) not null comment '主键',
    scene_id             bigint(20) comment '场景主键',
+   scene_name           varchar(50) comment '场景名称',
    post_user_fpd_id     bigint(20) comment '发言者在场景唯一标识',
    post_user_id         bigint(20) comment '发言者主键',
    post_nickname        varchar(50) comment '发言者昵称',
@@ -75,7 +76,7 @@ create table t_tm_conversation
    re_post_user_id      bigint(20) comment '被回复的发言者ID',
    re_post_nickname     varchar(50) comment '被回复的发言者昵称',
    pic_count            integer comment '包含的图片数量',
-   post_date            datetime comment '发言时间',
+   post_date            timestamp(3) comment '发言时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -100,8 +101,8 @@ create table t_tm_foot_print
    user_id              bigint(20) not null comment '用户主键',
    scene_id             bigint(20) not null comment '场景主键',
    scene_name           varchar(50) comment '场景名称',
-   last_enter_time      datetime comment '最后进入时间',
-   last_leave_time      datetime comment '最后离开时间',
+   last_enter_time      timestamp(3) comment '最后进入时间',
+   last_leave_time      timestamp(3) comment '最后离开时间',
    enter_times          integer comment '进入次数累计',
    stay_span            integer comment '总停留时间',
    primary key (id)
@@ -130,8 +131,8 @@ create table t_tm_foot_print_detail
    scene_id             bigint(20) not null comment '场景主键',
    scene_name           varchar(50) comment '场景名称',
    nickname             varchar(50) comment '分配昵称',
-   in_time              datetime comment '最后进入时间',
-   out_time             datetime comment '进入次数累计',
+   in_time              timestamp(3) comment '最后进入时间',
+   out_time             timestamp(3) comment '进入次数累计',
    stay_span            integer comment '总停留时间',
    leave_type           char(1) comment '离开类型',
    primary key (id)
@@ -146,7 +147,8 @@ alter table t_tm_foot_print_detail comment '场景足迹明细';
 create index i_tm_fp1 on t_tm_foot_print_detail
 (
    user_id,
-   scene_id
+   scene_id,
+   token
 );
 
 /*==============================================================*/
@@ -159,12 +161,12 @@ create table t_tm_message
    receiver_id          bigint(20) comment '接收者ID',
    receiver_nickname    varchar(50) comment '接收者昵称',
    scene_id             bigint(20) comment '场景ID',
-   name                 varchar(50) comment '场景名称',
+   scene_name           varchar(50) comment '场景名称',
    content              varchar(500) comment '内容',
    sender_fpd_id        bigint(20) comment '发送者者在场景唯一标识',
    sender_id            bigint(20) comment '发送者ID',
    sender_nickname      varchar(50) comment '发送者昵称',
-   send_time            datetime comment '发送时间',
+   send_time            timestamp(3) comment '发送时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -237,7 +239,7 @@ create table t_tm_scene_tag
    scene_id             bigint(20) not null comment '场景主键',
    tag_id               bigint(20) not null comment '标签主键',
    tag_name             varchar(50) comment '标签内容',
-   crdt                 datetime comment '创建日期',
+   crdt                 timestamp(3) comment '创建日期',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -252,3 +254,4 @@ create unique index u_tm_sctag1 on t_tm_scene_tag
    scene_id,
    tag_id
 );
+

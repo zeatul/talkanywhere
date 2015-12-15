@@ -21,7 +21,8 @@ public class RedisClient {
 	 * 
 	 * @param key
 	 * @param value
-	 * @param async true=异步
+	 * @param async
+	 *            true=异步
 	 */
 	public void set(String key, String value, boolean async) {
 		ShardedJedis shardedJedis = null;
@@ -33,11 +34,13 @@ public class RedisClient {
 			} else {
 				shardedJedis.set(key, value);
 			}
-		} finally {
+		}
+		finally {
+
 			if (shardedJedis != null) {
 				try {
 					shardedJedis.close();
-//					pool.returnResource(shardedJedis);
+					// pool.returnResource(shardedJedis);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -46,16 +49,18 @@ public class RedisClient {
 		}
 
 	}
-	
+
 	/**
 	 * 加入缓存
 	 * 
 	 * @param key
 	 * @param value
-	 * @param expire 有效期，单位秒
-	 * @param async true=异步
+	 * @param expire
+	 *            有效期，单位秒
+	 * @param async
+	 *            true=异步
 	 */
-	public void set(String key, String value,int expire, boolean async) {
+	public void set(String key, String value, int expire, boolean async) {
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();
@@ -70,7 +75,7 @@ public class RedisClient {
 			if (shardedJedis != null) {
 				try {
 					shardedJedis.close();
-//					pool.returnResource(shardedJedis);
+					// pool.returnResource(shardedJedis);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -79,13 +84,14 @@ public class RedisClient {
 		}
 
 	}
-	
+
 	/**
 	 * 从缓存取值
+	 * 
 	 * @param key
 	 * @return
 	 */
-	public String get(String key){
+	public String get(String key) {
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();
@@ -101,13 +107,14 @@ public class RedisClient {
 
 		}
 	}
-	
+
 	/**
 	 * 判断key值是否存在
+	 * 
 	 * @param key
 	 * @return
 	 */
-	public boolean exists(String key){
+	public boolean exists(String key) {
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();
@@ -126,10 +133,11 @@ public class RedisClient {
 
 	/**
 	 * 删除可以
+	 * 
 	 * @param key
 	 * @param async
 	 */
-	public void delete(String key, boolean async){
+	public void delete(String key, boolean async) {
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();

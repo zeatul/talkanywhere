@@ -10,7 +10,7 @@
 		receiver_id as "receiverId" ,
 		receiver_nickname as "receiverNickname" ,
 		scene_id as "sceneId" ,
-		name as "name" ,
+		scene_name as "sceneName" ,
 		content as "content" ,
 		sender_fpd_id as "senderFpdId" ,
 		sender_id as "senderId" ,
@@ -25,7 +25,7 @@
 			<if test="receiverId != null"> AND receiver_id = #{receiverId}  </if>
 			<if test="receiverNickname != null"> AND receiver_nickname = #{receiverNickname}  </if>
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
-			<if test="name != null"> AND name = #{name}  </if>
+			<if test="sceneName != null"> AND scene_name = #{sceneName}  </if>
 			<if test="content != null"> AND content = #{content}  </if>
 			<if test="senderFpdId != null"> AND sender_fpd_id = #{senderFpdId}  </if>
 			<if test="senderId != null"> AND sender_id = #{senderId}  </if>
@@ -41,7 +41,7 @@
 			AND receiver_id = #{old_receiverId}
 			AND receiver_nickname = #{old_receiverNickname}
 			AND scene_id = #{old_sceneId}
-			AND name = #{old_name}
+			AND scene_name = #{old_sceneName}
 			AND content = #{old_content}
 			AND sender_fpd_id = #{old_senderFpdId}
 			AND sender_id = #{old_senderId}
@@ -56,7 +56,7 @@
 			receiver_id = #{receiverId},
 			receiver_nickname = #{receiverNickname},
 			scene_id = #{sceneId},
-			name = #{name},
+			scene_name = #{sceneName},
 			content = #{content},
 			sender_fpd_id = #{senderFpdId},
 			sender_id = #{senderId},
@@ -71,7 +71,7 @@
 				<if test="receiverId != null">receiver_id = #{receiverId},</if>
 				<if test="receiverNickname != null">receiver_nickname = #{receiverNickname},</if>
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
-				<if test="name != null">name = #{name},</if>
+				<if test="sceneName != null">scene_name = #{sceneName},</if>
 				<if test="content != null">content = #{content},</if>
 				<if test="senderFpdId != null">sender_fpd_id = #{senderFpdId},</if>
 				<if test="senderId != null">sender_id = #{senderId},</if>
@@ -116,7 +116,7 @@
 				receiver_id,				
 				receiver_nickname,				
 				scene_id,				
-				name,				
+				scene_name,				
 				content,				
 				sender_fpd_id,				
 				sender_id,				
@@ -129,7 +129,7 @@
 			#{receiverId},
 			#{receiverNickname},
 			#{sceneId},
-			#{name},
+			#{sceneName},
 			#{content},
 			#{senderFpdId},
 			#{senderId},
