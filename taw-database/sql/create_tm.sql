@@ -43,7 +43,7 @@ create table t_tm_bookmark
    user_id              bigint(20) comment '用户主键',
    scene_id             bigint(20) comment '场景主键',
    scene_name           varchar(50) comment '场景名称',
-   book_time            timestamp(3) comment '收藏时间',
+   book_time            timestamp(3) null comment '收藏时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -76,7 +76,7 @@ create table t_tm_conversation
    re_post_user_id      bigint(20) comment '被回复的发言者ID',
    re_post_nickname     varchar(50) comment '被回复的发言者昵称',
    pic_count            integer comment '包含的图片数量',
-   post_date            timestamp(3) comment '发言时间',
+   post_date            timestamp(3) null comment '发言时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -101,8 +101,8 @@ create table t_tm_foot_print
    user_id              bigint(20) not null comment '用户主键',
    scene_id             bigint(20) not null comment '场景主键',
    scene_name           varchar(50) comment '场景名称',
-   last_enter_time      timestamp(3) comment '最后进入时间',
-   last_leave_time      timestamp(3) comment '最后离开时间',
+   last_enter_time      timestamp(3) null comment '最后进入时间',
+   last_leave_time      timestamp(3) null comment '最后离开时间',
    enter_times          integer comment '进入次数累计',
    stay_span            integer comment '总停留时间',
    primary key (id)
@@ -131,8 +131,8 @@ create table t_tm_foot_print_detail
    scene_id             bigint(20) not null comment '场景主键',
    scene_name           varchar(50) comment '场景名称',
    nickname             varchar(50) comment '分配昵称',
-   in_time              timestamp(3) comment '最后进入时间',
-   out_time             timestamp(3) comment '进入次数累计',
+   in_time              timestamp(3) null comment '最后进入时间',
+   out_time             timestamp(3) null comment '进入次数累计',
    stay_span            integer comment '总停留时间',
    leave_type           char(1) comment '离开类型',
    primary key (id)
@@ -166,7 +166,7 @@ create table t_tm_message
    sender_fpd_id        bigint(20) comment '发送者者在场景唯一标识',
    sender_id            bigint(20) comment '发送者ID',
    sender_nickname      varchar(50) comment '发送者昵称',
-   send_time            timestamp(3) comment '发送时间',
+   send_time            timestamp(3) null comment '发送时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -239,7 +239,7 @@ create table t_tm_scene_tag
    scene_id             bigint(20) not null comment '场景主键',
    tag_id               bigint(20) not null comment '标签主键',
    tag_name             varchar(50) comment '标签内容',
-   crdt                 timestamp(3) comment '创建日期',
+   crdt                 timestamp(3) null comment '创建日期',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -254,4 +254,3 @@ create unique index u_tm_sctag1 on t_tm_scene_tag
    scene_id,
    tag_id
 );
-
