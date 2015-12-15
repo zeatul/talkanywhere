@@ -29,8 +29,8 @@ create table t_um_user
    brand                varchar(50) comment '三星/华为/苹果',
    device_model         varchar(50) comment '厂商给设备定义的编号',
    ip                   varchar(50) comment '注册IP',
-   crdt                 timestamp(3) comment '创建日期',
-   updt                 timestamp(3) comment '修改日期',
+   crdt                 timestamp(3) default null comment '创建日期',
+   updt                 timestamp(3) default null comment '修改日期',
    primary key (id)
 )
 engine=innodb default charset=utf8;
