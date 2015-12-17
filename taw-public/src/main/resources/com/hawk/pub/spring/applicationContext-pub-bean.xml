@@ -9,6 +9,10 @@
 
 	<bean class="com.hawk.pub.spring.FrameworkContext" />
 
-
+	<bean id="smsHttpClientHelper" class="com.hawk.utility.httpclient.HttpClientHelper">
+		<property name="hostname" value="v.juhe.cn"/>
+		<property name="port" value="80"/>
+		<property name="scheme" value="http"></property>
+	</bean>
 
 </beans>

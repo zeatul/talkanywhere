@@ -83,7 +83,7 @@ public class SMSController {
 		}
 		
 		String authCode = StringTools.randomNumberString(4);
-		String msg = "autoCode = " + authCode;
+		String msg = authCode;
 		
 		SendMessageParam sendMessageParam = new SendMessageParam();
 		sendMessageParam.setMobile(param.getMobile());

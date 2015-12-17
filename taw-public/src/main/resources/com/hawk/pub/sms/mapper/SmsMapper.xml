@@ -7,13 +7,18 @@
 	<sql id="columns">
 		id as "id" ,
 		mobile as "mobile" ,
+		tpl_id as "tplId" ,
+		params as "params" ,
 		message as "message" ,
 		kind as "kind" ,
 		status as "status" ,
 		send_time as "sendTime" ,
-		send_times as "sendTimes" ,
 		expire_time as "expireTime" ,
+		send_times as "sendTimes" ,
 		max_times as "maxTimes" ,
+		sid as "sid" ,
+		err_code as "errCode" ,
+		err_msg as "errMsg" ,
 		crdt as "crdt" ,
 		updt as "updt" 
 	</sql>
@@ -22,13 +27,18 @@
 		<trim prefix="WHERE" prefixOverrides="AND">		 
 			<if test="id != null"> AND id = #{id}  </if>
 			<if test="mobile != null"> AND mobile = #{mobile}  </if>
+			<if test="tplId != null"> AND tpl_id = #{tplId}  </if>
+			<if test="params != null"> AND params = #{params}  </if>
 			<if test="message != null"> AND message = #{message}  </if>
 			<if test="kind != null"> AND kind = #{kind}  </if>
 			<if test="status != null"> AND status = #{status}  </if>
 			<if test="sendTime != null"> AND send_time = #{sendTime}  </if>
-			<if test="sendTimes != null"> AND send_times = #{sendTimes}  </if>
 			<if test="expireTime != null"> AND expire_time = #{expireTime}  </if>
+			<if test="sendTimes != null"> AND send_times = #{sendTimes}  </if>
 			<if test="maxTimes != null"> AND max_times = #{maxTimes}  </if>
+			<if test="sid != null"> AND sid = #{sid}  </if>
+			<if test="errCode != null"> AND err_code = #{errCode}  </if>
+			<if test="errMsg != null"> AND err_msg = #{errMsg}  </if>
 			<if test="crdt != null"> AND crdt = #{crdt}  </if>
 			<if test="updt != null"> AND updt = #{updt}  </if>
 		</trim>	
@@ -38,13 +48,18 @@
 		<trim prefix="WHERE" prefixOverrides="AND">
 			AND id = #{old_id}
 			AND mobile = #{old_mobile}
+			AND tpl_id = #{old_tplId}
+			AND params = #{old_params}
 			AND message = #{old_message}
 			AND kind = #{old_kind}
 			AND status = #{old_status}
 			AND send_time = #{old_sendTime}
-			AND send_times = #{old_sendTimes}
 			AND expire_time = #{old_expireTime}
+			AND send_times = #{old_sendTimes}
 			AND max_times = #{old_maxTimes}
+			AND sid = #{old_sid}
+			AND err_code = #{old_errCode}
+			AND err_msg = #{old_errMsg}
 			AND crdt = #{old_crdt}
 			AND updt = #{old_updt}
 		</trim>
@@ -53,13 +68,18 @@
 	<sql id="update">
 		<set>
 			mobile = #{mobile},
+			tpl_id = #{tplId},
+			params = #{params},
 			message = #{message},
 			kind = #{kind},
 			status = #{status},
 			send_time = #{sendTime},
-			send_times = #{sendTimes},
 			expire_time = #{expireTime},
+			send_times = #{sendTimes},
 			max_times = #{maxTimes},
+			sid = #{sid},
+			err_code = #{errCode},
+			err_msg = #{errMsg},
 			crdt = #{crdt},
 			updt = #{updt},
 		</set>
@@ -68,13 +88,18 @@
 	<sql id="updateWithoutNull">
 		<set>
 				<if test="mobile != null">mobile = #{mobile},</if>
+				<if test="tplId != null">tpl_id = #{tplId},</if>
+				<if test="params != null">params = #{params},</if>
 				<if test="message != null">message = #{message},</if>
 				<if test="kind != null">kind = #{kind},</if>
 				<if test="status != null">status = #{status},</if>
 				<if test="sendTime != null">send_time = #{sendTime},</if>
-				<if test="sendTimes != null">send_times = #{sendTimes},</if>
 				<if test="expireTime != null">expire_time = #{expireTime},</if>
+				<if test="sendTimes != null">send_times = #{sendTimes},</if>
 				<if test="maxTimes != null">max_times = #{maxTimes},</if>
+				<if test="sid != null">sid = #{sid},</if>
+				<if test="errCode != null">err_code = #{errCode},</if>
+				<if test="errMsg != null">err_msg = #{errMsg},</if>
 				<if test="crdt != null">crdt = #{crdt},</if>
 				<if test="updt != null">updt = #{updt},</if>
 		</set>
@@ -113,26 +138,36 @@
 		INSERT INTO t_sm_sms (			
 				id,				
 				mobile,				
+				tpl_id,				
+				params,				
 				message,				
 				kind,				
 				status,				
 				send_time,				
-				send_times,				
 				expire_time,				
+				send_times,				
 				max_times,				
+				sid,				
+				err_code,				
+				err_msg,				
 				crdt,				
 				updt				
 		)		
 		VALUES (	
 			#{id},
 			#{mobile},
+			#{tplId},
+			#{params},
 			#{message},
 			#{kind},
 			#{status},
 			#{sendTime},
-			#{sendTimes},
 			#{expireTime},
+			#{sendTimes},
 			#{maxTimes},
+			#{sid},
+			#{errCode},
+			#{errMsg},
 			#{crdt},
 			#{updt}
 		) 

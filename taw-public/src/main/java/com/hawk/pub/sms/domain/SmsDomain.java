@@ -20,6 +20,12 @@ public class SmsDomain implements Serializable {
 	/*手机号*/
 	private String mobile;
 	
+	/*消息模板ID*/
+	private String tplId;
+	
+	/*消息动态参数*/
+	private String params;
+	
 	/*消息体*/
 	private String message;
 	
@@ -32,14 +38,23 @@ public class SmsDomain implements Serializable {
 	/*发送时间*/
 	private Date sendTime;
 	
-	/*发送次数*/
-	private Integer sendTimes;
-	
 	/*失效时间*/
 	private Date expireTime;
 	
+	/*发送次数*/
+	private Integer sendTimes;
+	
 	/*最大可发送次数*/
 	private Integer maxTimes;
+	
+	/*短信平台发送成功返回的消息ID*/
+	private String sid;
+	
+	/*短信平台返回的错误代码*/
+	private String errCode;
+	
+	/*短信平台返回的错误原因*/
+	private String errMsg;
 	
 	/*创建时间*/
 	private Date crdt;
@@ -78,6 +93,38 @@ public class SmsDomain implements Serializable {
 	 */	
 	public void setMobile (String mobile) {
 		this.mobile = mobile;
+	}
+	
+	/**
+	 * 
+	 * @return 消息模板ID
+	 */
+	public String getTplId(){
+		return tplId;
+	}
+	
+	/**
+	 * 
+	 * @param tplId 消息模板ID
+	 */	
+	public void setTplId (String tplId) {
+		this.tplId = tplId;
+	}
+	
+	/**
+	 * 
+	 * @return 消息动态参数
+	 */
+	public String getParams(){
+		return params;
+	}
+	
+	/**
+	 * 
+	 * @param params 消息动态参数
+	 */	
+	public void setParams (String params) {
+		this.params = params;
 	}
 	
 	/**
@@ -146,22 +193,6 @@ public class SmsDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 发送次数
-	 */
-	public Integer getSendTimes(){
-		return sendTimes;
-	}
-	
-	/**
-	 * 
-	 * @param sendTimes 发送次数
-	 */	
-	public void setSendTimes (Integer sendTimes) {
-		this.sendTimes = sendTimes;
-	}
-	
-	/**
-	 * 
 	 * @return 失效时间
 	 */
 	public Date getExpireTime(){
@@ -178,6 +209,22 @@ public class SmsDomain implements Serializable {
 	
 	/**
 	 * 
+	 * @return 发送次数
+	 */
+	public Integer getSendTimes(){
+		return sendTimes;
+	}
+	
+	/**
+	 * 
+	 * @param sendTimes 发送次数
+	 */	
+	public void setSendTimes (Integer sendTimes) {
+		this.sendTimes = sendTimes;
+	}
+	
+	/**
+	 * 
 	 * @return 最大可发送次数
 	 */
 	public Integer getMaxTimes(){
@@ -190,6 +237,54 @@ public class SmsDomain implements Serializable {
 	 */	
 	public void setMaxTimes (Integer maxTimes) {
 		this.maxTimes = maxTimes;
+	}
+	
+	/**
+	 * 
+	 * @return 短信平台发送成功返回的消息ID
+	 */
+	public String getSid(){
+		return sid;
+	}
+	
+	/**
+	 * 
+	 * @param sid 短信平台发送成功返回的消息ID
+	 */	
+	public void setSid (String sid) {
+		this.sid = sid;
+	}
+	
+	/**
+	 * 
+	 * @return 短信平台返回的错误代码
+	 */
+	public String getErrCode(){
+		return errCode;
+	}
+	
+	/**
+	 * 
+	 * @param errCode 短信平台返回的错误代码
+	 */	
+	public void setErrCode (String errCode) {
+		this.errCode = errCode;
+	}
+	
+	/**
+	 * 
+	 * @return 短信平台返回的错误原因
+	 */
+	public String getErrMsg(){
+		return errMsg;
+	}
+	
+	/**
+	 * 
+	 * @param errMsg 短信平台返回的错误原因
+	 */	
+	public void setErrMsg (String errMsg) {
+		this.errMsg = errMsg;
 	}
 	
 	/**
