@@ -62,9 +62,14 @@ public class SMSService {
 		 * 插入数据
 		 */
 		smsMapper.insert(messageDomain);
-		messageDomain.setSendTimes(1);
+		
 		try{
-			SendMessageResponse sendMessageResponse = send(authCode,mobile);
+			
+			messageDomain.setSendTime(DateTools.now()); 
+			SendMessageResponse sendMessageResponse = send(authCode,mobile);			
+			messageDomain.setSendTimes(1);
+			
+			messageDomain.setUpdt(DateTools.now());
 			
 			if (sendMessageResponse.isSuccess()){
 				messageDomain.setStatus(EnumMessageStatus.SUCCESS.toString());
@@ -89,11 +94,7 @@ public class SMSService {
 		}
 		
 		
-		/**
-		 * 发送后更新数据
-		 */
 		
-		logger.info("Success to persist sms message!");
 		
 	}
 	
@@ -197,9 +198,9 @@ public class SMSService {
 		//发送短信
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("mobile", mobile);
-		params.put("tpl_id", "");
+		params.put("tpl_id", "1");
 		params.put("tpl_value", URLEncoder.encode("#code#=" + authCode, "utf-8"));
-		params.put("key", "");
+		params.put("key", "df69b06e12f3daefbe6e0cca4177e295");
 		String result = smsHttpClientHelper.get("/sms/send", params);
 		logger.info(result);
 		Map<?,?> m =  JsonTools.toObject(result, HashMap.class);

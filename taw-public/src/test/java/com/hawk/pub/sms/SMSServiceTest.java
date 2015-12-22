@@ -19,8 +19,8 @@ public class SMSServiceTest extends AbstractJUnit4SpringContextTests{
 	public void testSendMessage() throws Exception{
 		
 		SendMessageParam param = new SendMessageParam();
-		param.setMobile("13311658157");
-		param.setMessage("autocode=123456");
+		param.setMobile("13916082481");
+		param.setMessage("123456");
 		param.setKind(EnumMessageKind.AUTH_CODE.toString());
 		
 		smsService.SendMessage(param);
