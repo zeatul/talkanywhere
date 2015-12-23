@@ -21,11 +21,13 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter{
 		String messageType = message.substring(0, 2);
 		
 		if (messageType.equals(EnumMessageType.LOGIN_RESP.toString())){
-			String loginResult = message.substring(2,1);
+			String loginResult = message.substring(2,3);
 			if (!loginResult.equals("1")){
 				// 返回1表示登录成功，否则失败并关闭链接
+				System.out.println("login failed");
 				ctx.close();
 			}else{
+				System.out.println("login succeeded");
 				ctx.fireChannelRead(msg);
 			}
 		}else{

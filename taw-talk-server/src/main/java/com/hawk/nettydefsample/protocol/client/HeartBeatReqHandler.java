@@ -18,7 +18,8 @@ public class HeartBeatReqHandler extends ChannelHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		NettyMessage message = (NettyMessage) msg;
 		if (message.getHeader() != null && message.getHeader().getType() == MessageType.LOGIN_RESP.value()) {
-			heartBeat = ctx.executor().scheduleAtFixedRate(new HeartBeatTask(ctx), 0, 5000, TimeUnit.MILLISECONDS);
+			heartBeat = ctx.executor()
+					.scheduleAtFixedRate(new HeartBeatTask(ctx), 0, 5000, TimeUnit.MILLISECONDS);
 		} else if (message.getHeader() != null && message.getHeader().getType() == MessageType.HEARTBEAT_RESP.value()) {
 			System.out.println("Client receive server heart beat message : ---> " + message);
 		} else {

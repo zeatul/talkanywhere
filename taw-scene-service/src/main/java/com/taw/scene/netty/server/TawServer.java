@@ -2,7 +2,10 @@ package com.taw.scene.netty.server;
 
 import java.nio.charset.Charset;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -10,19 +13,26 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class TawServer {
 	
-	public void bind(){
+	/**
+	 * 消息构成方式，按byte计算，头四位代表一个int32=整个消息的长度，紧接着2位是char(2),代表消息类型,后面接着的是消息的实体的json格式的字符串用utf8转换出的byte
+	 * @throws Exception 
+	 */
+	public void bind(int port) throws Exception{
 		
 		EventLoopGroup bossGroup  = new NioEventLoopGroup();		
 		EventLoopGroup workGroup = new NioEventLoopGroup();
 		
 		ServerBootstrap b = new ServerBootstrap();
-		
+		try{
 		b.group(bossGroup, workGroup)
 			.channel(NioServerSocketChannel.class) //
 			.option(ChannelOption.SO_BACKLOG, 100) //
@@ -31,10 +41,49 @@ public class TawServer {
 
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024*64, 0, 4));
+					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024*64, 0, 4,0,4));
 					ch.pipeline().addLast(new StringDecoder(Charset.forName("utf-8")));
+					ch.pipeline().addLast(new LengthFieldPrepender(4,false));
+					ch.pipeline().addLast(new StringEncoder(Charset.forName("utf-8")));
+					ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(180*3));
+					ch.pipeline().addLast(new LoginAuthRespHandler());
+					ch.pipeline().addLast("HeartBeatHandler", new HeartBeatRespHandler());
+					
 				}
 			});
+		// 绑定端口，同步等待成功
+		ChannelFuture f = b.bind(port).sync();
+		System.out.println("taw server listen in port "+ port);
+		f.channel().closeFuture().sync();
+		}finally{
+			bossGroup.shutdownGracefully();
+			workGroup.shutdownGracefully();
+		}
+	}
+	
+	static{
+		
+	}
+	
+	public static void main(String[] args) throws Exception{
+		
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
+		applicationContext.setConfigLocations(new String[]{"classpath*:com/taw/user/spring/applicationContext-user-service-*.xml"});
+		applicationContext.refresh();	
+		
+		int port = 9999;
+		if (args != null & args.length > 0){
+			try{
+				port = Integer.parseInt(args[0]);
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+		
+		
+		new TawServer().bind(port);
+		
+		applicationContext.close();
 	}
 
 }

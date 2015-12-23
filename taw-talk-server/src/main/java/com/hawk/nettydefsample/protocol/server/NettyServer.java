@@ -18,6 +18,10 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class NettyServer {
 
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	public void bind() throws Exception {
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		EventLoopGroup workerGroup = new NioEventLoopGroup();

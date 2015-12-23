@@ -33,7 +33,7 @@ public class LoginService {
 	@Qualifier("taw_user_service_redis_client")
 	private RedisClient redisClient;
 	
-	private final int expire = 3600 *72 ; //token缓存72小时
+	private final int expire = 3600 *24 ; //token缓存24小时
 	
 	public static class LoginInfo{
 		public String getToken() {
@@ -161,7 +161,7 @@ public class LoginService {
 					return null;
 				useIdStr = loginDomain.getUserId().toString();
 				/**
-				 * 加入缓存,72小时
+				 * 加入缓存,24小时
 				 */
 				redisClient.set(computeCacheKey(token), useIdStr,expire, true);
 			}
