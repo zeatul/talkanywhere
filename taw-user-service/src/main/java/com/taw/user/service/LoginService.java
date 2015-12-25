@@ -30,7 +30,6 @@ public class LoginService {
 	private UserService userService;
 	
 	@Autowired
-	@Qualifier("taw_user_service_redis_client")
 	private RedisClient redisClient;
 	
 	private final int expire = 3600 *24 ; //token缓存24小时

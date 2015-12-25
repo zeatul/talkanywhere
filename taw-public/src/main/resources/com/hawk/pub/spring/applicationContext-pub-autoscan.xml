@@ -13,7 +13,7 @@
 	
 	<context:component-scan base-package="com.hawk.pub.sms" />
 	
-	<context:component-scan base-package="com.hawk.pub.version.controller" />
+	<!-- <context:component-scan base-package="com.hawk.pub.version.controller" /> -->
 	
 	
 	

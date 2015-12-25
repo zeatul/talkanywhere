@@ -4,6 +4,8 @@ import java.nio.charset.Charset;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.taw.scene.netty.CtxHelper;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -22,67 +24,68 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class TawServer {
 	
-	/**
-	 * 消息构成方式，按byte计算，头四位代表一个int32=整个消息的长度，紧接着2位是char(2),代表消息类型,后面接着的是消息的实体的json格式的字符串用utf8转换出的byte
-	 * @throws Exception 
-	 */
-	public void bind(int port) throws Exception{
-		
-		EventLoopGroup bossGroup  = new NioEventLoopGroup();		
-		EventLoopGroup workGroup = new NioEventLoopGroup();
-		
-		ServerBootstrap b = new ServerBootstrap();
-		try{
-		b.group(bossGroup, workGroup)
-			.channel(NioServerSocketChannel.class) //
-			.option(ChannelOption.SO_BACKLOG, 100) //
-			.handler(new LoggingHandler(LogLevel.INFO))//
-			.childHandler(new ChannelInitializer<SocketChannel>() {
+	
 
-				@Override
-				protected void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024*64, 0, 4,0,4));
-					ch.pipeline().addLast(new StringDecoder(Charset.forName("utf-8")));
-					ch.pipeline().addLast(new LengthFieldPrepender(4,false));
-					ch.pipeline().addLast(new StringEncoder(Charset.forName("utf-8")));
-					ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(180*3));
-					ch.pipeline().addLast(new LoginAuthRespHandler());
-					ch.pipeline().addLast("HeartBeatHandler", new HeartBeatRespHandler());
-					
-				}
-			});
-		// 绑定端口，同步等待成功
-		ChannelFuture f = b.bind(port).sync();
-		System.out.println("taw server listen in port "+ port);
-		f.channel().closeFuture().sync();
-		}finally{
+	/**
+	 * 消息构成方式，按byte计算，头四位代表一个int32=整个消息的长度，紧接着2位是char(2),代表消息类型,
+	 * 后面接着的是消息的实体的json格式的字符串用utf8转换出的byte
+	 * 
+	 * @throws Exception
+	 */
+	public void bind(int port) throws Exception {
+
+		EventLoopGroup bossGroup = new NioEventLoopGroup();
+		EventLoopGroup workGroup = new NioEventLoopGroup();
+
+		ServerBootstrap b = new ServerBootstrap();
+		try {
+			b.group(bossGroup, workGroup).channel(NioServerSocketChannel.class) //
+					.option(ChannelOption.SO_BACKLOG, 100) //
+					.handler(new LoggingHandler(LogLevel.INFO))//
+					.childHandler(new ChannelInitializer<SocketChannel>() {
+
+						@Override
+						protected void initChannel(SocketChannel ch) throws Exception {
+							ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024 * 64, 0, 4, 0, 4));
+							ch.pipeline().addLast(new StringDecoder(Charset.forName("utf-8")));
+							ch.pipeline().addLast(new LengthFieldPrepender(4, false));
+							ch.pipeline().addLast(new StringEncoder(Charset.forName("utf-8")));
+							ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(CtxHelper.READ_TIMEOUT));
+							ch.pipeline().addLast(new LoginAuthRespHandler());
+							ch.pipeline().addLast("heartBeatHandler", new HeartBeatRespHandler());
+
+						}
+					});
+			// 绑定端口，同步等待成功
+			ChannelFuture f = b.bind(port).sync();
+			System.out.println("taw server listen in port " + port);
+			f.channel().closeFuture().sync();
+		} finally {
 			bossGroup.shutdownGracefully();
 			workGroup.shutdownGracefully();
 		}
 	}
+
 	
-	static{
-		
-	}
-	
-	public static void main(String[] args) throws Exception{
-		
+
+	public static void main(String[] args) throws Exception {
+
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
-		applicationContext.setConfigLocations(new String[]{"classpath*:com/taw/user/spring/applicationContext-user-service-*.xml"});
-		applicationContext.refresh();	
-		
+		applicationContext.setConfigLocations(new String[] { "classpath*:com/taw/user/spring/applicationContext-user-service-*.xml",
+				"classpath*:com/hawk/pub/spring/applicationContext-pub-*.xml "});
+		applicationContext.refresh();
+
 		int port = 9999;
-		if (args != null & args.length > 0){
-			try{
+		if (args != null & args.length > 0) {
+			try {
 				port = Integer.parseInt(args[0]);
-			}catch(Exception ex){
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		
-		
+
 		new TawServer().bind(port);
-		
+
 		applicationContext.close();
 	}
 

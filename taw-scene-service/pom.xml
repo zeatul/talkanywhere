@@ -24,6 +24,11 @@
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-utility</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.hawk.taw</groupId>
+			<artifactId>taw-user-service</artifactId>
+		</dependency>
 
 		<!-- redis java client -->
 		<dependency>

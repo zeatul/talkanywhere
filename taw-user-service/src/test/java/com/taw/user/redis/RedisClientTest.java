@@ -17,7 +17,6 @@ import static org.junit.Assert.assertThat;
 public class RedisClientTest extends AbstractJUnit4SpringContextTests{
 	
 	@Autowired
-	@Qualifier("taw_user_service_redis_client")
 	private RedisClient redisClient;
 	
 	@Test

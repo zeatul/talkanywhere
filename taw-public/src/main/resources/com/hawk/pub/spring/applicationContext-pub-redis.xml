@@ -8,7 +8,7 @@
 
 
 
-	<bean id="taw_user_service_jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<!-- 最大连接数, 默认8个 -->
 		<property name="maxTotal" value="32"></property>
 		<!-- 最大空闲连接数, 默认8个 -->
@@ -31,8 +31,8 @@
 	</bean>
 
 
-	<bean id="taw_user_service_shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" destroy-method="destroy">
-		<constructor-arg ref="taw_user_service_jedisPoolConfig"></constructor-arg>
+	<bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" destroy-method="destroy">
+		<constructor-arg ref="jedisPoolConfig"></constructor-arg>
 		<constructor-arg>
 			<bean class="com.hawk.utility.redis.ShardsFactory" factory-method="produce">
 				<constructor-arg value="${maven.taw_user_service.redis_nodes}"/>
@@ -40,8 +40,8 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="taw_user_service_redis_client" class="com.hawk.utility.redis.RedisClient">
-		<property name="pool" ref="taw_user_service_shardedJedisPool"></property>
+	<bean id="redisClient" class="com.hawk.utility.redis.RedisClient">
+		<property name="pool" ref="shardedJedisPool"/>
 	</bean>
 
 

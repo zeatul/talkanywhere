@@ -41,7 +41,6 @@ public class SMSController {
 	private SMSService smsService;
 	
 	@Autowired
-	@Qualifier("taw_user_service_redis_client")
 	private RedisClient redisClient;
 	
 	@Autowired

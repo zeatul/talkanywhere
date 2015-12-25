@@ -55,10 +55,8 @@ public class RedisClient {
 	 * 
 	 * @param key
 	 * @param value
-	 * @param expire
-	 *            有效期，单位秒
-	 * @param async
-	 *            true=异步
+	 * @param expire 有效期，单位秒
+	 * @param async true=异步
 	 */
 	public void set(String key, String value, int expire, boolean async) {
 		ShardedJedis shardedJedis = null;

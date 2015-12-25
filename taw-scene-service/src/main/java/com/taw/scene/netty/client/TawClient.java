@@ -21,37 +21,41 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.taw.scene.netty.CtxHelper;
+
 public class TawClient {
-	
+
 	private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	
+
 	private EventLoopGroup group = new NioEventLoopGroup();
 	
-	public void connect(final String host ,final int port) throws Exception{
-		try{
+	
+
+	public void connect(final String host, final int port) throws Exception {
+		try {
 			Bootstrap b = new Bootstrap();
 			b.group(group)//
-				.channel(NioSocketChannel.class)//
-				.option(ChannelOption.TCP_NODELAY, true)//
-				.handler(new ChannelInitializer<SocketChannel>() {
+					.channel(NioSocketChannel.class)//
+					.option(ChannelOption.TCP_NODELAY, true)//
+					.handler(new ChannelInitializer<SocketChannel>() {
 
-					@Override
-					protected void initChannel(SocketChannel ch) throws Exception {
-						ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024*64, 0, 4,0,4));
-						ch.pipeline().addLast(new StringDecoder(Charset.forName("utf-8")));
-						ch.pipeline().addLast(new LengthFieldPrepender(4,false));
-						ch.pipeline().addLast(new StringEncoder(Charset.forName("utf-8")));
-						ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(180*3));
-						ch.pipeline().addLast("LoginAuthReqHandler", new LoginAuthReqHandler());
-						ch.pipeline().addLast("HeartBeatReqHandler", new HeartBeatReqHandler());
-					}
-				});
-			
+						@Override
+						protected void initChannel(SocketChannel ch) throws Exception {
+							ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024 * 64, 0, 4, 0, 4));
+							ch.pipeline().addLast(new StringDecoder(Charset.forName("utf-8")));
+							ch.pipeline().addLast(new LengthFieldPrepender(4, false));
+							ch.pipeline().addLast(new StringEncoder(Charset.forName("utf-8")));
+							ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(CtxHelper.READ_TIMEOUT));
+							ch.pipeline().addLast("LoginAuthReqHandler", new LoginAuthReqHandler());
+							ch.pipeline().addLast("HeartBeatReqHandler", new HeartBeatReqHandler());
+						}
+					});
+
 			ChannelFuture future = b.connect(host, port).sync();
 			future.channel().closeFuture().sync();
-		}finally{
+		} finally {
 			executor.execute(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					try {
@@ -64,29 +68,30 @@ public class TawClient {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
 			});
 		}
 	}
-	
-	public static void main(String[] args) throws Exception{
-		
+
+	public static void main(String[] args) throws Exception {
+
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
-		applicationContext.setConfigLocations(new String[]{"classpath*:com/taw/user/spring/applicationContext-user-service-*.xml"});
-		applicationContext.refresh();	
-		
+		applicationContext.setConfigLocations(new String[] { "classpath*:com/taw/user/spring/applicationContext-user-service-*.xml",
+				"classpath*:com/hawk/pub/spring/applicationContext-pub-*.xml " });
+		applicationContext.refresh();
+
 		String host = "localhost";
 		int port = 9999;
-		
-		if (args!=null && args.length > 1){
+
+		if (args != null && args.length > 1) {
 			host = args[0];
 			port = Integer.parseInt(args[1]);
 		}
-		
+
 		new TawClient().connect(host, port);
-		
-		applicationContext.close();
+
+//		applicationContext.close();
 	}
 
 }

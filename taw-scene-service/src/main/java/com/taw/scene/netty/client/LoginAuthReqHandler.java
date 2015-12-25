@@ -2,12 +2,20 @@ package com.taw.scene.netty.client;
 
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hawk.pub.spring.FrameworkContext;
 import com.taw.scene.netty.EnumMessageType;
+import com.taw.user.auth.TokenSecurityHelper;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
 public class LoginAuthReqHandler extends ChannelHandlerAdapter{
+	
+	private TokenSecurityHelper tokenSecurityHelper = FrameworkContext.getApplicationContext().getBean(TokenSecurityHelper.class) ;
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -43,7 +51,9 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter{
 	
 	
 	private String buildLoginAuthReq(){
-		return EnumMessageType.LOGIN_REQ.toString() + "loginAuthReq" + System.currentTimeMillis();
+		String token = "cde91645dbed4e08b6585aa2a7d4790f";
+		String ticket = tokenSecurityHelper.generate(token, System.currentTimeMillis(), "hettpclient4.5");
+		return EnumMessageType.LOGIN_REQ.toString() + ticket;//"loginAuthReq" + System.currentTimeMillis();
 	}
 
 }

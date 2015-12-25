@@ -1,7 +1,9 @@
 package com.taw.scene.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -266,6 +268,30 @@ public class SceneService {
 		/**
 		 * 异步清除足迹明细缓存
 		 */
+	}
+	
+	/**
+	 * 查询用户当前进入了哪些场景
+	 * @param token
+	 * @return
+	 */
+	public List<Long> queryEnteredScene(String token){
+		if (token == null)
+			return null;
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		List<FootPrintDetailDomain> list = footPrintDetailMapper.loadDynamic(params);
+		
+		if (list == null || list.size() == 0)
+			return null;
+		
+		List<Long> rtn = new ArrayList<Long>(list.size());
+		for (FootPrintDetailDomain footPrintDetailDomain : list){
+			if (footPrintDetailDomain.getOutTime() != null)
+				rtn.add(footPrintDetailDomain.getId());
+		}
+		
+		return rtn;
 	}
 	
 }

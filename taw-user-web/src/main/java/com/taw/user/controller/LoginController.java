@@ -31,7 +31,6 @@ public class LoginController {
 	private LoginService loginService;
 	
 	@Autowired
-	@Qualifier("taw_user_service_redis_client")
 	private RedisClient redisClient;
 	
 	
