@@ -25,8 +25,8 @@
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-utility</artifactId>
 		</dependency>
-		
-		
+
+
 
 		<!-- redis java client -->
 		<dependency>
@@ -179,7 +179,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
+
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -198,6 +198,8 @@
 			<artifactId>jstl</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		
 
 		<!-- test -->
 		<dependency>

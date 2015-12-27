@@ -24,7 +24,7 @@
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-utility</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.hawk.taw</groupId>
 			<artifactId>taw-user-service</artifactId>
@@ -156,11 +156,25 @@
 
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
+		<!-- activemq -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>org.apache.xbean</groupId>
+			<artifactId>xbean-spring</artifactId>
+		</dependency>
 
 
 		<!-- db con pool -->
