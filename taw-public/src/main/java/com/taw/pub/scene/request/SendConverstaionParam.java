@@ -6,6 +6,16 @@ public class SendConverstaionParam {
 	
 
 
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
 	public ComplexMessage getComplexMessage() {
 		return complexMessage;
 	}
@@ -98,6 +108,8 @@ public class SendConverstaionParam {
 		this.rePostUserFpdId = rePostUserFpdId;
 	}
 
+	
+	private String token;
 
 	/**
 	 * 场景主键

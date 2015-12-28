@@ -60,6 +60,7 @@ public class ConversationController {
 	public void sendConversation(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		SendConverstaionParam sendConverstaionParam = HttpRequestHandler.handle(request, SendConverstaionParam.class);
 		sendConverstaionParam.setPostUserId(AuthThreadLocal.getUserId());/*发信人必须是登录用户*/
+		sendConverstaionParam.setToken(AuthThreadLocal.getToken());
 		Long id = conversationService.send(sendConverstaionParam);
 		SendConverstaionResp sendConverstaionResp = new SendConverstaionResp();
 		sendConverstaionResp.setId(id);

@@ -19,6 +19,8 @@ import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
+import com.taw.scene.jms.Notification;
+import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.scene.mapper.MessageMapper;
 import com.taw.scene.mapperex.MessageExMapper;
 
@@ -36,6 +38,9 @@ public class MessageService {
 	
 	@Autowired
 	private SceneService sceneService;
+	
+	@Autowired
+	private SceneMessageProducer sceneMessageProducer;
 
 	/**
 	 * 发送私信
@@ -97,8 +102,11 @@ public class MessageService {
 		messageMapper.insert(messageDomain);
 		
 		/**
-		 * TODO:通知在线用户 或者 push 用户
+		 * TODO:通知在线接收用户 或者 push 用户
 		 */
+		Notification notification = new Notification();
+		notification.setUserId(receiverId);
+		sceneMessageProducer.send(notification);
 		
 		return messageDomain.getId();
 	}

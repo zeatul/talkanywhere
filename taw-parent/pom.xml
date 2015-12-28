@@ -493,16 +493,22 @@
 			</dependency>
 
 			<!-- activemq -->
-			<dependency>
+			<!-- <dependency>
 				<groupId>org.apache.activemq</groupId>
 				<artifactId>activemq-all</artifactId>
 				<version>5.13.0</version>
+			</dependency> -->
+
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-core</artifactId>
+				<version>5.7.0</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.xbean</groupId>
 				<artifactId>xbean-spring</artifactId>
-				<version>4.5</version>
+				<version>3.17</version>
 			</dependency>
 
 

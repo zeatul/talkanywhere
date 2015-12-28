@@ -42,7 +42,7 @@ public class HeartBeatRespHandler extends ChannelHandlerAdapter {
 		
 		
 		if (cause instanceof ReadTimeoutException || cause instanceof IOException){
-			CtxHelper.removeClientLogin(ctx.channel().id().toString());
+			CtxHelper.removeClientLogin(ctx);
 			try {
 				ctx.close();
 			} catch (Exception e) {

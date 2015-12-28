@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hawk.pub.spring.FrameworkContext;
-import com.hawk.utility.redis.RedisClient;
 import com.taw.scene.netty.CtxHelper;
 import com.taw.scene.netty.EnumMessageType;
 import com.taw.user.auth.TokenSecurityHelper;

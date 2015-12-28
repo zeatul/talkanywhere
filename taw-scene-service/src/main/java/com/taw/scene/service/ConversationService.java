@@ -21,6 +21,8 @@ import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
+import com.taw.scene.jms.Notification;
+import com.taw.scene.jms.SceneConversationProducer;
 import com.taw.scene.mapper.ConversationMapper;
 import com.taw.scene.mapperex.ConversationExMapper;
 
@@ -38,6 +40,9 @@ public class ConversationService {
 	
 	@Autowired
 	private SceneService sceneService;
+	
+	@Autowired
+	private SceneConversationProducer sceneConversationProducer;
 
 	/**
 	 * 发送场景消息
@@ -139,8 +144,12 @@ public class ConversationService {
 		conversationMapper.insert(conversationDomain);
 
 		/**
-		 * TODO:通知在线用户 或者 push 用户
+		 * 通知该场景在线用户 或者 push用户
 		 */
+		Notification notification = new Notification();
+		notification.setToken(sendConverstaionParam.getToken());
+		notification.setSceneId(sceneId);
+		sceneConversationProducer.send(notification);
 		
 		return conversationDomain.getId();
 
