@@ -24,6 +24,12 @@
 	
 	<!-- 场景会话 -->
 	<amq:topic id="sceneConversationDestination" physicalName="taw.scene.conversation"/>
+	
+	<!-- 进入场景 -->
+	<amq:topic id="sceneEnterDestination" physicalName="taw.scene.enter"/>
+	
+	<!-- 离开场景 -->
+	<amq:topic id="sceneLeaveDestination" physicalName="taw.scene.leave"/>
 
 	<!-- 定义JmsTemplate的Topic类型 -->
 	<bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -36,6 +42,8 @@
 	<jms:listener-container destination-type="topic" container-type="default" connection-factory="connectionFactory" acknowledge="auto">
 		<jms:listener destination="taw.scene.message" ref="sceneMessageConsumer"/>
 		<jms:listener destination="taw.scene.conversation" ref="sceneConversationConsumer"/>
+		<jms:listener destination="taw.scene.Enter" ref="sceneEnterConsumer"/>
+		<jms:listener destination="taw.scene.Leave" ref="sceneLeaveConsumer"/>
 	</jms:listener-container>
 
 </beans>

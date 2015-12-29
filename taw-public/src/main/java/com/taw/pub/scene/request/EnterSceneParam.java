@@ -45,5 +45,7 @@ public class EnterSceneParam {
 	 */
 	@CheckNull
 	private Long sceneId;
+	
+	
 
 }

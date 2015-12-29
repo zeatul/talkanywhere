@@ -23,6 +23,8 @@ import com.taw.pub.scene.response.FootPrintResp;
 import com.taw.scene.domain.FootPrintDomain;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneConversationProducer;
+import com.taw.scene.jms.SceneEnterProducer;
+import com.taw.scene.jms.SceneLeaveProducer;
 import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -34,6 +36,12 @@ public class JmsTestController {
 	
 	@Autowired
 	private SceneConversationProducer sceneConversationProducer;
+	
+	@Autowired
+	private SceneEnterProducer sceneEnterProducer;
+	
+	@Autowired
+	private SceneLeaveProducer sceneLeaveProducer;
 
 	/**
 	 * hello 测试用
@@ -63,6 +71,22 @@ public class JmsTestController {
 		Notification notification = new Notification();
 		notification.setMsg("SendConversation:"+ System.currentTimeMillis());
 		sceneConversationProducer.send(notification);
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	@RequestMapping(value = "/jms/test/scene/enter.do", method = RequestMethod.GET)
+	public void sendEnterScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Notification notification = new Notification();
+		notification.setMsg("SendEnterScene:"+ System.currentTimeMillis());
+		sceneEnterProducer.send(notification);
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	@RequestMapping(value = "/jms/test/scene/leave.do", method = RequestMethod.GET)
+	public void sendLeaveScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Notification notification = new Notification();
+		notification.setMsg("SendLeaveScene:"+ System.currentTimeMillis());
+		sceneLeaveProducer.send(notification);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 }

@@ -26,6 +26,9 @@ import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.FootPrintNotExistsException;
 import com.taw.scene.exception.SceneNotExistsException;
+import com.taw.scene.jms.Notification;
+import com.taw.scene.jms.SceneEnterProducer;
+import com.taw.scene.jms.SceneLeaveProducer;
 import com.taw.scene.mapper.FootPrintDetailMapper;
 import com.taw.scene.mapper.FootPrintMapper;
 import com.taw.scene.mapper.SceneMapper;
@@ -51,6 +54,12 @@ public class SceneService {
 	
 	@Autowired
 	private FootPrintService footPrintService;
+	
+	@Autowired
+	private SceneEnterProducer sceneEnterProducer;
+	
+	@Autowired
+	private SceneLeaveProducer sceneLeaveProducer;
 	
 	private java.math.BigDecimal min(java.math.BigDecimal p1,java.math.BigDecimal p2 ){
 		if (p1.compareTo(p2)==-1)
@@ -213,6 +222,15 @@ public class SceneService {
 		 * TODO:更新场景在线人数
 		 */
 		
+		/**
+		 * 通知netty
+		 */
+		Notification notification = new Notification();
+		notification.setSceneId(sceneId);
+		notification.setUserId(userId);
+		notification.setToken(enterSceneParam.getToken());
+		sceneEnterProducer.send(notification);
+		
 		EnterSceneResp enterSceneResp = new EnterSceneResp();
 		enterSceneResp.setFpdId(footPrintDetailDomain.getId());
 		enterSceneResp.setNickName(footPrintDetailDomain.getNickname());
@@ -268,6 +286,15 @@ public class SceneService {
 		/**
 		 * 异步清除足迹明细缓存
 		 */
+		
+		/**
+		 * 通知netty
+		 */
+		Notification notification = new Notification();
+		notification.setSceneId(sceneId);
+		notification.setUserId(userId);
+		notification.setToken(leaveSceneParam.getToken());
+		sceneLeaveProducer.send(notification);
 	}
 	
 	/**

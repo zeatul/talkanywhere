@@ -42,7 +42,12 @@ public class CtxHelper {
 	/**
 	 * channelid 对应的 token
 	 */
-	private static Map<String, String> tokenMap = new ConcurrentHashMap<String, String>();
+	private static Map<String, String> channelIdTokenMap = new ConcurrentHashMap<String, String>();
+	
+	/**
+	 * token对应的Channel
+	 */
+	private static Map<String,Channel> tokenChannelMap = new ConcurrentHashMap<String,Channel>();
 
 	private static String genClientLoginKey(String token) {
 		return "ctxLogin-" + token;
@@ -60,7 +65,8 @@ public class CtxHelper {
 	 * @param ctx
 	 */
 	public static void registClientLogin(String token, ChannelHandlerContext ctx) {
-		tokenMap.put(ctx.channel().id().toString(), token);
+		channelIdTokenMap.put(ctx.channel().id().toString(), token);
+		tokenChannelMap.put(token, ctx.channel());
 		redisClient.set(genClientLoginKey(token), "0", READ_TIMEOUT, true);
 		/**
 		 * 计算token对应的场景
@@ -104,7 +110,7 @@ public class CtxHelper {
 	 * @param channelId
 	 */
 	public static void refreshClientLogin(String channelId) {
-		String token = tokenMap.get(channelId);
+		String token = channelIdTokenMap.get(channelId);
 		if (token != null) {
 			redisClient.set(genClientLoginKey(token), "0", READ_TIMEOUT, true);
 		}
@@ -117,7 +123,7 @@ public class CtxHelper {
 	 */
 	public static void removeClientLogin(ChannelHandlerContext ctx) {
 		String channelId = ctx.channel().id().toString();
-		String token = tokenMap.get(channelId);
+		String token = channelIdTokenMap.get(channelId);
 		if (token != null) {
 			/**
 			 * 计算token对应的场景
@@ -149,7 +155,8 @@ public class CtxHelper {
 				}
 			}
 
-			tokenMap.remove(channelId);
+			channelIdTokenMap.remove(channelId);
+			tokenChannelMap.remove(token);
 		}
 	}
 
@@ -165,7 +172,7 @@ public class CtxHelper {
 
 				@Override
 				public boolean matches(Channel channel) {
-					String token = tokenMap.get(channel.id().toString());
+					String token = channelIdTokenMap.get(channel.id().toString());
 
 					/**
 					 * 自己发的消息，不通知自己
@@ -190,6 +197,43 @@ public class CtxHelper {
 			channelGroup.writeAndFlush(message);
 		}
 
+	}
+	
+	/**
+	 * 进入场景，修改绑定的通道
+	 * @param notification
+	 */
+	public static void notifySceneEnter(final Notification notification){
+		String token = notification.getToken();
+		Long sceneId = notification.getSceneId();
+		if (sceneId!=null && token != null){
+			Channel channel = tokenChannelMap.get(token);
+			if (channel!=null){
+				ChannelGroup channelGroup = scenedIdChannelMap.get(sceneId);
+				if (channelGroup!=null){
+					channelGroup.remove(channel);
+					channelGroup.add(channel);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param notification
+	 */
+	public static void notifySceneLeave(final Notification notification){
+		String token = notification.getToken();
+		Long sceneId = notification.getSceneId();
+		if (sceneId!=null && token != null){
+			Channel channel = tokenChannelMap.get(token);
+			if (channel!=null){
+				ChannelGroup channelGroup = scenedIdChannelMap.get(sceneId);
+				if (channelGroup!=null){
+					channelGroup.remove(channel);
+				}
+			}
+		}
 	}
 
 }

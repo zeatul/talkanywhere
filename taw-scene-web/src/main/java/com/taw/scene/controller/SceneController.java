@@ -94,6 +94,7 @@ public class SceneController {
 	public void leave(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		LeaveSceneParam leaveSceneParam = HttpRequestHandler.handle(request, LeaveSceneParam.class);
 		leaveSceneParam.setUserId(AuthThreadLocal.getUserId());
+		leaveSceneParam.setToken(AuthThreadLocal.getToken());
 		sceneService.leaveScene(leaveSceneParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
