@@ -28,8 +28,8 @@ public class Notification {
 	}
 	private Long userId;
 	private String token;
-	private Long sceneId;
-	
+	private Long sceneId;	
 	private String msg;
+	
 
 }

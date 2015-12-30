@@ -3,6 +3,22 @@ package com.taw.pub.scene.response;
 public class SceneResp {
 	
 
+	public Integer getOnlineCount() {
+		return onlineCount;
+	}
+
+	public void setOnlineCount(Integer onlineCount) {
+		this.onlineCount = onlineCount;
+	}
+
+	public Integer getEnterCount() {
+		return enterCount;
+	}
+
+	public void setEnterCount(Integer enterCount) {
+		this.enterCount = enterCount;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -68,5 +84,14 @@ public class SceneResp {
 	 */
 	private java.math.BigDecimal lat;
 	
+	/**
+	 * 在线人数
+	 */
+	private Integer onlineCount;
+	
+	/**
+	 * 进入人数
+	 */
+	private Integer enterCount;
 
 }

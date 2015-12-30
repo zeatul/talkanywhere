@@ -36,6 +36,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		protectedPaths = new HashSet<String>();
 		
 		protectedPaths.add("/user/logout.do");
+		protectedPaths.add("/user/info.do");
 		
 		protectedPaths.add("/user/contact/add.do");
 		protectedPaths.add("/user/contact/remove.do");

@@ -18,6 +18,7 @@ import com.taw.pub.scene.enums.EnumLeaveType;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
+import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.domain.FootPrintDetailDomain;
@@ -120,21 +121,7 @@ public class SceneService {
 	}
 
 	
-	/**
-	 * 查询指定区域范围内的场景
-	 * @param querySceneInRegionParam
-	 * @return 给前端返回结果用，包括基本信息和统计信息
-	 * @throws Exception
-	 */
-	public List<SceneResp> queryForWeb(QuerySceneInRegionParam querySceneInRegionParam) throws Exception{
-		List<SceneResp> sceneRespList = new ArrayList<SceneResp>();
-		
-		List<SceneDomain> sources = query(querySceneInRegionParam);
-		
-		DomainTools.copy(sources, sceneRespList, SceneResp.class);
-		
-		return sceneRespList;
-	}
+
 	
 	
 	
@@ -157,6 +144,22 @@ public class SceneService {
 		}
 		
 		return sceneDomain;
+	}
+	
+	public SceneResp querySingleScene(QuerySingleSceneParam param) throws Exception{
+		CheckTools.check(param);
+		SceneDomain sceneDomain =  loadSceneDomain(param.getSceneId(),true);
+		if (sceneDomain == null)
+			return null;
+		
+		SceneResp sceneResp = new SceneResp();
+		
+		DomainTools.copy(sceneDomain, sceneResp);
+		
+		sceneResp.setEnterCount(0);
+		sceneResp.setOnlineCount(0);
+		
+		return sceneResp;
 	}
 	
 	

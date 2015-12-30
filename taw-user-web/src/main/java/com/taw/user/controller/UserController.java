@@ -25,6 +25,9 @@ import com.taw.pub.user.request.CreateUserRequestParam;
 import com.taw.pub.user.request.LoginParam;
 import com.taw.pub.user.request.RestPasswordRequestParam;
 import com.taw.pub.user.response.LoginResp;
+import com.taw.pub.user.response.UserResp;
+import com.taw.user.auth.AuthThreadLocal;
+import com.taw.user.domain.UserDomain;
 import com.taw.user.service.LoginService;
 import com.taw.user.service.UserService;
 
@@ -57,6 +60,23 @@ public class UserController {
 		String cachedAuthCode = redisClient.get(mobile);
 		if (cachedAuthCode == null || !cachedAuthCode.equals(authCode))
 			throw new IncorrectAuthCodeException();
+	}
+	
+	/**
+	 * 查询用户信息
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/user/info.do", method = RequestMethod.POST)
+	public void info(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		UserDomain userDomain = userService.loadUser(AuthThreadLocal.getUserId(), true);
+		
+		//返回信息
+		UserResp userResp = new UserResp();
+		userResp.setSex(userDomain.getSex());
+		HttpResponseHandler.handle(response, SuccessResponse.build(userResp));
 	}
 
 	/**

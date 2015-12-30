@@ -24,6 +24,8 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class TawServer {
 	
+	private int port;
+	
 	
 
 	/**
@@ -32,7 +34,7 @@ public class TawServer {
 	 * 
 	 * @throws Exception
 	 */
-	public void bind(int port) throws Exception {
+	public void bind() throws Exception {
 
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		EventLoopGroup workGroup = new NioEventLoopGroup();
@@ -66,6 +68,10 @@ public class TawServer {
 		}
 	}
 
+	public TawServer(int port) throws Exception{
+		this.port = port;
+		bind();
+	}
 	
 
 	public static void main(String[] args) throws Exception {
@@ -84,7 +90,7 @@ public class TawServer {
 			}
 		}
 
-		new TawServer().bind(port);
+		new TawServer(port).bind();
 
 		applicationContext.close();
 	}

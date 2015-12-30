@@ -1,6 +1,7 @@
 package com.taw.scene.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.DomainTools;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
+import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.SceneResp;
+import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.service.SceneService;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -56,13 +60,30 @@ public class SceneController {
 	public void search(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		QuerySceneInRegionParam querySceneInRegionParam = HttpRequestHandler.handle(request, QuerySceneInRegionParam.class);
 		
-		List<SceneResp> list =  sceneService.queryForWeb(querySceneInRegionParam);
+		List<SceneResp> sceneRespList = new ArrayList<SceneResp>();
 		
-		/**
-		 * 返回结果
-		 */
+		List<SceneDomain> sources = sceneService.query(querySceneInRegionParam);
 		
-		HttpResponseHandler.handle(response, SuccessResponse.build(list));
+		DomainTools.copy(sources, sceneRespList, SceneResp.class);
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneRespList));
+	}
+	
+	/**
+	 * 查询指定场景的信息
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/scene/info.do", method = RequestMethod.POST)
+	public void info(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		QuerySingleSceneParam param = HttpRequestHandler.handle(request, QuerySingleSceneParam.class);
+		
+		SceneResp sceneResp = sceneService.querySingleScene(param);
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneResp));
 	}
 	
 	/**
@@ -80,6 +101,7 @@ public class SceneController {
 		enterSceneParam.setToken(AuthThreadLocal.getToken());
 		EnterSceneResp enterSceneResp = sceneService.enterScene(enterSceneParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(enterSceneResp));
+		
 	}
 	
 	/**

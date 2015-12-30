@@ -12,7 +12,7 @@
 
 	<context:component-scan base-package="com.taw.scene.jms" />
 
-	<amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp://192.168.107.128:61616" userName="admin" password="Admin123!" />
+	<amq:connectionFactory id="amqConnectionFactory" brokerURL="${maven.taw-scene-service.brokerURL}" userName="${maven.taw-scene-service.userName}" password="${maven.taw-scene-service.password}" />
 
 	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
 		<constructor-arg ref="amqConnectionFactory" />
