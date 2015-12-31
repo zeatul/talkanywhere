@@ -23,8 +23,8 @@ public class SMSControllerTest extends AbstractControllerTest{
 	}
 	
 	
-	@Test
-	public void testAuthCode() throws Exception{
+	
+	public void testAuthCode(String mobile) throws Exception{
 		/**
 		 * taw-user-web/user/sms/auth_code.do
 		 */
@@ -32,7 +32,7 @@ public class SMSControllerTest extends AbstractControllerTest{
 									 
 		
 		SendAuthCodeParam param = new SendAuthCodeParam();
-		param.setMobile("18909082489");
+		param.setMobile(mobile);
 		
 		String content = JsonTools.toJsonString(param);
 		
@@ -43,7 +43,7 @@ public class SMSControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	public String queryAuthCode() throws Exception{
+	public String queryAuthCode(String mobile) throws Exception{
 		/**
 		 * taw-user-web/user/sms/query_auth_code.do
 		 */
@@ -51,7 +51,7 @@ public class SMSControllerTest extends AbstractControllerTest{
 									 
 		
 		SendAuthCodeParam param = new SendAuthCodeParam();
-		param.setMobile("18909082489");
+		param.setMobile(mobile);
 		
 		String content = JsonTools.toJsonString(param);
 		
@@ -68,9 +68,6 @@ public class SMSControllerTest extends AbstractControllerTest{
 		return ((Map<?,?>)map.get("data")).get("authCode").toString();
 	}
 	
-//	@Test
-	public void testQueryAuthCode() throws Exception{
-		queryAuthCode();
-	}
+
 
 }

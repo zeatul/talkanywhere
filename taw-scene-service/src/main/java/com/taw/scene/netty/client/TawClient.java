@@ -48,6 +48,7 @@ public class TawClient {
 							ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(CtxHelper.READ_TIMEOUT));
 							ch.pipeline().addLast("LoginAuthReqHandler", new LoginAuthReqHandler());
 							ch.pipeline().addLast("HeartBeatReqHandler", new HeartBeatReqHandler());
+							ch.pipeline().addLast("NotificationHandler", new NotificationHandler());
 						}
 					});
 
@@ -59,7 +60,7 @@ public class TawClient {
 				@Override
 				public void run() {
 					try {
-						TimeUnit.SECONDS.sleep(30);
+						TimeUnit.SECONDS.sleep(60*2);
 						try {
 							connect(host, port);
 						} catch (Exception e) {
@@ -74,15 +75,17 @@ public class TawClient {
 		}
 	}
 
+	public static String TOKEN = null;
 	public static void main(String[] args) throws Exception {
 
+		TOKEN = "def54e69058d4fd19e47a85e2c175579";
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
 		applicationContext.setConfigLocations(new String[] { "classpath*:com/taw/user/spring/applicationContext-user-service-*.xml",
 				"classpath*:com/hawk/pub/spring/applicationContext-pub-*.xml " });
 		applicationContext.refresh();
 
 		String host = "localhost";
-		int port = 9999;
+		int port = 50090;
 
 		if (args != null && args.length > 1) {
 			host = args[0];

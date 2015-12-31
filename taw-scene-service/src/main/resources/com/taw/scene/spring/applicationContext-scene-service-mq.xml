@@ -42,8 +42,8 @@
 	<jms:listener-container destination-type="topic" container-type="default" connection-factory="connectionFactory" acknowledge="auto">
 		<jms:listener destination="taw.scene.message" ref="sceneMessageConsumer"/>
 		<jms:listener destination="taw.scene.conversation" ref="sceneConversationConsumer"/>
-		<jms:listener destination="taw.scene.Enter" ref="sceneEnterConsumer"/>
-		<jms:listener destination="taw.scene.Leave" ref="sceneLeaveConsumer"/>
+		<jms:listener destination="taw.scene.enter" ref="sceneEnterConsumer"/>
+		<jms:listener destination="taw.scene.leave" ref="sceneLeaveConsumer"/>
 	</jms:listener-container>
 
 </beans>

@@ -33,6 +33,7 @@ import com.taw.scene.jms.SceneLeaveProducer;
 import com.taw.scene.mapper.FootPrintDetailMapper;
 import com.taw.scene.mapper.FootPrintMapper;
 import com.taw.scene.mapper.SceneMapper;
+import com.taw.scene.mapperex.FootPrintDetailExMapper;
 import com.taw.scene.mapperex.SceneExMapper;
 
 @Service
@@ -61,6 +62,9 @@ public class SceneService {
 	
 	@Autowired
 	private SceneLeaveProducer sceneLeaveProducer;
+	
+	@Autowired
+	private FootPrintDetailExMapper footPrintDetailExMapper;
 	
 	private java.math.BigDecimal min(java.math.BigDecimal p1,java.math.BigDecimal p2 ){
 		if (p1.compareTo(p2)==-1)
@@ -186,40 +190,48 @@ public class SceneService {
 		/**
 		 * 记录用户进入场景历史明细表
 		 */
-		FootPrintDetailDomain footPrintDetailDomain = new FootPrintDetailDomain();
-		footPrintDetailDomain.setInTime(DateTools.now());
-		footPrintDetailDomain.setNickname(nicknameService.genNickName());//TODO:去重
-		footPrintDetailDomain.setSceneId(sceneId);
-		footPrintDetailDomain.setSceneName(sceneDomain.getName());
-		footPrintDetailDomain.setStaySpan(0);
-		footPrintDetailDomain.setUserId(userId);
-		footPrintDetailDomain.setToken(enterSceneParam.getToken());
-		
-		footPrintDetailDomain.setId(PkGenerator.genPk());		
-		footPrintDetailMapper.insert(footPrintDetailDomain);
-		//TODO: 加入缓存
-		
-		
-		/**
-		 * 记录用户进入场景历史表
-		 */
-		FootPrintDomain footPrintDomain = footPrintService.loadFootPrintDomain(userId, sceneId);
-		if (footPrintDomain == null ){
-			footPrintDomain = new FootPrintDomain();
-			footPrintDomain.setEnterTimes(1);
-			footPrintDomain.setLastEnterTime(footPrintDetailDomain.getInTime());
-			footPrintDomain.setSceneId(sceneId);
-			footPrintDomain.setSceneName(sceneDomain.getName());
-			footPrintDomain.setStaySpan(0);
-			footPrintDomain.setUserId(userId);
-			
-			footPrintDomain.setId(PkGenerator.genPk());
-			footPrintMapper.insert(footPrintDomain);
+		FootPrintDetailDomain footPrintDetailDomain = null;
+		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(enterSceneParam.getToken(), enterSceneParam.getSceneId(), enterSceneParam.getUserId());
+		if (list!=null && list.size()>0){
+			footPrintDetailDomain = list.get(0);
 		}else{
-			footPrintDomain.setLastEnterTime(footPrintDetailDomain.getInTime());
-			footPrintDomain.setEnterTimes(footPrintDomain.getEnterTimes()+1);
-			footPrintMapper.update(footPrintDomain);
-		}
+			footPrintDetailDomain = new FootPrintDetailDomain();
+			footPrintDetailDomain.setInTime(DateTools.now());
+			footPrintDetailDomain.setNickname(nicknameService.genNickName());//TODO:去重
+			footPrintDetailDomain.setSceneId(sceneId);
+			footPrintDetailDomain.setSceneName(sceneDomain.getName());
+			footPrintDetailDomain.setStaySpan(0);
+			footPrintDetailDomain.setUserId(userId);
+			footPrintDetailDomain.setToken(enterSceneParam.getToken());
+			
+			footPrintDetailDomain.setId(PkGenerator.genPk());		
+			footPrintDetailMapper.insert(footPrintDetailDomain);
+			
+			/**
+			 * TODO: 加入缓存
+			 */
+			
+			/**
+			 * 记录用户进入场景历史表
+			 */
+			FootPrintDomain footPrintDomain = footPrintService.loadFootPrintDomain(userId, sceneId);
+			if (footPrintDomain == null ){
+				footPrintDomain = new FootPrintDomain();
+				footPrintDomain.setEnterTimes(1);
+				footPrintDomain.setLastEnterTime(footPrintDetailDomain.getInTime());
+				footPrintDomain.setSceneId(sceneId);
+				footPrintDomain.setSceneName(sceneDomain.getName());
+				footPrintDomain.setStaySpan(0);
+				footPrintDomain.setUserId(userId);
+				
+				footPrintDomain.setId(PkGenerator.genPk());
+				footPrintMapper.insert(footPrintDomain);
+			}else{
+				footPrintDomain.setLastEnterTime(footPrintDetailDomain.getInTime());
+				footPrintDomain.setEnterTimes(footPrintDomain.getEnterTimes()+1);
+				footPrintMapper.update(footPrintDomain);
+			}
+		}		
 		
 		/**
 		 * TODO:更新场景在线人数
@@ -308,20 +320,7 @@ public class SceneService {
 	public List<Long> queryEnteredScene(String token){
 		if (token == null)
 			return null;
-		
-		Map<String,Object> params = new HashMap<String,Object>();
-		List<FootPrintDetailDomain> list = footPrintDetailMapper.loadDynamic(params);
-		
-		if (list == null || list.size() == 0)
-			return null;
-		
-		List<Long> rtn = new ArrayList<Long>(list.size());
-		for (FootPrintDetailDomain footPrintDetailDomain : list){
-			if (footPrintDetailDomain.getOutTime() != null)
-				rtn.add(footPrintDetailDomain.getId());
-		}
-		
-		return rtn;
+		return footPrintDetailExMapper.queryUnLeavedSceneId(token);
 	}
 	
 }

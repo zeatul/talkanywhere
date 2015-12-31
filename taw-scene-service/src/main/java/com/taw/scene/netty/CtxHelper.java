@@ -19,7 +19,7 @@ import com.taw.user.service.LoginService;
 
 public class CtxHelper {
 
-	public final static int READ_TIMEOUT = 60 * 6;// 秒
+	public final static int READ_TIMEOUT = 60 * 5;// 秒
 
 	public final static int HEART_BEAT_INTERVAL = 60 * 2 * 1000; // 毫秒
 
@@ -67,7 +67,7 @@ public class CtxHelper {
 	public static void registClientLogin(String token, ChannelHandlerContext ctx) {
 		channelIdTokenMap.put(ctx.channel().id().toString(), token);
 		tokenChannelMap.put(token, ctx.channel());
-		redisClient.set(genClientLoginKey(token), "0", READ_TIMEOUT, true);
+		redisClient.set(genClientLoginKey(token), "0", READ_TIMEOUT);
 		/**
 		 * 计算token对应的场景
 		 */
@@ -99,7 +99,7 @@ public class CtxHelper {
 			if (channelGroup == null) {
 				channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 				userIdChannelMap.putIfAbsent(userId, channelGroup);
-				channelGroup = scenedIdChannelMap.get(userId);
+				channelGroup = userIdChannelMap.get(userId);
 			}
 			channelGroup.add(ctx.channel());
 		}
@@ -112,7 +112,7 @@ public class CtxHelper {
 	public static void refreshClientLogin(String channelId) {
 		String token = channelIdTokenMap.get(channelId);
 		if (token != null) {
-			redisClient.set(genClientLoginKey(token), "0", READ_TIMEOUT, true);
+			redisClient.set(genClientLoginKey(token), "0", READ_TIMEOUT);
 		}
 	}
 

@@ -108,7 +108,7 @@ public class LoginService {
 		/**
 		 * token 加入缓存 
 		 */
-		redisClient.set(computeCacheKey(token), userDomain.getId().toString(),expire, true);
+		redisClient.set(computeCacheKey(token), userDomain.getId().toString(),expire);
 		
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.setToken(token);
@@ -162,7 +162,7 @@ public class LoginService {
 				/**
 				 * 加入缓存,24小时
 				 */
-				redisClient.set(computeCacheKey(token), useIdStr,expire, true);
+				redisClient.set(computeCacheKey(token), useIdStr,expire);
 			}
 		}
 		

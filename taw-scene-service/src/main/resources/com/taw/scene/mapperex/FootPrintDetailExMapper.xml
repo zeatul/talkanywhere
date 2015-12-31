@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.scene.mapperex.FootPrintDetailExMapper">
+
+	
+	<select id="queryUnLeavedFootPrintDetailDomains"  resultType="FootPrintDetailDomain">
+		SELECT 
+		<include refid="com.taw.scene.mapper.FootPrintDetailMapper.columns" />
+		FROM t_tm_foot_print_detail
+		WHERE token = #{token} 
+		  AND scene_id = #{sceneId}
+		  AND user_id = #{userId}
+		  AND out_time is null	
+	</select>
+	
+	<select id="queryUnLeavedSceneId"  resultType="Long">
+		SELECT 
+		DISTINCT SCENE_ID as "sceneId"
+		FROM t_tm_foot_print_detail
+		WHERE token = #{token} 
+		  AND out_time is null	
+	</select>
+
+	
+	
+	
+</mapper>

@@ -1,0 +1,20 @@
+﻿C:/mydata/workspace/talkanywhere/taw-database/sql/init_data_bm.sql
+
+C:/mydata/workspace/talkanywhere/taw-database/sql/create_um.sql
+
+用户
+手机号       id   token
+13800000000  2  	70690fa540e04ba4b4253835e6513f19
+13916082481  5  	def54e69058d4fd19e47a85e2c175579
+13311658157  9  	7c9006da62634727a8686b05631a0387
+
+用户进入场景
+token
+70690fa540e04ba4b4253835e6513f19 {"sceneId":1} data":{"fpdId":10,"nickName":"f9c599ac-6dc2-485d-bf1b-fe097b6f682a"}
+70690fa540e04ba4b4253835e6513f19 {"sceneId":2} data":{"fpdId":12,"nickName":"f3f42f58-7dad-41d2-91af-da8d94dc6ae6"}
+
+def54e69058d4fd19e47a85e2c175579 {"sceneId":1} data":{"fpdId":16,"nickName":"2f84eca9-df6b-4622-a131-95e364a5cafc"}
+def54e69058d4fd19e47a85e2c175579 {"sceneId":2} data":{"fpdId":14,"nickName":"05c3975c-78b7-4810-b8dd-4640fddd2e14"}
+
+7c9006da62634727a8686b05631a0387 {"sceneId":1} data":{"fpdId":18,"nickName":"c56823b6-6b03-4942-9d95-8c99be7c1f1a"}
+7c9006da62634727a8686b05631a0387 {"sceneId":2} data":{"fpdId":20,"nickName":"148c2522-cf5d-478d-84b1-25e75338aaee"}

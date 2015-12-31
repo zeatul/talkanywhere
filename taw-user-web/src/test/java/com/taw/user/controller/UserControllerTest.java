@@ -31,17 +31,17 @@ public class UserControllerTest extends AbstractControllerTest {
 		createUserParam.setDeviceKind(EnumDeviceKind.ANDROID.toString());
 		createUserParam.setImei("hwll");
 		createUserParam.setIp("127.0.0.1");
-		createUserParam.setMobile("18909082489");
+		createUserParam.setMobile("13311658157");
 		createUserParam.setOsVersion("1111.11");
 		createUserParam.setPassword("123456");
-		createUserParam.setSex(EnumSex.FEMALE.toString());
+		createUserParam.setSex(EnumSex.MALE.toString());
 
 		CreateUserRequestParam createUserRequestParam = new CreateUserRequestParam();
 		createUserRequestParam.setParam(createUserParam);
 		
-		SMSControllerTest sMSControllerTest = new SMSControllerTest();
-		sMSControllerTest.testAuthCode();
-		String authCode = sMSControllerTest.queryAuthCode();
+		SMSControllerTest smsControllerTest = new SMSControllerTest();
+		smsControllerTest.testAuthCode(createUserParam.getMobile());
+		String authCode = smsControllerTest.queryAuthCode(createUserParam.getMobile());
 		System.out.println("authCode="+authCode);
 		createUserRequestParam.setAuthCode(authCode);
 

@@ -90,8 +90,8 @@ public class SMSController {
 		sendMessageParam.setKind(EnumMessageKind.AUTH_CODE.toString());
 		smsService.SendMessage(sendMessageParam);
 		
-		redisClient.set(timeControlKey, authCode, 60,false); //控制时间
-		redisClient.set(mobile, authCode, 60*30,false); //保留30分钟验证码
+		redisClient.set(timeControlKey, authCode, 60); //控制时间
+		redisClient.set(mobile, authCode, 60*30); //保留30分钟验证码
 		
 		HttpResponseHandler.handle(response,SuccessResponse.SUCCESS_RESPONSE);
 	}

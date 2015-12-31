@@ -24,6 +24,8 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class TawServer {
 	
+	
+	
 	private int port;
 	
 	
@@ -70,9 +72,26 @@ public class TawServer {
 
 	public TawServer(int port) throws Exception{
 		this.port = port;
-		bind();
+		Thread t = new Thread(new TawTask());
+		t.start(); 
 	}
 	
+	public class TawTask implements Runnable{
+
+		@Override
+		public void run() {
+			try {
+				bind();
+			} catch (Exception e) {
+				throw new RuntimeException("Failed to start taw server",e);
+			}
+			
+		}
+		
+		
+		
+		
+	}
 
 	public static void main(String[] args) throws Exception {
 

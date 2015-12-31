@@ -18,7 +18,7 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		super();
 	}
 	
-//	@Test
+	@Test
 	public void testSendConversation() throws Exception{
 		String path = contextPath + "/scene/conversation/send.do";
 		
@@ -30,7 +30,7 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		pics.add("pic2url");
 		message.setPics(pics);
 		sendConverstaionParam.setComplexMessage(message);
-		sendConverstaionParam.setPostUserFpdId(65l);
+		sendConverstaionParam.setPostUserFpdId(18l);
 		sendConverstaionParam.setPostNickname("80ad3379-2837-43d5-99f3-932876c6cea9");
 		sendConverstaionParam.setSceneId(1l);
 		
@@ -58,7 +58,7 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testDeleteConverstaion()throws Exception{
 		String path = contextPath + "/scene/conversation/remove.do";
 		DeleteConversationParam param = new DeleteConversationParam();

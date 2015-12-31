@@ -17,14 +17,14 @@ public class RedisClient {
 	private ShardedJedisPool pool;
 
 	/**
-	 * 加入缓存
+	 * 加入缓存,无限期
 	 * 
 	 * @param key
 	 * @param value
-	 * @param async
-	 *            true=异步
+	 * @param async	true=异步
 	 */
-	public void set(String key, String value, boolean async) {
+	public void set(String key, String value) {
+		boolean async = false;
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();
@@ -58,13 +58,15 @@ public class RedisClient {
 	 * @param expire 有效期，单位秒
 	 * @param async true=异步
 	 */
-	public void set(String key, String value, int expire, boolean async) {
+	public void set(String key, String value, int expire) {
+		boolean async = false;
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();
 			if (async) {
 				ShardedJedisPipeline pipeline = shardedJedis.pipelined();
 				pipeline.set(key, value);
+				pipeline.expire(key, expire);
 			} else {
 				shardedJedis.set(key, value);
 				shardedJedis.expire(key, expire);

@@ -32,7 +32,7 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter{
 			String loginResult = message.substring(2,3);
 			if (!loginResult.equals("1")){
 				// 返回1表示登录成功，否则失败并关闭链接
-				System.out.println("login failed");
+				System.out.println("login failed : " + message.substring(3));
 				ctx.close();
 			}else{
 				System.out.println("login succeeded");
@@ -51,7 +51,7 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter{
 	
 	
 	private String buildLoginAuthReq(){
-		String token = "cde91645dbed4e08b6585aa2a7d4790f";
+		String token = TawClient.TOKEN;
 		String ticket = tokenSecurityHelper.generate(token, System.currentTimeMillis(), "hettpclient4.5");
 		return EnumMessageType.LOGIN_REQ.toString() + ticket;//"loginAuthReq" + System.currentTimeMillis();
 	}
