@@ -8,9 +8,17 @@
 		id as "id" ,
 		name as "name" ,
 		kind as "kind" ,
-		lng as "lng" ,
-		lat as "lat" ,
 		radius as "radius" ,
+		center_lng as "centerLng" ,
+		center_lat as "centerLat" ,
+		left_top_lng as "leftTopLng" ,
+		left_top_lat as "leftTopLat" ,
+		left_bottom_lng as "leftBottomLng" ,
+		left_bottom_lat as "leftBottomLat" ,
+		right_top_lng as "rightTopLng" ,
+		right_top_lat as "rightTopLat" ,
+		right_bottom_lng as "rightBottomLng" ,
+		right_bottom_lat as "rightBottomLat" ,
 		country as "country" ,
 		province as "province" ,
 		city as "city" ,
@@ -25,9 +33,17 @@
 			<if test="id != null"> AND id = #{id}  </if>
 			<if test="name != null"> AND name = #{name}  </if>
 			<if test="kind != null"> AND kind = #{kind}  </if>
-			<if test="lng != null"> AND lng = #{lng}  </if>
-			<if test="lat != null"> AND lat = #{lat}  </if>
 			<if test="radius != null"> AND radius = #{radius}  </if>
+			<if test="centerLng != null"> AND center_lng = #{centerLng}  </if>
+			<if test="centerLat != null"> AND center_lat = #{centerLat}  </if>
+			<if test="leftTopLng != null"> AND left_top_lng = #{leftTopLng}  </if>
+			<if test="leftTopLat != null"> AND left_top_lat = #{leftTopLat}  </if>
+			<if test="leftBottomLng != null"> AND left_bottom_lng = #{leftBottomLng}  </if>
+			<if test="leftBottomLat != null"> AND left_bottom_lat = #{leftBottomLat}  </if>
+			<if test="rightTopLng != null"> AND right_top_lng = #{rightTopLng}  </if>
+			<if test="rightTopLat != null"> AND right_top_lat = #{rightTopLat}  </if>
+			<if test="rightBottomLng != null"> AND right_bottom_lng = #{rightBottomLng}  </if>
+			<if test="rightBottomLat != null"> AND right_bottom_lat = #{rightBottomLat}  </if>
 			<if test="country != null"> AND country = #{country}  </if>
 			<if test="province != null"> AND province = #{province}  </if>
 			<if test="city != null"> AND city = #{city}  </if>
@@ -43,9 +59,17 @@
 			AND id = #{old_id}
 			AND name = #{old_name}
 			AND kind = #{old_kind}
-			AND lng = #{old_lng}
-			AND lat = #{old_lat}
 			AND radius = #{old_radius}
+			AND center_lng = #{old_centerLng}
+			AND center_lat = #{old_centerLat}
+			AND left_top_lng = #{old_leftTopLng}
+			AND left_top_lat = #{old_leftTopLat}
+			AND left_bottom_lng = #{old_leftBottomLng}
+			AND left_bottom_lat = #{old_leftBottomLat}
+			AND right_top_lng = #{old_rightTopLng}
+			AND right_top_lat = #{old_rightTopLat}
+			AND right_bottom_lng = #{old_rightBottomLng}
+			AND right_bottom_lat = #{old_rightBottomLat}
 			AND country = #{old_country}
 			AND province = #{old_province}
 			AND city = #{old_city}
@@ -60,9 +84,17 @@
 		<set>
 			name = #{name},
 			kind = #{kind},
-			lng = #{lng},
-			lat = #{lat},
 			radius = #{radius},
+			center_lng = #{centerLng},
+			center_lat = #{centerLat},
+			left_top_lng = #{leftTopLng},
+			left_top_lat = #{leftTopLat},
+			left_bottom_lng = #{leftBottomLng},
+			left_bottom_lat = #{leftBottomLat},
+			right_top_lng = #{rightTopLng},
+			right_top_lat = #{rightTopLat},
+			right_bottom_lng = #{rightBottomLng},
+			right_bottom_lat = #{rightBottomLat},
 			country = #{country},
 			province = #{province},
 			city = #{city},
@@ -77,9 +109,17 @@
 		<set>
 				<if test="name != null">name = #{name},</if>
 				<if test="kind != null">kind = #{kind},</if>
-				<if test="lng != null">lng = #{lng},</if>
-				<if test="lat != null">lat = #{lat},</if>
 				<if test="radius != null">radius = #{radius},</if>
+				<if test="centerLng != null">center_lng = #{centerLng},</if>
+				<if test="centerLat != null">center_lat = #{centerLat},</if>
+				<if test="leftTopLng != null">left_top_lng = #{leftTopLng},</if>
+				<if test="leftTopLat != null">left_top_lat = #{leftTopLat},</if>
+				<if test="leftBottomLng != null">left_bottom_lng = #{leftBottomLng},</if>
+				<if test="leftBottomLat != null">left_bottom_lat = #{leftBottomLat},</if>
+				<if test="rightTopLng != null">right_top_lng = #{rightTopLng},</if>
+				<if test="rightTopLat != null">right_top_lat = #{rightTopLat},</if>
+				<if test="rightBottomLng != null">right_bottom_lng = #{rightBottomLng},</if>
+				<if test="rightBottomLat != null">right_bottom_lat = #{rightBottomLat},</if>
 				<if test="country != null">country = #{country},</if>
 				<if test="province != null">province = #{province},</if>
 				<if test="city != null">city = #{city},</if>
@@ -124,9 +164,17 @@
 				id,				
 				name,				
 				kind,				
-				lng,				
-				lat,				
 				radius,				
+				center_lng,				
+				center_lat,				
+				left_top_lng,				
+				left_top_lat,				
+				left_bottom_lng,				
+				left_bottom_lat,				
+				right_top_lng,				
+				right_top_lat,				
+				right_bottom_lng,				
+				right_bottom_lat,				
 				country,				
 				province,				
 				city,				
@@ -139,9 +187,17 @@
 			#{id},
 			#{name},
 			#{kind},
-			#{lng},
-			#{lat},
 			#{radius},
+			#{centerLng},
+			#{centerLat},
+			#{leftTopLng},
+			#{leftTopLat},
+			#{leftBottomLng},
+			#{leftBottomLat},
+			#{rightTopLng},
+			#{rightTopLat},
+			#{rightBottomLng},
+			#{rightBottomLat},
 			#{country},
 			#{province},
 			#{city},

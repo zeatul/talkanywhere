@@ -46,7 +46,7 @@ public class LoginControllerTest extends AbstractControllerTest {
 	public void testLogout() throws Exception {
 		String path = contextPath + "/user/logout.do";
 		
-		String result = httpClientHelper.post(path, null, genAuthMap());
+		String result = httpClientHelper.post(path, "", genAuthMap());
 
 		printResult(result);
 	}

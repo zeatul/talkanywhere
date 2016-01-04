@@ -38,6 +38,8 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
@@ -314,6 +316,32 @@ public class HttpClientHelper {
 			}
 		}
 
+	}
+	
+	public String post(String path ,byte[] b ,Map<String, String> params)throws Exception{
+		CloseableHttpResponse response = null;
+		try {
+			CloseableHttpClient httpClient = buileHttpClient();
+			HttpPost httpPost = new HttpPost(generateURIBuilder(path, params).build());
+			config(httpPost);
+			if (b!=null && b.length > 0) {
+				ByteArrayEntity byteArrayEntity = new ByteArrayEntity(b);
+				httpPost.setEntity(byteArrayEntity);
+			}
+
+			response = httpClient.execute(httpPost);
+			checkResponse(response);
+			HttpEntity entity = response.getEntity();
+
+			return EntityUtils.toString(entity);
+		} finally {
+			try {
+				if (response != null)
+					response.close();
+			} catch (Exception e) {
+
+			}
+		}
 	}
 
 	public void destroy() {

@@ -23,14 +23,38 @@ public class SceneDomain implements Serializable {
 	/*场景类型*/
 	private String kind;
 	
+	/*半径(米)*/
+	private Integer radius;
+	
 	/*经度*/
-	private java.math.BigDecimal lng;
+	private java.math.BigDecimal centerLng;
 	
 	/*纬度*/
-	private java.math.BigDecimal lat;
+	private java.math.BigDecimal centerLat;
 	
-	/*半径*/
-	private java.math.BigDecimal radius;
+	/*经度*/
+	private java.math.BigDecimal leftTopLng;
+	
+	/*纬度*/
+	private java.math.BigDecimal leftTopLat;
+	
+	/*经度*/
+	private java.math.BigDecimal leftBottomLng;
+	
+	/*纬度*/
+	private java.math.BigDecimal leftBottomLat;
+	
+	/*经度*/
+	private java.math.BigDecimal rightTopLng;
+	
+	/*纬度*/
+	private java.math.BigDecimal rightTopLat;
+	
+	/*经度*/
+	private java.math.BigDecimal rightBottomLng;
+	
+	/*纬度*/
+	private java.math.BigDecimal rightBottomLat;
 	
 	/*国家*/
 	private Long country;
@@ -104,50 +128,178 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 经度
+	 * @return 半径(米)
 	 */
-	public java.math.BigDecimal getLng(){
-		return lng;
+	public Integer getRadius(){
+		return radius;
 	}
 	
 	/**
 	 * 
-	 * @param lng 经度
+	 * @param radius 半径(米)
 	 */	
-	public void setLng (java.math.BigDecimal lng) {
-		this.lng = lng;
+	public void setRadius (Integer radius) {
+		this.radius = radius;
+	}
+	
+	/**
+	 * 
+	 * @return 经度
+	 */
+	public java.math.BigDecimal getCenterLng(){
+		return centerLng;
+	}
+	
+	/**
+	 * 
+	 * @param centerLng 经度
+	 */	
+	public void setCenterLng (java.math.BigDecimal centerLng) {
+		this.centerLng = centerLng;
 	}
 	
 	/**
 	 * 
 	 * @return 纬度
 	 */
-	public java.math.BigDecimal getLat(){
-		return lat;
+	public java.math.BigDecimal getCenterLat(){
+		return centerLat;
 	}
 	
 	/**
 	 * 
-	 * @param lat 纬度
+	 * @param centerLat 纬度
 	 */	
-	public void setLat (java.math.BigDecimal lat) {
-		this.lat = lat;
+	public void setCenterLat (java.math.BigDecimal centerLat) {
+		this.centerLat = centerLat;
 	}
 	
 	/**
 	 * 
-	 * @return 半径
+	 * @return 经度
 	 */
-	public java.math.BigDecimal getRadius(){
-		return radius;
+	public java.math.BigDecimal getLeftTopLng(){
+		return leftTopLng;
 	}
 	
 	/**
 	 * 
-	 * @param radius 半径
+	 * @param leftTopLng 经度
 	 */	
-	public void setRadius (java.math.BigDecimal radius) {
-		this.radius = radius;
+	public void setLeftTopLng (java.math.BigDecimal leftTopLng) {
+		this.leftTopLng = leftTopLng;
+	}
+	
+	/**
+	 * 
+	 * @return 纬度
+	 */
+	public java.math.BigDecimal getLeftTopLat(){
+		return leftTopLat;
+	}
+	
+	/**
+	 * 
+	 * @param leftTopLat 纬度
+	 */	
+	public void setLeftTopLat (java.math.BigDecimal leftTopLat) {
+		this.leftTopLat = leftTopLat;
+	}
+	
+	/**
+	 * 
+	 * @return 经度
+	 */
+	public java.math.BigDecimal getLeftBottomLng(){
+		return leftBottomLng;
+	}
+	
+	/**
+	 * 
+	 * @param leftBottomLng 经度
+	 */	
+	public void setLeftBottomLng (java.math.BigDecimal leftBottomLng) {
+		this.leftBottomLng = leftBottomLng;
+	}
+	
+	/**
+	 * 
+	 * @return 纬度
+	 */
+	public java.math.BigDecimal getLeftBottomLat(){
+		return leftBottomLat;
+	}
+	
+	/**
+	 * 
+	 * @param leftBottomLat 纬度
+	 */	
+	public void setLeftBottomLat (java.math.BigDecimal leftBottomLat) {
+		this.leftBottomLat = leftBottomLat;
+	}
+	
+	/**
+	 * 
+	 * @return 经度
+	 */
+	public java.math.BigDecimal getRightTopLng(){
+		return rightTopLng;
+	}
+	
+	/**
+	 * 
+	 * @param rightTopLng 经度
+	 */	
+	public void setRightTopLng (java.math.BigDecimal rightTopLng) {
+		this.rightTopLng = rightTopLng;
+	}
+	
+	/**
+	 * 
+	 * @return 纬度
+	 */
+	public java.math.BigDecimal getRightTopLat(){
+		return rightTopLat;
+	}
+	
+	/**
+	 * 
+	 * @param rightTopLat 纬度
+	 */	
+	public void setRightTopLat (java.math.BigDecimal rightTopLat) {
+		this.rightTopLat = rightTopLat;
+	}
+	
+	/**
+	 * 
+	 * @return 经度
+	 */
+	public java.math.BigDecimal getRightBottomLng(){
+		return rightBottomLng;
+	}
+	
+	/**
+	 * 
+	 * @param rightBottomLng 经度
+	 */	
+	public void setRightBottomLng (java.math.BigDecimal rightBottomLng) {
+		this.rightBottomLng = rightBottomLng;
+	}
+	
+	/**
+	 * 
+	 * @return 纬度
+	 */
+	public java.math.BigDecimal getRightBottomLat(){
+		return rightBottomLat;
+	}
+	
+	/**
+	 * 
+	 * @param rightBottomLat 纬度
+	 */	
+	public void setRightBottomLat (java.math.BigDecimal rightBottomLat) {
+		this.rightBottomLat = rightBottomLat;
 	}
 	
 	/**

@@ -51,7 +51,7 @@ public class UserContactControllerTest extends AbstractControllerTest {
 		String path = contextPath + "/user/contact/search.do";
 		
 
-		String result = httpClientHelper.post(path, null, genAuthMap());
+		String result = httpClientHelper.post(path, "", genAuthMap());
 
 		printResult(result);
 	}
