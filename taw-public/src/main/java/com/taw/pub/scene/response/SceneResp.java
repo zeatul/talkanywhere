@@ -3,6 +3,46 @@ package com.taw.pub.scene.response;
 public class SceneResp {
 	
 
+	public java.math.BigDecimal getLeftBottomLng() {
+		return leftBottomLng;
+	}
+
+	public void setLeftBottomLng(java.math.BigDecimal leftBottomLng) {
+		this.leftBottomLng = leftBottomLng;
+	}
+
+	public java.math.BigDecimal getLeftBottomLat() {
+		return leftBottomLat;
+	}
+
+	public void setLeftBottomLat(java.math.BigDecimal leftBottomLat) {
+		this.leftBottomLat = leftBottomLat;
+	}
+
+	public java.math.BigDecimal getRightTopLng() {
+		return rightTopLng;
+	}
+
+	public void setRightTopLng(java.math.BigDecimal rightTopLng) {
+		this.rightTopLng = rightTopLng;
+	}
+
+	public java.math.BigDecimal getRightTopLat() {
+		return rightTopLat;
+	}
+
+	public void setRightTopLat(java.math.BigDecimal rightTopLat) {
+		this.rightTopLat = rightTopLat;
+	}
+
+	public Integer getRadius() {
+		return radius;
+	}
+
+	public void setRadius(Integer radius) {
+		this.radius = radius;
+	}
+
 	public Integer getOnlineCount() {
 		return onlineCount;
 	}
@@ -43,21 +83,7 @@ public class SceneResp {
 		this.kind = kind;
 	}
 
-	public java.math.BigDecimal getLng() {
-		return lng;
-	}
-
-	public void setLng(java.math.BigDecimal lng) {
-		this.lng = lng;
-	}
-
-	public java.math.BigDecimal getLat() {
-		return lat;
-	}
-
-	public void setLat(java.math.BigDecimal lat) {
-		this.lat = lat;
-	}
+	
 
 	/**
 	 * 主键
@@ -75,14 +101,24 @@ public class SceneResp {
 	private String kind;
 	
 	/**
-	 * 经度
-	 */
-	private java.math.BigDecimal lng;
+	 * 左下角经度*/
+	private java.math.BigDecimal leftBottomLng;
 	
 	/**
-	 * 纬度
-	 */
-	private java.math.BigDecimal lat;
+	 * 左下角纬度*/
+	private java.math.BigDecimal leftBottomLat;
+	
+	/**
+	 * 右上角经度*/
+	private java.math.BigDecimal rightTopLng;
+	
+	/**
+	 * 右上角纬度*/
+	private java.math.BigDecimal rightTopLat;
+	
+	/**
+	 * 半径(米)*/
+	private Integer radius;
 	
 	/**
 	 * 在线人数

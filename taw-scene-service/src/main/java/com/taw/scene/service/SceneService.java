@@ -94,25 +94,13 @@ public class SceneService {
 		/**
 		 * 找出四个角的最大最小经纬度
 		 */
-		MapPoint mapPoint = querySceneInRegionParam.getTopLeft();
+		MapPoint mapPoint = querySceneInRegionParam.getLeftBottom();
 		java.math.BigDecimal minLng = mapPoint.getLng();
 		java.math.BigDecimal maxLng = mapPoint.getLng();
 		java.math.BigDecimal minLat = mapPoint.getLat();
 		java.math.BigDecimal maxLat = mapPoint.getLat();
 		
-		mapPoint = querySceneInRegionParam.getTopRight();
-		minLng = min(minLng,mapPoint.getLng());
-		maxLng = max(maxLng,mapPoint.getLng());
-		minLat = min(minLat,mapPoint.getLat());
-		maxLat = max(maxLat,mapPoint.getLat());		
-		
-		mapPoint = querySceneInRegionParam.getBottomRight();
-		minLng = min(minLng,mapPoint.getLng());
-		maxLng = max(maxLng,mapPoint.getLng());
-		minLat = min(minLat,mapPoint.getLat());
-		maxLat = max(maxLat,mapPoint.getLat());	
-		
-		mapPoint = querySceneInRegionParam.getTopRight();
+		mapPoint = querySceneInRegionParam.getRightTop();
 		minLng = min(minLng,mapPoint.getLng());
 		maxLng = max(maxLng,mapPoint.getLng());
 		minLat = min(minLat,mapPoint.getLat());

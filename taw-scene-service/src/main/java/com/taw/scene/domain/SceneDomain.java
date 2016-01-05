@@ -26,34 +26,34 @@ public class SceneDomain implements Serializable {
 	/*半径(米)*/
 	private Integer radius;
 	
-	/*经度*/
+	/*中心点经度*/
 	private java.math.BigDecimal centerLng;
 	
-	/*纬度*/
+	/*中心点纬度*/
 	private java.math.BigDecimal centerLat;
 	
-	/*经度*/
+	/*左上角经度*/
 	private java.math.BigDecimal leftTopLng;
 	
-	/*纬度*/
+	/*左上角纬度*/
 	private java.math.BigDecimal leftTopLat;
 	
-	/*经度*/
+	/*左下角经度*/
 	private java.math.BigDecimal leftBottomLng;
 	
-	/*纬度*/
+	/*左下角纬度*/
 	private java.math.BigDecimal leftBottomLat;
 	
-	/*经度*/
+	/*右上角经度*/
 	private java.math.BigDecimal rightTopLng;
 	
-	/*纬度*/
+	/*右上角纬度*/
 	private java.math.BigDecimal rightTopLat;
 	
-	/*经度*/
+	/*右下角经度*/
 	private java.math.BigDecimal rightBottomLng;
 	
-	/*纬度*/
+	/*右下角纬度*/
 	private java.math.BigDecimal rightBottomLat;
 	
 	/*国家*/
@@ -144,7 +144,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 经度
+	 * @return 中心点经度
 	 */
 	public java.math.BigDecimal getCenterLng(){
 		return centerLng;
@@ -152,7 +152,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param centerLng 经度
+	 * @param centerLng 中心点经度
 	 */	
 	public void setCenterLng (java.math.BigDecimal centerLng) {
 		this.centerLng = centerLng;
@@ -160,7 +160,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 纬度
+	 * @return 中心点纬度
 	 */
 	public java.math.BigDecimal getCenterLat(){
 		return centerLat;
@@ -168,7 +168,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param centerLat 纬度
+	 * @param centerLat 中心点纬度
 	 */	
 	public void setCenterLat (java.math.BigDecimal centerLat) {
 		this.centerLat = centerLat;
@@ -176,7 +176,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 经度
+	 * @return 左上角经度
 	 */
 	public java.math.BigDecimal getLeftTopLng(){
 		return leftTopLng;
@@ -184,7 +184,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param leftTopLng 经度
+	 * @param leftTopLng 左上角经度
 	 */	
 	public void setLeftTopLng (java.math.BigDecimal leftTopLng) {
 		this.leftTopLng = leftTopLng;
@@ -192,7 +192,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 纬度
+	 * @return 左上角纬度
 	 */
 	public java.math.BigDecimal getLeftTopLat(){
 		return leftTopLat;
@@ -200,7 +200,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param leftTopLat 纬度
+	 * @param leftTopLat 左上角纬度
 	 */	
 	public void setLeftTopLat (java.math.BigDecimal leftTopLat) {
 		this.leftTopLat = leftTopLat;
@@ -208,7 +208,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 经度
+	 * @return 左下角经度
 	 */
 	public java.math.BigDecimal getLeftBottomLng(){
 		return leftBottomLng;
@@ -216,7 +216,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param leftBottomLng 经度
+	 * @param leftBottomLng 左下角经度
 	 */	
 	public void setLeftBottomLng (java.math.BigDecimal leftBottomLng) {
 		this.leftBottomLng = leftBottomLng;
@@ -224,7 +224,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 纬度
+	 * @return 左下角纬度
 	 */
 	public java.math.BigDecimal getLeftBottomLat(){
 		return leftBottomLat;
@@ -232,7 +232,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param leftBottomLat 纬度
+	 * @param leftBottomLat 左下角纬度
 	 */	
 	public void setLeftBottomLat (java.math.BigDecimal leftBottomLat) {
 		this.leftBottomLat = leftBottomLat;
@@ -240,7 +240,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 经度
+	 * @return 右上角经度
 	 */
 	public java.math.BigDecimal getRightTopLng(){
 		return rightTopLng;
@@ -248,7 +248,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param rightTopLng 经度
+	 * @param rightTopLng 右上角经度
 	 */	
 	public void setRightTopLng (java.math.BigDecimal rightTopLng) {
 		this.rightTopLng = rightTopLng;
@@ -256,7 +256,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 纬度
+	 * @return 右上角纬度
 	 */
 	public java.math.BigDecimal getRightTopLat(){
 		return rightTopLat;
@@ -264,7 +264,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param rightTopLat 纬度
+	 * @param rightTopLat 右上角纬度
 	 */	
 	public void setRightTopLat (java.math.BigDecimal rightTopLat) {
 		this.rightTopLat = rightTopLat;
@@ -272,7 +272,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 经度
+	 * @return 右下角经度
 	 */
 	public java.math.BigDecimal getRightBottomLng(){
 		return rightBottomLng;
@@ -280,7 +280,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param rightBottomLng 经度
+	 * @param rightBottomLng 右下角经度
 	 */	
 	public void setRightBottomLng (java.math.BigDecimal rightBottomLng) {
 		this.rightBottomLng = rightBottomLng;
@@ -288,7 +288,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 纬度
+	 * @return 右下角纬度
 	 */
 	public java.math.BigDecimal getRightBottomLat(){
 		return rightBottomLat;
@@ -296,7 +296,7 @@ public class SceneDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @param rightBottomLat 纬度
+	 * @param rightBottomLat 右下角纬度
 	 */	
 	public void setRightBottomLat (java.math.BigDecimal rightBottomLat) {
 		this.rightBottomLat = rightBottomLat;

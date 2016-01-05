@@ -5,49 +5,39 @@ import com.taw.pub.scene.com.MapPoint;
 
 public class QuerySceneInRegionParam {
 	
-	public MapPoint getTopLeft() {
-		return topLeft;
+	public Long getCity() {
+		return city;
 	}
-	public void setTopLeft(MapPoint topLeft) {
-		this.topLeft = topLeft;
+	public void setCity(Long city) {
+		this.city = city;
 	}
-	public MapPoint getTopRight() {
-		return topRight;
+	public MapPoint getRightTop() {
+		return rightTop;
 	}
-	public void setTopRight(MapPoint topRight) {
-		this.topRight = topRight;
+	public void setRightTop(MapPoint rightTop) {
+		this.rightTop = rightTop;
 	}
-	public MapPoint getBottomLeft() {
-		return bottomLeft;
+	public MapPoint getLeftBottom() {
+		return leftBottom;
 	}
-	public void setBottomLeft(MapPoint bottomLeft) {
-		this.bottomLeft = bottomLeft;
+	public void setLeftBottom(MapPoint leftBottom) {
+		this.leftBottom = leftBottom;
 	}
-	public MapPoint getBottomRight() {
-		return bottomRight;
-	}
-	public void setBottomRight(MapPoint bottomRight) {
-		this.bottomRight = bottomRight;
-	}
-	/**
-	 * 左上角
-	 */
-	@CheckNull
-	private MapPoint topLeft;
 	/**
 	 * 右上角
 	 */
 	@CheckNull
-	private MapPoint topRight;
+	private MapPoint rightTop;
 	/**
 	 * 左下角
 	 */
 	@CheckNull
-	private MapPoint bottomLeft;
+	private MapPoint leftBottom;
+	
 	/**
-	 * 右下角	
+	 * 城市
 	 */
-	@CheckNull
-	private MapPoint bottomRight;
+	private Long city;
+
 
 }

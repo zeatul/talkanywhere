@@ -8,10 +8,10 @@
 		SELECT 
 		<include refid="com.taw.scene.mapper.SceneMapper.columns" />
 		FROM t_tm_scene
-		WHERE lng &lt;= #{maxLng} 
-		  AND lng &gt;= #{minLng}
-		  AND lat &lt;= #{maxLat}
-		  AND lat &gt;= #{minLat}		
+		WHERE center_lng &lt;= #{maxLng} 
+		  AND center_lng &gt;= #{minLng}
+		  AND center_lat &lt;= #{maxLat}
+		  AND center_lat &gt;= #{minLat}		
 	</select>
 	
 </mapper>
