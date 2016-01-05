@@ -5,6 +5,7 @@ import com.hawk.utility.StringTools;
 import com.hawk.utility.security.DESTools;
 import com.taw.user.configure.UserServiceConfigure;
 import com.taw.user.exception.FailedDecryptTokenException;
+import com.taw.user.exception.InvalidTicketTimeException;
 import com.taw.user.exception.InvalidTokenException;
 
 public class TokenSecurityHelper {
@@ -71,7 +72,7 @@ public class TokenSecurityHelper {
 		long diff = Math.abs(now - send);
 
 		if (diff > 1000 * 60 * 5)
-			throw new InvalidTokenException();
+			throw new InvalidTicketTimeException();
 
 		return strArray[0];
 
