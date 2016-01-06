@@ -10,7 +10,7 @@
 
 	<bean id="sceneServiceConfigure" class="com.taw.scene.configure.SceneServiceConfigure">
 		<property name="uploadDir" value="${maven.taw-scene-service.uploadDir}"/>
-		<property name="supportSuffix" value="jpg,png,bmp"/>
+		<property name="supportSuffix" value="jpg,png,bmp,gif"/>
 	</bean>
 
 

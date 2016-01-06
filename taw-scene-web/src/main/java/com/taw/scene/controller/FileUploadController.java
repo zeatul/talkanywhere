@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Locale;
+
+import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +18,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hawk.pub.web.HttpRequestHandler;
+import com.hawk.pub.web.HttpResponseHandler;
+import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.check.CheckTools;
+import com.taw.pub.scene.request.UploadLengthParam;
+import com.taw.pub.scene.response.UploadLengthResponse;
 import com.taw.scene.configure.SceneServiceConfigure;
 
 @Controller
@@ -29,25 +37,78 @@ public class FileUploadController {
 
 	@RequestMapping(value = "/file/upload.do", method = RequestMethod.POST)
 	public void uploadFile(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String uuid = request.getParameter("uuid");//yyyyMMddHHmmss + 32位uuid
-		String sourcefilename = request.getParameter("filename");
-		String size = request.getParameter("size");
-		System.out.println("param size = " + size);
-		InputStream in = request.getInputStream();
-		System.out.println("check size = " + request.getContentLength());
-		String suffix = computeSuffix(sourcefilename);
+		/**
+		 * yyyyMMddHHmmss + 32位uuid
+		 */
+		String uuid = request.getParameter("uuid");
+		ComputeResult computeResult = computeDir(uuid);
+		String dir = computeResult.getDir();
+		String suffix = computeResult.getSuffix();	
+		/**
+		 * 上传的本地源文件名称
+		 */
+		String srcFile = request.getParameter("srcFile");
 		
-		String dir = computeDir(uuid);
+		/**
+		 * 上传的本地源文件实际大小
+		 */
+		String srcFileSizeStr = request.getParameter("srcFileSize");	
+		if(StringUtils.isEmpty(srcFileSizeStr)){
+			throw new RuntimeException("srcFileSize is empty");
+		}
+		long srcFileSize = new Long(srcFileSizeStr);
+		/**
+		 * 本次上传的byte数组大小
+		 */
+		String byteArraySizeStr = request.getParameter("byteArraySize");	
+		if(StringUtils.isEmpty(byteArraySizeStr)){
+			throw new RuntimeException("byteArraySize is empty");
+		}
+		long byteArraySize = new Long(byteArraySizeStr);
+		
+		
+		InputStream in = request.getInputStream();
 		mkdir(dir);
-		String filePath = dir + File.pathSeparator + uuid + "." + suffix;
-		File file = new File(filePath);
-		FileOutputStream fos = new FileOutputStream(file, true);
-		IOUtils.copyLarge(in, fos);
+		String filePath = dir + File.separator + uuid ;
+		File file = new File(filePath+".tmp");
+		FileOutputStream fos = null;
+		try{
+			fos = new FileOutputStream(file, true);
+			IOUtils.copyLarge(in, fos);
+		}finally{		
+			fos.close();
+		}
+		
+		if (file.length() >= srcFileSize){
+			boolean  flag = file.renameTo(new File(filePath)); 
+			if (!flag)
+				throw new RuntimeException("Failed to rename file");
+		}
+		
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 
 	@RequestMapping(value = "/file/length.do", method = RequestMethod.POST)
 	public void uploadLength(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String uuid = request.getParameter("uuid");
+		UploadLengthParam param = HttpRequestHandler.handle(request, UploadLengthParam.class);
+		CheckTools.check(param);
+
+		String uuid = param.getUuid();
+		String filePath = computeDir(uuid).getDir()+File.separator + uuid;
+		File file = new File(filePath+".tmp");
+		long size = 0;
+		if (file.exists()){
+			size = file.length();
+		}else{
+			file = new File(filePath);
+			if (file.exists()){
+				size = file.length();
+			}
+		}
+		UploadLengthResponse uploadLengthResponse = new UploadLengthResponse();
+		uploadLengthResponse.setSize(size);
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(uploadLengthResponse));
 	}
 	
 	private void mkdir(String path){;
@@ -63,27 +124,42 @@ public class FileUploadController {
 		}
 	}
 	
-	private String computeSuffix(String filename){
-		if (StringUtils.isEmpty(filename))
-			throw new RuntimeException("filename is null");
-		filename = filename.trim().toLowerCase();
-		String[] strArray = filename.split("\\.");
-		String suffix = strArray[strArray.length];
-		if (sceneServiceConfigure.getSupportSuffix().contains(suffix))
+	
+	
+	private static class ComputeResult{
+		public String getSuffix() {
 			return suffix;
-		else
-			throw new RuntimeException("Only support "+sceneServiceConfigure.getSupportSuffixString());
+		}
+		public void setSuffix(String suffix) {
+			this.suffix = suffix;
+		}
+		public String getDir() {
+			return dir;
+		}
+		public void setDir(String dir) {
+			this.dir = dir;
+		}
+		private String suffix;
+		private String dir;
 	}
 	
-	private  String computeDir(String uuid){
+	private  ComputeResult computeDir(String uuid){
 		if (StringUtils.isEmpty(uuid))
 			throw new RuntimeException("uuid is null");
 		uuid = uuid.trim();		
-		if (uuid.length()!=46)
-			throw new RuntimeException("uuid is invalid");
+		if (uuid.length() <48)
+			throw new RuntimeException("invalid uuid , uuid=yyyyMMddHHmmss+32uuid + .suffix");
 		
+		String[] strArray = uuid.split("\\.");
+		
+		if (strArray.length != 2)
+			throw new RuntimeException("invalid uuid , uuid=yyyyMMddHHmmss+32uuid + .suffix");
+		
+		ComputeResult computeResult  = new ComputeResult();
+		computeResult.setSuffix(strArray[1]);
+		uuid = strArray[0];
 		int length = uuid.length();
-		String[] strArray = new String[]{uuid.substring(length-8,length-6),
+		strArray = new String[]{uuid.substring(length-8,length-6),
 				uuid.substring(length-6,length-4),
 				uuid.substring(length-4,length-2),
 				uuid.substring(length-2,length)};
@@ -92,7 +168,9 @@ public class FileUploadController {
 		for (String str : strArray){
 			path = path + File.separator + computeDirPart(str);
 		}
-		return  path;
+		
+		computeResult.setDir(path);
+		return  computeResult;
 		
 	}
 	

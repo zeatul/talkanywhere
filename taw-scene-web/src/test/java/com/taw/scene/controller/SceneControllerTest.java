@@ -21,10 +21,8 @@ public class SceneControllerTest extends AbstractControllerTest{
 		String path = contextPath + "/scene/search.do";
 		QuerySceneInRegionParam querySceneInRegionParam = new QuerySceneInRegionParam();
 		
-		querySceneInRegionParam.setBottomLeft(new MapPoint(new BigDecimal(-10000), new BigDecimal(-1000)));
-		querySceneInRegionParam.setBottomRight(new MapPoint(new BigDecimal(10000), new BigDecimal(-1000)));
-		querySceneInRegionParam.setTopLeft(new MapPoint(new BigDecimal(-10000), new BigDecimal(1000)));
-		querySceneInRegionParam.setTopRight((new MapPoint(new BigDecimal(10000), new BigDecimal(1000))));
+		querySceneInRegionParam.setLeftBottom(new MapPoint(new BigDecimal(-10000), new BigDecimal(-1000)));
+		querySceneInRegionParam.setRightTop((new MapPoint(new BigDecimal(10000), new BigDecimal(1000))));
 		
 		String content = JsonTools.toJsonString(querySceneInRegionParam);
 		
