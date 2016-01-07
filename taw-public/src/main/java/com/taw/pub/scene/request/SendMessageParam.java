@@ -1,10 +1,28 @@
 	package com.taw.pub.scene.request;
 
+import java.util.List;
+
 import com.hawk.utility.check.CheckMaxLength;
 import com.hawk.utility.check.CheckNull;
 
 public class SendMessageParam {
 	
+	public List<String> getPics() {
+		return pics;
+	}
+
+	public void setPics(List<String> pics) {
+		this.pics = pics;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public Long getReceiverFpdId() {
 		return receiverFpdId;
 	}
@@ -55,13 +73,7 @@ public class SendMessageParam {
 		this.sceneId = sceneId;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
+	
 
 	public Long getSenderId() {
 		return senderId;
@@ -89,11 +101,8 @@ public class SendMessageParam {
 	@CheckNull
 	private Long sceneId;
 	
-	/**
-	 * 内容
-	 */
-	@CheckNull
-	private String content;
+	
+	private String message;
 	
 	/**
 	 * 发送者ID
@@ -122,6 +131,12 @@ public class SendMessageParam {
 	@CheckNull
 	@CheckMaxLength(max=50)
 	private String senderNickname;
+	
+	
+	/**
+	 * 发送的图片集合
+	 */
+	private List<String> pics;
 	
 	
 }

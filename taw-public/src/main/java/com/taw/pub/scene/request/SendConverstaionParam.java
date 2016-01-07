@@ -1,9 +1,31 @@
 package com.taw.pub.scene.request;
 
+import java.util.List;
+
 import com.hawk.utility.check.CheckNull;
 
 public class SendConverstaionParam {
 	
+
+
+	public String getMessage() {
+		return message;
+	}
+
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+
+	public List<String> getPics() {
+		return pics;
+	}
+
+
+	public void setPics(List<String> pics) {
+		this.pics = pics;
+	}
 
 
 	public String getToken() {
@@ -16,14 +38,7 @@ public class SendConverstaionParam {
 	}
 
 
-	public ComplexMessage getComplexMessage() {
-		return complexMessage;
-	}
-
-
-	public void setComplexMessage(ComplexMessage complexMessage) {
-		this.complexMessage = complexMessage;
-	}
+	
 
 
 	public Long getSceneId() {
@@ -129,11 +144,8 @@ public class SendConverstaionParam {
 	@CheckNull
 	private String postNickname;
 	
-	/**
-	 * 发言内容	
-	 */
-	@CheckNull
-	private ComplexMessage complexMessage;
+	
+	private String message;
 	
 	/**
 	 * 被回复的发言ID
@@ -164,4 +176,8 @@ public class SendConverstaionParam {
 	private Long rePostUserFpdId;
 	
 
+	/**
+	 * 发送的图片集合
+	 */
+	private List<String> pics;
 }

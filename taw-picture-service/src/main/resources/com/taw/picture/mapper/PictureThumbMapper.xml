@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.picture.mapper.PictureThumbMapper">
+
+	<sql id="columns">
+		id as "id" ,
+		pic_id as "picId" ,
+		user_id as "userId" ,
+		nickname as "nickname" ,
+		kind as "kind" ,
+		crdt as "crdt" 
+	</sql>
+	
+	<sql id="where">
+		<trim prefix="WHERE" prefixOverrides="AND">		 
+			<if test="id != null"> AND id = #{id}  </if>
+			<if test="picId != null"> AND pic_id = #{picId}  </if>
+			<if test="userId != null"> AND user_id = #{userId}  </if>
+			<if test="nickname != null"> AND nickname = #{nickname}  </if>
+			<if test="kind != null"> AND kind = #{kind}  </if>
+			<if test="crdt != null"> AND crdt = #{crdt}  </if>
+		</trim>	
+	</sql>
+	
+	<sql id="where_old">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{old_id}
+			AND pic_id = #{old_picId}
+			AND user_id = #{old_userId}
+			AND nickname = #{old_nickname}
+			AND kind = #{old_kind}
+			AND crdt = #{old_crdt}
+		</trim>
+	</sql>
+	
+	<sql id="update">
+		<set>
+			pic_id = #{picId},
+			user_id = #{userId},
+			nickname = #{nickname},
+			kind = #{kind},
+			crdt = #{crdt},
+		</set>
+	</sql>
+	
+	<sql id="updateWithoutNull">
+		<set>
+				<if test="picId != null">pic_id = #{picId},</if>
+				<if test="userId != null">user_id = #{userId},</if>
+				<if test="nickname != null">nickname = #{nickname},</if>
+				<if test="kind != null">kind = #{kind},</if>
+				<if test="crdt != null">crdt = #{crdt},</if>
+		</set>
+	</sql>
+	
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{id}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="PictureThumbDomain">
+		SELECT 
+		<include refid="columns" />
+		FROM t_pm_picture_thumb
+		<include refid="pkwhere" />		
+	</select>
+	
+	<select id="loadDynamic" parameterType="hashmap" resultType="PictureThumbDomain">
+		SELECT 		
+		<include refid="columns" />
+		FROM t_pm_picture_thumb
+		<include refid="where" />
+		<if test="_orderby != null">ORDER BY ${_orderby}</if>
+		<if test="_offset != null">LIMIT #{_offset},#{_limit}</if>	
+	</select>
+
+
+	<select id="count"  parameterType="hashmap" resultType="integer">
+		SELECT count(*) 
+		FROM t_pm_picture_thumb
+		<include refid="where" />
+	</select>
+	
+	<insert id="insert"  parameterType="PictureThumbDomain">
+		INSERT INTO t_pm_picture_thumb (			
+				id,				
+				pic_id,				
+				user_id,				
+				nickname,				
+				kind,				
+				crdt				
+		)		
+		VALUES (	
+			#{id},
+			#{picId},
+			#{userId},
+			#{nickname},
+			#{kind},
+			#{crdt}
+		) 
+	</insert>
+	
+	<delete id="delete" >
+		DELETE FROM t_pm_picture_thumb
+		<include refid="pkwhere" />	
+	</delete>
+	
+	<delete id="deleteDynamic" parameterType="hashmap">
+		DELETE FROM t_pm_picture_thumb
+		<include refid="where" />
+	</delete>
+
+	<update id="update" parameterType="PictureThumbDomain">
+		UPDATE t_pm_picture_thumb	
+		<include refid="update" />
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateWithoutNull" parameterType="PictureThumbDomain">
+		UPDATE t_pm_picture_thumb
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateDynamic" parameterType="hashmap">
+		UPDATE t_pm_picture_thumb	
+		<include refid="update" />
+		<include refid="where_old" />
+	</update>
+	
+	
+	
+</mapper>

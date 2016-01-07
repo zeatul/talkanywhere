@@ -37,6 +37,19 @@ public class AppTaw {
 		generateUm();
 		generateSM();
 		generateTM();
+		generatePM();
+	}
+	
+	/**
+	 * 生成图片管理类
+	 */
+	private static void generatePM(){
+		Configure configure = buildConfigure("pm");
+		configure.setProjectName("taw-picture-service");
+		configure.setRootPackage("com.taw");
+		configure.setSubPackage("picture");
+		
+		generate(configure);
 	}
 	
 	/**

@@ -12,6 +12,7 @@
 		post_user_id as "postUserId" ,
 		post_nickname as "postNickname" ,
 		message as "message" ,
+		pics as "pics" ,
 		re_post_id as "rePostId" ,
 		re_post_user_fpd_id as "rePostUserFpdId" ,
 		re_post_user_id as "rePostUserId" ,
@@ -29,6 +30,7 @@
 			<if test="postUserId != null"> AND post_user_id = #{postUserId}  </if>
 			<if test="postNickname != null"> AND post_nickname = #{postNickname}  </if>
 			<if test="message != null"> AND message = #{message}  </if>
+			<if test="pics != null"> AND pics = #{pics}  </if>
 			<if test="rePostId != null"> AND re_post_id = #{rePostId}  </if>
 			<if test="rePostUserFpdId != null"> AND re_post_user_fpd_id = #{rePostUserFpdId}  </if>
 			<if test="rePostUserId != null"> AND re_post_user_id = #{rePostUserId}  </if>
@@ -47,6 +49,7 @@
 			AND post_user_id = #{old_postUserId}
 			AND post_nickname = #{old_postNickname}
 			AND message = #{old_message}
+			AND pics = #{old_pics}
 			AND re_post_id = #{old_rePostId}
 			AND re_post_user_fpd_id = #{old_rePostUserFpdId}
 			AND re_post_user_id = #{old_rePostUserId}
@@ -64,6 +67,7 @@
 			post_user_id = #{postUserId},
 			post_nickname = #{postNickname},
 			message = #{message},
+			pics = #{pics},
 			re_post_id = #{rePostId},
 			re_post_user_fpd_id = #{rePostUserFpdId},
 			re_post_user_id = #{rePostUserId},
@@ -81,6 +85,7 @@
 				<if test="postUserId != null">post_user_id = #{postUserId},</if>
 				<if test="postNickname != null">post_nickname = #{postNickname},</if>
 				<if test="message != null">message = #{message},</if>
+				<if test="pics != null">pics = #{pics},</if>
 				<if test="rePostId != null">re_post_id = #{rePostId},</if>
 				<if test="rePostUserFpdId != null">re_post_user_fpd_id = #{rePostUserFpdId},</if>
 				<if test="rePostUserId != null">re_post_user_id = #{rePostUserId},</if>
@@ -128,6 +133,7 @@
 				post_user_id,				
 				post_nickname,				
 				message,				
+				pics,				
 				re_post_id,				
 				re_post_user_fpd_id,				
 				re_post_user_id,				
@@ -143,6 +149,7 @@
 			#{postUserId},
 			#{postNickname},
 			#{message},
+			#{pics},
 			#{rePostId},
 			#{rePostUserFpdId},
 			#{rePostUserId},

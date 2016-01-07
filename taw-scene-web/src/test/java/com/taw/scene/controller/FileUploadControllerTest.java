@@ -24,6 +24,7 @@ public class FileUploadControllerTest extends AbstractControllerTest{
 		Integer size = b.length;
 		params.put("srcFileSize", size.toString());
 		params.put("byteArraySize", size.toString());
+		params.put("offset", "0");
 		
 		String result = httpClientHelper.post(path, b, params);
 		

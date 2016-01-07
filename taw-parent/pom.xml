@@ -15,6 +15,7 @@
 		<module>../taw-utility</module>
 		<module>../taw-scene-service</module>
 		<module>../taw-scene-web</module>
+		<module>../taw-picture-service</module>
 		<!-- <module>../taw-openfire</module> -->
 		<module>../taw-talk-client</module>
 		<module>../taw-talk-server</module>

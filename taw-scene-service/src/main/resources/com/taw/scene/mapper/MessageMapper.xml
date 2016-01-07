@@ -11,7 +11,8 @@
 		receiver_nickname as "receiverNickname" ,
 		scene_id as "sceneId" ,
 		scene_name as "sceneName" ,
-		content as "content" ,
+		message as "message" ,
+		pics as "pics" ,
 		sender_fpd_id as "senderFpdId" ,
 		sender_id as "senderId" ,
 		sender_nickname as "senderNickname" ,
@@ -26,7 +27,8 @@
 			<if test="receiverNickname != null"> AND receiver_nickname = #{receiverNickname}  </if>
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
 			<if test="sceneName != null"> AND scene_name = #{sceneName}  </if>
-			<if test="content != null"> AND content = #{content}  </if>
+			<if test="message != null"> AND message = #{message}  </if>
+			<if test="pics != null"> AND pics = #{pics}  </if>
 			<if test="senderFpdId != null"> AND sender_fpd_id = #{senderFpdId}  </if>
 			<if test="senderId != null"> AND sender_id = #{senderId}  </if>
 			<if test="senderNickname != null"> AND sender_nickname = #{senderNickname}  </if>
@@ -42,7 +44,8 @@
 			AND receiver_nickname = #{old_receiverNickname}
 			AND scene_id = #{old_sceneId}
 			AND scene_name = #{old_sceneName}
-			AND content = #{old_content}
+			AND message = #{old_message}
+			AND pics = #{old_pics}
 			AND sender_fpd_id = #{old_senderFpdId}
 			AND sender_id = #{old_senderId}
 			AND sender_nickname = #{old_senderNickname}
@@ -57,7 +60,8 @@
 			receiver_nickname = #{receiverNickname},
 			scene_id = #{sceneId},
 			scene_name = #{sceneName},
-			content = #{content},
+			message = #{message},
+			pics = #{pics},
 			sender_fpd_id = #{senderFpdId},
 			sender_id = #{senderId},
 			sender_nickname = #{senderNickname},
@@ -72,7 +76,8 @@
 				<if test="receiverNickname != null">receiver_nickname = #{receiverNickname},</if>
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
 				<if test="sceneName != null">scene_name = #{sceneName},</if>
-				<if test="content != null">content = #{content},</if>
+				<if test="message != null">message = #{message},</if>
+				<if test="pics != null">pics = #{pics},</if>
 				<if test="senderFpdId != null">sender_fpd_id = #{senderFpdId},</if>
 				<if test="senderId != null">sender_id = #{senderId},</if>
 				<if test="senderNickname != null">sender_nickname = #{senderNickname},</if>
@@ -117,7 +122,8 @@
 				receiver_nickname,				
 				scene_id,				
 				scene_name,				
-				content,				
+				message,				
+				pics,				
 				sender_fpd_id,				
 				sender_id,				
 				sender_nickname,				
@@ -130,7 +136,8 @@
 			#{receiverNickname},
 			#{sceneId},
 			#{sceneName},
-			#{content},
+			#{message},
+			#{pics},
 			#{senderFpdId},
 			#{senderId},
 			#{senderNickname},

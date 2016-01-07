@@ -33,7 +33,10 @@ public class MessageDomain implements Serializable {
 	private String sceneName;
 	
 	/*内容*/
-	private String content;
+	private String message;
+	
+	/*发言图片UUID,ID集合*/
+	private String pics;
 	
 	/*发送者者在场景唯一标识*/
 	private Long senderFpdId;
@@ -148,16 +151,32 @@ public class MessageDomain implements Serializable {
 	 * 
 	 * @return 内容
 	 */
-	public String getContent(){
-		return content;
+	public String getMessage(){
+		return message;
 	}
 	
 	/**
 	 * 
-	 * @param content 内容
+	 * @param message 内容
 	 */	
-	public void setContent (String content) {
-		this.content = content;
+	public void setMessage (String message) {
+		this.message = message;
+	}
+	
+	/**
+	 * 
+	 * @return 发言图片UUID,ID集合
+	 */
+	public String getPics(){
+		return pics;
+	}
+	
+	/**
+	 * 
+	 * @param pics 发言图片UUID,ID集合
+	 */	
+	public void setPics (String pics) {
+		this.pics = pics;
 	}
 	
 	/**

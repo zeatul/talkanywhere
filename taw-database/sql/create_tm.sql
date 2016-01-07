@@ -70,7 +70,8 @@ create table t_tm_conversation
    post_user_fpd_id     bigint(20) comment '发言者在场景唯一标识',
    post_user_id         bigint(20) comment '发言者主键',
    post_nickname        varchar(50) comment '发言者昵称',
-   message              varchar(500) comment '发言内容',
+   message              varchar(1000) comment '发言内容',
+   pics                 varchar(1000) comment '发言图片UUID,ID集合',
    re_post_id           bigint(20) comment '被回复的发言ID',
    re_post_user_fpd_id  bigint(20) comment '被回复的发言者在场景唯一标识',
    re_post_user_id      bigint(20) comment '被回复的发言者ID',
@@ -162,7 +163,8 @@ create table t_tm_message
    receiver_nickname    varchar(50) comment '接收者昵称',
    scene_id             bigint(20) comment '场景ID',
    scene_name           varchar(50) comment '场景名称',
-   content              varchar(500) comment '内容',
+   message              varchar(1000) comment '内容',
+   pics                 varchar(1000) comment '发言图片UUID,ID集合',
    sender_fpd_id        bigint(20) comment '发送者者在场景唯一标识',
    sender_id            bigint(20) comment '发送者ID',
    sender_nickname      varchar(50) comment '发送者昵称',
@@ -208,7 +210,7 @@ create table t_tm_scene
    county               bigint(20) comment '区县',
    town                 bigint(20) comment '乡镇',
    region               bigint(20) comment '地区/商圈',
-   address              varchar(500) comment '全地址',
+   address              varchar(1000) comment '全地址',
    primary key (id)
 )
 engine=innodb default charset=utf8;
@@ -222,7 +224,11 @@ create table t_tm_scene_pic
 (
    主键                   bigint(20) not null comment '主键',
    scene_id             bigint(20) not null comment '场景ID',
-   picture_id           bigint(20) not null comment '图片ID',
+   mid                  bigint(20) comment '消息ID/会话ID',
+   kind                 char(1) comment 'C：会话，M：私信',
+   scene_name           varchar(50) comment '场景名称',
+   pic_id               bigint(20) not null comment '图片ID',
+   pic_uuid             varchar(60) comment '图片UUID',
    primary key (主键)
 )
 engine=innodb default charset=utf8;
@@ -235,7 +241,7 @@ alter table t_tm_scene_pic comment '场景图片';
 create index u_tm_spic on t_tm_scene_pic
 (
    scene_id,
-   picture_id
+   pic_id
 );
 
 /*==============================================================*/
@@ -262,4 +268,3 @@ create unique index u_tm_sctag1 on t_tm_scene_tag
    scene_id,
    tag_id
 );
-

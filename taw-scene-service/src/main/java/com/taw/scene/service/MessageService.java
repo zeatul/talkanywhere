@@ -5,10 +5,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.hawk.exception.BasicException;
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
+import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
+import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.request.DeleteMessageParam;
 import com.taw.pub.scene.request.SearchMessageParam;
@@ -47,8 +51,14 @@ public class MessageService {
 	 * @param sendMessageParam
 	 * @throws Exception 
 	 */
+	@Transactional
 	public Long send(SendMessageParam sendMessageParam) throws Exception{
 		CheckTools.check(sendMessageParam);
+		
+		String message = sendMessageParam.getMessage();
+		List<String> pics =sendMessageParam.getPics();
+		if (StringTools.isNullOrEmpty(message) && CollectionTools.isNullOrEmpty(pics))
+			throw new BasicException("message is empty");
 		
 		
 		Long senderId = sendMessageParam.getSenderId();
@@ -85,7 +95,7 @@ public class MessageService {
 		
 		MessageDomain messageDomain = new MessageDomain();
 		
-		messageDomain.setContent(sendMessageParam.getContent());
+		messageDomain.setMessage(message);
 		messageDomain.setReceiverFpdId(receiverFpdId);
 		messageDomain.setReceiverId(receiverId);
 		messageDomain.setReceiverNickname(sendMessageParam.getReceiverNickname());

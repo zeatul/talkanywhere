@@ -3,7 +3,7 @@
  */
 
 use km;
-
+zz
 drop index u_se on t_km_global_sequence;
 
 drop table if exists t_km_global_sequence;

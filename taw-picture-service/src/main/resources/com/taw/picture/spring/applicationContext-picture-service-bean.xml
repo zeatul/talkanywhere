@@ -8,8 +8,10 @@
 
 
 
-	<bean id="sceneServiceConfigure" class="com.taw.scene.configure.SceneServiceConfigure">
-		
+	<bean id="pictureServiceConfigure" class="com.taw.picture.configure.PictureServiceConfigure">
+		<property name="uploadDir" value="${maven.taw-picture-service.uploadDir}"/>
+		<property name="supportSuffix" value="jpg,png,bmp,gif"/>
+		<property name="allowFileSize" value="20971520"/><!-- 单位byte -->
 	</bean>
 
 

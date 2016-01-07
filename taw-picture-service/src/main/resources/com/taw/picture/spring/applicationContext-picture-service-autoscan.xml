@@ -8,9 +8,8 @@
 
 
 
-	<bean id="sceneServiceConfigure" class="com.taw.scene.configure.SceneServiceConfigure">
-		
-	</bean>
+	<context:component-scan base-package="com.taw.picture.service" />
+	<context:component-scan base-package="com.taw.picture.controller" />
 
 
 

@@ -6,12 +6,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.hawk.exception.BasicException;
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
+import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
+import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
-import com.taw.pub.scene.request.ComplexMessage;
 import com.taw.pub.scene.request.DeleteConversationParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
@@ -50,11 +53,13 @@ public class ConversationService {
 	 * @param sendConverstaionParam
 	 * @throws Exception
 	 */
+	@Transactional
 	public Long send(SendConverstaionParam sendConverstaionParam) throws Exception {
 		CheckTools.check(sendConverstaionParam);
-		ComplexMessage complexMessage = sendConverstaionParam.getComplexMessage();
-		List<String> pics = complexMessage.getPics();
-		CheckTools.check(complexMessage);
+		String message = sendConverstaionParam.getMessage();
+		List<String> pics =sendConverstaionParam.getPics();
+		if (StringTools.isNullOrEmpty(message) && CollectionTools.isNullOrEmpty(pics))
+			throw new BasicException("message is empty");
 
 		Long postUserFpdId = sendConverstaionParam.getPostUserFpdId();
 		Long postUserId = sendConverstaionParam.getPostUserId();
@@ -104,7 +109,7 @@ public class ConversationService {
 		
 
 		ConversationDomain conversationDomain = new ConversationDomain();
-		conversationDomain.setMessage(complexMessage.getText());
+		conversationDomain.setMessage(message);
 		conversationDomain.setPicCount(pics == null ? 0 : pics.size());
 		conversationDomain.setSceneId(sendConverstaionParam.getSceneId());
 		conversationDomain.setSceneName(sceneDomain.getName());

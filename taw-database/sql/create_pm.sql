@@ -1,0 +1,126 @@
+/**
+ * 创建图片表
+ */
+
+use pm;
+
+drop index ui_pic_uuid on t_pm_picture;
+
+drop table if exists t_pm_picture;
+
+drop index i_pm_pic_com1 on t_pm_picture_comment;
+
+drop table if exists t_pm_picture_comment;
+
+drop index i_pm_pic_f1 on t_pm_picture_forward;
+
+drop table if exists t_pm_picture_forward;
+
+drop index i_pm_thumb_1 on t_pm_picture_thumb;
+
+drop table if exists t_pm_picture_thumb;
+
+/*==============================================================*/
+/* Table: t_pm_picture                                          */
+/*==============================================================*/
+create table t_pm_picture
+(
+   id                   bigint(20) not null comment '主键',
+   uuid                 varchar(60) comment 'UUID',
+   user_id              bigint(20) comment '上传者ID',
+   nickname             varchar(20) comment '上传者昵称',
+   status               char(1) comment '图片状态',
+   location             varchar(1000) comment '拍摄地点',
+   photo_time           timestamp(3) null default null comment '拍摄时间',
+   s_url                varchar(200) comment '小图片地址',
+   m_url                varchar(200) comment '中图片地址',
+   l_url                varchar(200) comment '大图片地址',
+   reference_count      integer comment '内部关联引用计数',
+   hot                  char(1) comment '热门图片',
+   up_count             integer comment '点赞数',
+   down_count           integer comment '不支持数目',
+   comment_count        integer comment '评论数',
+   forward_count        integer comment '转发数',
+   scene_count          integer comment '场景数',
+   s_size               integer comment '小图片大小',
+   m_size               integer comment '中图片大小',
+   l_size               integer comment '大图片大小',
+   crdt                 timestamp(3) null default null comment '创建时间',
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Index: ui_pic_uuid                                           */
+/*==============================================================*/
+create unique index ui_pic_uuid on t_pm_picture
+(
+   uuid
+);
+
+/*==============================================================*/
+/* Table: t_pm_picture_comment                                  */
+/*==============================================================*/
+create table t_pm_picture_comment
+(
+   id                   bigint(20) not null comment '主键',
+   pic_id               bigint(20) comment '图片ID',
+   user_id              bigint(20) comment '评论者ID',
+   nickname             varchar(20) comment '评论者昵称',
+   content              varchar(1000) comment '评论内容',
+   crdt                 timestamp(3) null default null comment '评论时间',
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Index: i_pm_pic_com1                                         */
+/*==============================================================*/
+create index i_pm_pic_com1 on t_pm_picture_comment
+(
+   pic_id,
+   user_id
+);
+
+/*==============================================================*/
+/* Table: t_pm_picture_forward                                  */
+/*==============================================================*/
+create table t_pm_picture_forward
+(
+   id                   bigint(20) not null comment '主键',
+   pic_id               bigint(20) comment '图片ID',
+   user_id              bigint(20) comment '转发者ID',
+   nickname             varchar(20) comment '转发者昵称',
+   crdt                 timestamp(3) null default null comment '转发时间',
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Index: i_pm_pic_f1                                           */
+/*==============================================================*/
+create index i_pm_pic_f1 on t_pm_picture_forward
+(
+   pic_id,
+   user_id
+);
+
+/*==============================================================*/
+/* Table: t_pm_picture_thumb                                    */
+/*==============================================================*/
+create table t_pm_picture_thumb
+(
+   id                   bigint(20) not null comment '主键',
+   pic_id               bigint(20) comment '图片ID',
+   user_id              bigint(20) comment '点赞者ID',
+   nickname             varchar(20) comment '点赞者昵称',
+   kind                 char(1) comment 'up down',
+   crdt                 timestamp(3) null default null comment '点赞时间',
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Index: i_pm_thumb_1                                          */
+/*==============================================================*/
+create index i_pm_thumb_1 on t_pm_picture_thumb
+(
+   user_id,
+   pic_id
+);

@@ -35,6 +35,9 @@ public class ConversationDomain implements Serializable {
 	/*发言内容*/
 	private String message;
 	
+	/*发言图片UUID,ID集合*/
+	private String pics;
+	
 	/*被回复的发言ID*/
 	private Long rePostId;
 	
@@ -164,6 +167,22 @@ public class ConversationDomain implements Serializable {
 	 */	
 	public void setMessage (String message) {
 		this.message = message;
+	}
+	
+	/**
+	 * 
+	 * @return 发言图片UUID,ID集合
+	 */
+	public String getPics(){
+		return pics;
+	}
+	
+	/**
+	 * 
+	 * @param pics 发言图片UUID,ID集合
+	 */	
+	public void setPics (String pics) {
+		this.pics = pics;
 	}
 	
 	/**

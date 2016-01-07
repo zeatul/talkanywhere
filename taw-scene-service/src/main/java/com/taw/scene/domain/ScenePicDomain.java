@@ -20,8 +20,20 @@ public class ScenePicDomain implements Serializable {
 	/*场景ID*/
 	private Long sceneId;
 	
+	/*消息ID/会话ID*/
+	private Long mid;
+	
+	/*C：会话，M：私信*/
+	private String kind;
+	
+	/*场景名称*/
+	private String sceneName;
+	
 	/*图片ID*/
-	private Long pictureId;
+	private Long picId;
+	
+	/*图片UUID*/
+	private String picUuid;
 	
 	
 	/**
@@ -58,18 +70,82 @@ public class ScenePicDomain implements Serializable {
 	
 	/**
 	 * 
-	 * @return 图片ID
+	 * @return 消息ID/会话ID
 	 */
-	public Long getPictureId(){
-		return pictureId;
+	public Long getMid(){
+		return mid;
 	}
 	
 	/**
 	 * 
-	 * @param pictureId 图片ID
+	 * @param mid 消息ID/会话ID
 	 */	
-	public void setPictureId (Long pictureId) {
-		this.pictureId = pictureId;
+	public void setMid (Long mid) {
+		this.mid = mid;
+	}
+	
+	/**
+	 * 
+	 * @return C：会话，M：私信
+	 */
+	public String getKind(){
+		return kind;
+	}
+	
+	/**
+	 * 
+	 * @param kind C：会话，M：私信
+	 */	
+	public void setKind (String kind) {
+		this.kind = kind;
+	}
+	
+	/**
+	 * 
+	 * @return 场景名称
+	 */
+	public String getSceneName(){
+		return sceneName;
+	}
+	
+	/**
+	 * 
+	 * @param sceneName 场景名称
+	 */	
+	public void setSceneName (String sceneName) {
+		this.sceneName = sceneName;
+	}
+	
+	/**
+	 * 
+	 * @return 图片ID
+	 */
+	public Long getPicId(){
+		return picId;
+	}
+	
+	/**
+	 * 
+	 * @param picId 图片ID
+	 */	
+	public void setPicId (Long picId) {
+		this.picId = picId;
+	}
+	
+	/**
+	 * 
+	 * @return 图片UUID
+	 */
+	public String getPicUuid(){
+		return picUuid;
+	}
+	
+	/**
+	 * 
+	 * @param picUuid 图片UUID
+	 */	
+	public void setPicUuid (String picUuid) {
+		this.picUuid = picUuid;
 	}
 	
 

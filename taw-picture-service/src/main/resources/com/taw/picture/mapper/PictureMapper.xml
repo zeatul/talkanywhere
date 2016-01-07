@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.picture.mapper.PictureMapper">
+
+	<sql id="columns">
+		id as "id" ,
+		uuid as "uuid" ,
+		user_id as "userId" ,
+		nickname as "nickname" ,
+		status as "status" ,
+		location as "location" ,
+		photo_time as "photoTime" ,
+		s_url as "sUrl" ,
+		m_url as "mUrl" ,
+		l_url as "lUrl" ,
+		reference_count as "referenceCount" ,
+		hot as "hot" ,
+		up_count as "upCount" ,
+		down_count as "downCount" ,
+		comment_count as "commentCount" ,
+		forward_count as "forwardCount" ,
+		scene_count as "sceneCount" ,
+		s_size as "sSize" ,
+		m_size as "mSize" ,
+		l_size as "lSize" ,
+		crdt as "crdt" 
+	</sql>
+	
+	<sql id="where">
+		<trim prefix="WHERE" prefixOverrides="AND">		 
+			<if test="id != null"> AND id = #{id}  </if>
+			<if test="uuid != null"> AND uuid = #{uuid}  </if>
+			<if test="userId != null"> AND user_id = #{userId}  </if>
+			<if test="nickname != null"> AND nickname = #{nickname}  </if>
+			<if test="status != null"> AND status = #{status}  </if>
+			<if test="location != null"> AND location = #{location}  </if>
+			<if test="photoTime != null"> AND photo_time = #{photoTime}  </if>
+			<if test="sUrl != null"> AND s_url = #{sUrl}  </if>
+			<if test="mUrl != null"> AND m_url = #{mUrl}  </if>
+			<if test="lUrl != null"> AND l_url = #{lUrl}  </if>
+			<if test="referenceCount != null"> AND reference_count = #{referenceCount}  </if>
+			<if test="hot != null"> AND hot = #{hot}  </if>
+			<if test="upCount != null"> AND up_count = #{upCount}  </if>
+			<if test="downCount != null"> AND down_count = #{downCount}  </if>
+			<if test="commentCount != null"> AND comment_count = #{commentCount}  </if>
+			<if test="forwardCount != null"> AND forward_count = #{forwardCount}  </if>
+			<if test="sceneCount != null"> AND scene_count = #{sceneCount}  </if>
+			<if test="sSize != null"> AND s_size = #{sSize}  </if>
+			<if test="mSize != null"> AND m_size = #{mSize}  </if>
+			<if test="lSize != null"> AND l_size = #{lSize}  </if>
+			<if test="crdt != null"> AND crdt = #{crdt}  </if>
+		</trim>	
+	</sql>
+	
+	<sql id="where_old">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{old_id}
+			AND uuid = #{old_uuid}
+			AND user_id = #{old_userId}
+			AND nickname = #{old_nickname}
+			AND status = #{old_status}
+			AND location = #{old_location}
+			AND photo_time = #{old_photoTime}
+			AND s_url = #{old_sUrl}
+			AND m_url = #{old_mUrl}
+			AND l_url = #{old_lUrl}
+			AND reference_count = #{old_referenceCount}
+			AND hot = #{old_hot}
+			AND up_count = #{old_upCount}
+			AND down_count = #{old_downCount}
+			AND comment_count = #{old_commentCount}
+			AND forward_count = #{old_forwardCount}
+			AND scene_count = #{old_sceneCount}
+			AND s_size = #{old_sSize}
+			AND m_size = #{old_mSize}
+			AND l_size = #{old_lSize}
+			AND crdt = #{old_crdt}
+		</trim>
+	</sql>
+	
+	<sql id="update">
+		<set>
+			uuid = #{uuid},
+			user_id = #{userId},
+			nickname = #{nickname},
+			status = #{status},
+			location = #{location},
+			photo_time = #{photoTime},
+			s_url = #{sUrl},
+			m_url = #{mUrl},
+			l_url = #{lUrl},
+			reference_count = #{referenceCount},
+			hot = #{hot},
+			up_count = #{upCount},
+			down_count = #{downCount},
+			comment_count = #{commentCount},
+			forward_count = #{forwardCount},
+			scene_count = #{sceneCount},
+			s_size = #{sSize},
+			m_size = #{mSize},
+			l_size = #{lSize},
+			crdt = #{crdt},
+		</set>
+	</sql>
+	
+	<sql id="updateWithoutNull">
+		<set>
+				<if test="uuid != null">uuid = #{uuid},</if>
+				<if test="userId != null">user_id = #{userId},</if>
+				<if test="nickname != null">nickname = #{nickname},</if>
+				<if test="status != null">status = #{status},</if>
+				<if test="location != null">location = #{location},</if>
+				<if test="photoTime != null">photo_time = #{photoTime},</if>
+				<if test="sUrl != null">s_url = #{sUrl},</if>
+				<if test="mUrl != null">m_url = #{mUrl},</if>
+				<if test="lUrl != null">l_url = #{lUrl},</if>
+				<if test="referenceCount != null">reference_count = #{referenceCount},</if>
+				<if test="hot != null">hot = #{hot},</if>
+				<if test="upCount != null">up_count = #{upCount},</if>
+				<if test="downCount != null">down_count = #{downCount},</if>
+				<if test="commentCount != null">comment_count = #{commentCount},</if>
+				<if test="forwardCount != null">forward_count = #{forwardCount},</if>
+				<if test="sceneCount != null">scene_count = #{sceneCount},</if>
+				<if test="sSize != null">s_size = #{sSize},</if>
+				<if test="mSize != null">m_size = #{mSize},</if>
+				<if test="lSize != null">l_size = #{lSize},</if>
+				<if test="crdt != null">crdt = #{crdt},</if>
+		</set>
+	</sql>
+	
+	<sql id="pkwhere">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			AND id = #{id}
+		</trim>
+	</sql>
+	
+	<select id="load"  resultType="PictureDomain">
+		SELECT 
+		<include refid="columns" />
+		FROM t_pm_picture
+		<include refid="pkwhere" />		
+	</select>
+	
+	<select id="loadDynamic" parameterType="hashmap" resultType="PictureDomain">
+		SELECT 		
+		<include refid="columns" />
+		FROM t_pm_picture
+		<include refid="where" />
+		<if test="_orderby != null">ORDER BY ${_orderby}</if>
+		<if test="_offset != null">LIMIT #{_offset},#{_limit}</if>	
+	</select>
+
+
+	<select id="count"  parameterType="hashmap" resultType="integer">
+		SELECT count(*) 
+		FROM t_pm_picture
+		<include refid="where" />
+	</select>
+	
+	<insert id="insert"  parameterType="PictureDomain">
+		INSERT INTO t_pm_picture (			
+				id,				
+				uuid,				
+				user_id,				
+				nickname,				
+				status,				
+				location,				
+				photo_time,				
+				s_url,				
+				m_url,				
+				l_url,				
+				reference_count,				
+				hot,				
+				up_count,				
+				down_count,				
+				comment_count,				
+				forward_count,				
+				scene_count,				
+				s_size,				
+				m_size,				
+				l_size,				
+				crdt				
+		)		
+		VALUES (	
+			#{id},
+			#{uuid},
+			#{userId},
+			#{nickname},
+			#{status},
+			#{location},
+			#{photoTime},
+			#{sUrl},
+			#{mUrl},
+			#{lUrl},
+			#{referenceCount},
+			#{hot},
+			#{upCount},
+			#{downCount},
+			#{commentCount},
+			#{forwardCount},
+			#{sceneCount},
+			#{sSize},
+			#{mSize},
+			#{lSize},
+			#{crdt}
+		) 
+	</insert>
+	
+	<delete id="delete" >
+		DELETE FROM t_pm_picture
+		<include refid="pkwhere" />	
+	</delete>
+	
+	<delete id="deleteDynamic" parameterType="hashmap">
+		DELETE FROM t_pm_picture
+		<include refid="where" />
+	</delete>
+
+	<update id="update" parameterType="PictureDomain">
+		UPDATE t_pm_picture	
+		<include refid="update" />
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateWithoutNull" parameterType="PictureDomain">
+		UPDATE t_pm_picture
+		<include refid="updateWithoutNull"/>
+		<include refid="pkwhere" />	
+	</update>
+	
+	<update id="updateDynamic" parameterType="hashmap">
+		UPDATE t_pm_picture	
+		<include refid="update" />
+		<include refid="where_old" />
+	</update>
+	
+	
+	
+</mapper>

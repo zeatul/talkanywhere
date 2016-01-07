@@ -7,14 +7,22 @@
 	<sql id="columns">
 		主键 as "主键" ,
 		scene_id as "sceneId" ,
-		picture_id as "pictureId" 
+		mid as "mid" ,
+		kind as "kind" ,
+		scene_name as "sceneName" ,
+		pic_id as "picId" ,
+		pic_uuid as "picUuid" 
 	</sql>
 	
 	<sql id="where">
 		<trim prefix="WHERE" prefixOverrides="AND">		 
 			<if test="主键 != null"> AND 主键 = #{主键}  </if>
 			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
-			<if test="pictureId != null"> AND picture_id = #{pictureId}  </if>
+			<if test="mid != null"> AND mid = #{mid}  </if>
+			<if test="kind != null"> AND kind = #{kind}  </if>
+			<if test="sceneName != null"> AND scene_name = #{sceneName}  </if>
+			<if test="picId != null"> AND pic_id = #{picId}  </if>
+			<if test="picUuid != null"> AND pic_uuid = #{picUuid}  </if>
 		</trim>	
 	</sql>
 	
@@ -22,7 +30,11 @@
 		<trim prefix="WHERE" prefixOverrides="AND">
 			AND 主键 = #{old_主键}
 			AND scene_id = #{old_sceneId}
-			AND picture_id = #{old_pictureId}
+			AND mid = #{old_mid}
+			AND kind = #{old_kind}
+			AND scene_name = #{old_sceneName}
+			AND pic_id = #{old_picId}
+			AND pic_uuid = #{old_picUuid}
 		</trim>
 	</sql>
 	
@@ -30,7 +42,11 @@
 		<set>
 			主键 = #{主键},
 			scene_id = #{sceneId},
-			picture_id = #{pictureId},
+			mid = #{mid},
+			kind = #{kind},
+			scene_name = #{sceneName},
+			pic_id = #{picId},
+			pic_uuid = #{picUuid},
 		</set>
 	</sql>
 	
@@ -38,7 +54,11 @@
 		<set>
 				<if test="主键 != null">主键 = #{主键},</if>
 				<if test="sceneId != null">scene_id = #{sceneId},</if>
-				<if test="pictureId != null">picture_id = #{pictureId},</if>
+				<if test="mid != null">mid = #{mid},</if>
+				<if test="kind != null">kind = #{kind},</if>
+				<if test="sceneName != null">scene_name = #{sceneName},</if>
+				<if test="picId != null">pic_id = #{picId},</if>
+				<if test="picUuid != null">pic_uuid = #{picUuid},</if>
 		</set>
 	</sql>
 	
@@ -75,12 +95,20 @@
 		INSERT INTO t_tm_scene_pic (			
 				主键,				
 				scene_id,				
-				picture_id				
+				mid,				
+				kind,				
+				scene_name,				
+				pic_id,				
+				pic_uuid				
 		)		
 		VALUES (	
 			#{主键},
 			#{sceneId},
-			#{pictureId}
+			#{mid},
+			#{kind},
+			#{sceneName},
+			#{picId},
+			#{picUuid}
 		) 
 	</insert>
 	
