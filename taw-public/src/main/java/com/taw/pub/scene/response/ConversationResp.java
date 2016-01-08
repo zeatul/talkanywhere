@@ -1,18 +1,27 @@
 package com.taw.pub.scene.response;
 
 import java.util.Date;
-
-import com.taw.pub.scene.request.ComplexMessage;
+import java.util.List;
 
 public class ConversationResp {
 	
 
-	public ComplexMessage getComplexMessage() {
-		return complexMessage;
+	
+
+	public String getMessage() {
+		return message;
 	}
 
-	public void setComplexMessage(ComplexMessage complexMessage) {
-		this.complexMessage = complexMessage;
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public List<PicDescResp> getPicList() {
+		return picList;
+	}
+
+	public void setPicList(List<PicDescResp> picList) {
+		this.picList = picList;
 	}
 
 	/*主键*/
@@ -31,7 +40,7 @@ public class ConversationResp {
 	private String postNickname;
 	
 	/*发言内容*/
-	private ComplexMessage complexMessage;
+	private String message;
 	
 	/*被回复的发言ID*/
 	private Long rePostId;
@@ -50,6 +59,11 @@ public class ConversationResp {
 	
 	/*发言时间*/
 	private Date postDate;
+	
+	/**
+	 * 图片集合
+	 */
+	private List<PicDescResp> picList;
 	
 	
 	/**

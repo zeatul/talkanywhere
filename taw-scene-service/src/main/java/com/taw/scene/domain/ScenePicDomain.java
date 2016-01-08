@@ -1,6 +1,6 @@
 package com.taw.scene.domain;
 import java.io.Serializable;
-
+import java.util.Date;
 
 
 
@@ -15,7 +15,7 @@ public class ScenePicDomain implements Serializable {
 	private static final long serialVersionUID = -1L;
 	
 	/*主键*/
-	private Long 主键;
+	private Long id;
 	
 	/*场景ID*/
 	private Long sceneId;
@@ -35,21 +35,24 @@ public class ScenePicDomain implements Serializable {
 	/*图片UUID*/
 	private String picUuid;
 	
+	/*创建时间*/
+	private Date crdt;
+	
 	
 	/**
 	 * 
 	 * @return 主键
 	 */
-	public Long get主键(){
-		return 主键;
+	public Long getId(){
+		return id;
 	}
 	
 	/**
 	 * 
-	 * @param 主键 主键
+	 * @param id 主键
 	 */	
-	public void set主键 (Long 主键) {
-		this.主键 = 主键;
+	public void setId (Long id) {
+		this.id = id;
 	}
 	
 	/**
@@ -146,6 +149,22 @@ public class ScenePicDomain implements Serializable {
 	 */	
 	public void setPicUuid (String picUuid) {
 		this.picUuid = picUuid;
+	}
+	
+	/**
+	 * 
+	 * @return 创建时间
+	 */
+	public Date getCrdt(){
+		return crdt;
+	}
+	
+	/**
+	 * 
+	 * @param crdt 创建时间
+	 */	
+	public void setCrdt (Date crdt) {
+		this.crdt = crdt;
 	}
 	
 

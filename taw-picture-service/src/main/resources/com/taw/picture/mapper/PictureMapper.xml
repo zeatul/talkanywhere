@@ -9,6 +9,8 @@
 		uuid as "uuid" ,
 		user_id as "userId" ,
 		nickname as "nickname" ,
+		scene_id as "sceneId" ,
+		scene_name as "sceneName" ,
 		status as "status" ,
 		location as "location" ,
 		photo_time as "photoTime" ,
@@ -34,6 +36,8 @@
 			<if test="uuid != null"> AND uuid = #{uuid}  </if>
 			<if test="userId != null"> AND user_id = #{userId}  </if>
 			<if test="nickname != null"> AND nickname = #{nickname}  </if>
+			<if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
+			<if test="sceneName != null"> AND scene_name = #{sceneName}  </if>
 			<if test="status != null"> AND status = #{status}  </if>
 			<if test="location != null"> AND location = #{location}  </if>
 			<if test="photoTime != null"> AND photo_time = #{photoTime}  </if>
@@ -60,6 +64,8 @@
 			AND uuid = #{old_uuid}
 			AND user_id = #{old_userId}
 			AND nickname = #{old_nickname}
+			AND scene_id = #{old_sceneId}
+			AND scene_name = #{old_sceneName}
 			AND status = #{old_status}
 			AND location = #{old_location}
 			AND photo_time = #{old_photoTime}
@@ -85,6 +91,8 @@
 			uuid = #{uuid},
 			user_id = #{userId},
 			nickname = #{nickname},
+			scene_id = #{sceneId},
+			scene_name = #{sceneName},
 			status = #{status},
 			location = #{location},
 			photo_time = #{photoTime},
@@ -110,6 +118,8 @@
 				<if test="uuid != null">uuid = #{uuid},</if>
 				<if test="userId != null">user_id = #{userId},</if>
 				<if test="nickname != null">nickname = #{nickname},</if>
+				<if test="sceneId != null">scene_id = #{sceneId},</if>
+				<if test="sceneName != null">scene_name = #{sceneName},</if>
 				<if test="status != null">status = #{status},</if>
 				<if test="location != null">location = #{location},</if>
 				<if test="photoTime != null">photo_time = #{photoTime},</if>
@@ -165,6 +175,8 @@
 				uuid,				
 				user_id,				
 				nickname,				
+				scene_id,				
+				scene_name,				
 				status,				
 				location,				
 				photo_time,				
@@ -188,6 +200,8 @@
 			#{uuid},
 			#{userId},
 			#{nickname},
+			#{sceneId},
+			#{sceneName},
 			#{status},
 			#{location},
 			#{photoTime},

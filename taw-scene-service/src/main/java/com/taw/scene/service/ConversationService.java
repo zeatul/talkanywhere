@@ -1,5 +1,6 @@
 package com.taw.scene.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,21 +14,31 @@ import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
+import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
+import com.taw.picture.service.PictureService;
+import com.taw.pub.picture.request.InsrtPictureParam;
+import com.taw.pub.scene.enums.EnumMessageType;
 import com.taw.pub.scene.request.DeleteConversationParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
+import com.taw.pub.scene.response.PicDescResp;
+import com.taw.pub.scene.response.SendConverstaionResp;
 import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.SceneDomain;
+import com.taw.scene.domain.ScenePicDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneConversationProducer;
 import com.taw.scene.mapper.ConversationMapper;
+import com.taw.scene.mapper.ScenePicMapper;
 import com.taw.scene.mapperex.ConversationExMapper;
+
+
 
 @Service
 public class ConversationService {
@@ -46,6 +57,12 @@ public class ConversationService {
 	
 	@Autowired
 	private SceneConversationProducer sceneConversationProducer;
+	
+	@Autowired
+	private PictureService pictureService;
+	
+	@Autowired
+	private ScenePicService scenePicService;
 
 	/**
 	 * 发送场景消息
@@ -54,7 +71,7 @@ public class ConversationService {
 	 * @throws Exception
 	 */
 	@Transactional
-	public Long send(SendConverstaionParam sendConverstaionParam) throws Exception {
+	public SendConverstaionResp send(SendConverstaionParam sendConverstaionParam) throws Exception {
 		CheckTools.check(sendConverstaionParam);
 		String message = sendConverstaionParam.getMessage();
 		List<String> pics =sendConverstaionParam.getPics();
@@ -108,11 +125,12 @@ public class ConversationService {
 			throw new SceneNotExistsException();
 		
 
+		String sceneName = sceneDomain.getName();
 		ConversationDomain conversationDomain = new ConversationDomain();
 		conversationDomain.setMessage(message);
 		conversationDomain.setPicCount(pics == null ? 0 : pics.size());
 		conversationDomain.setSceneId(sendConverstaionParam.getSceneId());
-		conversationDomain.setSceneName(sceneDomain.getName());
+		conversationDomain.setSceneName(sceneName);
 
 		/**
 		 * poster信息
@@ -143,20 +161,69 @@ public class ConversationService {
 		conversationDomain.setPostDate(DateTools.now());
 		conversationDomain.setId(PkGenerator.genPk());
 
+		
+		
 		/**
-		 * 入库
+		 * 处理图片
+		 */
+		conversationDomain.setPicCount(0);		
+		List<PicDescResp> picDescRespList = null;
+		if (pics != null){
+			conversationDomain.setPicCount(pics.size());
+			picDescRespList = new ArrayList<PicDescResp>(pics.size());
+			for (String uuid : pics){
+				InsrtPictureParam insrtPictureParam = new InsrtPictureParam();
+				insrtPictureParam.setUuid(uuid);
+				insrtPictureParam.setUserId(postUserId);
+				insrtPictureParam.setNickname(sendConverstaionParam.getPostNickname());
+				insrtPictureParam.setSceneId(sceneId);
+				insrtPictureParam.setSceneName(sceneName);
+				/**
+				 * 图片id ，插入图片管理表
+				 */
+				Long picId = pictureService.insrtPicture(insrtPictureParam);
+				
+				picDescRespList.add(new PicDescResp(picId, uuid));
+				
+				/**
+				 * 插入场景图片关联表
+				 */
+				ScenePicDomain scenePicDomain = new ScenePicDomain();
+				scenePicDomain.setKind(EnumMessageType.CONVERSATION.toString());
+				scenePicDomain.setMid(conversationDomain.getId());
+				scenePicDomain.setSceneId(sceneId);
+				scenePicDomain.setSceneName(sceneName);
+				scenePicDomain.setId(PkGenerator.genPk());
+				
+				scenePicService.inserScenePic(conversationDomain.getId(), sceneId, sceneName, EnumMessageType.CONVERSATION,picId,uuid);
+			}
+			
+			/**
+			 * 设置会话包含的图片信息
+			 */
+			conversationDomain.setPics(JsonTools.toJsonString(picDescRespList));
+		}
+		
+		
+		/**
+		 * conversationDomain 入库
 		 */
 		conversationMapper.insert(conversationDomain);
 
 		/**
 		 * 通知该场景在线用户 或者 push用户
+		 * TODO:做成异步
 		 */
 		Notification notification = new Notification();
 		notification.setToken(sendConverstaionParam.getToken());
 		notification.setSceneId(sceneId);
 		sceneConversationProducer.send(notification);
 		
-		return conversationDomain.getId();
+		SendConverstaionResp sendConverstaionResp = new SendConverstaionResp();
+		sendConverstaionResp.setId(conversationDomain.getId());
+		sendConverstaionResp.setPicList(picDescRespList);
+		
+		return sendConverstaionResp;
 
 	}
 	

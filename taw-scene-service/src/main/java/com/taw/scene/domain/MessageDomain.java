@@ -38,6 +38,9 @@ public class MessageDomain implements Serializable {
 	/*发言图片UUID,ID集合*/
 	private String pics;
 	
+	/*包含的图片数量*/
+	private Integer picCount;
+	
 	/*发送者者在场景唯一标识*/
 	private Long senderFpdId;
 	
@@ -177,6 +180,22 @@ public class MessageDomain implements Serializable {
 	 */	
 	public void setPics (String pics) {
 		this.pics = pics;
+	}
+	
+	/**
+	 * 
+	 * @return 包含的图片数量
+	 */
+	public Integer getPicCount(){
+		return picCount;
+	}
+	
+	/**
+	 * 
+	 * @param picCount 包含的图片数量
+	 */	
+	public void setPicCount (Integer picCount) {
+		this.picCount = picCount;
 	}
 	
 	/**

@@ -1,9 +1,34 @@
 package com.taw.pub.scene.response;
 
 import java.util.Date;
+import java.util.List;
 
 public class MessageResp {
 	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Integer getPicCount() {
+		return picCount;
+	}
+
+	public void setPicCount(Integer picCount) {
+		this.picCount = picCount;
+	}
+
+	public List<PicDescResp> getPicList() {
+		return picList;
+	}
+
+	public void setPicList(List<PicDescResp> picList) {
+		this.picList = picList;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -28,13 +53,7 @@ public class MessageResp {
 		this.sceneName = sceneName;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
+	
 
 	public Long getSenderFpdId() {
 		return senderFpdId;
@@ -72,7 +91,7 @@ public class MessageResp {
 	private String sceneName;
 	
 	/*内容*/
-	private String content;
+	private String message;
 	
 	/*发送者者在场景唯一标识*/
 	private Long senderFpdId;
@@ -84,5 +103,9 @@ public class MessageResp {
 	
 	/*发送时间*/
 	private Date sendTime;
+	
+	private Integer picCount;
+	
+	private List<PicDescResp> picList;
 
 }

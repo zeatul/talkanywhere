@@ -1,7 +1,19 @@
 package com.taw.pub.scene.response;
 
+import java.util.List;
+
 public class SendConverstaionResp {
 	
+	
+
+	public List<PicDescResp> getPicList() {
+		return picList;
+	}
+
+	public void setPicList(List<PicDescResp> picList) {
+		this.picList = picList;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -14,5 +26,7 @@ public class SendConverstaionResp {
 	 * 会话id
 	 */
 	private Long id;
+	
+	private List<PicDescResp> picList;
 
 }

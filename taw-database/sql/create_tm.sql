@@ -42,7 +42,7 @@ create table t_tm_bookmark
    id                   bigint(20) not null comment '主键',
    user_id              bigint(20) comment '用户主键',
    scene_id             bigint(20) comment '场景主键',
-   scene_name           varchar(50) comment '场景名称',
+   scene_name           varchar(100) comment '场景名称',
    book_time            timestamp(3) null comment '收藏时间',
    primary key (id)
 )
@@ -66,16 +66,16 @@ create table t_tm_conversation
 (
    id                   bigint(20) not null comment '主键',
    scene_id             bigint(20) comment '场景主键',
-   scene_name           varchar(50) comment '场景名称',
+   scene_name           varchar(100) comment '场景名称',
    post_user_fpd_id     bigint(20) comment '发言者在场景唯一标识',
    post_user_id         bigint(20) comment '发言者主键',
-   post_nickname        varchar(50) comment '发言者昵称',
+   post_nickname        varchar(100) comment '发言者昵称',
    message              varchar(1000) comment '发言内容',
    pics                 varchar(1000) comment '发言图片UUID,ID集合',
    re_post_id           bigint(20) comment '被回复的发言ID',
    re_post_user_fpd_id  bigint(20) comment '被回复的发言者在场景唯一标识',
    re_post_user_id      bigint(20) comment '被回复的发言者ID',
-   re_post_nickname     varchar(50) comment '被回复的发言者昵称',
+   re_post_nickname     varchar(100) comment '被回复的发言者昵称',
    pic_count            integer comment '包含的图片数量',
    post_date            timestamp(3) null comment '发言时间',
    primary key (id)
@@ -101,7 +101,7 @@ create table t_tm_foot_print
    id                   bigint(20) not null comment '主键',
    user_id              bigint(20) not null comment '用户主键',
    scene_id             bigint(20) not null comment '场景主键',
-   scene_name           varchar(50) comment '场景名称',
+   scene_name           varchar(100) comment '场景名称',
    last_enter_time      timestamp(3) null comment '最后进入时间',
    last_leave_time      timestamp(3) null comment '最后离开时间',
    enter_times          integer comment '进入次数累计',
@@ -127,11 +127,11 @@ create unique index u_tm_fp1 on t_tm_foot_print
 create table t_tm_foot_print_detail
 (
    id                   bigint(20) not null comment '主键',
-   token                varchar(50) comment '登录TOKEN',
+   token                varchar(100) comment '登录TOKEN',
    user_id              bigint(20) not null comment '用户主键',
    scene_id             bigint(20) not null comment '场景主键',
-   scene_name           varchar(50) comment '场景名称',
-   nickname             varchar(50) comment '分配昵称',
+   scene_name           varchar(100) comment '场景名称',
+   nickname             varchar(100) comment '分配昵称',
    in_time              timestamp(3) null comment '最后进入时间',
    out_time             timestamp(3) null comment '进入次数累计',
    stay_span            integer comment '总停留时间',
@@ -160,14 +160,15 @@ create table t_tm_message
    id                   bigint(20) not null comment '主键',
    receiver_fpd_id      bigint(20) comment '接收者在场景唯一标识',
    receiver_id          bigint(20) comment '接收者ID',
-   receiver_nickname    varchar(50) comment '接收者昵称',
+   receiver_nickname    varchar(100) comment '接收者昵称',
    scene_id             bigint(20) comment '场景ID',
-   scene_name           varchar(50) comment '场景名称',
+   scene_name           varchar(100) comment '场景名称',
    message              varchar(1000) comment '内容',
    pics                 varchar(1000) comment '发言图片UUID,ID集合',
+   pic_count            integer comment '包含的图片数量',
    sender_fpd_id        bigint(20) comment '发送者者在场景唯一标识',
    sender_id            bigint(20) comment '发送者ID',
-   sender_nickname      varchar(50) comment '发送者昵称',
+   sender_nickname      varchar(100) comment '发送者昵称',
    send_time            timestamp(3) null comment '发送时间',
    primary key (id)
 )
@@ -191,7 +192,7 @@ create index i_tm_message1 on t_tm_message
 create table t_tm_scene
 (
    id                   bigint(20) not null comment '主键',
-   name                 varchar(50) comment '场景名称',
+   name                 varchar(100) comment '场景名称',
    kind                 char(1) comment '场景类型',
    radius               integer comment '半径(米)',
    center_lng           decimal(17,10) comment '中心点经度',
@@ -222,14 +223,15 @@ alter table t_tm_scene comment '场景';
 /*==============================================================*/
 create table t_tm_scene_pic
 (
-   主键                   bigint(20) not null comment '主键',
+   id                   bigint(20) not null comment '主键',
    scene_id             bigint(20) not null comment '场景ID',
    mid                  bigint(20) comment '消息ID/会话ID',
    kind                 char(1) comment 'C：会话，M：私信',
-   scene_name           varchar(50) comment '场景名称',
+   scene_name           varchar(100) comment '场景名称',
    pic_id               bigint(20) not null comment '图片ID',
    pic_uuid             varchar(60) comment '图片UUID',
-   primary key (主键)
+   crdt                 timestamp(3) null comment '创建时间',
+   primary key (id)
 )
 engine=innodb default charset=utf8;
 
@@ -252,7 +254,7 @@ create table t_tm_scene_tag
    id                   bigint(20) not null comment '主键',
    scene_id             bigint(20) not null comment '场景主键',
    tag_id               bigint(20) not null comment '标签主键',
-   tag_name             varchar(50) comment '标签内容',
+   tag_name             varchar(100) comment '标签内容',
    crdt                 timestamp(3) null comment '创建日期',
    primary key (id)
 )

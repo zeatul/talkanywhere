@@ -18,6 +18,8 @@ import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.DomainTools;
+import com.hawk.utility.JsonTools;
+import com.hawk.utility.StringTools;
 import com.taw.pub.scene.request.DeleteMessageParam;
 import com.taw.pub.scene.request.SearchMessageParam;
 import com.taw.pub.scene.request.SendMessageParam;
@@ -78,7 +80,15 @@ public class MessageController {
 		searchMessageParam.setUserId(AuthThreadLocal.getUserId());/*查询登录用户的消息*/
 		List<MessageDomain> list = messageService.search(searchMessageParam);
 		List<MessageResp> result = new ArrayList<MessageResp>(list.size());
-		DomainTools.copy(list, result, MessageResp.class);
+		for (MessageDomain messageDomain : list){
+			MessageResp messageResp = new MessageResp();
+			DomainTools.copy(messageDomain, messageResp);
+			if (StringTools.isNotNullOrEmpty(messageDomain.getPics())){
+				messageResp.setPicList(JsonTools.toObject(messageDomain.getPics(), clazz));
+			}
+			result.add(messageResp);
+		}
+		
 		HttpResponseHandler.handle(response, SuccessResponse.build(result));
 	}
 	

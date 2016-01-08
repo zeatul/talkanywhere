@@ -13,6 +13,7 @@
 		scene_name as "sceneName" ,
 		message as "message" ,
 		pics as "pics" ,
+		pic_count as "picCount" ,
 		sender_fpd_id as "senderFpdId" ,
 		sender_id as "senderId" ,
 		sender_nickname as "senderNickname" ,
@@ -29,6 +30,7 @@
 			<if test="sceneName != null"> AND scene_name = #{sceneName}  </if>
 			<if test="message != null"> AND message = #{message}  </if>
 			<if test="pics != null"> AND pics = #{pics}  </if>
+			<if test="picCount != null"> AND pic_count = #{picCount}  </if>
 			<if test="senderFpdId != null"> AND sender_fpd_id = #{senderFpdId}  </if>
 			<if test="senderId != null"> AND sender_id = #{senderId}  </if>
 			<if test="senderNickname != null"> AND sender_nickname = #{senderNickname}  </if>
@@ -46,6 +48,7 @@
 			AND scene_name = #{old_sceneName}
 			AND message = #{old_message}
 			AND pics = #{old_pics}
+			AND pic_count = #{old_picCount}
 			AND sender_fpd_id = #{old_senderFpdId}
 			AND sender_id = #{old_senderId}
 			AND sender_nickname = #{old_senderNickname}
@@ -62,6 +65,7 @@
 			scene_name = #{sceneName},
 			message = #{message},
 			pics = #{pics},
+			pic_count = #{picCount},
 			sender_fpd_id = #{senderFpdId},
 			sender_id = #{senderId},
 			sender_nickname = #{senderNickname},
@@ -78,6 +82,7 @@
 				<if test="sceneName != null">scene_name = #{sceneName},</if>
 				<if test="message != null">message = #{message},</if>
 				<if test="pics != null">pics = #{pics},</if>
+				<if test="picCount != null">pic_count = #{picCount},</if>
 				<if test="senderFpdId != null">sender_fpd_id = #{senderFpdId},</if>
 				<if test="senderId != null">sender_id = #{senderId},</if>
 				<if test="senderNickname != null">sender_nickname = #{senderNickname},</if>
@@ -124,6 +129,7 @@
 				scene_name,				
 				message,				
 				pics,				
+				pic_count,				
 				sender_fpd_id,				
 				sender_id,				
 				sender_nickname,				
@@ -138,6 +144,7 @@
 			#{sceneName},
 			#{message},
 			#{pics},
+			#{picCount},
 			#{senderFpdId},
 			#{senderId},
 			#{senderNickname},

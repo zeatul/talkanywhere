@@ -7,7 +7,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.hawk.pub.pkgen.PkGenerator;
+import com.hawk.utility.DateTools;
+import com.hawk.utility.check.CheckTools;
 import com.taw.picture.configure.PictureServiceConfigure;
+import com.taw.picture.domain.PictureDomain;
+import com.taw.picture.exception.UploadFileNotFoundException;
+import com.taw.pub.picture.enums.EnumPictureHotLevel;
+import com.taw.pub.picture.enums.EnumPictureStatus;
+import com.taw.pub.picture.request.InsrtPictureParam;
 
 @Service
 public class PictureService {
@@ -22,17 +30,54 @@ public class PictureService {
 	 * @param uuid 
 	 * @return 主键
 	 */
-	public Long insrtPicture(String uuid){
-		ComputeResult computeResult = computeDir(uuid);
+	public Long insrtPicture(InsrtPictureParam insrtPictureParam) throws Exception{
+		CheckTools.check(insrtPictureParam);
+		String uuid = insrtPictureParam.getUuid();
+		ComputeResult computeResult = computeDir(uuid);		
 		String dir = computeResult.getDir();
 		String filePath = dir + File.separator + uuid;
 		/**
 		 * 判断文件是否存在，并取文件长度
 		 */
+		File file = new File(filePath);
+		if (!file.exists())
+			throw new UploadFileNotFoundException(uuid);
+		
+		long length = file.length();
 		
 		/**
 		 * 入库，返回主键
 		 */
+		PictureDomain pictureDomain = new PictureDomain();
+		
+		pictureDomain.setUuid(uuid);
+		
+		pictureDomain.setSceneId(insrtPictureParam.getSceneId());
+		pictureDomain.setSceneName(insrtPictureParam.getSceneName());
+		
+		pictureDomain.setUserId(insrtPictureParam.getUserId());
+		pictureDomain.setNickname(insrtPictureParam.getNickname());
+		
+		pictureDomain.setCommentCount(0);		
+		pictureDomain.setDownCount(0);
+		pictureDomain.setUpCount(0);
+		pictureDomain.setReferenceCount(1);
+		pictureDomain.setSceneCount(1);
+		pictureDomain.setForwardCount(0);		
+		
+		pictureDomain.setLSize(length);
+		
+		pictureDomain.setStatus(EnumPictureStatus.NORMAL.toString());
+		pictureDomain.setHot(EnumPictureHotLevel.NORMAL.getValue());
+		
+		pictureDomain.setLocation(insrtPictureParam.getLocation());
+		pictureDomain.setPhotoTime(insrtPictureParam.getPhotoTime());
+		pictureDomain.setCrdt(DateTools.now());
+		pictureDomain.setId(PkGenerator.genPk());
+		
+		return pictureDomain.getId();
+		
+		
 	}
 	
 	public static class ComputeResult{

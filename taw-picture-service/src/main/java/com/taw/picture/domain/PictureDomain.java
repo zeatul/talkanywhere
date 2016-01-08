@@ -26,6 +26,12 @@ public class PictureDomain implements Serializable {
 	/*上传者昵称*/
 	private String nickname;
 	
+	/*场景Id*/
+	private Long sceneId;
+	
+	/*场景名称*/
+	private String sceneName;
+	
 	/*图片状态*/
 	private String status;
 	
@@ -48,7 +54,7 @@ public class PictureDomain implements Serializable {
 	private Integer referenceCount;
 	
 	/*热门图片*/
-	private String hot;
+	private Integer hot;
 	
 	/*点赞数*/
 	private Integer upCount;
@@ -66,13 +72,13 @@ public class PictureDomain implements Serializable {
 	private Integer sceneCount;
 	
 	/*小图片大小*/
-	private Integer sSize;
+	private Long sSize;
 	
 	/*中图片大小*/
-	private Integer mSize;
+	private Long mSize;
 	
 	/*大图片大小*/
-	private Integer lSize;
+	private Long lSize;
 	
 	/*创建时间*/
 	private Date crdt;
@@ -140,6 +146,38 @@ public class PictureDomain implements Serializable {
 	 */	
 	public void setNickname (String nickname) {
 		this.nickname = nickname;
+	}
+	
+	/**
+	 * 
+	 * @return 场景Id
+	 */
+	public Long getSceneId(){
+		return sceneId;
+	}
+	
+	/**
+	 * 
+	 * @param sceneId 场景Id
+	 */	
+	public void setSceneId (Long sceneId) {
+		this.sceneId = sceneId;
+	}
+	
+	/**
+	 * 
+	 * @return 场景名称
+	 */
+	public String getSceneName(){
+		return sceneName;
+	}
+	
+	/**
+	 * 
+	 * @param sceneName 场景名称
+	 */	
+	public void setSceneName (String sceneName) {
+		this.sceneName = sceneName;
 	}
 	
 	/**
@@ -258,7 +296,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @return 热门图片
 	 */
-	public String getHot(){
+	public Integer getHot(){
 		return hot;
 	}
 	
@@ -266,7 +304,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @param hot 热门图片
 	 */	
-	public void setHot (String hot) {
+	public void setHot (Integer hot) {
 		this.hot = hot;
 	}
 	
@@ -354,7 +392,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @return 小图片大小
 	 */
-	public Integer getSSize(){
+	public Long getSSize(){
 		return sSize;
 	}
 	
@@ -362,7 +400,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @param sSize 小图片大小
 	 */	
-	public void setSSize (Integer sSize) {
+	public void setSSize (Long sSize) {
 		this.sSize = sSize;
 	}
 	
@@ -370,7 +408,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @return 中图片大小
 	 */
-	public Integer getMSize(){
+	public Long getMSize(){
 		return mSize;
 	}
 	
@@ -378,7 +416,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @param mSize 中图片大小
 	 */	
-	public void setMSize (Integer mSize) {
+	public void setMSize (Long mSize) {
 		this.mSize = mSize;
 	}
 	
@@ -386,7 +424,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @return 大图片大小
 	 */
-	public Integer getLSize(){
+	public Long getLSize(){
 		return lSize;
 	}
 	
@@ -394,7 +432,7 @@ public class PictureDomain implements Serializable {
 	 * 
 	 * @param lSize 大图片大小
 	 */	
-	public void setLSize (Integer lSize) {
+	public void setLSize (Long lSize) {
 		this.lSize = lSize;
 	}
 	

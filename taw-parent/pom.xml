@@ -95,6 +95,11 @@
 				<artifactId>taw-scene-service</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.hawk.taw</groupId>
+				<artifactId>taw-picture-service</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- log -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -494,11 +499,7 @@
 			</dependency>
 
 			<!-- activemq -->
-			<!-- <dependency>
-				<groupId>org.apache.activemq</groupId>
-				<artifactId>activemq-all</artifactId>
-				<version>5.13.0</version>
-			</dependency> -->
+			<!-- <dependency> <groupId>org.apache.activemq</groupId> <artifactId>activemq-all</artifactId> <version>5.13.0</version> </dependency> -->
 
 			<dependency>
 				<groupId>org.apache.activemq</groupId>

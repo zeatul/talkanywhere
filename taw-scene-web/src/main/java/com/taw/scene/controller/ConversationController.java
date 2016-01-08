@@ -18,7 +18,8 @@ import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.DomainTools;
-import com.taw.pub.scene.request.ComplexMessage;
+import com.hawk.utility.JsonTools;
+import com.hawk.utility.StringTools;
 import com.taw.pub.scene.request.DeleteConversationParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
@@ -61,9 +62,8 @@ public class ConversationController {
 		SendConverstaionParam sendConverstaionParam = HttpRequestHandler.handle(request, SendConverstaionParam.class);
 		sendConverstaionParam.setPostUserId(AuthThreadLocal.getUserId());/*发信人必须是登录用户*/
 		sendConverstaionParam.setToken(AuthThreadLocal.getToken());
-		Long id = conversationService.send(sendConverstaionParam);
-		SendConverstaionResp sendConverstaionResp = new SendConverstaionResp();
-		sendConverstaionResp.setId(id);
+		
+		SendConverstaionResp sendConverstaionResp = conversationService.send(sendConverstaionParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(sendConverstaionResp));
 	}
 	
@@ -75,9 +75,9 @@ public class ConversationController {
 		for (ConversationDomain conversationDomain : list){
 			ConversationResp conversationResp = new ConversationResp();
 			DomainTools.copy(conversationDomain, conversationResp);
-			ComplexMessage complexMessage = new ComplexMessage();
-			complexMessage.setText(conversationDomain.getMessage());
-			conversationResp.setComplexMessage(complexMessage);
+			if (StringTools.isNotNullOrEmpty(conversationDomain.getPics())){
+				conversationResp.setPicList(JsonTools.toObject(conversationDomain.getPics(), clazz));
+			}
 			result.add(conversationResp);
 		}
 		HttpResponseHandler.handle(response, SuccessResponse.build(result));

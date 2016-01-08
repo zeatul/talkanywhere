@@ -1,5 +1,6 @@
 package com.taw.scene.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +13,21 @@ import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
+import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
+import com.taw.picture.service.PictureService;
+import com.taw.pub.picture.request.InsrtPictureParam;
+import com.taw.pub.scene.enums.EnumMessageType;
 import com.taw.pub.scene.request.DeleteMessageParam;
 import com.taw.pub.scene.request.SearchMessageParam;
 import com.taw.pub.scene.request.SendMessageParam;
+import com.taw.pub.scene.response.PicDescResp;
+import com.taw.pub.scene.response.SendMessageResp;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.MessageDomain;
 import com.taw.scene.domain.SceneDomain;
+import com.taw.scene.domain.ScenePicDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
@@ -45,6 +53,12 @@ public class MessageService {
 	
 	@Autowired
 	private SceneMessageProducer sceneMessageProducer;
+	
+	@Autowired
+	private ScenePicService scenePicService;
+	
+	@Autowired
+	private PictureService pictureService;
 
 	/**
 	 * 发送私信
@@ -52,7 +66,7 @@ public class MessageService {
 	 * @throws Exception 
 	 */
 	@Transactional
-	public Long send(SendMessageParam sendMessageParam) throws Exception{
+	public SendMessageResp send(SendMessageParam sendMessageParam) throws Exception{
 		CheckTools.check(sendMessageParam);
 		
 		String message = sendMessageParam.getMessage();
@@ -109,16 +123,62 @@ public class MessageService {
 		messageDomain.setId(PkGenerator.genPk());
 		messageDomain.setSendTime(DateTools.now());
 		
+		/**
+		 * 处理图片
+		 */
+		messageDomain.setPicCount(0);
+		List<PicDescResp> picDescRespList = null;
+		if (pics != null){
+			messageDomain.setPicCount(pics.size());
+			picDescRespList = new ArrayList<PicDescResp>(pics.size());
+			for (String uuid : pics){
+				InsrtPictureParam insrtPictureParam = new InsrtPictureParam();
+				insrtPictureParam.setUuid(uuid);
+				insrtPictureParam.setUserId(senderId);
+				insrtPictureParam.setNickname(footPrintDetailDomain.getNickname());
+				insrtPictureParam.setSceneId(sceneId);
+				insrtPictureParam.setSceneName(sceneDomain.getName());
+				/**
+				 * 图片id ，插入图片管理表
+				 */
+				Long picId = pictureService.insrtPicture(insrtPictureParam);
+				
+				picDescRespList.add(new PicDescResp(picId, uuid));
+				
+				/**
+				 * 插入场景图片关联表
+				 */
+				ScenePicDomain scenePicDomain = new ScenePicDomain();
+				scenePicDomain.setKind(EnumMessageType.CONVERSATION.toString());
+				scenePicDomain.setMid(messageDomain.getId());
+				scenePicDomain.setSceneId(sceneId);
+				scenePicDomain.setSceneName(sceneDomain.getName());
+				scenePicDomain.setId(PkGenerator.genPk());
+				
+				scenePicService.inserScenePic(messageDomain.getId(), sceneId, sceneDomain.getName(), EnumMessageType.MESSAGE,picId,uuid);
+			}
+			
+			/**
+			 * 设置会话包含的图片信息
+			 */
+			messageDomain.setPics(JsonTools.toJsonString(picDescRespList));
+		}
+		
+		
 		messageMapper.insert(messageDomain);
 		
 		/**
-		 * TODO:通知在线接收用户 或者 push 用户
+		 * 通知在线接收用户 或者 push 用户
+		 * TODO:做成异步
 		 */
 		Notification notification = new Notification();
 		notification.setUserId(receiverId);
 		sceneMessageProducer.send(notification);
 		
-		return messageDomain.getId();
+		SendMessageResp sendMessageResp = new SendMessageResp();
+		sendMessageResp.setId(messageDomain.getId());
+		sendMessageResp.setPicList(picDescRespList);
+		return sendMessageResp;
 	}
 	
 	/**
