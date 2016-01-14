@@ -55,6 +55,7 @@
 
 
 	<context:component-scan base-package="com.taw.scene.controller" />
+	<context:component-scan base-package="com.taw.picture.controller" />
 
 
 

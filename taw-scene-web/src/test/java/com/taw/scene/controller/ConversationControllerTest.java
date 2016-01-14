@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import com.hawk.utility.DateTools;
 import com.hawk.utility.JsonTools;
-import com.taw.pub.scene.request.ComplexMessage;
 import com.taw.pub.scene.request.DeleteConversationParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
@@ -23,13 +22,13 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		String path = contextPath + "/scene/conversation/send.do";
 		
 		SendConverstaionParam sendConverstaionParam = new SendConverstaionParam();
-		ComplexMessage message = new ComplexMessage();
-		message.setText("hello, come on 6");
+		String message = "hello, come on 6";
 		List<String> pics = new ArrayList<String>();
 		pics.add("pic1url");
 		pics.add("pic2url");
-		message.setPics(pics);
-		sendConverstaionParam.setComplexMessage(message);
+		
+		sendConverstaionParam.setPics(pics);
+		sendConverstaionParam.setMessage(message); 
 		sendConverstaionParam.setPostUserFpdId(18l);
 		sendConverstaionParam.setPostNickname("80ad3379-2837-43d5-99f3-932876c6cea9");
 		sendConverstaionParam.setSceneId(1l);

@@ -24,6 +24,7 @@ import com.taw.pub.scene.request.DeleteMessageParam;
 import com.taw.pub.scene.request.SearchMessageParam;
 import com.taw.pub.scene.request.SendMessageParam;
 import com.taw.pub.scene.response.MessageResp;
+import com.taw.pub.scene.response.PicDescResp;
 import com.taw.pub.scene.response.SendMessageResp;
 import com.taw.scene.domain.MessageDomain;
 import com.taw.scene.service.MessageService;
@@ -60,9 +61,7 @@ public class MessageController {
 	public void sendMessage(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		SendMessageParam sendMessageParam = HttpRequestHandler.handle(request, SendMessageParam.class);
 		sendMessageParam.setSenderId(AuthThreadLocal.getUserId());/*发信人必须是登录用户*/
-		Long id = messageService.send(sendMessageParam);
-		SendMessageResp sendMessageResp = new SendMessageResp();
-		sendMessageResp.setId(id);
+		SendMessageResp sendMessageResp = messageService.send(sendMessageParam);		
 		HttpResponseHandler.handle(response, SuccessResponse.build(sendMessageResp));
 	}
 	
@@ -84,7 +83,7 @@ public class MessageController {
 			MessageResp messageResp = new MessageResp();
 			DomainTools.copy(messageDomain, messageResp);
 			if (StringTools.isNotNullOrEmpty(messageDomain.getPics())){
-				messageResp.setPicList(JsonTools.toObject(messageDomain.getPics(), clazz));
+				messageResp.setPicList(JsonTools.toArrayList(messageDomain.getPics(),PicDescResp.class));
 			}
 			result.add(messageResp);
 		}

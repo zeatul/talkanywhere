@@ -11,6 +11,7 @@
 			classpath*:com/taw/user/spring/applicationContext-user-service-*.xml
 			,classpath*:com/hawk/pub/spring/applicationContext-pub-*.xml 
 			,classpath*:com/taw/scene/spring/applicationContext-scene-service-*.xml
+			,classpath*:com/taw/picture/spring/applicationContext-picture-service-*.xml
 		</param-value>
 	</context-param>
 

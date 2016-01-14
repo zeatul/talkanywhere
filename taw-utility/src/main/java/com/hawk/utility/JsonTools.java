@@ -1,12 +1,18 @@
 package com.hawk.utility;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.type.JavaType;
+import org.codehaus.jackson.type.TypeReference;
 
 @SuppressWarnings("deprecation")
 public class JsonTools {
@@ -43,6 +49,29 @@ public class JsonTools {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static <T> Collection<T> toObject (String jsonStr, Class<? extends Collection> cClass,Class<T> tClass){
+		try {
+			JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(cClass, tClass);
+			return objectMapper.readValue(jsonStr, javaType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static <T> ArrayList<T> toArrayList(String jsonStr ,Class<T> clazz){
+		JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, clazz);
+		try {
+			return objectMapper.readValue(jsonStr, javaType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+//	public static <T> List<T> toList(String jsonStr, final Class<T> clazz){
+//		return objectMapper.readValue(jsonStr, new TypeReference<List<T>>() {
+//		});
+//	}
 
 	public static void main(String[] args){
 		List<String> list = new ArrayList<String>();

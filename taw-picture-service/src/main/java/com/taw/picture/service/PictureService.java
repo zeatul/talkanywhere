@@ -1,21 +1,42 @@
 package com.taw.picture.service;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
+import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.picture.configure.PictureServiceConfigure;
+import com.taw.picture.domain.PictureCommentDomain;
 import com.taw.picture.domain.PictureDomain;
+import com.taw.picture.domain.PictureThumbDomain;
 import com.taw.picture.exception.UploadFileNotFoundException;
+import com.taw.picture.mapper.PictureCommentMapper;
+import com.taw.picture.mapper.PictureMapper;
+import com.taw.picture.mapper.PictureThumbMapper;
+import com.taw.picture.mapperex.PictureCommentExMapper;
 import com.taw.pub.picture.enums.EnumPictureHotLevel;
 import com.taw.pub.picture.enums.EnumPictureStatus;
+import com.taw.pub.picture.enums.EnumThumbType;
+import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.InsrtPictureParam;
+import com.taw.pub.picture.request.PictureInfoParam;
+import com.taw.pub.picture.request.RemoveCommentParam;
+import com.taw.pub.picture.request.SearchCommentParam;
+import com.taw.pub.picture.request.ThumbPictureParam;
+import com.taw.pub.picture.response.AddCommentResp;
+import com.taw.pub.picture.response.PictureCommentInfoResp;
+import com.taw.pub.picture.response.PictureInfoResp;
 
 @Service
 public class PictureService {
@@ -23,6 +44,19 @@ public class PictureService {
 	@Autowired
 	@Qualifier("pictureServiceConfigure")
 	private PictureServiceConfigure pictureServiceConfigure;
+	
+	@Autowired
+	private PictureThumbMapper pictureThumbMapper;
+	
+	@Autowired
+	private PictureMapper pictureMapper;
+	
+	@Autowired
+	private PictureCommentMapper pictureCommentMapper;
+	
+	@Autowired
+	private PictureCommentExMapper pictureCommentExMapper;
+	
 	
 	
 	/**
@@ -74,6 +108,12 @@ public class PictureService {
 		pictureDomain.setPhotoTime(insrtPictureParam.getPhotoTime());
 		pictureDomain.setCrdt(DateTools.now());
 		pictureDomain.setId(PkGenerator.genPk());
+		
+		/**
+		 * 删除.success的标识文件，标识文件已经入库
+		 */
+		
+		new File(filePath+".success").delete();
 		
 		return pictureDomain.getId();
 		
@@ -145,5 +185,124 @@ public class PictureService {
 			str = "0"+str;
 		return str;
 	}
+	
+	
+	@Transactional
+	public PictureInfoResp thumbPicture(ThumbPictureParam thumbPictureParam) throws Exception{
+		CheckTools.check(thumbPictureParam);
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("picId", thumbPictureParam.getPicId());
+		params.put("userId", thumbPictureParam.getUserId());
+		
+		PictureDomain pictureDomain =  pictureMapper.load(thumbPictureParam.getPicId());
+		if (pictureDomain == null)
+			throw new Exception("Couldn't find the picture record which id = " + thumbPictureParam.getPicId());
+		
+		List<PictureThumbDomain> list = pictureThumbMapper.loadDynamic(params);
+		
+		PictureThumbDomain pictureThumbDomainPre = list.get(0);
+		int upOffset = 0;
+		int downOffset = 0;
+		if (pictureThumbDomainPre != null){
+			/**
+			 * 删除
+			 */
+			pictureThumbMapper.delete(pictureThumbDomainPre.getId());
+			if (EnumThumbType.UP.toString().equals(pictureThumbDomainPre.getKind())){
+				upOffset = -1;
+			}else
+				downOffset = -1;
+		}
+		
+		PictureThumbDomain pictureThumbDomain = new PictureThumbDomain();
+		pictureThumbDomain.setKind(thumbPictureParam.getThumbType());
+		pictureThumbDomain.setPicId(thumbPictureParam.getPicId());
+		pictureThumbDomain.setUserId(thumbPictureParam.getUserId());
+		pictureThumbDomain.setNickname(thumbPictureParam.getNickname());
+		pictureThumbDomain.setCrdt(DateTools.now());
+		
+		if (EnumThumbType.UP.toString().equals(thumbPictureParam.getThumbType())){
+			upOffset = upOffset +1;
+		}else{
+			downOffset = downOffset+1;
+		}
+		
+		/**
+		 * 新增
+		 */
+		pictureThumbMapper.insert(pictureThumbDomain);
+		
+		/**
+		 * 更新数量
+		 */
+		pictureDomain.setDownCount(pictureDomain.getDownCount() + downOffset);
+		pictureDomain.setUpCount(pictureDomain.getUpCount()+upOffset);
+		pictureMapper.update(pictureDomain);
+		
+		PictureInfoResp pictureInfoResp = new PictureInfoResp();
+		DomainTools.copy(pictureDomain, pictureInfoResp);
+		return pictureInfoResp;
+		
+		
+	}
+	
+	@Transactional
+	public AddCommentResp addComment(AddCommentParam addCommentParam)throws Exception{
+		CheckTools.check(addCommentParam);
+		PictureDomain pictureDomain =  pictureMapper.load(addCommentParam.getPicId());
+		if (pictureDomain == null)
+			throw new Exception("Couldn't find the picture record which id = " + addCommentParam.getPicId());
+		PictureCommentDomain pictureCommentDomain = new PictureCommentDomain();
+		pictureCommentDomain.setContent(addCommentParam.getContent());
+		pictureCommentDomain.setNickname(addCommentParam.getNickname());
+		pictureCommentDomain.setPicId(addCommentParam.getPicId());
+		pictureCommentDomain.setUserId(addCommentParam.getUserId());	
+		pictureCommentDomain.setCrdt(DateTools.now());
+		pictureCommentDomain.setId(PkGenerator.genPk());
+		pictureCommentMapper.insert(pictureCommentDomain);
+		
+		pictureDomain.setCommentCount(pictureDomain.getCommentCount()+1);
+		pictureMapper.update(pictureDomain);
+		
+		AddCommentResp addCommentResp = new AddCommentResp();
+		
+		addCommentResp.setId(pictureCommentDomain.getId());
+		addCommentResp.setCrdt(pictureCommentDomain.getCrdt());
+		addCommentResp.setCommentCount(pictureDomain.getCommentCount());
+		
+		return addCommentResp;
+		
+	}
+	
+	public List<PictureCommentInfoResp>  searchComment(SearchCommentParam searchCommentParam) throws Exception{
+		CheckTools.check(searchCommentParam);
+		List<PictureCommentDomain> pictureCommentDomainList =  pictureCommentExMapper.searchComment(searchCommentParam.getPicId(), searchCommentParam.getOffset(), searchCommentParam.getLimit());
+		List<PictureCommentInfoResp> pictureCommentInfoRespList = new ArrayList<PictureCommentInfoResp>(50);
+		DomainTools.copy(pictureCommentDomainList, pictureCommentInfoRespList, PictureCommentInfoResp.class);
+		return pictureCommentInfoRespList;
+	}
+	
+	public void removeComment(RemoveCommentParam removeCommentParam)throws Exception{
+		CheckTools.check(removeCommentParam);
+		PictureCommentDomain pictureCommentDomain = pictureCommentMapper.load(removeCommentParam.getCommentId());
+		if (pictureCommentDomain == null)
+			return;
+		if (!removeCommentParam.getUserId().equals(pictureCommentDomain.getUserId())){
+			throw new IllegalAccessException();
+		}
+		pictureCommentMapper.delete(pictureCommentDomain.getId());
+		PictureDomain pictureDomain =  pictureMapper.load(pictureCommentDomain.getPicId());
+		if (pictureDomain != null){
+			pictureDomain.setCommentCount(pictureDomain.getCommentCount()-1);
+			pictureMapper.update(pictureDomain);
+		}
+	}
 
+	public PictureInfoResp info(PictureInfoParam pictureInfoParam)throws Exception{
+		CheckTools.check(pictureInfoParam);
+		PictureDomain pictureDomain = pictureMapper.load(pictureInfoParam.getPicId());
+		PictureInfoResp pictureInfoResp = new PictureInfoResp();
+		DomainTools.copy(pictureDomain, pictureInfoResp);
+		return pictureInfoResp;
+	}
 }

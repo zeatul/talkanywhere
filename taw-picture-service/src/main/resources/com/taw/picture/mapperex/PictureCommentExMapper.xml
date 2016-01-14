@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.picture.mapperex.PictureCommentExMapper">
+
+	<select id="searchComment" parameterType="hashmap"  resultType="PictureCommentDomain">
+		SELECT 
+		<include refid="com.taw.picture.mapper.PictureCommentMapper.columns" />
+		FROM t_pm_picture_comment
+		WHERE pic_id = #{picId} ORDER BY crdt desc LIMIT #{_offset},#{_limit}		
+	</select>
+	
+	
+</mapper>

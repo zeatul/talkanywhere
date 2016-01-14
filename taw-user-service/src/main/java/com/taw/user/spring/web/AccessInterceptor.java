@@ -53,7 +53,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		
 		
 		protectedPaths.add("/scene/conversation/send.do");
-		protectedPaths.add("/scene/conversation/search.do");
+//		protectedPaths.add("/scene/conversation/search.do");
 		protectedPaths.add("/scene/conversation/remove.do");
 		
 		protectedPaths.add("/scene/bookmark/add.do");
@@ -64,6 +64,9 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		
 		protectedPaths.add("/file/upload.do");
 		protectedPaths.add("/file/length.do");
+		protectedPaths.add("/pic/thumb.do");
+		protectedPaths.add("/pic/comment/add.do");		
+		protectedPaths.add("/pic/comment/remove.do");
 		
 		
 		

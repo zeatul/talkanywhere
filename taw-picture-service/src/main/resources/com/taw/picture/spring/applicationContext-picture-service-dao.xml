@@ -12,20 +12,17 @@
 	<context:annotation-config />
 
 	<!-- enable transaction demarcation with annotations -->
-	<tx:annotation-driven transaction-manager="transactionManager_scene_service"/>
+	<tx:annotation-driven transaction-manager="transactionManager_picture_service"/>
 
 
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> <property name="driverClassName" value="${jdbc.driverClassName}" 
-		/> <property name="url" value="${jdbc.url}" /> <property name="scenename" value="${jdbc.scenename}" /> <property name="password" value="${jdbc.password}" /> <property 
-		name="maxActive" value="${jdbc.maxActive}" /> <property name="maxWait" value="${jdbc.maxWait}" /> <property name="poolPreparedStatements" value="true" /> <property 
-		name="defaultAutoCommit" value="true" /> </bean> -->
+	
 
-	<bean id="dataSource_scene_service" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+	<bean id="dataSource_picture_service" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		
-		<property name="driverClass" value="${maven.taw-scene-service.jdbc.driverClassName}" />
-		<property name="jdbcUrl" value="${maven.taw-scene-service.jdbc.url}" />
-		<property name="user" value="${maven.taw-scene-service.jdbc.scenename}" />
-		<property name="password" value="${maven.taw-scene-service.jdbc.password}" />
+		<property name="driverClass" value="${maven.taw-picture-service.jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${maven.taw-picture-service.jdbc.url}" />
+		<property name="user" value="${maven.taw-picture-service.jdbc.username}" />
+		<property name="password" value="${maven.taw-picture-service.jdbc.password}" />
 
 		<!-- 连接池中保留的最小连接数，默认为：3 -->
 		<property name="minPoolSize" value="20" />
@@ -79,21 +76,21 @@
 	</bean>
 
 	<!-- transaction manager, use JtaTransactionManager for global tx -->
-	<bean id="transactionManager_scene_service" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource_scene_service" />
+	<bean id="transactionManager_picture_service" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource_picture_service" />
 	</bean>
 
 
 	<!-- define the SqlSessionFactory -->
-	<bean id="sqlSessionFactory_scene_service" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource_scene_service" />
-		<property name="typeAliasesPackage" value="com.taw.scene.domain;com.taw.scene.domainex" />
+	<bean id="sqlSessionFactory_picture_service" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource_picture_service" />
+		<property name="typeAliasesPackage" value="com.taw.picture.domain;com.taw.picture.domainex" />
 	</bean>
 
 	<!-- scan for mappers and let them be autowired -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.taw.scene.mapper;com.taw.scene.mapperex" />
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_scene_service"/>  
+		<property name="basePackage" value="com.taw.picture.mapper;com.taw.picture.mapperex" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_picture_service"/>  
 	</bean>
 
 	<!-- =================================================================== -->

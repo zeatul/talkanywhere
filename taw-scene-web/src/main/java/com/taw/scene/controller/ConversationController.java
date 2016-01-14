@@ -24,6 +24,7 @@ import com.taw.pub.scene.request.DeleteConversationParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
 import com.taw.pub.scene.response.ConversationResp;
+import com.taw.pub.scene.response.PicDescResp;
 import com.taw.pub.scene.response.SendConverstaionResp;
 import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.service.ConversationService;
@@ -76,7 +77,7 @@ public class ConversationController {
 			ConversationResp conversationResp = new ConversationResp();
 			DomainTools.copy(conversationDomain, conversationResp);
 			if (StringTools.isNotNullOrEmpty(conversationDomain.getPics())){
-				conversationResp.setPicList(JsonTools.toObject(conversationDomain.getPics(), clazz));
+				conversationResp.setPicList(JsonTools.toArrayList(conversationDomain.getPics(),PicDescResp.class));
 			}
 			result.add(conversationResp);
 		}

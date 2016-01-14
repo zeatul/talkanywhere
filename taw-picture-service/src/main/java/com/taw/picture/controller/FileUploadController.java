@@ -2,10 +2,10 @@ package com.taw.picture.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 
-import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,12 +44,42 @@ public class FileUploadController {
 	@Autowired
 	private PictureService pictureService;
 	
+	/**
+	 * hello 测试用
+	 * @param locale
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/file/upload/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String helloWorld(Locale locale, Model model) throws IOException {
+		model.addAttribute("msg", "/file/upload/hello.do");
+		return "success";
+	}
 	
-
+	
+	/**
+	 * 上传文件，
+	 * uuid = yyyyMMddHHmmss + 32位uuid+ .suffix ，必填
+	 * srcFile = 上传的本地源文件名称  ，选填，需要encodeUrl
+	 * srcFileSize = 上传的本地源文件实际大小 ，必填
+	 * byteArraySize = 本次上传的byte数组大小
+	 * offset = 本次上传内容 在文件的起始位置
+	 * 上传逻辑，
+	 * 文件可以一次性传完，也可以分段上传，但必须按顺序来，系统检测到文件已经上传的内容和 srcFileSize相等，则认为本次文件全部上传完成
+	 * 上传的文件体，作为一个 byte数组，放在http 的 body 里。
+	 * 如果上传过程断网，则客户单先调用/file/length.do获取已经上传的文件大小，然后续传。
+	 * 
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/file/upload.do", method = RequestMethod.POST)
 	public void uploadFile(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		/**
-		 * yyyyMMddHHmmss + 32位uuid
+		 * yyyyMMddHHmmss + 32位uuid+ .suffix
 		 */
 		String uuid = request.getParameter("uuid");
 		ComputeResult computeResult = pictureService.computeDir(uuid);
@@ -122,7 +152,7 @@ public class FileUploadController {
 			boolean  flag = file.renameTo(new File(filePath)); 
 			
 			/**
-			 * 创建一个success 后缀的 flag 文件，仅仅标识文件已经上传完成。
+			 * 创建一个success 后缀的 flag 文件，仅仅标识文件已经上传完成。文件入库后，删除.success文件
 			 */
 			File successFile = new File(filePath + ".success");
 			successFile.createNewFile();
@@ -135,6 +165,14 @@ public class FileUploadController {
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 
+	/**
+	 * 获取已经上传文件的内容大小，续传时候，可以从这个位置开始继续上传。
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/file/length.do", method = RequestMethod.POST)
 	public void uploadLength(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		UploadLengthParam param = HttpRequestHandler.handle(request, UploadLengthParam.class);

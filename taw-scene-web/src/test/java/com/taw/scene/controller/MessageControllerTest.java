@@ -22,7 +22,7 @@ public class MessageControllerTest extends AbstractControllerTest{
 		
 		String path = contextPath + "/scene/message/send.do";
 		SendMessageParam sendMessageParam = new SendMessageParam();
-		sendMessageParam.setContent("你好，我是008");
+		sendMessageParam.setMessage("你好，我是008");
 		sendMessageParam.setSceneId(1l);
 		
 		sendMessageParam.setSenderFpdId(103l);

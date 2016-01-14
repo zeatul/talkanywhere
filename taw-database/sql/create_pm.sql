@@ -16,7 +16,7 @@ drop index i_pm_pic_f1 on t_pm_picture_forward;
 
 drop table if exists t_pm_picture_forward;
 
-drop index i_pm_thumb_1 on t_pm_picture_thumb;
+drop index ui_pm_thumb_1 on t_pm_picture_thumb;
 
 drop table if exists t_pm_picture_thumb;
 
@@ -115,7 +115,7 @@ create table t_pm_picture_thumb
    id                   bigint(20) not null comment '主键',
    pic_id               bigint(20) comment '图片ID',
    user_id              bigint(20) comment '点赞者ID',
-   nickname             varchar(50) comment '点赞者昵称',
+   nickname             varchar(100) comment '点赞者昵称',
    kind                 char(1) comment 'up down',
    crdt                 timestamp(3) null default null comment '点赞时间',
    primary key (id)
@@ -123,9 +123,9 @@ create table t_pm_picture_thumb
 engine=innodb default charset=utf8;
 
 /*==============================================================*/
-/* Index: i_pm_thumb_1                                          */
+/* Index: ui_pm_thumb_1                                         */
 /*==============================================================*/
-create index i_pm_thumb_1 on t_pm_picture_thumb
+create unique index ui_pm_thumb_1 on t_pm_picture_thumb
 (
    user_id,
    pic_id
