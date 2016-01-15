@@ -9,6 +9,9 @@ import java.util.UUID;
 import org.junit.Test;
 
 import com.hawk.utility.DateTools;
+import com.hawk.utility.JsonTools;
+import com.taw.pub.scene.request.UploadLengthParam;
+import com.taw.pub.scene.response.UploadLengthResponse;
 
 public class FileUploadControllerTest extends AbstractControllerTest {
 
@@ -43,7 +46,7 @@ public class FileUploadControllerTest extends AbstractControllerTest {
 			params.put("byteArraySize", size.toString());
 			params.put("offset", "0");
 
-			String result = httpClientHelper.post(path, b, params);
+			String result = httpClientHelper.post(path, b, params,0,b.length);
 
 			printResult(result);
 		} catch (Exception e) {
@@ -64,12 +67,59 @@ public class FileUploadControllerTest extends AbstractControllerTest {
 	 * 
 	 * @throws Exception
 	 */
+	
 	public void testFileUploadWithParts() throws Exception {
 		String localFilePath = "C:\\taw\\img\\img16.jpg";
 		FileInputStream fileInputStream = null;
+		String fileUploadPath = contextPath + "/file/upload.do";
+		String fileLengthPath = contextPath + "/file/length.do";
+		String uuid = DateTools.convert(DateTools.now(), "yyyyMMddHHmmss") + UUID.randomUUID().toString().replace("-", "") + ".jpg";
+		
 		try {
 			File file = new File(localFilePath);
 			fileInputStream = new FileInputStream(file);
+			Integer fileSize = fileInputStream.available();
+			Integer offset = 0;		
+			while (true){
+				
+				/**
+				 * 上传 
+				 */
+				byte[] b = new byte[50000];
+				int readLength = fileInputStream.read(b, 0, b.length);
+				if (readLength == -1){
+					break;
+				}
+				Map<String, String> params = genAuthMap();
+				params.put("srcFile", "hello.jpg");
+				params.put("uuid", uuid);
+
+				Integer size = b.length;
+				params.put("srcFileSize", fileSize.toString());
+				params.put("byteArraySize", size.toString());
+				params.put("offset", "0");
+
+				String result = httpClientHelper.post(fileUploadPath, b, params,0,b.length);
+				
+				offset = offset + readLength;
+
+				printResult("fileUpload.result = " + result + ", offset =" + offset);
+				
+				/**
+				 * 取已经上传的文件长度
+				 */
+				UploadLengthParam uploadLengthParam = new UploadLengthParam();
+				uploadLengthParam.setUuid(uuid);
+				String content = JsonTools.toJsonString(uploadLengthParam);
+				printSend("fileLength.content = " + content);
+				result = httpClientHelper.post(fileLengthPath, content, genAuthMap());
+				
+				printResult("fileLength.result = " +result);
+				
+
+				
+				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -37,7 +37,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 	public void testEnterScene() throws Exception{
 		String path = contextPath + "/scene/enter.do";
 		EnterSceneParam enterSceneParam = new EnterSceneParam();
-		enterSceneParam.setSceneId(2L);
+		enterSceneParam.setSceneId(1L);
 		String content = JsonTools.toJsonString(enterSceneParam);
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());

@@ -24,7 +24,7 @@
 		
 		<property name="driverClass" value="${maven.taw-scene-service.jdbc.driverClassName}" />
 		<property name="jdbcUrl" value="${maven.taw-scene-service.jdbc.url}" />
-		<property name="user" value="${maven.taw-scene-service.jdbc.scenename}" />
+		<property name="user" value="${maven.taw-scene-service.jdbc.username}" />
 		<property name="password" value="${maven.taw-scene-service.jdbc.password}" />
 
 		<!-- 连接池中保留的最小连接数，默认为：3 -->

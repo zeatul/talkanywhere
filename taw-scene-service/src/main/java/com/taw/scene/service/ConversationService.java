@@ -7,8 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.hawk.exception.BasicException;
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
@@ -35,7 +33,6 @@ import com.taw.scene.exception.SceneNotExistsException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneConversationProducer;
 import com.taw.scene.mapper.ConversationMapper;
-import com.taw.scene.mapper.ScenePicMapper;
 import com.taw.scene.mapperex.ConversationExMapper;
 
 
@@ -69,8 +66,7 @@ public class ConversationService {
 	 * 
 	 * @param sendConverstaionParam
 	 * @throws Exception
-	 */
-	@Transactional
+	 */	
 	public SendConverstaionResp send(SendConverstaionParam sendConverstaionParam) throws Exception {
 		CheckTools.check(sendConverstaionParam);
 		String message = sendConverstaionParam.getMessage();

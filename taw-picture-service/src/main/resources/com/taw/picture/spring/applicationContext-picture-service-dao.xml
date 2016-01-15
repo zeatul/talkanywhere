@@ -14,9 +14,6 @@
 	<!-- enable transaction demarcation with annotations -->
 	<tx:annotation-driven transaction-manager="transactionManager_picture_service"/>
 
-
-	
-
 	<bean id="dataSource_picture_service" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		
 		<property name="driverClass" value="${maven.taw-picture-service.jdbc.driverClassName}" />
@@ -59,7 +56,7 @@
 		<property name="idleConnectionTestPeriod" value="60" />
 		
 		<!--定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。注意：测试的表必须在初始数据源的时候就存在。Default: null -->
-		<property name="preferredTestQuery" value="select 1 from t_um_scene limit 0,1"/>
+		<property name="preferredTestQuery" value="select 1 from um.t_um_scene limit 0,1"/>
 
 
 		<!-- JDBC的标准参数，用以控制数据源内加载的PreparedStatement数量。但由于预缓存的Statement属 于单个Connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素，如果maxStatements与 maxStatementsPerConnection均为0，则缓存被关闭。默认为0； -->
@@ -93,34 +90,5 @@
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_picture_service"/>  
 	</bean>
 
-	<!-- =================================================================== -->
-	<!-- AOP: Configuration and Aspects -->
-	<!-- =================================================================== -->
-	<!--
-	<aop:config>
-		<aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* com.hante.weixin.*.service.*Manager.*(..))" order="0" />
-	</aop:config>
-
-	<tx:advice id="txAdvice">
-		<tx:attributes>
-			
-			
-			<tx:method name="get*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="query*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="load*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="exist*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="count*" read-only="true" propagation="SUPPORTS" />
-			<tx:method name="insert*" propagation="REQUIRED" />
-			<tx:method name="create*" propagation="REQUIRED" />
-			<tx:method name="update*" propagation="REQUIRED" />
-			<tx:method name="delete*" propagation="REQUIRED" />
-			<tx:method name="cancel*" propagation="REQUIRED" />
-			<tx:method name="regist*" propagation="REQUIRED" />
-			<tx:method name="modify*" propagation="REQUIRED" />
-			<tx:method name="remove*" propagation="REQUIRED" />
-			<tx:method name="*" />
-		</tx:attributes>
-	</tx:advice>
-	-->
-	<!-- Read-only commented out to make things easier for end-scenes -->
+	
 </beans>

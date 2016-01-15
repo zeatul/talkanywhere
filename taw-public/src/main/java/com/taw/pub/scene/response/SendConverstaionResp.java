@@ -1,10 +1,19 @@
 package com.taw.pub.scene.response;
 
+import java.util.Date;
 import java.util.List;
 
 public class SendConverstaionResp {
 	
 	
+
+	public Date getPostDate() {
+		return postDate;
+	}
+
+	public void setPostDate(Date postDate) {
+		this.postDate = postDate;
+	}
 
 	public List<PicDescResp> getPicList() {
 		return picList;
@@ -28,5 +37,8 @@ public class SendConverstaionResp {
 	private Long id;
 	
 	private List<PicDescResp> picList;
+	
+	/*发言时间*/
+	private Date postDate;
 
 }

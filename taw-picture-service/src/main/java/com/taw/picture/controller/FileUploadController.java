@@ -25,6 +25,7 @@ import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.check.CheckTools;
 import com.taw.picture.configure.PictureServiceConfigure;
+import com.taw.picture.exception.PictureNotFoundException;
 import com.taw.picture.service.PictureService;
 import com.taw.picture.service.PictureService.ComputeResult;
 import com.taw.pub.scene.request.UploadLengthParam;
@@ -84,7 +85,7 @@ public class FileUploadController {
 		String uuid = request.getParameter("uuid");
 		ComputeResult computeResult = pictureService.computeDir(uuid);
 		String dir = computeResult.getDir();
-		String suffix = computeResult.getSuffix();	
+//		String suffix = computeResult.getSuffix();	
 		/**
 		 * 上传的本地源文件名称
 		 */
@@ -118,6 +119,8 @@ public class FileUploadController {
 		if (offset > srcFileSize)
 			throw new RuntimeException("offset is wrong");
 		
+		logger.info("upload file, uuid={},srcFile={},srcFileSize={},byteArraySize={},offset={}",
+				uuid,srcFile,srcFileSize,byteArraySize,offset);
 		
 		InputStream in = request.getInputStream();
 		mkdir(dir);
@@ -125,8 +128,12 @@ public class FileUploadController {
 		File file = new File(filePath+".tmp");
 		
 		long maxSize = pictureServiceConfigure.getAllowFileSize();
-		if (srcFileSize > maxSize || file.length() >maxSize  )
+		if (srcFileSize > maxSize || file.length() >maxSize  ){
+			if (file.exists()){
+				file.delete();
+			}
 			throw new RuntimeException("The upload file size shouln't be over " + maxSize);
+		}
 		
 		FileOutputStream fos = null;
 		try{
@@ -142,6 +149,11 @@ public class FileUploadController {
 					fos.close();
 			} catch (Exception e) {
 				logger.error("failed to close file");
+			}
+			
+			if (file.exists() && file.length() > pictureServiceConfigure.getAllowFileSize()){
+				file.delete();
+				throw new RuntimeException("The upload file size shouln't be over " + maxSize);
 			}
 		}
 		
@@ -187,7 +199,9 @@ public class FileUploadController {
 		}else{
 			file = new File(filePath);
 			if (file.exists()){
-				size = file.length();
+				size = file.length();				
+			}else{
+				throw new PictureNotFoundException();
 			}
 		}
 		UploadLengthResponse uploadLengthResponse = new UploadLengthResponse();

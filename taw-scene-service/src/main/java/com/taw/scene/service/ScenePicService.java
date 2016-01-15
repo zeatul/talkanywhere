@@ -15,7 +15,7 @@ public class ScenePicService {
 	@Autowired
 	private ScenePicMapper scenePicMapper;
 	
-	@Transactional
+	
 	public void inserScenePic(Long mid, Long sceneId, String sceneName,EnumMessageType messageType,Long picId,String picUuid){
 		ScenePicDomain scenePicDomain = new ScenePicDomain();
 		scenePicDomain.setKind(messageType.toString());

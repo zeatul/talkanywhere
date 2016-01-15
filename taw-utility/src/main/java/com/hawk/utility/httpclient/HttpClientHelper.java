@@ -318,7 +318,7 @@ public class HttpClientHelper {
 
 	}
 	
-	public String post(String path ,byte[] b ,Map<String, String> params)throws Exception{
+	public String post(String path ,byte[] b ,Map<String, String> params,int off ,int length)throws Exception{
 		CloseableHttpResponse response = null;
 		try {
 			CloseableHttpClient httpClient = buileHttpClient();

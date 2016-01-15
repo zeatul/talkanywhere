@@ -9,10 +9,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.hawk.pub.pkgen.PkGenerator;
+import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
@@ -20,6 +20,7 @@ import com.taw.picture.configure.PictureServiceConfigure;
 import com.taw.picture.domain.PictureCommentDomain;
 import com.taw.picture.domain.PictureDomain;
 import com.taw.picture.domain.PictureThumbDomain;
+import com.taw.picture.exception.PictureNotFoundException;
 import com.taw.picture.exception.UploadFileNotFoundException;
 import com.taw.picture.mapper.PictureCommentMapper;
 import com.taw.picture.mapper.PictureMapper;
@@ -79,6 +80,14 @@ public class PictureService {
 		
 		long length = file.length();
 		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("uuid", insrtPictureParam.getUuid());
+		List<PictureDomain> list = pictureMapper.loadDynamic(params);
+		
+		if (CollectionTools.isNotNullOrEmpty(list)){
+			return list.get(0).getId();
+		}
+		
 		/**
 		 * 入库，返回主键
 		 */
@@ -108,6 +117,8 @@ public class PictureService {
 		pictureDomain.setPhotoTime(insrtPictureParam.getPhotoTime());
 		pictureDomain.setCrdt(DateTools.now());
 		pictureDomain.setId(PkGenerator.genPk());
+		
+		pictureMapper.insert(pictureDomain);
 		
 		/**
 		 * 删除.success的标识文件，标识文件已经入库
@@ -187,7 +198,7 @@ public class PictureService {
 	}
 	
 	
-	@Transactional
+	
 	public PictureInfoResp thumbPicture(ThumbPictureParam thumbPictureParam) throws Exception{
 		CheckTools.check(thumbPictureParam);
 		Map<String,Object> params = new HashMap<String,Object>();
@@ -196,11 +207,14 @@ public class PictureService {
 		
 		PictureDomain pictureDomain =  pictureMapper.load(thumbPictureParam.getPicId());
 		if (pictureDomain == null)
-			throw new Exception("Couldn't find the picture record which id = " + thumbPictureParam.getPicId());
+			throw new PictureNotFoundException();
 		
 		List<PictureThumbDomain> list = pictureThumbMapper.loadDynamic(params);
 		
-		PictureThumbDomain pictureThumbDomainPre = list.get(0);
+		PictureThumbDomain pictureThumbDomainPre =null;
+		if (CollectionTools.isNotNullOrEmpty(list)){
+			pictureThumbDomainPre = list.get(0);
+		}
 		int upOffset = 0;
 		int downOffset = 0;
 		if (pictureThumbDomainPre != null){
@@ -220,6 +234,7 @@ public class PictureService {
 		pictureThumbDomain.setUserId(thumbPictureParam.getUserId());
 		pictureThumbDomain.setNickname(thumbPictureParam.getNickname());
 		pictureThumbDomain.setCrdt(DateTools.now());
+		pictureThumbDomain.setId(PkGenerator.genPk());
 		
 		if (EnumThumbType.UP.toString().equals(thumbPictureParam.getThumbType())){
 			upOffset = upOffset +1;
@@ -246,7 +261,7 @@ public class PictureService {
 		
 	}
 	
-	@Transactional
+	
 	public AddCommentResp addComment(AddCommentParam addCommentParam)throws Exception{
 		CheckTools.check(addCommentParam);
 		PictureDomain pictureDomain =  pictureMapper.load(addCommentParam.getPicId());

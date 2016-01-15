@@ -22,15 +22,15 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		String path = contextPath + "/scene/conversation/send.do";
 		
 		SendConverstaionParam sendConverstaionParam = new SendConverstaionParam();
-		String message = "hello, come on 6";
+		String message = "hello, come on 6 with pictures";
 		List<String> pics = new ArrayList<String>();
-		pics.add("pic1url");
-		pics.add("pic2url");
+		pics.add("20160115141407c1a9d874ca894c958b3dafbccb3c4b54.jpg");
+		pics.add("2016011515353837b5b970c2f1450a931312e13f0d6b5a.jpg");
 		
 		sendConverstaionParam.setPics(pics);
 		sendConverstaionParam.setMessage(message); 
-		sendConverstaionParam.setPostUserFpdId(18l);
-		sendConverstaionParam.setPostNickname("80ad3379-2837-43d5-99f3-932876c6cea9");
+		sendConverstaionParam.setPostUserFpdId(27l);
+		sendConverstaionParam.setPostNickname("ab246f68-6617-493b-aab5-305e2e03aacb");
 		sendConverstaionParam.setSceneId(1l);
 		
 

@@ -4,14 +4,18 @@ import java.util.Collection;
 
 public class CollectionTools {
 	
-	public static  boolean isNullOrEmpty(Collection<?> collections){
-		if (collections == null)
+	public static  boolean isNullOrEmpty(Collection<?> collection){
+		if (collection == null)
 			return true;
 		
-		if (collections.size() == 0)
+		if (collection.size() == 0)
 			return true;
 		
 		return false;
+	}
+	
+	public static  boolean isNotNullOrEmpty(Collection<?> collection){
+		return ! isNullOrEmpty(collection);
 	}
 
 }

@@ -1,14 +1,8 @@
 package com.taw.scene.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
@@ -161,7 +155,7 @@ public class SceneService {
 	 * @return 标识用户处在场景的 唯一标识ID
 	 * @throws Exception
 	 */
-	@Transactional
+	
 	public EnterSceneResp enterScene(EnterSceneParam enterSceneParam) throws Exception{
 		
 		CheckTools.check(enterSceneParam);
@@ -245,7 +239,7 @@ public class SceneService {
 	 * @param leaveSceneParam
 	 * @throws Exception 
 	 */
-	@Transactional
+	
 	public void leaveScene(LeaveSceneParam leaveSceneParam) throws Exception{
 		CheckTools.check(leaveSceneParam);
 		Long userId = leaveSceneParam.getUserId();
