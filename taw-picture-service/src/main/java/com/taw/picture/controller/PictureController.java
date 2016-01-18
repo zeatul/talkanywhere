@@ -24,6 +24,7 @@ import com.taw.pub.picture.request.ThumbPictureParam;
 import com.taw.pub.picture.response.AddCommentResp;
 import com.taw.pub.picture.response.PictureCommentInfoResp;
 import com.taw.pub.picture.response.PictureInfoResp;
+import com.taw.pub.picture.response.RemoveCommentResp;
 import com.taw.user.auth.AuthThreadLocal;
 
 @Controller
@@ -59,8 +60,7 @@ public class PictureController {
 	 */
 	@RequestMapping(value = "/pic/info.do", method = RequestMethod.POST)
 	public void info(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		PictureInfoParam pictureInfoParam = HttpRequestHandler.handle(request, PictureInfoParam.class);
-		
+		PictureInfoParam pictureInfoParam = HttpRequestHandler.handle(request, PictureInfoParam.class);		
 		PictureInfoResp pictureInfoResp = pictureService.info(pictureInfoParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(pictureInfoResp));
 	}
@@ -91,6 +91,7 @@ public class PictureController {
 	@RequestMapping(value = "/pic/comment/add.do", method = RequestMethod.POST)
 	public void addComment(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		AddCommentParam addCommentParam = HttpRequestHandler.handle(request, AddCommentParam.class);
+		addCommentParam.setUserId(AuthThreadLocal.getUserId());
 		AddCommentResp addCommentResp =  pictureService.addComment(addCommentParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(addCommentResp));
 	}
@@ -106,8 +107,9 @@ public class PictureController {
 	@RequestMapping(value = "/pic/comment/remove.do", method = RequestMethod.POST)
 	public void removeComment(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		RemoveCommentParam removeCommentParam = HttpRequestHandler.handle(request, RemoveCommentParam.class);
-		pictureService.removeComment(removeCommentParam);
-		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+		removeCommentParam.setUserId(AuthThreadLocal.getUserId());
+		RemoveCommentResp removeCommentResp =  pictureService.removeComment(removeCommentParam);
+		HttpResponseHandler.handle(response, SuccessResponse.build(removeCommentResp));
 	}
 	
 	

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.hawk.pub.exception.ObjectNotFoundException;
+import com.hawk.pub.exception.UnauthorizedOperateException;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
@@ -38,6 +40,7 @@ import com.taw.pub.picture.request.ThumbPictureParam;
 import com.taw.pub.picture.response.AddCommentResp;
 import com.taw.pub.picture.response.PictureCommentInfoResp;
 import com.taw.pub.picture.response.PictureInfoResp;
+import com.taw.pub.picture.response.RemoveCommentResp;
 
 @Service
 public class PictureService {
@@ -106,7 +109,9 @@ public class PictureService {
 		pictureDomain.setUpCount(0);
 		pictureDomain.setReferenceCount(1);
 		pictureDomain.setSceneCount(1);
-		pictureDomain.setForwardCount(0);		
+		pictureDomain.setForwardCount(0);	
+		
+		pictureDomain.setAppSrc(insrtPictureParam.getAppSrc().toString());
 		
 		pictureDomain.setLSize(length);
 		
@@ -284,6 +289,8 @@ public class PictureService {
 		addCommentResp.setId(pictureCommentDomain.getId());
 		addCommentResp.setCrdt(pictureCommentDomain.getCrdt());
 		addCommentResp.setCommentCount(pictureDomain.getCommentCount());
+		addCommentResp.setUpCount(pictureDomain.getUpCount());
+		addCommentResp.setDownCount(pictureDomain.getDownCount());
 		
 		return addCommentResp;
 		
@@ -297,25 +304,39 @@ public class PictureService {
 		return pictureCommentInfoRespList;
 	}
 	
-	public void removeComment(RemoveCommentParam removeCommentParam)throws Exception{
+	public RemoveCommentResp removeComment(RemoveCommentParam removeCommentParam)throws Exception{
 		CheckTools.check(removeCommentParam);
 		PictureCommentDomain pictureCommentDomain = pictureCommentMapper.load(removeCommentParam.getCommentId());
 		if (pictureCommentDomain == null)
-			return;
+			throw new ObjectNotFoundException(PictureCommentDomain.class);
+		
 		if (!removeCommentParam.getUserId().equals(pictureCommentDomain.getUserId())){
-			throw new IllegalAccessException();
+			throw new UnauthorizedOperateException();
 		}
-		pictureCommentMapper.delete(pictureCommentDomain.getId());
+		
 		PictureDomain pictureDomain =  pictureMapper.load(pictureCommentDomain.getPicId());
-		if (pictureDomain != null){
-			pictureDomain.setCommentCount(pictureDomain.getCommentCount()-1);
+		if (pictureDomain == null)
+			throw new PictureNotFoundException();
+		
+		int deletedCount = pictureCommentMapper.delete(pictureCommentDomain.getId());
+		
+		if (deletedCount > 0){
+			pictureDomain.setCommentCount(pictureDomain.getCommentCount()-deletedCount);
 			pictureMapper.update(pictureDomain);
 		}
+		
+		RemoveCommentResp removeCommentResp = new RemoveCommentResp();
+		removeCommentResp.setCommentCount(pictureDomain.getCommentCount());
+		removeCommentResp.setDownCount(pictureDomain.getDownCount());
+		removeCommentResp.setUpCount(pictureDomain.getUpCount());
+		return removeCommentResp;
 	}
 
 	public PictureInfoResp info(PictureInfoParam pictureInfoParam)throws Exception{
 		CheckTools.check(pictureInfoParam);
 		PictureDomain pictureDomain = pictureMapper.load(pictureInfoParam.getPicId());
+		if (pictureDomain == null)
+			throw new PictureNotFoundException();
 		PictureInfoResp pictureInfoResp = new PictureInfoResp();
 		DomainTools.copy(pictureDomain, pictureInfoResp);
 		return pictureInfoResp;

@@ -2,7 +2,7 @@ package com.taw.pub.picture.response;
 
 import java.util.Date;
 
-public class AddCommentResp {
+public class RemoveCommentResp {
 	
 	public Integer getUpCount() {
 		return upCount;
@@ -28,25 +28,9 @@ public class AddCommentResp {
 		this.commentCount = commentCount;
 	}
 
-	public Date getCrdt() {
-		return crdt;
-	}
-
-	public void setCrdt(Date crdt) {
-		this.crdt = crdt;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	private Long id;
 	
-	private Date crdt;
+
+	
 	
 	/**
 	 * 赞数量

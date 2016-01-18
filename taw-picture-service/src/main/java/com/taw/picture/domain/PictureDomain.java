@@ -83,6 +83,15 @@ public class PictureDomain implements Serializable {
 	/*创建时间*/
 	private Date crdt;
 	
+	/**/
+	private String kind;
+	
+	/**/
+	private String suffix;
+	
+	/**/
+	private String appSrc;
+	
 	
 	/**
 	 * 
@@ -450,6 +459,54 @@ public class PictureDomain implements Serializable {
 	 */	
 	public void setCrdt (Date crdt) {
 		this.crdt = crdt;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public String getKind(){
+		return kind;
+	}
+	
+	/**
+	 * 
+	 * @param kind 
+	 */	
+	public void setKind (String kind) {
+		this.kind = kind;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public String getSuffix(){
+		return suffix;
+	}
+	
+	/**
+	 * 
+	 * @param suffix 
+	 */	
+	public void setSuffix (String suffix) {
+		this.suffix = suffix;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public String getAppSrc(){
+		return appSrc;
+	}
+	
+	/**
+	 * 
+	 * @param appSrc 
+	 */	
+	public void setAppSrc (String appSrc) {
+		this.appSrc = appSrc;
 	}
 	
 

@@ -3,8 +3,16 @@ package com.taw.pub.picture.request;
 import java.util.Date;
 
 import com.hawk.utility.check.CheckNull;
+import com.taw.pub.picture.enums.EnumAppSrc;
 
 public class InsrtPictureParam {
+	
+	public EnumAppSrc getAppSrc() {
+		return appSrc;
+	}
+	public void setAppSrc(EnumAppSrc appSrc) {
+		this.appSrc = appSrc;
+	}
 	public Date getPhotoTime() {
 		return photoTime;
 	}
@@ -82,5 +90,10 @@ public class InsrtPictureParam {
 	 * 拍摄时间
 	 */
 	private Date photoTime;
+	
+	/**
+	 * 
+	 */
+	private EnumAppSrc appSrc;
 
 }

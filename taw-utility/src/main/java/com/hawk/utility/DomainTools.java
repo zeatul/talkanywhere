@@ -74,7 +74,7 @@ public class DomainTools {
 				target = clazz.newInstance();
 				copy(source,target);				
 				targets.add(target);
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 			

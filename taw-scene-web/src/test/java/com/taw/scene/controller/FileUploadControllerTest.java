@@ -11,7 +11,6 @@ import org.junit.Test;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.JsonTools;
 import com.taw.pub.scene.request.UploadLengthParam;
-import com.taw.pub.scene.response.UploadLengthResponse;
 
 public class FileUploadControllerTest extends AbstractControllerTest {
 

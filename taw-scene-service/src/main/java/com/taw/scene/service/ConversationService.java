@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.hawk.exception.BasicException;
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
@@ -16,6 +17,7 @@ import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.picture.service.PictureService;
+import com.taw.pub.picture.enums.EnumAppSrc;
 import com.taw.pub.picture.request.InsrtPictureParam;
 import com.taw.pub.scene.enums.EnumMessageType;
 import com.taw.pub.scene.request.DeleteConversationParam;
@@ -174,6 +176,7 @@ public class ConversationService {
 				insrtPictureParam.setNickname(sendConverstaionParam.getPostNickname());
 				insrtPictureParam.setSceneId(sceneId);
 				insrtPictureParam.setSceneName(sceneName);
+				insrtPictureParam.setAppSrc(EnumAppSrc.CONVERSATION);
 				/**
 				 * 图片id ，插入图片管理表
 				 */

@@ -27,7 +27,10 @@
 		s_size as "sSize" ,
 		m_size as "mSize" ,
 		l_size as "lSize" ,
-		crdt as "crdt" 
+		crdt as "crdt" ,
+		kind as "kind" ,
+		suffix as "suffix" ,
+		app_src as "appSrc" 
 	</sql>
 	
 	<sql id="where">
@@ -55,6 +58,9 @@
 			<if test="mSize != null"> AND m_size = #{mSize}  </if>
 			<if test="lSize != null"> AND l_size = #{lSize}  </if>
 			<if test="crdt != null"> AND crdt = #{crdt}  </if>
+			<if test="kind != null"> AND kind = #{kind}  </if>
+			<if test="suffix != null"> AND suffix = #{suffix}  </if>
+			<if test="appSrc != null"> AND app_src = #{appSrc}  </if>
 		</trim>	
 	</sql>
 	
@@ -83,6 +89,9 @@
 			AND m_size = #{old_mSize}
 			AND l_size = #{old_lSize}
 			AND crdt = #{old_crdt}
+			AND kind = #{old_kind}
+			AND suffix = #{old_suffix}
+			AND app_src = #{old_appSrc}
 		</trim>
 	</sql>
 	
@@ -110,6 +119,9 @@
 			m_size = #{mSize},
 			l_size = #{lSize},
 			crdt = #{crdt},
+			kind = #{kind},
+			suffix = #{suffix},
+			app_src = #{appSrc},
 		</set>
 	</sql>
 	
@@ -137,6 +149,9 @@
 				<if test="mSize != null">m_size = #{mSize},</if>
 				<if test="lSize != null">l_size = #{lSize},</if>
 				<if test="crdt != null">crdt = #{crdt},</if>
+				<if test="kind != null">kind = #{kind},</if>
+				<if test="suffix != null">suffix = #{suffix},</if>
+				<if test="appSrc != null">app_src = #{appSrc},</if>
 		</set>
 	</sql>
 	
@@ -193,7 +208,10 @@
 				s_size,				
 				m_size,				
 				l_size,				
-				crdt				
+				crdt,				
+				kind,				
+				suffix,				
+				app_src				
 		)		
 		VALUES (	
 			#{id},
@@ -218,7 +236,10 @@
 			#{sSize},
 			#{mSize},
 			#{lSize},
-			#{crdt}
+			#{crdt},
+			#{kind},
+			#{suffix},
+			#{appSrc}
 		) 
 	</insert>
 	

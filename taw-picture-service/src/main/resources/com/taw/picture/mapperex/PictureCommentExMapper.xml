@@ -8,7 +8,7 @@
 		SELECT 
 		<include refid="com.taw.picture.mapper.PictureCommentMapper.columns" />
 		FROM t_pm_picture_comment
-		WHERE pic_id = #{picId} ORDER BY crdt desc LIMIT #{_offset},#{_limit}		
+		WHERE pic_id = #{picId} ORDER BY crdt desc LIMIT #{offset},#{limit}		
 	</select>
 	
 	
