@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.taw.picture.mapper.PictureMapper;
 import com.taw.picture.service.PictureService;
 import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.PictureInfoParam;
@@ -32,6 +33,8 @@ public class PictureController {
 	
 	@Autowired
 	private PictureService pictureService;
+	
+	
 	
 	/**
 	 * 点赞

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -94,42 +95,53 @@ public class PictureService {
 		/**
 		 * 入库，返回主键
 		 */
-		PictureDomain pictureDomain = new PictureDomain();
-		
-		pictureDomain.setUuid(uuid);
-		
-		pictureDomain.setSceneId(insrtPictureParam.getSceneId());
-		pictureDomain.setSceneName(insrtPictureParam.getSceneName());
-		
-		pictureDomain.setUserId(insrtPictureParam.getUserId());
-		pictureDomain.setNickname(insrtPictureParam.getNickname());
-		
-		pictureDomain.setCommentCount(0);		
-		pictureDomain.setDownCount(0);
-		pictureDomain.setUpCount(0);
-		pictureDomain.setReferenceCount(1);
-		pictureDomain.setSceneCount(1);
-		pictureDomain.setForwardCount(0);	
-		
-		pictureDomain.setAppSrc(insrtPictureParam.getAppSrc().toString());
-		
-		pictureDomain.setLSize(length);
-		
-		pictureDomain.setStatus(EnumPictureStatus.NORMAL.toString());
-		pictureDomain.setHot(EnumPictureHotLevel.NORMAL.getValue());
-		
-		pictureDomain.setLocation(insrtPictureParam.getLocation());
-		pictureDomain.setPhotoTime(insrtPictureParam.getPhotoTime());
-		pictureDomain.setCrdt(DateTools.now());
-		pictureDomain.setId(PkGenerator.genPk());
-		
-		pictureMapper.insert(pictureDomain);
+		PictureDomain pictureDomain = null;
+		try {
+			pictureDomain = new PictureDomain();
+			
+			pictureDomain.setUuid(uuid);
+			
+			pictureDomain.setSceneId(insrtPictureParam.getSceneId());
+			pictureDomain.setSceneName(insrtPictureParam.getSceneName());
+			
+			pictureDomain.setUserId(insrtPictureParam.getUserId());
+			pictureDomain.setNickname(insrtPictureParam.getNickname());
+			
+			pictureDomain.setCommentCount(0);		
+			pictureDomain.setDownCount(0);
+			pictureDomain.setUpCount(0);
+			pictureDomain.setReferenceCount(1);
+			pictureDomain.setSceneCount(1);
+			pictureDomain.setForwardCount(0);	
+			
+			pictureDomain.setAppSrc(insrtPictureParam.getAppSrc().toString());
+			
+			pictureDomain.setLSize(length);
+			
+			pictureDomain.setStatus(EnumPictureStatus.NORMAL.toString());
+			pictureDomain.setHot(EnumPictureHotLevel.NORMAL.getValue());
+			
+			pictureDomain.setLocation(insrtPictureParam.getLocation());
+			pictureDomain.setPhotoTime(insrtPictureParam.getPhotoTime());
+			pictureDomain.setCrdt(DateTools.now());
+			pictureDomain.setId(PkGenerator.genPk());
+			
+			pictureMapper.insert(pictureDomain);
+		} catch (DuplicateKeyException e) {
+			
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("uuid", uuid);
+			pictureDomain = pictureMapper.loadDynamic(map).get(0);
+		}
 		
 		/**
 		 * 删除.success的标识文件，标识文件已经入库
 		 */
 		
-		new File(filePath+".success").delete();
+		file = new File(filePath+".success");
+		if (file.exists()){		
+			file.delete();
+		}
 		
 		return pictureDomain.getId();
 		
