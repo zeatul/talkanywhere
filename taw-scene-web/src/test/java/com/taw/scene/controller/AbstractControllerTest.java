@@ -20,18 +20,36 @@ public abstract class AbstractControllerTest {
 		context = new ClassPathXmlApplicationContext(configPath);
 	}
 	
+	private boolean TEST = true;
 
 	
 	protected HttpClientHelper httpClientHelper;
-	protected String contextPath = "/taw-scene-web"; //开发环境
 	
-//	protected String contextPath = "/taw";  //测试环境
+	protected String contextPath = null; 
+	
+	private String token = null;
 	
 	public AbstractControllerTest() throws Exception{
+		
 		httpClientHelper = new HttpClientHelper();
-		httpClientHelper.setHostname("localhost");	//开发环境
-//		httpClientHelper.setHostname("211.157.19.70");	//测试环境
-		httpClientHelper.setPort(8080);
+		
+		if (TEST){
+			contextPath = "/taw";  //测试环境
+			httpClientHelper.setHostname("211.157.19.83");	//测试环境
+			token = "febf20697fbb4b94bca60e0796388c0c"; //测试环境
+			httpClientHelper.setPort(9080);//测试环境
+		}else{
+			contextPath = "/taw-scene-web"; //开发环境
+			httpClientHelper.setHostname("localhost");	//开发环境
+			httpClientHelper.setPort(8080);//开发环境
+			token = "7c9006da62634727a8686b05631a0387";  //sender
+//			token = "a8576d6e804d4916a753e03d8a68b2c0";  //receiver
+		}
+		
+		
+//		
+		
+		
 		httpClientHelper.setScheme("http");
 	}
 	
@@ -45,8 +63,7 @@ public abstract class AbstractControllerTest {
 	
 	protected Map<String,String> genAuthMap(){
 		TokenSecurityHelper tokenSecurityHelper = context.getBean(TokenSecurityHelper.class);
-		String token = "7c9006da62634727a8686b05631a0387";  //sender
-//		String token = "a8576d6e804d4916a753e03d8a68b2c0";  //receiver
+		
 		String imei = "imei001";
 		String t = tokenSecurityHelper.generate(token, DateTools.now().getTime(), imei);
 		Map<String,String> map = new HashMap<String, String>();
