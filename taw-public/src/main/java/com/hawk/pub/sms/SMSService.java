@@ -199,7 +199,8 @@ public class SMSService {
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("mobile", mobile);
 		params.put("tpl_id", "9493");
-		params.put("tpl_value", URLEncoder.encode("#code#=" + authCode, "utf-8"));
+		params.put("tpl_value", URLEncoder.encode("#code#=" , "utf-8") +authCode);
+		params.put("tpl_value", "#code#="+authCode);
 		params.put("key", "df69b06e12f3daefbe6e0cca4177e295");
 		String result = smsHttpClientHelper.get("/sms/send", params);
 		logger.info(result);
