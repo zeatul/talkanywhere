@@ -170,6 +170,10 @@ public class ConversationService {
 			conversationDomain.setPicCount(pics.size());
 			picDescRespList = new ArrayList<PicDescResp>(pics.size());
 			for (String uuid : pics){
+				
+				if (StringTools.isNullOrEmpty(uuid))
+					continue;
+				
 				InsrtPictureParam insrtPictureParam = new InsrtPictureParam();
 				insrtPictureParam.setUuid(uuid);
 				insrtPictureParam.setUserId(postUserId);
