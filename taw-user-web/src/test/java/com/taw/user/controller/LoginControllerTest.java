@@ -16,7 +16,7 @@ public class LoginControllerTest extends AbstractControllerTest {
 		// TODO Auto-generated constructor stub
 	}
 
-	// @Test
+	 @Test
 	public void testLogin() throws Exception {
 		/**
 		 * taw-user-web/user/login.do
@@ -28,9 +28,9 @@ public class LoginControllerTest extends AbstractControllerTest {
 		param.setDeviceKind(EnumDeviceKind.ANDROID.toString());
 		param.setImei("hwll");
 		param.setIp("127.0.0.1");
-		param.setMobile("13811998762");
+		param.setMobile("13311658157");
 		param.setOsVersion("1111.11");
-		param.setPassword("123456111");
+		param.setPassword("newpwd");
 		param.setKind(EnumLoginKind.PERMANENT.toString());
 
 		String content = JsonTools.toJsonString(param);
@@ -42,7 +42,7 @@ public class LoginControllerTest extends AbstractControllerTest {
 		printResult(result);
 	}
 
-	@Test
+//	@Test
 	public void testLogout() throws Exception {
 		String path = contextPath + "/user/logout.do";
 		

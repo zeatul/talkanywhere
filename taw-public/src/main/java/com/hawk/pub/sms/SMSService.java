@@ -33,6 +33,9 @@ public class SMSService {
 	@Qualifier("smsHttpClientHelper")
 	private HttpClientHelper smsHttpClientHelper;
 	
+	@Autowired
+	private SMSConfigure smsConfigure;
+	
 	public void SendMessage(SendMessageParam param) throws Exception{
 		
 		CheckTools.check(param);
@@ -195,28 +198,37 @@ public class SMSService {
 	}
 	
 	private SendMessageResponse send(String authCode,String mobile) throws Exception{
-		//发送短信
-		Map<String,String> params = new HashMap<String,String>();
-		params.put("mobile", mobile);
-		params.put("tpl_id", "9493");
-		params.put("tpl_value", URLEncoder.encode("#code#=" , "utf-8") +authCode);
-		params.put("tpl_value", "#code#="+authCode);
-		params.put("key", "df69b06e12f3daefbe6e0cca4177e295");
-		String result = smsHttpClientHelper.get("/sms/send", params);
-		logger.info(result);
-		Map<?,?> m =  JsonTools.toObject(result, HashMap.class);
 		
-		SendMessageResponse sendMessageResponse = new SendMessageResponse();
-		
-		String err_code = m.get("error_code").toString();
-		sendMessageResponse.setErrCode(err_code);
-		sendMessageResponse.setErrMsg((String)m.get("reason"));
-		if (err_code.equals("0")){
+		if (smsConfigure.isSendSms()){
+			//发送短信
+			Map<String,String> params = new HashMap<String,String>();
+			params.put("mobile", mobile);
+			params.put("tpl_id", "9493");
+			params.put("tpl_value", URLEncoder.encode("#code#=" , "utf-8") +authCode);
+			params.put("tpl_value", "#code#="+authCode);
+			params.put("key", "df69b06e12f3daefbe6e0cca4177e295");
+			String result = smsHttpClientHelper.get("/sms/send", params);
+			logger.info(result);
+			Map<?,?> m =  JsonTools.toObject(result, HashMap.class);
+			
+			SendMessageResponse sendMessageResponse = new SendMessageResponse();
+			
+			String err_code = m.get("error_code").toString();
+			sendMessageResponse.setErrCode(err_code);
+			sendMessageResponse.setErrMsg((String)m.get("reason"));
+			if (err_code.equals("0")){
+				sendMessageResponse.setSuccess(true);
+				Map<?,?> r = (Map<?,?>)m.get("result");
+				sendMessageResponse.setSid(r.get("sid").toString());
+			}
+			return sendMessageResponse;
+		}else{
+			SendMessageResponse sendMessageResponse = new SendMessageResponse();
 			sendMessageResponse.setSuccess(true);
-			Map<?,?> r = (Map<?,?>)m.get("result");
-			sendMessageResponse.setSid(r.get("sid").toString());
+			return sendMessageResponse; 
 		}
-		return sendMessageResponse;
+		
+		
 		
 	}
 	

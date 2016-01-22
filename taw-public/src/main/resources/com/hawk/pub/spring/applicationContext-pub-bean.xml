@@ -14,5 +14,9 @@
 		<property name="port" value="80"/>
 		<property name="scheme" value="http"></property>
 	</bean>
+	
+	<bean id="SMSConfigure" class="com.hawk.pub.sms.SMSConfigure">
+		<property name="sendSms" value="${maven.taw-user-service.sendSms}"/>
+	</bean>
 
 </beans>

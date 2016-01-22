@@ -4,6 +4,8 @@ import com.hawk.utility.security.DESTools;
 
 public class UserServiceConfigure {
 	
+	
+
 	public String getTokenKey() {
 		return tokenKey;
 	}
@@ -49,5 +51,7 @@ public class UserServiceConfigure {
 	 * 是否为生成环境，默认为false
 	 */
 	private boolean prod=false;
+	
+	
 
 }

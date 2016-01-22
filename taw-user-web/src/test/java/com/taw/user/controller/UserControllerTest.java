@@ -18,7 +18,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Test
+//	@Test
 	public void testCreateUser() throws Exception {
 		/**
 		 * taw-user-web/user/create.do
@@ -54,7 +54,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		printResult(result);
 	}
 	
-//	@Test
+	@Test
 	public void testRestPassowrd() throws Exception{
 		String path = contextPath + "/user/reset.do";
 		
@@ -63,8 +63,14 @@ public class UserControllerTest extends AbstractControllerTest {
 		resetPasswordParam.setNewPwd("newpwd");
 		
 		RestPasswordRequestParam param = new RestPasswordRequestParam();
-		param.setAuthCode("123456");
+		
 		param.setParam(resetPasswordParam);
+		
+		SMSControllerTest smsControllerTest = new SMSControllerTest();
+		smsControllerTest.testAuthCode(resetPasswordParam.getMobile());
+		String authCode = smsControllerTest.queryAuthCode(resetPasswordParam.getMobile());
+		
+		param.setAuthCode(authCode);
 		
 		String content = JsonTools.toJsonString(param);
 		
