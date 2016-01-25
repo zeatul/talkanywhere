@@ -1,16 +1,21 @@
 package com.taw.scene.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.com.MapPoint;
 import com.taw.pub.scene.enums.EnumLeaveType;
+import com.taw.pub.scene.request.ChangeOnlineCountParam;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
+import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
@@ -29,6 +34,7 @@ import com.taw.scene.mapper.FootPrintMapper;
 import com.taw.scene.mapper.SceneMapper;
 import com.taw.scene.mapperex.FootPrintDetailExMapper;
 import com.taw.scene.mapperex.SceneExMapper;
+import com.taw.scene.service.SceneCacheHelper.SceneStatCount;
 
 @Service
 public class SceneService {
@@ -59,6 +65,8 @@ public class SceneService {
 	
 	@Autowired
 	private FootPrintDetailExMapper footPrintDetailExMapper;
+	
+	
 	
 	private java.math.BigDecimal min(java.math.BigDecimal p1,java.math.BigDecimal p2 ){
 		if (p1.compareTo(p2)==-1)
@@ -105,6 +113,25 @@ public class SceneService {
 		
 		
 	}
+	
+	public List<SceneResp> query(QuerySceneByNameParam querySceneByNameParam) throws Exception{
+		List<SceneDomain> sceneDomanList = sceneExMapper.querySceneByName("%"+querySceneByNameParam.getName()+"%");
+		
+		List<SceneResp> sceneRespsList = new ArrayList<SceneResp>(1);
+		
+		if (sceneDomanList == null)
+			return sceneRespsList;
+		
+		for (SceneDomain sceneDomain : sceneDomanList){
+			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
+			querySingleSceneParam.setSceneId(sceneDomain.getId());
+			SceneResp sceneResp = querySingleScene(querySingleSceneParam);
+			if (sceneResp!=null)
+				sceneRespsList.add(sceneResp);
+		}
+		
+		return sceneRespsList;
+	}
 
 	
 
@@ -115,18 +142,17 @@ public class SceneService {
 		if (sceneId == null)
 			return null;
 		
+		SceneDomain sceneDomain = null;
+		
 		if (cached){
-			/**
-			 * TODO:读取缓存
-			 */
+			sceneDomain = SceneCacheHelper.getCachedSceneDomain(sceneId);
 		}
 		
-		SceneDomain sceneDomain = sceneMapper.load(sceneId);
+		if (sceneDomain == null)
+			sceneDomain = sceneMapper.load(sceneId);
 		
 		if (cached && sceneDomain != null){
-			/**
-			 * TODO:加入缓存
-			 */
+			SceneCacheHelper.cacheSceneDomain(sceneDomain);
 		}
 		
 		return sceneDomain;
@@ -134,18 +160,38 @@ public class SceneService {
 	
 	public SceneResp querySingleScene(QuerySingleSceneParam param) throws Exception{
 		CheckTools.check(param);
-		SceneDomain sceneDomain =  loadSceneDomain(param.getSceneId(),true);
+		
+		Long sceneId = param.getSceneId();
+		
+		SceneDomain sceneDomain =  loadSceneDomain(sceneId,true);
 		if (sceneDomain == null)
 			return null;
+		
+		SceneStatCount sceneStatCount = SceneCacheHelper.getCachedSceneStatCount(sceneId);
 		
 		SceneResp sceneResp = new SceneResp();
 		
 		DomainTools.copy(sceneDomain, sceneResp);
 		
-		sceneResp.setEnterCount(0);
-		sceneResp.setOnlineCount(0);
+		if (sceneStatCount == null){
+			sceneStatCount = new SceneStatCount();
+			sceneStatCount.setEnterCount(sceneExMapper.queryEnterCount(sceneId));
+			sceneStatCount.setOnlineCount(0);
+			SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
+		}
+		
+		sceneResp.setEnterCount(sceneStatCount.getEnterCount());
+		sceneResp.setOnlineCount(sceneStatCount.getOnlineCount());
 		
 		return sceneResp;
+	}
+	
+	private void changeEnterCount(Long sceneId,int step) throws Exception{
+		SceneStatCount sceneStatCount = querySceneStatCount(sceneId);
+		if (sceneStatCount != null){
+			sceneStatCount.setEnterCount(sceneStatCount.getEnterCount()+step);
+			SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
+		}
 	}
 	
 	
@@ -190,8 +236,9 @@ public class SceneService {
 			footPrintDetailMapper.insert(footPrintDetailDomain);
 			
 			/**
-			 * TODO: 加入缓存
+			 * 更新场景EnterCount
 			 */
+			changeEnterCount(sceneId,1);
 			
 			/**
 			 * 记录用户进入场景历史表
@@ -215,9 +262,7 @@ public class SceneService {
 			}
 		}		
 		
-		/**
-		 * TODO:更新场景在线人数
-		 */
+		
 		
 		/**
 		 * 通知netty
@@ -277,12 +322,9 @@ public class SceneService {
 		footPrintMapper.update(footPrintDomain);
 		
 		/**
-		 * 修改场景在线人数
+		 * 更新场景EnterCount
 		 */
-		
-		/**
-		 * 异步清除足迹明细缓存
-		 */
+		changeEnterCount(sceneId,-1);
 		
 		/**
 		 * 通知netty
@@ -305,4 +347,53 @@ public class SceneService {
 		return footPrintDetailExMapper.queryUnLeavedSceneId(token);
 	}
 	
+	
+	/**
+	 * 根据前台通知，修改在场人数
+	 * @param changeOnlineCountParam
+	 * @throws Exception
+	 */
+	public void ChangeOnlineCount(ChangeOnlineCountParam changeOnlineCountParam) throws Exception{
+		if (changeOnlineCountParam == null)
+			return ;
+		
+		changeOnlineCount(changeOnlineCountParam.getInList(),1);
+		
+		changeOnlineCount(changeOnlineCountParam.getOutList(),-1);
+		
+	}
+	
+	private SceneStatCount querySceneStatCount(Long sceneId) throws Exception{
+		SceneStatCount  sceneStatCount = SceneCacheHelper.getCachedSceneStatCount(sceneId);
+		if (sceneStatCount == null){
+			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
+			querySingleSceneParam.setSceneId(sceneId);
+			SceneResp sceneResp = querySingleScene(querySingleSceneParam);	
+			if (sceneResp==null)
+				return null;
+			
+			sceneStatCount = new SceneStatCount();
+			sceneStatCount.setEnterCount(sceneResp.getEnterCount());
+			sceneStatCount.setOnlineCount(sceneResp.getOnlineCount());
+			
+		}
+		
+		return sceneStatCount;
+	}
+	
+	private void changeOnlineCount(List<Long> scendIdList,int step) throws Exception{
+
+		if (scendIdList != null){
+			for (Long sceneId : scendIdList){
+				 
+				SceneStatCount sceneStatCount = querySceneStatCount(sceneId);
+				
+				if (sceneStatCount != null){
+					sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount()+step);
+					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
+				}
+				
+			}
+		}
+	}
 }

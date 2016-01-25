@@ -14,4 +14,20 @@
 		  AND center_lat &gt;= #{minLat}		
 	</select>
 	
+	<select id="queryEnterCount"  resultType="Integer">
+		SELECT COUNT(1) as "enterCount"		
+		FROM t_tm_foot_print_detail
+		WHERE scene_id = #{sceneId} 
+		  AND out_time is null	
+	</select>
+	
+	<select id="querySceneByName"  resultType="SceneDomain">
+		SELECT 
+		<include refid="com.taw.scene.mapper.SceneMapper.columns" />
+		FROM t_tm_scene
+		WHERE name like #{name} 	
+	</select>
+	
+	
+	
 </mapper>

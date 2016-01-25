@@ -1,8 +1,6 @@
 package com.taw.scene.mapperex;
 
 import java.util.List;
-import java.util.Map;
-
 import com.taw.scene.domain.SceneDomain;
 
 import org.apache.ibatis.annotations.Param;
@@ -25,4 +23,18 @@ public interface SceneExMapper {
 	public List<SceneDomain> querySceneInRegion(@Param("minLng") java.math.BigDecimal minLng, @Param("maxLng") java.math.BigDecimal maxLng,
 			@Param("minLat") java.math.BigDecimal minLat, @Param("maxLat") java.math.BigDecimal maxLat);
 
+
+	/**
+	 * 查询在场人数
+	 * @param sceneId
+	 * @return
+	 */
+	public Integer queryEnterCount(@Param("sceneId") Long sceneId);
+	
+	/**
+	 * 根据名称查询场景
+	 * @param name
+	 * @return
+	 */
+	public List<SceneDomain> querySceneByName(@Param("name") String name);
 }

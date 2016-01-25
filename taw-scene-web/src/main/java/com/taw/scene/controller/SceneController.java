@@ -18,8 +18,10 @@ import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.DomainTools;
+import com.taw.pub.scene.request.ChangeOnlineCountParam;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
+import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
@@ -56,7 +58,7 @@ public class SceneController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/scene/search.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/scene/region/search.do", method = RequestMethod.POST)
 	public void search(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		QuerySceneInRegionParam querySceneInRegionParam = HttpRequestHandler.handle(request, QuerySceneInRegionParam.class);
 		
@@ -65,6 +67,25 @@ public class SceneController {
 		List<SceneDomain> sources = sceneService.query(querySceneInRegionParam);
 		
 		DomainTools.copy(sources, sceneRespList, SceneResp.class);
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneRespList));
+	}
+	
+	/**
+	 * 查询指定区域范围内的场景
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/scene/name/search.do", method = RequestMethod.POST)
+	public void searchByName(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		QuerySceneByNameParam querySceneByNameParam = HttpRequestHandler.handle(request, QuerySceneByNameParam.class);
+		
+		
+		List<SceneResp> sceneRespList = sceneService.query(querySceneByNameParam);
 		
 		HttpResponseHandler.handle(response, SuccessResponse.build(sceneRespList));
 	}
@@ -118,6 +139,21 @@ public class SceneController {
 		leaveSceneParam.setUserId(AuthThreadLocal.getUserId());
 		leaveSceneParam.setToken(AuthThreadLocal.getToken());
 		sceneService.leaveScene(leaveSceneParam);
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	/**
+	 * 修改现场人数
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/scene/online/change.do", method = RequestMethod.POST)
+	public void changeOnlineCount(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
+		sceneService.ChangeOnlineCount(changeOnlineCountParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 	
