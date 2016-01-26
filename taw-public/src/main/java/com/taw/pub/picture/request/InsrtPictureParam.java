@@ -7,6 +7,12 @@ import com.taw.pub.picture.enums.EnumAppSrc;
 
 public class InsrtPictureParam {
 	
+	public Short getOnScene() {
+		return onScene;
+	}
+	public void setOnScene(Short onScene) {
+		this.onScene = onScene;
+	}
 	public EnumAppSrc getAppSrc() {
 		return appSrc;
 	}
@@ -95,5 +101,11 @@ public class InsrtPictureParam {
 	 * 
 	 */
 	private EnumAppSrc appSrc;
+	
+	/**
+	 * 在场
+	 */
+	@CheckNull
+	private Short onScene;
 
 }

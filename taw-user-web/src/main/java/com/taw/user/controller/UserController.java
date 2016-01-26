@@ -76,6 +76,7 @@ public class UserController {
 		//返回信息
 		UserResp userResp = new UserResp();
 		userResp.setSex(userDomain.getSex());
+		userResp.setUserId(userDomain.getId());
 		HttpResponseHandler.handle(response, SuccessResponse.build(userResp));
 	}
 

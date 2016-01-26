@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.hawk.pub.enums.EnumBoolean;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
@@ -28,6 +29,7 @@ import com.taw.pub.scene.response.PicDescResp;
 import com.taw.pub.scene.response.SendConverstaionResp;
 import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.service.ConversationService;
+import com.taw.scene.service.SceneCacheHelper;
 import com.taw.user.auth.AuthThreadLocal;
 
 
@@ -79,6 +81,8 @@ public class ConversationController {
 			if (StringTools.isNotNullOrEmpty(conversationDomain.getPics())){
 				conversationResp.setPicList(JsonTools.toArrayList(conversationDomain.getPics(),PicDescResp.class));
 			}
+			boolean onScene = SceneCacheHelper.getCachedOnlineScenes(conversationDomain.getPostUserId()).contains(conversationDomain.getSceneId());
+			conversationResp.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
 			result.add(conversationResp);
 		}
 		HttpResponseHandler.handle(response, SuccessResponse.build(result));

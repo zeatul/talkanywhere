@@ -8,6 +8,15 @@ public class ConversationResp {
 
 	
 
+
+	public Short getOnScene() {
+		return onScene;
+	}
+
+	public void setOnScene(Short onScene) {
+		this.onScene = onScene;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -243,5 +252,11 @@ public class ConversationResp {
 	public void setPostDate (Date postDate) {
 		this.postDate = postDate;
 	}
+	
+	
+	/**
+	 * 发言用户是否正在发言场景
+	 */
+	private Short onScene;
 	
 }

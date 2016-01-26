@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hawk.exception.BasicException;
+import com.hawk.pub.enums.EnumBoolean;
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
@@ -169,6 +170,9 @@ public class ConversationService {
 		if (pics != null){
 			conversationDomain.setPicCount(pics.size());
 			picDescRespList = new ArrayList<PicDescResp>(pics.size());
+			
+			boolean onScene = SceneCacheHelper.getCachedOnlineScenes(conversationDomain.getPostUserId()).contains(conversationDomain.getSceneId());
+			
 			for (String uuid : pics){
 				
 				if (StringTools.isNullOrEmpty(uuid))
@@ -181,6 +185,8 @@ public class ConversationService {
 				insrtPictureParam.setSceneId(sceneId);
 				insrtPictureParam.setSceneName(sceneName);
 				insrtPictureParam.setAppSrc(EnumAppSrc.CONVERSATION);
+				insrtPictureParam.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
+				
 				/**
 				 * 图片id ，插入图片管理表
 				 */

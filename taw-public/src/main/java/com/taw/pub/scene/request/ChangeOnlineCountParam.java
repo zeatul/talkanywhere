@@ -4,6 +4,15 @@ import java.util.List;
 
 public class ChangeOnlineCountParam {
 	
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public List<Long> getInList() {
 		return inList;
 	}
@@ -29,5 +38,7 @@ public class ChangeOnlineCountParam {
 	 * 离开场景
 	 */
 	private List<Long> outList;
+	
+	private Long userId;
 
 }

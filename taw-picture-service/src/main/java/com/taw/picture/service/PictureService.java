@@ -123,6 +123,9 @@ public class PictureService {
 			
 			pictureDomain.setLocation(insrtPictureParam.getLocation());
 			pictureDomain.setPhotoTime(insrtPictureParam.getPhotoTime());
+			
+			pictureDomain.setOnScene(insrtPictureParam.getOnScene());
+			
 			pictureDomain.setCrdt(DateTools.now());
 			pictureDomain.setId(PkGenerator.genPk());
 			
@@ -132,6 +135,8 @@ public class PictureService {
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("uuid", uuid);
 			pictureDomain = pictureMapper.loadDynamic(map).get(0);
+			pictureDomain.setForwardCount(pictureDomain.getForwardCount()+1);
+			pictureMapper.update(pictureDomain);
 		}
 		
 		/**

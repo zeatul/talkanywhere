@@ -136,7 +136,8 @@ public class RedisClient {
 	 * @param key
 	 * @param async
 	 */
-	public void delete(String key, boolean async) {
+	public void delete(String key) {
+		boolean async = false;
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();

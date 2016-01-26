@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.codehaus.jackson.JsonParseException;
@@ -61,6 +62,15 @@ public class JsonTools {
 	
 	public static <T> ArrayList<T> toArrayList(String jsonStr ,Class<T> clazz){
 		JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, clazz);
+		try {
+			return objectMapper.readValue(jsonStr, javaType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static <T> HashSet<T> toHashSet(String jsonStr , Class<T> clazz){
+		JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(HashSet.class, clazz);
 		try {
 			return objectMapper.readValue(jsonStr, javaType);
 		} catch (Exception e) {

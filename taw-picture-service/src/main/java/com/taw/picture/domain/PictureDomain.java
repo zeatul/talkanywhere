@@ -92,6 +92,9 @@ public class PictureDomain implements Serializable {
 	/**/
 	private String appSrc;
 	
+	/**/
+	private Short onScene;
+	
 	
 	/**
 	 * 
@@ -507,6 +510,22 @@ public class PictureDomain implements Serializable {
 	 */	
 	public void setAppSrc (String appSrc) {
 		this.appSrc = appSrc;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public Short getOnScene(){
+		return onScene;
+	}
+	
+	/**
+	 * 
+	 * @param onScene 
+	 */	
+	public void setOnScene (Short onScene) {
+		this.onScene = onScene;
 	}
 	
 

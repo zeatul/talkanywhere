@@ -5,6 +5,14 @@ import java.util.List;
 
 public class MessageResp {
 	
+	public Short getOnScene() {
+		return onScene;
+	}
+
+	public void setOnScene(Short onScene) {
+		this.onScene = onScene;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -107,5 +115,10 @@ public class MessageResp {
 	private Integer picCount;
 	
 	private List<PicDescResp> picList;
+	
+	/**
+	 * 发言用户是否正在发言场景
+	 */
+	private Short onScene;
 
 }

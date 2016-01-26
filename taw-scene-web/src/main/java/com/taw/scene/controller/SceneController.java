@@ -62,11 +62,9 @@ public class SceneController {
 	public void search(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		QuerySceneInRegionParam querySceneInRegionParam = HttpRequestHandler.handle(request, QuerySceneInRegionParam.class);
 		
-		List<SceneResp> sceneRespList = new ArrayList<SceneResp>();
+		List<SceneResp> sceneRespList = sceneService.query(querySceneInRegionParam);
 		
-		List<SceneDomain> sources = sceneService.query(querySceneInRegionParam);
 		
-		DomainTools.copy(sources, sceneRespList, SceneResp.class);
 		
 		HttpResponseHandler.handle(response, SuccessResponse.build(sceneRespList));
 	}
@@ -143,7 +141,7 @@ public class SceneController {
 	}
 	
 	/**
-	 * 修改现场人数
+	 * 注册用户，修改现场人数
 	 * @param locale
 	 * @param model
 	 * @param request
@@ -152,6 +150,22 @@ public class SceneController {
 	 */
 	@RequestMapping(value = "/scene/online/change.do", method = RequestMethod.POST)
 	public void changeOnlineCount(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
+		changeOnlineCountParam.setUserId(AuthThreadLocal.getUserId());
+		sceneService.ChangeOnlineCount(changeOnlineCountParam);
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	/**
+	 * 游客，修改现场人数
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/scene/online/change2.do", method = RequestMethod.POST)
+	public void changeOnlineCount2(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
 		sceneService.ChangeOnlineCount(changeOnlineCountParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
