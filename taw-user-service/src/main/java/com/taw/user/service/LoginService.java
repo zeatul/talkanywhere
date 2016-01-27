@@ -138,7 +138,7 @@ public class LoginService {
 		/**
 		 * 从缓存删除 
 		 */
-		redisClient.delete(computeCacheKey(token), true);
+		redisClient.delete(computeCacheKey(token));
 	}
 	
 	/**
