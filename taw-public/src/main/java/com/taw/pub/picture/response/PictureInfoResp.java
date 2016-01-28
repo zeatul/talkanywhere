@@ -2,6 +2,12 @@ package com.taw.pub.picture.response;
 
 public class PictureInfoResp {
 
+	public Integer getForwardCount() {
+		return forwardCount;
+	}
+	public void setForwardCount(Integer forwardCount) {
+		this.forwardCount = forwardCount;
+	}
 	public Integer getUpCount() {
 		return upCount;
 	}
@@ -32,5 +38,10 @@ public class PictureInfoResp {
 	 * 评论数量
 	 */
 	private Integer commentCount;
+	
+	/**
+	 * 转发数量
+	 */
+	private Integer forwardCount;
 
 }

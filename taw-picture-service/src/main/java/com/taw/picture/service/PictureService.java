@@ -154,6 +154,12 @@ public class PictureService {
 	}
 	
 	public static class ComputeResult{
+		public String getPath() {
+			return path;
+		}
+		public void setPath(String path) {
+			this.path = path;
+		}
 		public String getSuffix() {
 			return suffix;
 		}
@@ -166,8 +172,9 @@ public class PictureService {
 		public void setDir(String dir) {
 			this.dir = dir;
 		}
-		private String suffix;
-		private String dir;
+		private String suffix; //后缀
+		private String dir; //完整路径
+		private String path; //相对路径
 	}
 	
 	
@@ -197,12 +204,13 @@ public class PictureService {
 				uuid.substring(length-4,length-2),
 				uuid.substring(length-2,length)};
 		
-		String path = pictureServiceConfigure.getUploadDir();
+		String path = "";
 		for (String str : strArray){
-			path = path + File.separator + computeDirPart(str);
+			path = path + "/" + computeDirPart(str);
 		}
-		
-		computeResult.setDir(path);
+		String dir = pictureServiceConfigure.getUploadDir() + path;
+		computeResult.setDir(dir);
+		computeResult.setPath(path);
 		return  computeResult;
 		
 	}
@@ -308,6 +316,7 @@ public class PictureService {
 		addCommentResp.setCommentCount(pictureDomain.getCommentCount());
 		addCommentResp.setUpCount(pictureDomain.getUpCount());
 		addCommentResp.setDownCount(pictureDomain.getDownCount());
+		addCommentResp.setForwardCount(pictureDomain.getForwardCount());
 		
 		return addCommentResp;
 		
@@ -346,6 +355,7 @@ public class PictureService {
 		removeCommentResp.setCommentCount(pictureDomain.getCommentCount());
 		removeCommentResp.setDownCount(pictureDomain.getDownCount());
 		removeCommentResp.setUpCount(pictureDomain.getUpCount());
+		removeCommentResp.setForwardCount(pictureDomain.getForwardCount());
 		return removeCommentResp;
 	}
 

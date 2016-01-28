@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 
@@ -35,9 +37,11 @@ import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+//import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -53,6 +57,7 @@ import org.slf4j.LoggerFactory;
 
 import com.hawk.utility.StringTools;
 
+@SuppressWarnings("deprecation")
 public class HttpClientHelper {
 
 	public final Logger logger = LoggerFactory.getLogger(getClass());
@@ -131,22 +136,22 @@ public class HttpClientHelper {
 				.build();
 
 		// 需要通过以下代码声明对https连接支持
-		// SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null,
-		// new TrustSelfSignedStrategy()).build();
-		// HostnameVerifier hostnameVerifier =
-		// SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
-		// SSLConnectionSocketFactory sslsf = new
-		// SSLConnectionSocketFactory(sslcontext, hostnameVerifier);
-		// Registry<ConnectionSocketFactory> socketFactoryRegistry =
-		// RegistryBuilder.<ConnectionSocketFactory> create()
-		// .register("http",
-		// PlainConnectionSocketFactory.getSocketFactory()).register("https",
-		// sslsf).build();
-		ConnectionSocketFactory plainsf = PlainConnectionSocketFactory.getSocketFactory();
-		LayeredConnectionSocketFactory sslsf = SSLConnectionSocketFactory.getSocketFactory();
-		Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory> create().register("http", plainsf) // http
-				.register("https", sslsf) // https
-				.build();
+		@SuppressWarnings("deprecation")
+		SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
+		@SuppressWarnings("deprecation")
+		HostnameVerifier hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, hostnameVerifier);
+		Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory> create()
+				.register("http", PlainConnectionSocketFactory.getSocketFactory()).register("https", sslsf).build();
+		// ConnectionSocketFactory plainsf =
+		// PlainConnectionSocketFactory.getSocketFactory();
+		// LayeredConnectionSocketFactory sslsf =
+		// SSLConnectionSocketFactory.getSocketFactory();
+		// Registry<ConnectionSocketFactory> registry =
+		// RegistryBuilder.<ConnectionSocketFactory> create().register("http",
+		// plainsf) // http
+		// .register("https", sslsf) // https
+		// .build();
 
 		// 初始化连接池
 		connMgr = new PoolingHttpClientConnectionManager(registry);
@@ -317,14 +322,14 @@ public class HttpClientHelper {
 		}
 
 	}
-	
-	public String post(String path ,byte[] b ,Map<String, String> params,int off ,int length)throws Exception{
+
+	public String post(String path, byte[] b, Map<String, String> params, int off, int length) throws Exception {
 		CloseableHttpResponse response = null;
 		try {
 			CloseableHttpClient httpClient = buileHttpClient();
 			HttpPost httpPost = new HttpPost(generateURIBuilder(path, params).build());
 			config(httpPost);
-			if (b!=null && b.length > 0) {
+			if (b != null && b.length > 0) {
 				ByteArrayEntity byteArrayEntity = new ByteArrayEntity(b);
 				httpPost.setEntity(byteArrayEntity);
 			}

@@ -7,6 +7,22 @@ public class PictureServiceConfigure {
 	
 	
 
+	public String getUrlHead() {
+		return urlHead;
+	}
+
+	public void setUrlHead(String urlHead) {
+		this.urlHead = urlHead;
+	}
+
+	public String getSurlHead() {
+		return surlHead;
+	}
+
+	public void setSurlHead(String surlHead) {
+		this.surlHead = surlHead;
+	}
+
 	public long getAllowFileSize() {
 		return allowFileSize;
 	}
@@ -48,5 +64,10 @@ public class PictureServiceConfigure {
 	private String supportSuffixString;
 	
 	private long allowFileSize = 1024 * 1024 * 20 ;
+	
+	
+	private String urlHead;
+	
+	private String surlHead;
 
 }

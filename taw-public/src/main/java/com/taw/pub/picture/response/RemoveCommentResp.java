@@ -1,9 +1,15 @@
 package com.taw.pub.picture.response;
 
-import java.util.Date;
-
 public class RemoveCommentResp {
 	
+	public Integer getForwardCount() {
+		return forwardCount;
+	}
+
+	public void setForwardCount(Integer forwardCount) {
+		this.forwardCount = forwardCount;
+	}
+
 	public Integer getUpCount() {
 		return upCount;
 	}
@@ -44,5 +50,10 @@ public class RemoveCommentResp {
 	 * 评论数量
 	 */
 	private Integer commentCount;
+	
+	/**
+	 * 转发数量
+	 */
+	private Integer forwardCount;
 
 }

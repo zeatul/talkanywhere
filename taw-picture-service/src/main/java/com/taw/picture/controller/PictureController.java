@@ -1,5 +1,6 @@
 package com.taw.picture.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,16 +17,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.taw.picture.configure.PictureServiceConfigure;
 import com.taw.picture.mapper.PictureMapper;
 import com.taw.picture.service.PictureService;
 import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.PictureInfoParam;
+import com.taw.pub.picture.request.PicturePathParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
 import com.taw.pub.picture.response.AddCommentResp;
 import com.taw.pub.picture.response.PictureCommentInfoResp;
 import com.taw.pub.picture.response.PictureInfoResp;
+import com.taw.pub.picture.response.PicturePathResp;
 import com.taw.pub.picture.response.RemoveCommentResp;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -34,7 +39,23 @@ public class PictureController {
 	@Autowired
 	private PictureService pictureService;
 	
+	@Autowired
+	@Qualifier("pictureServiceConfigure")
+	private PictureServiceConfigure pictureServiceConfigure; 
 	
+	
+	/**
+	 * hello 测试用
+	 * @param locale
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/pic/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public String helloWorld(Locale locale, Model model) throws IOException {
+		model.addAttribute("msg", "/pic/hello.do");
+		return "success";
+	}
 	
 	/**
 	 * 点赞
@@ -51,6 +72,25 @@ public class PictureController {
 		
 		PictureInfoResp pictureInfoResp = pictureService.thumbPicture(thumbPictureParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(pictureInfoResp));
+	}
+	
+	
+	/**
+	 * 返回图片的相对路径 ,给前端拼接图片路径用
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/pic/path.do", method = RequestMethod.POST)
+	public void path(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		PicturePathParam picturePathParam = HttpRequestHandler.handle(request, PicturePathParam.class);
+		String path = pictureService.computeDir(picturePathParam.getUuid()).getPath();
+		PicturePathResp picturePathResp = new PicturePathResp();
+		picturePathResp.setUrl(pictureServiceConfigure.getUrlHead()+path+"/"+picturePathParam.getUuid());
+		picturePathResp.setSurl(pictureServiceConfigure.getSurlHead()+path+"/"+picturePathParam.getUuid());
+		HttpResponseHandler.handle(response, SuccessResponse.build(picturePathResp));
 	}
 	
 	/**

@@ -64,8 +64,8 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		
 		protectedPaths.add("/scene/online/change.do");
 		
-		protectedPaths.add("/file/upload.do");
-		protectedPaths.add("/file/length.do");
+		protectedPaths.add("/pic/upload.do");
+		protectedPaths.add("/pic/length.do");
 		protectedPaths.add("/pic/thumb.do");
 		protectedPaths.add("/pic/comment/add.do");		
 		protectedPaths.add("/pic/comment/remove.do");

@@ -4,6 +4,14 @@ import java.util.Date;
 
 public class AddCommentResp {
 	
+	public Integer getForwardCount() {
+		return forwardCount;
+	}
+
+	public void setForwardCount(Integer forwardCount) {
+		this.forwardCount = forwardCount;
+	}
+
 	public Integer getUpCount() {
 		return upCount;
 	}
@@ -60,5 +68,10 @@ public class AddCommentResp {
 	 * 评论数量
 	 */
 	private Integer commentCount;
+	
+	/**
+	 * 转发数量
+	 */
+	private Integer forwardCount;
 
 }

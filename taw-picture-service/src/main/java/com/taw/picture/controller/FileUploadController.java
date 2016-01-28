@@ -52,7 +52,7 @@ public class FileUploadController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/file/upload/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/pic/upload/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String helloWorld(Locale locale, Model model) throws IOException {
 		model.addAttribute("msg", "/file/upload/hello.do");
 		return "success";
@@ -61,7 +61,7 @@ public class FileUploadController {
 	
 	/**
 	 * 上传文件，
-	 * uuid = yyyyMMddHHmmss + 32位uuid+ .suffix ，必填
+	 * uuid = yyyyMMddHHmmss +"_"+ 32位uuid+ .suffix ，必填
 	 * srcFile = 上传的本地源文件名称  ，选填，需要encodeUrl
 	 * srcFileSize = 上传的本地源文件实际大小 ，必填
 	 * byteArraySize = 本次上传的byte数组大小
@@ -77,10 +77,10 @@ public class FileUploadController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/file/upload.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/pic/upload.do", method = RequestMethod.POST)
 	public void uploadFile(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		/**
-		 * yyyyMMddHHmmss + 32位uuid+ .suffix
+		 * yyyyMMddHHmmss+"_"+ 32位uuid+ .suffix
 		 */
 		String uuid = request.getParameter("uuid");
 		ComputeResult computeResult = pictureService.computeDir(uuid);
@@ -185,7 +185,7 @@ public class FileUploadController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/file/length.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/pic/length.do", method = RequestMethod.POST)
 	public void uploadLength(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		UploadLengthParam param = HttpRequestHandler.handle(request, UploadLengthParam.class);
 		CheckTools.check(param);

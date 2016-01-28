@@ -50,13 +50,13 @@ public class JmsTestController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/jms/test/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/scene/jms/test/hello.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String helloWorld(Locale locale, Model model) throws IOException {
 		model.addAttribute("msg", "/jms/test/hello.do");
 		return "success";
 	}
 	
-	@RequestMapping(value = "/jms/test/message/send.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/scene/jms/test/message/send.do", method = RequestMethod.GET)
 	public void sendMessage(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		Notification notification = new Notification();
@@ -66,7 +66,7 @@ public class JmsTestController {
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 	
-	@RequestMapping(value = "/jms/test/conversation/send.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/scene/jms/test/conversation/send.do", method = RequestMethod.GET)
 	public void sendConversation(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		Notification notification = new Notification();
 		notification.setMsg("SendConversation:"+ System.currentTimeMillis());
@@ -74,7 +74,7 @@ public class JmsTestController {
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 	
-	@RequestMapping(value = "/jms/test/scene/enter.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/scene/jms/test/scene/enter.do", method = RequestMethod.GET)
 	public void sendEnterScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		Notification notification = new Notification();
 		notification.setMsg("SendEnterScene:"+ System.currentTimeMillis());
@@ -82,7 +82,7 @@ public class JmsTestController {
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 	
-	@RequestMapping(value = "/jms/test/scene/leave.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/scene/jms/test/scene/leave.do", method = RequestMethod.GET)
 	public void sendLeaveScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		Notification notification = new Notification();
 		notification.setMsg("SendLeaveScene:"+ System.currentTimeMillis());

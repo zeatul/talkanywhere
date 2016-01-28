@@ -1,8 +1,8 @@
-package com.taw.pub.scene.request;
+package com.taw.pub.picture.request;
 
 import com.hawk.utility.check.CheckNull;
 
-public class UploadLengthParam {
+public class PicturePathParam {
 	
 	public String getUuid() {
 		return uuid;
@@ -12,14 +12,7 @@ public class UploadLengthParam {
 		this.uuid = uuid;
 	}
 
-	
-
 	@CheckNull
-	/**
-	 * yyyyMMddHHmmss +"_"+ 32位uuid+ .suffix
-	 */
 	private String uuid;
-	
-	
 
 }
