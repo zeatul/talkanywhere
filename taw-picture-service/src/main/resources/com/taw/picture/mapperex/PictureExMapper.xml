@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.taw.picture.mapperex.PictureExMapper">
+
+
+
+	<select id="loadGlobalHotPicture" parameterType="hashmap"  resultType="PictureDomain">
+		SELECT 
+		<include refid="com.taw.picture.mapper.PictureMapper.columns" />
+		FROM t_pm_picture
+		ORDER BY up_count desc LIMIT #{offset},#{limit}		
+	</select>
+	
+	<select id="loadSceneHotPicture" parameterType="hashmap"  resultType="PictureDomain">
+		SELECT 
+		<include refid="com.taw.picture.mapper.PictureMapper.columns" />
+		FROM t_pm_picture
+		WHERE scene_id = #{sceneId}
+		ORDER BY up_count desc LIMIT #{offset},#{limit}		
+	</select>
+	
+	
+	
+</mapper>

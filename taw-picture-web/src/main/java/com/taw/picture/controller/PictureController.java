@@ -18,19 +18,20 @@ import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.taw.picture.configure.PictureServiceConfigure;
-import com.taw.picture.mapper.PictureMapper;
 import com.taw.picture.service.PictureService;
 import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.PicturePathParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
+import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
 import com.taw.pub.picture.response.AddCommentResp;
 import com.taw.pub.picture.response.PictureCommentInfoResp;
 import com.taw.pub.picture.response.PictureInfoResp;
+import com.taw.pub.picture.response.PictureStatResp;
 import com.taw.pub.picture.response.PicturePathResp;
-import com.taw.pub.picture.response.RemoveCommentResp;
 import com.taw.user.auth.AuthThreadLocal;
 
 @Controller
@@ -70,7 +71,7 @@ public class PictureController {
 		ThumbPictureParam thumbPictureParam = HttpRequestHandler.handle(request, ThumbPictureParam.class);
 		thumbPictureParam.setUserId(AuthThreadLocal.getUserId());
 		
-		PictureInfoResp pictureInfoResp = pictureService.thumbPicture(thumbPictureParam);
+		PictureStatResp pictureInfoResp = pictureService.thumbPicture(thumbPictureParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(pictureInfoResp));
 	}
 	
@@ -151,10 +152,38 @@ public class PictureController {
 	public void removeComment(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		RemoveCommentParam removeCommentParam = HttpRequestHandler.handle(request, RemoveCommentParam.class);
 		removeCommentParam.setUserId(AuthThreadLocal.getUserId());
-		RemoveCommentResp removeCommentResp =  pictureService.removeComment(removeCommentParam);
+		PictureStatResp removeCommentResp =  pictureService.removeComment(removeCommentParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(removeCommentResp));
 	}
 	
+	/**
+	 * 全球热门图片
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/pic/global/hot.do", method = {RequestMethod.POST,RequestMethod.GET})
+	public void globalHot(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		SearchGlobalHotPictureParam searchGlobalHotPictureParam = HttpRequestHandler.handle(request, SearchGlobalHotPictureParam.class);
+		HttpResponseHandler.handle(response, SuccessResponse.build(pictureService.loadGlobalHotPicture(searchGlobalHotPictureParam)));
+	}
 	
+	
+	/**
+	 * 场景热门图片
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/pic/scene/hot.do", method = {RequestMethod.POST,RequestMethod.GET})
+	public void sceneHot(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		SearchSceneHotPictureParam sceneHotPictureParam = HttpRequestHandler.handle(request, SearchSceneHotPictureParam.class);
+		HttpResponseHandler.handle(response, SuccessResponse.build(pictureService.loadSceneHotPicture(sceneHotPictureParam)));
+		
+	}
 
 }

@@ -96,7 +96,7 @@ public class RedisClient {
 			@SuppressWarnings("unchecked")
 			@Override
 			public String exec(ShardedJedis shardedJedis) {
-				// TODO Auto-generated method stub
+				
 				return shardedJedis.get(key);
 			}
 
@@ -153,11 +153,12 @@ public class RedisClient {
 			} else {
 				return executor.exec(shardedJedis);
 			}
-		} catch (JedisException ex) {
+		} catch (Exception ex) {
+			logger.error("",ex);
 			try {
 				pool.returnBrokenResource(shardedJedis);
 			} catch (Exception e) {
-				logger.error("shardedJedis.disconnect()", e);
+//				logger.error("shardedJedis.disconnect()", e);
 			}
 			throw ex;
 		} finally {
@@ -166,7 +167,7 @@ public class RedisClient {
 					pool.returnResource(shardedJedis);
 
 				} catch (Exception e) {
-					logger.error("shardedJedis.returnResource()", e);
+//					logger.error("shardedJedis.returnResource()", e);
 				}
 			}
 

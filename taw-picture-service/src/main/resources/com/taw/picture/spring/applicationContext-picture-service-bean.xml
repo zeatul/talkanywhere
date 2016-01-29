@@ -12,6 +12,8 @@
 		<property name="uploadDir" value="${maven.taw-picture-service.uploadDir}"/>
 		<property name="supportSuffix" value="jpg,png,bmp,gif"/>
 		<property name="allowFileSize" value="20971520"/><!-- 单位byte -->
+		<property name="urlHead" value="${maven.taw-picture-service.urlHead}"/>
+		<property name="surlHead" value="${maven.taw-picture-service.surlHead}"/>
 	</bean>
 
 

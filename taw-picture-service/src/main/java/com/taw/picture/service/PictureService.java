@@ -29,6 +29,7 @@ import com.taw.picture.mapper.PictureCommentMapper;
 import com.taw.picture.mapper.PictureMapper;
 import com.taw.picture.mapper.PictureThumbMapper;
 import com.taw.picture.mapperex.PictureCommentExMapper;
+import com.taw.picture.mapperex.PictureExMapper;
 import com.taw.pub.picture.enums.EnumPictureHotLevel;
 import com.taw.pub.picture.enums.EnumPictureStatus;
 import com.taw.pub.picture.enums.EnumThumbType;
@@ -37,11 +38,13 @@ import com.taw.pub.picture.request.InsrtPictureParam;
 import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
+import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
 import com.taw.pub.picture.response.AddCommentResp;
 import com.taw.pub.picture.response.PictureCommentInfoResp;
 import com.taw.pub.picture.response.PictureInfoResp;
-import com.taw.pub.picture.response.RemoveCommentResp;
+import com.taw.pub.picture.response.PictureStatResp;
 
 @Service
 public class PictureService {
@@ -61,6 +64,9 @@ public class PictureService {
 	
 	@Autowired
 	private PictureCommentExMapper pictureCommentExMapper;
+	
+	@Autowired
+	private PictureExMapper pictureExMapper;
 	
 	
 	
@@ -188,12 +194,12 @@ public class PictureService {
 			throw new RuntimeException("uuid is null");
 		uuid = uuid.trim();		
 		if (uuid.length() <48)
-			throw new RuntimeException("invalid uuid , uuid=yyyyMMddHHmmss+32uuid + .suffix");
+			throw new RuntimeException("invalid uuid , uuid=yyyyMMddHHmmss_32uuid.suffix");
 		
 		String[] strArray = uuid.split("\\.");
 		
 		if (strArray.length != 2)
-			throw new RuntimeException("invalid uuid , uuid=yyyyMMddHHmmss+32uuid + .suffix");
+			throw new RuntimeException("invalid uuid , uuid=yyyyMMddHHmmss_32uuid.suffix");
 		
 		ComputeResult computeResult  = new ComputeResult();
 		computeResult.setSuffix(strArray[1]);
@@ -229,7 +235,7 @@ public class PictureService {
 	
 	
 	
-	public PictureInfoResp thumbPicture(ThumbPictureParam thumbPictureParam) throws Exception{
+	public PictureStatResp thumbPicture(ThumbPictureParam thumbPictureParam) throws Exception{
 		CheckTools.check(thumbPictureParam);
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("picId", thumbPictureParam.getPicId());
@@ -284,7 +290,7 @@ public class PictureService {
 		pictureDomain.setUpCount(pictureDomain.getUpCount()+upOffset);
 		pictureMapper.update(pictureDomain);
 		
-		PictureInfoResp pictureInfoResp = new PictureInfoResp();
+		PictureStatResp pictureInfoResp = new PictureStatResp();
 		DomainTools.copy(pictureDomain, pictureInfoResp);
 		return pictureInfoResp;
 		
@@ -330,7 +336,7 @@ public class PictureService {
 		return pictureCommentInfoRespList;
 	}
 	
-	public RemoveCommentResp removeComment(RemoveCommentParam removeCommentParam)throws Exception{
+	public PictureStatResp removeComment(RemoveCommentParam removeCommentParam)throws Exception{
 		CheckTools.check(removeCommentParam);
 		PictureCommentDomain pictureCommentDomain = pictureCommentMapper.load(removeCommentParam.getCommentId());
 		if (pictureCommentDomain == null)
@@ -351,7 +357,7 @@ public class PictureService {
 			pictureMapper.update(pictureDomain);
 		}
 		
-		RemoveCommentResp removeCommentResp = new RemoveCommentResp();
+		PictureStatResp removeCommentResp = new PictureStatResp();
 		removeCommentResp.setCommentCount(pictureDomain.getCommentCount());
 		removeCommentResp.setDownCount(pictureDomain.getDownCount());
 		removeCommentResp.setUpCount(pictureDomain.getUpCount());
@@ -366,6 +372,48 @@ public class PictureService {
 			throw new PictureNotFoundException();
 		PictureInfoResp pictureInfoResp = new PictureInfoResp();
 		DomainTools.copy(pictureDomain, pictureInfoResp);
+		fillPath(pictureInfoResp);
 		return pictureInfoResp;
+	}
+	
+	public void fillPath(PictureInfoResp pictureInfoResp){
+		String path = computeDir(pictureInfoResp.getUuid()).getPath();
+		pictureInfoResp.setUrl(pictureServiceConfigure.getUrlHead()+path+"/"+pictureInfoResp.getUuid());
+		pictureInfoResp.setSurl(pictureServiceConfigure.getSurlHead()+path+"/"+pictureInfoResp.getUuid());
+	}
+	
+	public List<PictureInfoResp> loadGlobalHotPicture(SearchGlobalHotPictureParam searchGlobalHotPictureParam) throws Exception {
+		
+		CheckTools.check(searchGlobalHotPictureParam);
+		
+		List<PictureDomain> pictureDomainList = pictureExMapper.loadGlobalHotPicture(searchGlobalHotPictureParam.getOffset(), searchGlobalHotPictureParam.getLimit());
+		
+		List<PictureInfoResp> pictureInfoRespList = new ArrayList<PictureInfoResp>();
+		
+		if (pictureDomainList != null){			
+			for (PictureDomain pictureDomain : pictureDomainList){				
+				PictureInfoResp pictureInfoResp = new PictureInfoResp();
+				DomainTools.copy(pictureDomain, pictureInfoResp);
+				fillPath(pictureInfoResp);
+				pictureInfoRespList.add(pictureInfoResp);
+			}
+		}
+		
+		return pictureInfoRespList;
+	}
+	
+	public List<PictureInfoResp> loadSceneHotPicture(SearchSceneHotPictureParam searchSceneHotPictureParam) throws Exception{
+		CheckTools.check(searchSceneHotPictureParam);
+		List<PictureDomain> pictureDomainList = pictureExMapper.loadSceneHotPicture(searchSceneHotPictureParam.getSceneId(),searchSceneHotPictureParam.getOffset(), searchSceneHotPictureParam.getLimit());
+		List<PictureInfoResp> pictureInfoRespList = new ArrayList<PictureInfoResp>();		
+		if (pictureDomainList != null){			
+			for (PictureDomain pictureDomain : pictureDomainList){				
+				PictureInfoResp pictureInfoResp = new PictureInfoResp();
+				DomainTools.copy(pictureDomain, pictureInfoResp);
+				fillPath(pictureInfoResp);
+				pictureInfoRespList.add(pictureInfoResp);
+			}
+		}		
+		return pictureInfoRespList;
 	}
 }

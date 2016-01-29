@@ -8,6 +8,8 @@ import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
+import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
 
 public class PictureControllerTest extends AbstractControllerTest{
@@ -17,7 +19,7 @@ public class PictureControllerTest extends AbstractControllerTest{
 		
 	}
 	
-//	@Test
+	
 	public void testThumb() throws Exception{
 		String path = contextPath + "/pic/thumb.do";
 		
@@ -78,11 +80,38 @@ public class PictureControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+	
 	public void testPictureInfo() throws Exception{
 		String path = contextPath + "/pic/info.do";
 		PictureInfoParam param = new PictureInfoParam();
 		param.setPicId(47l);
+		String content = JsonTools.toJsonString(param);
+		printSend(content);
+		String result = httpClientHelper.post(path, content, genAuthMap());
+		
+		printResult(result);
+	}
+	
+//	@Test
+	public void testSearchGlobalHotPicture() throws Exception{
+		String path = contextPath + "/pic/global/hot.do";
+		SearchGlobalHotPictureParam param = new SearchGlobalHotPictureParam();
+		param.setOffset(0);
+		param.setLimit(5);
+		String content = JsonTools.toJsonString(param);
+		printSend(content);
+		String result = httpClientHelper.post(path, content, genAuthMap());
+		
+		printResult(result);
+	}
+	
+	@Test
+	public void testSearchSceneHotPicture() throws Exception{
+		String path = contextPath + "/pic/scene/hot.do";
+		SearchSceneHotPictureParam param = new SearchSceneHotPictureParam();
+		param.setOffset(0);
+		param.setLimit(5);
+		param.setSceneId(1l);
 		String content = JsonTools.toJsonString(param);
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());
