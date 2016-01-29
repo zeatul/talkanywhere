@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true">
 
-	<contextName>taw-user-web</contextName>
+	<contextName>taw-scene-web</contextName>
 
-	<property name="LOG_HOME" value="${maven.taw_user_service.loghome}"/>
+	<property name="LOG_HOME" value="${maven.taw_picture_service.loghome}"/>
 
 	<!-- <property resource="com/hante/weixin/cinema/env/configure.properties" /> -->
 
@@ -25,7 +25,7 @@
 		<!-- <file>mylog.txt</file> -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> 
 			<!-- rollover daily -->
-			<fileNamePattern>${LOG_HOME}/logs/user/taw-user-service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<fileNamePattern>${LOG_HOME}/logs/picture/taw-picture-service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"> 
 			<!-- or whenever the file size reaches 1MB -->
 				<maxFileSize>100MB</maxFileSize>
@@ -55,7 +55,7 @@
 	
 	
 
-	<root level="info">
+	<root level="warn">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="rolling" />
 	</root>
