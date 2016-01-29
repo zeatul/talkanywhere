@@ -39,7 +39,7 @@ public abstract class AbstractControllerTest {
 			token = "febf20697fbb4b94bca60e0796388c0c"; //测试环境
 			httpClientHelper.setPort(9080);//测试环境
 		}else{
-			contextPath = "/taw-scene-web"; //开发环境
+			contextPath = "/taw-picture-web"; //开发环境
 			httpClientHelper.setHostname("localhost");	//开发环境
 			httpClientHelper.setPort(8080);//开发环境
 			token = "7c9006da62634727a8686b05631a0387";  //sender

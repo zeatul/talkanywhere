@@ -34,7 +34,7 @@ public class FileUploadControllerTest extends AbstractControllerTest {
 			byte[] b = new byte[fileInputStream.available()];
 			fileInputStream.read(b, 0, b.length);
 
-			String path = contextPath + "/file/upload.do";
+			String path = contextPath + "/pic/upload.do";
 			String uuid = DateTools.convert(DateTools.now(), "yyyyMMddHHmmss") + UUID.randomUUID().toString().replace("-", "") + ".jpg";
 			Map<String, String> params = genAuthMap();
 			params.put("srcFile", "hello.jpg");
@@ -70,8 +70,8 @@ public class FileUploadControllerTest extends AbstractControllerTest {
 	public void testFileUploadWithParts() throws Exception {
 		String localFilePath = "C:\\taw\\img\\img16.jpg";
 		FileInputStream fileInputStream = null;
-		String fileUploadPath = contextPath + "/file/upload.do";
-		String fileLengthPath = contextPath + "/file/length.do";
+		String fileUploadPath = contextPath + "/pic/upload.do";
+		String fileLengthPath = contextPath + "/pic/length.do";
 		String uuid = DateTools.convert(DateTools.now(), "yyyyMMddHHmmss") + UUID.randomUUID().toString().replace("-", "") + ".jpg";
 		
 		try {
