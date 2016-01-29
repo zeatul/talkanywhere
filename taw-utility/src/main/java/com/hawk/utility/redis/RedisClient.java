@@ -16,7 +16,7 @@ public class RedisClient {
 	public ShardedJedisPool getPool() {
 		return pool;
 	}
-	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	public void setPool(ShardedJedisPool pool) {
@@ -24,64 +24,34 @@ public class RedisClient {
 	}
 
 	private ShardedJedisPool pool;
-	
-	
 
 	/**
 	 * 加入缓存,无限期
 	 * 
 	 * @param key
 	 * @param value
-	 * @param async	true=异步
+	 * @param async
+	 *            true=异步
 	 */
 	public void set(final String key, final String value) {
-		
+
 		execute(new Executor() {
-			
+
 			@Override
 			public <T> T exec(ShardedJedisPipeline pipeline) {
-				
+
 				pipeline.set(key, value);
 				return null;
 			}
-			
+
 			@Override
 			public <T> T exec(ShardedJedis shardedJedis) {
 				shardedJedis.set(key, value);
 				return null;
 			}
-		},false);
-		
-		
-		boolean async = false;
-		ShardedJedis shardedJedis = null;
-		try {
-			shardedJedis = pool.getResource();
-			if (async) {
-				ShardedJedisPipeline pipeline = shardedJedis.pipelined();
-				pipeline.set(key, value);
-			} else {
-				shardedJedis.set(key, value);
-			}
-		}catch(JedisException ex){
-			try {
-				pool.returnBrokenResource(shardedJedis);
-			} catch (Exception e) {
-				logger.error("shardedJedis.disconnect()",e);
-			}
-			throw ex;
-		}
-		finally {
-			if (shardedJedis != null) {
-				try {
-					pool.returnResource(shardedJedis);
-					
-				} catch (Exception e) {
-					logger.error("shardedJedis.returnResource()",e);
-				}
-			}
+		}, false);
 
-		}
+		
 
 	}
 
@@ -90,28 +60,27 @@ public class RedisClient {
 	 * 
 	 * @param key
 	 * @param value
-	 * @param expire 有效期，单位秒
+	 * @param expire
+	 *            有效期，单位秒
 	 */
-	public void set(final String key, final String value, final  int expire) {
-		
+	public void set(final String key, final String value, final int expire) {
+
 		execute(new Executor() {
-			
+
 			@Override
 			public <T> T exec(ShardedJedisPipeline pipeline) {
 				pipeline.set(key, value);
 				pipeline.expire(key, expire);
 				return null;
 			}
-			
+
 			@Override
 			public <T> T exec(ShardedJedis shardedJedis) {
 				shardedJedis.set(key, value);
 				shardedJedis.expire(key, expire);
 				return null;
 			}
-		},false);
-		
-		
+		}, false);
 
 	}
 
@@ -122,7 +91,7 @@ public class RedisClient {
 	 * @return
 	 */
 	public String get(final String key) {
-		return execute (new Executor(){
+		return execute(new Executor() {
 
 			@SuppressWarnings("unchecked")
 			@Override
@@ -135,7 +104,8 @@ public class RedisClient {
 			@Override
 			public String exec(ShardedJedisPipeline pipeline) {
 				return pipeline.get(key).get();
-			}},false);
+			}
+		}, false);
 	}
 
 	/**
@@ -144,12 +114,12 @@ public class RedisClient {
 	 * @param key
 	 * @return
 	 */
-	public boolean exists(final String  key) {
-		return execute(new Executor(){
+	public boolean exists(final String key) {
+		return execute(new Executor() {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public Boolean exec(ShardedJedis shardedJedis ) {
+			public Boolean exec(ShardedJedis shardedJedis) {
 				// TODO Auto-generated method stub
 				return shardedJedis.exists(key);
 			}
@@ -161,18 +131,19 @@ public class RedisClient {
 				return pipeline.exists(key).get();
 			}
 
-		
-		},false);
+		}, false);
 	}
-	
-	private interface Executor{
+
+	private interface Executor {
 		<T> T exec(ShardedJedis shardedJedis);
+
 		<T> T exec(ShardedJedisPipeline pipeline);
-		
+
 	}
-	
-	private <T> T execute(Executor executor,boolean async){
-		
+
+	@SuppressWarnings("deprecation")
+	private <T> T execute(Executor executor, boolean async) {
+
 		ShardedJedis shardedJedis = null;
 		try {
 			shardedJedis = pool.getResource();
@@ -182,21 +153,20 @@ public class RedisClient {
 			} else {
 				return executor.exec(shardedJedis);
 			}
-		}catch(JedisException ex){
+		} catch (JedisException ex) {
 			try {
 				pool.returnBrokenResource(shardedJedis);
 			} catch (Exception e) {
-				logger.error("shardedJedis.disconnect()",e);
+				logger.error("shardedJedis.disconnect()", e);
 			}
 			throw ex;
-		}
-		finally {
+		} finally {
 			if (shardedJedis != null) {
 				try {
 					pool.returnResource(shardedJedis);
-					
+
 				} catch (Exception e) {
-					logger.error("shardedJedis.returnResource()",e);
+					logger.error("shardedJedis.returnResource()", e);
 				}
 			}
 
@@ -209,36 +179,23 @@ public class RedisClient {
 	 * @param key
 	 * @param async
 	 */
-	public void delete(String key) {
-		boolean async = false;
-		ShardedJedis shardedJedis = null;
-		try {
-			shardedJedis = pool.getResource();
-			if (async) {
-				ShardedJedisPipeline pipeline = shardedJedis.pipelined();
+	public void delete(final String key) {
+
+		execute(new Executor() {
+
+			@Override
+			public <T> T exec(ShardedJedisPipeline pipeline) {
 				pipeline.del(key);
-			} else {
-				shardedJedis.del(key);
-			}
-		} catch(Exception ex){
-			try {
-				shardedJedis.disconnect();
-			} catch (Exception e) {
-				logger.error("shardedJedis.disconnect()",e);
-			}
-			throw ex;
-		}
-		finally {
-			if (shardedJedis != null) {
-				try {
-					shardedJedis.close();
-					
-				} catch (Exception e) {
-					logger.error("shardedJedis.close()",e);
-				}
+				return null;
 			}
 
-		}
+			@Override
+			public <T> T exec(ShardedJedis shardedJedis) {
+				shardedJedis.del(key);
+				return null;
+			}
+		}, false);
+
 	}
 
 }
