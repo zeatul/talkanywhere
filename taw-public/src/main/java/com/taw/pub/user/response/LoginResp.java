@@ -11,5 +11,26 @@ public class LoginResp {
 	}
 
 	private String token;
+	
+	
+	private Long userId;
+	
+	private String sex;
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 
 }

@@ -14,6 +14,7 @@ import com.hawk.utility.check.CheckTools;
 import com.hawk.utility.redis.RedisClient;
 import com.taw.pub.user.request.LoginParam;
 import com.taw.pub.user.request.LogoutParam;
+import com.taw.pub.user.response.LoginResp;
 import com.taw.user.domain.LoginDomain;
 import com.taw.user.domain.UserDomain;
 import com.taw.user.exception.UnMatchUserPasswordException;
@@ -34,34 +35,11 @@ public class LoginService {
 	
 	private final int expire = 3600 *24 ; //token缓存24小时
 	
-	public static class LoginInfo{
-		public String getToken() {
-			return token;
-		}
-		public void setToken(String token) {
-			this.token = token;
-		}
-		public UserDomain getUserDomain() {
-			return userDomain;
-		}
-		public void setUserDomain(UserDomain userDomain) {
-			this.userDomain = userDomain;
-		}
-		private String token;
-		private UserDomain userDomain;
-	}
 	
 	
 	
-	/**
-	 * 计算token在缓存里key
-	 * @param token
-	 * @param userId
-	 * @return
-	 */
-	private String computeCacheKey(String token){
-		return "token_xx_" + token;
-	}
+	
+	
 	
 	/**
 	 * 返回登录token
@@ -69,7 +47,7 @@ public class LoginService {
 	 * @return
 	 * @throws Exception 
 	 */
-	public LoginInfo login(LoginParam loginParam) throws Exception{
+	public LoginResp login(LoginParam loginParam) throws Exception{
 		/**
 		 * 一般校验
 		 */
@@ -105,15 +83,20 @@ public class LoginService {
 		loginDomain.setUserId(userDomain.getId());		
 		loginMapper.insert(loginDomain);
 		
+		
+		
+		
+		LoginResp loginResp = new LoginResp();
+		loginResp.setToken(token);
+		loginResp.setUserId(userDomain.getId());
+		loginResp.setSex(userDomain.getSex());
+		
 		/**
 		 * token 加入缓存 
 		 */
-		redisClient.set(computeCacheKey(token), userDomain.getId().toString(),expire);
+		UserCacheHelper.cacheLoginResp(token, loginResp);
 		
-		LoginInfo loginInfo = new LoginInfo();
-		loginInfo.setToken(token);
-		loginInfo.setUserDomain(userDomain);
-		return loginInfo;
+		return loginResp;
 		
 	}
 
@@ -138,7 +121,7 @@ public class LoginService {
 		/**
 		 * 从缓存删除 
 		 */
-		redisClient.delete(computeCacheKey(token));
+		UserCacheHelper.removeCachedLoginResp(token);
 	}
 	
 	/**
@@ -149,24 +132,32 @@ public class LoginService {
 	public Long queryUserId(String token){
 		if (StringTools.isNullOrEmpty(token))
 			return null;
-		String useIdStr = redisClient.get(token);
+		LoginResp loginResp = UserCacheHelper.getCachedLoginResp(token);
 		
-		if (StringTools.isNullOrEmpty(useIdStr)){
+		if (loginResp == null){
 			LoginDomain loginDomain = loginMapper.load(token);			
 			if (loginDomain == null){
 				return null;
 			}else{
 				if (loginDomain.getLogoutDate() != null)
 					return null;
-				useIdStr = loginDomain.getUserId().toString();
+
+				UserDomain userDomain = userService.loadUser(loginDomain.getUserId(), true);
+				
+				if (userDomain == null)
+					return null;
 				/**
 				 * 加入缓存,24小时
 				 */
-				redisClient.set(computeCacheKey(token), useIdStr,expire);
+				loginResp = new LoginResp();
+				loginResp.setToken(token);
+				loginResp.setSex(userDomain.getSex());
+				loginResp.setUserId(userDomain.getId());
+				UserCacheHelper.cacheLoginResp(token, loginResp);
 			}
 		}
 		
-		return new Long(useIdStr);
+		return loginResp.getUserId();
 		
 	}
 }
