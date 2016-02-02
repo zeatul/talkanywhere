@@ -21,7 +21,9 @@ import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
+import com.taw.pub.scene.response.QuerySceneInRegionResp;
 import com.taw.pub.scene.response.SceneResp;
+import com.taw.scene.configure.SceneServiceConfigure;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.FootPrintDomain;
 import com.taw.scene.domain.SceneDomain;
@@ -71,6 +73,9 @@ public class SceneService {
 	
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private SceneServiceConfigure sceneServiceConfigure;
 
 	private java.math.BigDecimal min(java.math.BigDecimal p1, java.math.BigDecimal p2) {
 		if (p1.compareTo(p2) == -1)
@@ -93,9 +98,12 @@ public class SceneService {
 	 * @return 数据库记录
 	 * @throws Exception
 	 */
-	public List<SceneResp> query(QuerySceneInRegionParam querySceneInRegionParam) throws Exception {
+	public QuerySceneInRegionResp query(QuerySceneInRegionParam querySceneInRegionParam) throws Exception {
 
 		CheckTools.check(querySceneInRegionParam);
+		
+		QuerySceneInRegionResp querySceneInRegionResp = new QuerySceneInRegionResp();
+		
 		/**
 		 * 找出四个角的最大最小经纬度
 		 */
@@ -110,11 +118,24 @@ public class SceneService {
 		maxLng = max(maxLng, mapPoint.getLng());
 		minLat = min(minLat, mapPoint.getLat());
 		maxLat = max(maxLat, mapPoint.getLat());
+		
+		int count = sceneExMapper.countSceneInRegion(minLng, maxLng, minLat, maxLat);
+		
+		querySceneInRegionResp.setSceneCount(0);
+		querySceneInRegionResp.setFuzziedSceneCount(0);
+		
+		if (count > sceneServiceConfigure.getMaxSceneCountOfQueryOnRegion()){
+			
+		}else{
 
-		List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
+			List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
+			
+			querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
+			querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
+		}
 
 		
-		return convert(sceneDomainList);
+		return querySceneInRegionResp;
 		
 	}
 	

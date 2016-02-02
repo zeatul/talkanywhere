@@ -5,6 +5,12 @@ import com.taw.pub.scene.com.MapPoint;
 
 public class QuerySceneInRegionParam {
 	
+	public Integer getBlk() {
+		return blk;
+	}
+	public void setBlk(Integer blk) {
+		this.blk = blk;
+	}
 	public Long getCity() {
 		return city;
 	}
@@ -38,6 +44,11 @@ public class QuerySceneInRegionParam {
 	 * 城市
 	 */
 	private Long city;
+	
+	/**
+	 * 地图缩放比率
+	 */
+	private Integer blk;
 
 
 }

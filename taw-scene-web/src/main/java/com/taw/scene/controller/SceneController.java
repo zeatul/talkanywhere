@@ -1,7 +1,6 @@
 package com.taw.scene.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
-import com.hawk.utility.DomainTools;
 import com.taw.pub.scene.request.ChangeOnlineCountParam;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
@@ -26,7 +24,6 @@ import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.SceneResp;
-import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.service.SceneService;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -60,13 +57,9 @@ public class SceneController {
 	 */
 	@RequestMapping(value = "/scene/region/search.do", method = RequestMethod.POST)
 	public void search(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		QuerySceneInRegionParam querySceneInRegionParam = HttpRequestHandler.handle(request, QuerySceneInRegionParam.class);
+		QuerySceneInRegionParam querySceneInRegionParam = HttpRequestHandler.handle(request, QuerySceneInRegionParam.class);		
 		
-		List<SceneResp> sceneRespList = sceneService.query(querySceneInRegionParam);
-		
-		
-		
-		HttpResponseHandler.handle(response, SuccessResponse.build(sceneRespList));
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.query(querySceneInRegionParam)));
 	}
 	
 	/**

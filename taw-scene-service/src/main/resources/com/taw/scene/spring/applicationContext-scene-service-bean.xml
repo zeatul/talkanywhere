@@ -9,7 +9,7 @@
 
 
 	<bean id="sceneServiceConfigure" class="com.taw.scene.configure.SceneServiceConfigure">
-		
+		<property name="maxSceneCountOfQueryOnRegion" value="100"/>		
 	</bean>
 
 

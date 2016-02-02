@@ -22,6 +22,17 @@ public interface SceneExMapper {
 	 */
 	public List<SceneDomain> querySceneInRegion(@Param("minLng") java.math.BigDecimal minLng, @Param("maxLng") java.math.BigDecimal maxLng,
 			@Param("minLat") java.math.BigDecimal minLat, @Param("maxLat") java.math.BigDecimal maxLat);
+	
+	/**
+	 * 查询指定矩形范围内的场景数量
+	 * @param minLng
+	 * @param maxLng
+	 * @param minLat
+	 * @param maxLat
+	 * @return
+	 */
+	public Integer countSceneInRegion(@Param("minLng") java.math.BigDecimal minLng, @Param("maxLng") java.math.BigDecimal maxLng,
+			@Param("minLat") java.math.BigDecimal minLat, @Param("maxLat") java.math.BigDecimal maxLat);
 
 
 	/**

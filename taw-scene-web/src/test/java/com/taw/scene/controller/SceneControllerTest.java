@@ -21,13 +21,14 @@ public class SceneControllerTest extends AbstractControllerTest{
 		super();
 	}
 	
-//	@Test
+	@Test
 	public void testSearch() throws Exception{
-		String path = contextPath + "/scene/search.do";
+		String path = contextPath + "/scene/region/search.do";
 		QuerySceneInRegionParam querySceneInRegionParam = new QuerySceneInRegionParam();
 		
-		querySceneInRegionParam.setLeftBottom(new MapPoint(new BigDecimal(-10000), new BigDecimal(-1000)));
-		querySceneInRegionParam.setRightTop((new MapPoint(new BigDecimal(10000), new BigDecimal(1000))));
+		querySceneInRegionParam.setLeftBottom(new MapPoint(new BigDecimal(120), new BigDecimal(32)));
+		querySceneInRegionParam.setRightTop((new MapPoint(new BigDecimal(122), new BigDecimal(30))));
+		querySceneInRegionParam.setBlk(10);
 		
 		String content = JsonTools.toJsonString(querySceneInRegionParam);
 		
@@ -57,7 +58,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+	
 	public void testSearchByName() throws Exception{
 		String path = contextPath + "/scene/name/search.do";
 		
