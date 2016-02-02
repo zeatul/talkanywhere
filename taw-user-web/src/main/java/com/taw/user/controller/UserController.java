@@ -24,6 +24,7 @@ import com.taw.pub.user.enums.EnumLoginKind;
 import com.taw.pub.user.request.CreateUserRequestParam;
 import com.taw.pub.user.request.LoginParam;
 import com.taw.pub.user.request.RestPasswordRequestParam;
+import com.taw.pub.user.request.UpdatePasswordParam;
 import com.taw.pub.user.response.LoginResp;
 import com.taw.pub.user.response.UserResp;
 import com.taw.user.auth.AuthThreadLocal;
@@ -118,7 +119,7 @@ public class UserController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/user/reset.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/pwd/reset.do", method = RequestMethod.POST)
 	public void resetPassword(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
 		RestPasswordRequestParam updatePasswordRequestParam = HttpRequestHandler.handle(request, RestPasswordRequestParam.class);
 		CheckTools.check(updatePasswordRequestParam);
@@ -130,7 +131,30 @@ public class UserController {
 		/**
 		 * 更新密码
 		 */
-		userService.updatePasswor(updatePasswordRequestParam.getParam());
+		userService.updatePassword(updatePasswordRequestParam.getParam());
+		/**
+		 * 返回信息
+		 */
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	/**
+	 * 更新密码，根据短信验证码做校验
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/user/pwd/update.do", method = RequestMethod.POST)
+	public void updatePassword(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{ 
+		UpdatePasswordParam updatePasswordRequestParam = HttpRequestHandler.handle(request, UpdatePasswordParam.class);
+		CheckTools.check(updatePasswordRequestParam);
+	
+		/**
+		 * 更新密码
+		 */
+		userService.updatePassword(updatePasswordRequestParam);
 		/**
 		 * 返回信息
 		 */

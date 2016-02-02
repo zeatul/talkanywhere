@@ -30,7 +30,7 @@ public class LoginControllerTest extends AbstractControllerTest {
 		param.setIp("127.0.0.1");
 		param.setMobile("13311658157");
 		param.setOsVersion("1111.11");
-		param.setPassword("newpwd");
+		param.setPassword("123456");
 		param.setKind(EnumLoginKind.PERMANENT.toString());
 
 		String content = JsonTools.toJsonString(param);

@@ -20,9 +20,12 @@ import com.taw.pub.user.enums.EnumUserKind;
 import com.taw.pub.user.enums.EnumUserStatus;
 import com.taw.pub.user.request.CreateUserParam;
 import com.taw.pub.user.request.ResetPasswordParam;
+import com.taw.pub.user.request.UpdatePasswordParam;
 import com.taw.user.configure.UserServiceConfigure;
 import com.taw.user.domain.UserDomain;
+import com.taw.user.exception.UnMatchUserPasswordException;
 import com.taw.user.exception.UserExistsException;
+import com.taw.user.exception.UserNotFoundException;
 import com.taw.user.mapper.UserMapper;
 
 @Service
@@ -94,13 +97,13 @@ public class UserService {
 	 * @param updatePasswordParam
 	 * @throws Exception
 	 */
-	public void updatePasswor(ResetPasswordParam updatePasswordParam) throws Exception{
+	public void updatePassword(ResetPasswordParam updatePasswordParam) throws Exception{
 		CheckTools.check(updatePasswordParam);
 		
 		UserDomain userDomain = queryUser(updatePasswordParam.getMobile());
 		
 		if (userDomain == null)
-			throw new Exception("User doen't exist!");
+			throw new UserNotFoundException();
 		
 		UserDomain updateUserDomain = new UserDomain();
 		updateUserDomain.setId(userDomain.getId());
@@ -108,10 +111,26 @@ public class UserService {
 		updateUserDomain.setUpdt(new Date());
 		
 		
-		int rowcount = userMapper.updateWithoutNull(updateUserDomain);
-		
-		System.out.println("rowcount="+rowcount);
+		userMapper.updateWithoutNull(updateUserDomain);
 				
+	}
+	
+	public void updatePassword(UpdatePasswordParam updatePasswordParam) throws Exception{
+		CheckTools.check(updatePasswordParam);
+		UserDomain userDomain = queryUser(updatePasswordParam.getMobile());
+		
+		if (userDomain == null)
+			throw new UserNotFoundException();
+		
+		String signedPassword = signedPassword(updatePasswordParam.getPwd());
+		if (!signedPassword.equals(userDomain.getPassword()))
+			throw new UnMatchUserPasswordException();
+		
+		UserDomain updateUserDomain = new UserDomain();
+		updateUserDomain.setId(userDomain.getId());
+		updateUserDomain.setPassword(signedPassword(updatePasswordParam.getNewPwd()));
+		updateUserDomain.setUpdt(new Date());
+		userMapper.updateWithoutNull(updateUserDomain);
 	}
 	
 	

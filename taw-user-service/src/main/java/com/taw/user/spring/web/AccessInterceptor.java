@@ -42,6 +42,8 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		protectedPaths.add("/user/contact/remove.do");
 		protectedPaths.add("/user/contact/search.do");
 		
+		protectedPaths.add("/user/pwd/update.do");
+		
 		protectedPaths.add("/scene/enter.do");
 		protectedPaths.add("/scene/leave.do");
 		

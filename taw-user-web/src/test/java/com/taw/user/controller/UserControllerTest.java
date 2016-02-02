@@ -10,6 +10,7 @@ import com.taw.pub.user.request.CreateUserParam;
 import com.taw.pub.user.request.CreateUserRequestParam;
 import com.taw.pub.user.request.ResetPasswordParam;
 import com.taw.pub.user.request.RestPasswordRequestParam;
+import com.taw.pub.user.request.UpdatePasswordParam;
 
 public class UserControllerTest extends AbstractControllerTest {
 
@@ -54,9 +55,9 @@ public class UserControllerTest extends AbstractControllerTest {
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testRestPassowrd() throws Exception{
-		String path = contextPath + "/user/reset.do";
+		String path = contextPath + "/user/pwd/reset.do";
 		
 		ResetPasswordParam resetPasswordParam = new ResetPasswordParam();
 		resetPasswordParam.setMobile("13311658157");
@@ -77,6 +78,23 @@ public class UserControllerTest extends AbstractControllerTest {
 		printSend(content);
 
 		String result = httpClientHelper.post(path, content, null);
+
+		printResult(result);
+	}
+	
+	@Test
+	public void testUpdatePassword() throws Exception {
+		String path = contextPath + "/user/pwd/update.do";
+		UpdatePasswordParam param = new UpdatePasswordParam();
+		param.setMobile("13311658157");
+		param.setPwd("newpwd");
+		param.setNewPwd("123456");
+		
+		String content = JsonTools.toJsonString(param);
+		
+		printSend(content);
+
+		String result = httpClientHelper.post(path, content,genAuthMap() );
 
 		printResult(result);
 	}
