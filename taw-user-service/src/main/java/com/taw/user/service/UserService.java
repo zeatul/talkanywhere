@@ -102,13 +102,13 @@ public class UserService {
 		if (userDomain == null)
 			throw new Exception("User doen't exist!");
 		
-		userDomain = new UserDomain();
-		userDomain.setId(userDomain.getId());
-		userDomain.setPassword(signedPassword(updatePasswordParam.getNewPwd()));
-		userDomain.setUpdt(new Date());
+		UserDomain updateUserDomain = new UserDomain();
+		updateUserDomain.setId(userDomain.getId());
+		updateUserDomain.setPassword(signedPassword(updatePasswordParam.getNewPwd()));
+		updateUserDomain.setUpdt(new Date());
 		
 		
-		int rowcount = userMapper.updateWithoutNull(userDomain);
+		int rowcount = userMapper.updateWithoutNull(updateUserDomain);
 		
 		System.out.println("rowcount="+rowcount);
 				
