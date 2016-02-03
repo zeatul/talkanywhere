@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,7 +82,11 @@ public class ConversationController {
 			if (StringTools.isNotNullOrEmpty(conversationDomain.getPics())){
 				conversationResp.setPicList(JsonTools.toArrayList(conversationDomain.getPics(),PicDescResp.class));
 			}
-			boolean onScene = SceneCacheHelper.getCachedOnlineScenes(conversationDomain.getPostUserId()).contains(conversationDomain.getSceneId());
+			boolean onScene = false;
+			Set<Long> set = SceneCacheHelper.getCachedOnlineScenes(conversationDomain.getPostUserId());
+			if (set != null){
+				onScene = set.contains(conversationDomain.getSceneId());				
+			}
 			conversationResp.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
 			result.add(conversationResp);
 		}
