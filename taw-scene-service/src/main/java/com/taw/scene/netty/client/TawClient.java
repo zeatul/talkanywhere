@@ -75,26 +75,27 @@ public class TawClient {
 		}
 	}
 
-	public static String TOKEN = null;
+	public static String TOKEN = null;	
+	public static String host = null;	
+	public static boolean DEV = false;	
 	public static void main(String[] args) throws Exception {
-
-		TOKEN = "def54e69058d4fd19e47a85e2c175579";
+		if (DEV){
+			TOKEN = "def54e69058d4fd19e47a85e2c175579";
+			host = "localhost";
+		}else{
+			TOKEN = "ff3bd2bb58b0443ba5d51a293e0c6bcd";
+			host = "211.157.19.83";
+		}		
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
 		applicationContext.setConfigLocations(new String[] { "classpath*:com/taw/user/spring/applicationContext-user-service-*.xml",
 				"classpath*:com/hawk/pub/spring/applicationContext-pub-*.xml " });
-		applicationContext.refresh();
-
-		String host = "localhost";
+		applicationContext.refresh();		
 		int port = 50090;
-
 		if (args != null && args.length > 1) {
 			host = args[0];
 			port = Integer.parseInt(args[1]);
 		}
-
 		new TawClient().connect(host, port);
-
-//		applicationContext.close();
 	}
 
 }
