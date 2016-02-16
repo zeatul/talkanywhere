@@ -38,6 +38,21 @@
 		WHERE name like #{name} 	
 	</select>
 	
+	<select id="querySceneGroupByCity"  resultType="FuzziedSceneDomain">
+		select 	city as "city",
+				avg(left_bottom_lat) as "leftBottomLat",
+        		avg(left_bottom_lng) as "leftBottomLng",
+       	 		count(1) as "count" 
+		 from t_tm_scene 
+		where center_lng &lt;= #{maxLng} 
+		  AND center_lng &gt;= #{minLng}
+		  AND center_lat &lt;= #{maxLat}
+		  AND center_lat &gt;= #{minLat}
+		group by city
+	</select>
+	
+	
+	
 	
 	
 </mapper>

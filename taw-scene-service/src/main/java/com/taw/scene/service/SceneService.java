@@ -125,11 +125,17 @@ public class SceneService {
 		querySceneInRegionResp.setFuzziedSceneCount(0);
 		
 		if (count > sceneServiceConfigure.getMaxSceneCountOfQueryOnRegion()){
-			
+			int blk = querySceneInRegionParam.getBlk();
+			if (blk >= 19){
+				List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
+				querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
+				querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
+			}else if (blk <=10){
+				
+			}
 		}else{
 
 			List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
-			
 			querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
 			querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
 		}
