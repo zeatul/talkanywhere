@@ -52,7 +52,16 @@
 	</select>
 	
 	
-	
-	
+	<select id="queryFuzziedScene"  resultType="FuzziedSceneDomain">
+		select round(cent_lng/#{density},0)*#{density} as leftBottomLng,
+			   round(cent_lat/#{density},0)*#{density} as leftBottomLat,
+			   count(1) as "count"
+		 from t_tm_scene 
+		where center_lng &lt;= #{maxLng} 
+		  AND center_lng &gt;= #{minLng}
+		  AND center_lat &lt;= #{maxLat}
+		  AND center_lat &gt;= #{minLat}
+	 group by leftBottomLng,leftBottomLat
+	</select>
 	
 </mapper>

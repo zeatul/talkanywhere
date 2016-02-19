@@ -16,12 +16,15 @@ public class GenerateSceneInitSql {
 		cityIdMap.put("上海", "10001");
 		cityIdMap.put("西安", "10002");
 		cityIdMap.put("成都", "10003");
+		cityIdMap.put("杭州", "10004");
 		provinceIdMap.put("上海", "1001");
 		provinceIdMap.put("西安", "1002");
 		provinceIdMap.put("成都", "1003");
+		provinceIdMap.put("杭州", "1004");
 		countryIdMap.put("上海", "1");
 		countryIdMap.put("西安", "1");
-		countryIdMap.put("成都", "1");		
+		countryIdMap.put("成都", "1");	
+		countryIdMap.put("杭州", "1");
 //		城市,点场景,名称,西南-经度,西南-纬度,东北-经度,东北-纬度,,
 		sceneList.add("上海,是,象屿都城中庭,121.3401550,31.1309730,,,,");
 		sceneList.add("上海,否,象屿都城,121.3392390,31.1300760,121.3420960,31.1323330,,");
@@ -97,8 +100,11 @@ public class GenerateSceneInitSql {
 			String str = sceneList.get(i);
 			String[] strArray = str.split(",");
 			StringBuilder sb = new StringBuilder();
-			sb.append("insert into t_tm_scene(id,name,kind,radius,center_lng,center_lat,left_top_lng,left_top_lat,left_bottom_lng,left_bottom_lat,right_top_lng,right_top_lat,right_bottom_lng,right_bottom_lat,country,province,city,address) values(");
+			sb.append("insert into t_tm_scene(id,crdt,updt,status,name,kind,radius,center_lng,center_lat,left_top_lng,left_top_lat,left_bottom_lng,left_bottom_lat,right_top_lng,right_top_lat,right_bottom_lng,right_bottom_lat,country,province,city,address) values(");
 			sb.append(i+1).append(","); //id
+			sb.append("current_timestamp").append(","); //crdt
+			sb.append("current_timestamp").append(","); //updt
+			sb.append("'1'").append(","); //status
 			sb.append("'").append(strArray[2]).append("'").append(","); //name
 			sb.append("'1'").append(","); //kind
 			

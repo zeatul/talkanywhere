@@ -1,5 +1,7 @@
 package com.taw.scene.service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,12 +23,14 @@ import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
+import com.taw.pub.scene.response.FuzziedSceneResp;
 import com.taw.pub.scene.response.QuerySceneInRegionResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.configure.SceneServiceConfigure;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.FootPrintDomain;
 import com.taw.scene.domain.SceneDomain;
+import com.taw.scene.domainex.FuzziedSceneDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.FootPrintNotExistsException;
 import com.taw.scene.exception.SceneNotExistsException;
@@ -119,26 +123,49 @@ public class SceneService {
 		minLat = min(minLat, mapPoint.getLat());
 		maxLat = max(maxLat, mapPoint.getLat());
 		
-		int count = sceneExMapper.countSceneInRegion(minLng, maxLng, minLat, maxLat);
+		
 		
 		querySceneInRegionResp.setSceneCount(0);
 		querySceneInRegionResp.setFuzziedSceneCount(0);
 		
-		if (count > sceneServiceConfigure.getMaxSceneCountOfQueryOnRegion()){
-			int blk = querySceneInRegionParam.getBlk();
-			if (blk >= 19){
-				List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
-				querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
-				querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
-			}else if (blk <=10){
-				
-			}
-		}else{
-
+		int blk = querySceneInRegionParam.getBlk();
+		if (blk >= 19 /*>=19,不需要模糊化*/){
 			List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
 			querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
 			querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
+		}else if (blk <=10 /*<=10 ,按照城市分组模糊化*/){
+			List<FuzziedSceneDomain>  fuzziedSceneDomainList = sceneExMapper.querySceneGroupByCity(minLng, maxLng, minLat, maxLat);
+			List<FuzziedSceneResp> fuzziedSceneRespsList = convert2(fuzziedSceneDomainList);
+			querySceneInRegionResp.setFuzziedSceneCount(fuzziedSceneRespsList.size());
+			querySceneInRegionResp.setFuzziedSceneResps(fuzziedSceneRespsList);
+		}else{
+			int count = sceneExMapper.countSceneInRegion(minLng, maxLng, minLat, maxLat);
+			
+			if (count > sceneServiceConfigure.getMaxSceneCountOfQueryOnRegion()){
+				/**
+				 * if ( 10<blk<19)
+				 * 计算 density
+				 */
+				double densityBase = 0.005;
+				double densityFactor = 100;
+				BigDecimal density = new BigDecimal( new DecimalFormat("#.00000").format( (densityBase * Math.pow(2, 20-blk))/densityFactor));
+				
+				/**
+				 * 根据密度做模糊化
+				 */
+				List<FuzziedSceneDomain>  fuzziedSceneDomainList = sceneExMapper.queryFuzziedScene(minLng, maxLng, minLat, maxLat, density);
+				List<FuzziedSceneResp> fuzziedSceneRespsList = convert2(fuzziedSceneDomainList);
+				querySceneInRegionResp.setFuzziedSceneCount(fuzziedSceneRespsList.size());
+				querySceneInRegionResp.setFuzziedSceneResps(fuzziedSceneRespsList);
+			}else{
+
+				List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
+				querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
+				querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
+			}
 		}
+		
+		
 
 		
 		return querySceneInRegionResp;
@@ -160,6 +187,18 @@ public class SceneService {
 		}
 		
 		return sceneRespsList;
+	}
+	
+	private List<FuzziedSceneResp> convert2(List<FuzziedSceneDomain> fuzziedSceneDomainList){
+		if (CollectionTools.isNullOrEmpty(fuzziedSceneDomainList)) {
+			return new ArrayList<FuzziedSceneResp>();
+		}
+		
+		List<FuzziedSceneResp> fuzziedSceneRespList = new ArrayList<FuzziedSceneResp>();
+		
+		DomainTools.copy(fuzziedSceneDomainList, fuzziedSceneRespList, FuzziedSceneResp.class);
+		
+		return fuzziedSceneRespList;
 	}
 
 	public List<SceneResp> query(QuerySceneByNameParam querySceneByNameParam) throws Exception {
@@ -472,5 +511,7 @@ public class SceneService {
 		return sceneStatCount;
 	}
 
-	
+	public List<FuzziedSceneDomain> testFuzzied(){
+		return sceneExMapper.queryFuzziedScene(new BigDecimal(-1000), new BigDecimal(1000), new BigDecimal(-1000), new BigDecimal(1000), new BigDecimal(0.91922));
+	}
 }

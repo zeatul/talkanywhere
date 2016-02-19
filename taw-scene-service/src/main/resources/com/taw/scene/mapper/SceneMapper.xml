@@ -8,6 +8,7 @@
 		id as "id" ,
 		name as "name" ,
 		kind as "kind" ,
+		status as "status" ,
 		radius as "radius" ,
 		center_lng as "centerLng" ,
 		center_lat as "centerLat" ,
@@ -25,7 +26,9 @@
 		county as "county" ,
 		town as "town" ,
 		region as "region" ,
-		address as "address" 
+		address as "address" ,
+		crdt as "crdt" ,
+		updt as "updt" 
 	</sql>
 	
 	<sql id="where">
@@ -33,6 +36,7 @@
 			<if test="id != null"> AND id = #{id}  </if>
 			<if test="name != null"> AND name = #{name}  </if>
 			<if test="kind != null"> AND kind = #{kind}  </if>
+			<if test="status != null"> AND status = #{status}  </if>
 			<if test="radius != null"> AND radius = #{radius}  </if>
 			<if test="centerLng != null"> AND center_lng = #{centerLng}  </if>
 			<if test="centerLat != null"> AND center_lat = #{centerLat}  </if>
@@ -51,6 +55,8 @@
 			<if test="town != null"> AND town = #{town}  </if>
 			<if test="region != null"> AND region = #{region}  </if>
 			<if test="address != null"> AND address = #{address}  </if>
+			<if test="crdt != null"> AND crdt = #{crdt}  </if>
+			<if test="updt != null"> AND updt = #{updt}  </if>
 		</trim>	
 	</sql>
 	
@@ -59,6 +65,7 @@
 			AND id = #{old_id}
 			AND name = #{old_name}
 			AND kind = #{old_kind}
+			AND status = #{old_status}
 			AND radius = #{old_radius}
 			AND center_lng = #{old_centerLng}
 			AND center_lat = #{old_centerLat}
@@ -77,6 +84,8 @@
 			AND town = #{old_town}
 			AND region = #{old_region}
 			AND address = #{old_address}
+			AND crdt = #{old_crdt}
+			AND updt = #{old_updt}
 		</trim>
 	</sql>
 	
@@ -84,6 +93,7 @@
 		<set>
 			name = #{name},
 			kind = #{kind},
+			status = #{status},
 			radius = #{radius},
 			center_lng = #{centerLng},
 			center_lat = #{centerLat},
@@ -102,6 +112,8 @@
 			town = #{town},
 			region = #{region},
 			address = #{address},
+			crdt = #{crdt},
+			updt = #{updt},
 		</set>
 	</sql>
 	
@@ -109,6 +121,7 @@
 		<set>
 				<if test="name != null">name = #{name},</if>
 				<if test="kind != null">kind = #{kind},</if>
+				<if test="status != null">status = #{status},</if>
 				<if test="radius != null">radius = #{radius},</if>
 				<if test="centerLng != null">center_lng = #{centerLng},</if>
 				<if test="centerLat != null">center_lat = #{centerLat},</if>
@@ -127,6 +140,8 @@
 				<if test="town != null">town = #{town},</if>
 				<if test="region != null">region = #{region},</if>
 				<if test="address != null">address = #{address},</if>
+				<if test="crdt != null">crdt = #{crdt},</if>
+				<if test="updt != null">updt = #{updt},</if>
 		</set>
 	</sql>
 	
@@ -164,6 +179,7 @@
 				id,				
 				name,				
 				kind,				
+				status,				
 				radius,				
 				center_lng,				
 				center_lat,				
@@ -181,12 +197,15 @@
 				county,				
 				town,				
 				region,				
-				address				
+				address,				
+				crdt,				
+				updt				
 		)		
 		VALUES (	
 			#{id},
 			#{name},
 			#{kind},
+			#{status},
 			#{radius},
 			#{centerLng},
 			#{centerLat},
@@ -204,7 +223,9 @@
 			#{county},
 			#{town},
 			#{region},
-			#{address}
+			#{address},
+			#{crdt},
+			#{updt}
 		) 
 	</insert>
 	

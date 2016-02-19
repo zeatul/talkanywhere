@@ -1,6 +1,6 @@
 package com.taw.scene.domain;
 import java.io.Serializable;
-
+import java.util.Date;
 
 
 
@@ -22,6 +22,9 @@ public class SceneDomain implements Serializable {
 	
 	/*场景类型*/
 	private String kind;
+	
+	/*状态*/
+	private String status;
 	
 	/*半径(米)*/
 	private Integer radius;
@@ -77,6 +80,12 @@ public class SceneDomain implements Serializable {
 	/*全地址*/
 	private String address;
 	
+	/*创建时间*/
+	private Date crdt;
+	
+	/*修改时间*/
+	private Date updt;
+	
 	
 	/**
 	 * 
@@ -124,6 +133,22 @@ public class SceneDomain implements Serializable {
 	 */	
 	public void setKind (String kind) {
 		this.kind = kind;
+	}
+	
+	/**
+	 * 
+	 * @return 状态
+	 */
+	public String getStatus(){
+		return status;
+	}
+	
+	/**
+	 * 
+	 * @param status 状态
+	 */	
+	public void setStatus (String status) {
+		this.status = status;
 	}
 	
 	/**
@@ -412,6 +437,38 @@ public class SceneDomain implements Serializable {
 	 */	
 	public void setAddress (String address) {
 		this.address = address;
+	}
+	
+	/**
+	 * 
+	 * @return 创建时间
+	 */
+	public Date getCrdt(){
+		return crdt;
+	}
+	
+	/**
+	 * 
+	 * @param crdt 创建时间
+	 */	
+	public void setCrdt (Date crdt) {
+		this.crdt = crdt;
+	}
+	
+	/**
+	 * 
+	 * @return 修改时间
+	 */
+	public Date getUpdt(){
+		return updt;
+	}
+	
+	/**
+	 * 
+	 * @param updt 修改时间
+	 */	
+	public void setUpdt (Date updt) {
+		this.updt = updt;
 	}
 	
 

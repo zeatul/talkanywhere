@@ -194,6 +194,7 @@ create table t_tm_scene
    id                   bigint(20) not null comment '主键',
    name                 varchar(100) comment '场景名称',
    kind                 char(1) comment '场景类型',
+   status               char(1) comment '状态',
    radius               integer comment '半径(米)',
    center_lng           decimal(17,10) comment '中心点经度',
    center_lat           decimal(17,10) comment '中心点纬度',
@@ -212,6 +213,8 @@ create table t_tm_scene
    town                 bigint(20) comment '乡镇',
    region               bigint(20) comment '地区/商圈',
    address              varchar(1000) comment '全地址',
+   crdt                 timestamp(3) null comment '创建时间',
+   updt                 timestamp(3) null comment '修改时间',
    primary key (id)
 )
 engine=innodb default charset=utf8;

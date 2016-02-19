@@ -57,4 +57,16 @@ public interface SceneExMapper {
 	 */
 	public List<FuzziedSceneDomain> querySceneGroupByCity(@Param("minLng") java.math.BigDecimal minLng, @Param("maxLng") java.math.BigDecimal maxLng,
 			@Param("minLat") java.math.BigDecimal minLat, @Param("maxLat") java.math.BigDecimal maxLat);
+	
+	/**
+	 * 按照密度做模糊化
+	 * @param minLng
+	 * @param maxLng
+	 * @param minLat
+	 * @param maxLat
+	 * @return
+	 */
+	public List<FuzziedSceneDomain> queryFuzziedScene(@Param("minLng") java.math.BigDecimal minLng, @Param("maxLng") java.math.BigDecimal maxLng,
+			@Param("minLat") java.math.BigDecimal minLat, @Param("maxLat") java.math.BigDecimal maxLat,  @Param("density") java.math.BigDecimal density);
+	
 }
