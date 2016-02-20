@@ -17,7 +17,7 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		super();
 	}
 	
-	@Test
+//	@Test
 	public void testSendConversation() throws Exception{
 		String path = contextPath + "/scene/conversation/send.do";
 		
@@ -33,6 +33,8 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		sendConverstaionParam.setPostNickname("ab246f68-6617-493b-aab5-305e2e03aacb");
 		sendConverstaionParam.setSceneId(1l);
 		
+		
+		
 
 		String content = JsonTools.toJsonString(sendConverstaionParam);
 		printSend(content);
@@ -41,14 +43,15 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-//	@Test
+	@Test
 	public void testSearchConversation() throws Exception{
 		String path = contextPath + "/scene/conversation/search.do";
 		SearchConversationParam param = new SearchConversationParam();
 		param.setOffset(0);
-		param.setLimit(2);
-		param.setSceneId(1L);
-		param.setMinPostDate(DateTools.convert("2015-09-09 12:10:20.111", DateTools.DATETIME_SSS_PATTERN));
+		param.setLimit(6);
+		param.setSceneId(41L);
+		param.setOrder(0);
+		param.setMaxPostDate(DateTools.convert("2016-02-20 16:46:20.111", DateTools.DATETIME_SSS_PATTERN));
 		
 		String content = JsonTools.toJsonString(param);
 		printSend(content);

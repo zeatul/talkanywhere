@@ -20,7 +20,7 @@ public abstract class AbstractControllerTest {
 		context = new ClassPathXmlApplicationContext(configPath);
 	}
 	
-	private boolean TEST = false;
+	private boolean TEST = true;
 
 	
 	protected HttpClientHelper httpClientHelper;
