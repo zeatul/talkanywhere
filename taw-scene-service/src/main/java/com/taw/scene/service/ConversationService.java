@@ -248,12 +248,23 @@ public class ConversationService {
 		Date maxPostDate = searchConverstaionParam.getMaxPostDate();
 		if (minPostDate == null && maxPostDate == null )
 			throw new RuntimeException("MinPostDate and MaxPostDate shouldn't be null at the same time");
+		
+		
 		String orderBy = "post_date desc";
+		/**
+		 * order == 1 : 按时间增序
+		 * 否则 ：按时间倒序
+		 */
+		if (searchConverstaionParam.getOrder().intValue() == 1){
+			orderBy = "post_date asc";
+		}
 		Map<String,Object> params = SqlParamHelper.generatePageParams(orderBy, searchConverstaionParam.getOffset(), searchConverstaionParam.getLimit());
 		params.put("minPostDate", minPostDate);
 		params.put("maxPostDate", maxPostDate);
 		params.put("sceneId", searchConverstaionParam.getSceneId());
 		params.put("postUserId", searchConverstaionParam.getPostUserId());
+		
+		
 		List<ConversationDomain> list = conversationExMapper.searchConversationInScene(params);
 		
 		return list;

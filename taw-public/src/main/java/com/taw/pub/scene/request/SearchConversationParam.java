@@ -2,6 +2,8 @@ package com.taw.pub.scene.request;
 
 import java.util.Date;
 
+import com.hawk.pub.enums.EnumBoolean;
+import com.hawk.utility.check.CheckEnum;
 import com.hawk.utility.check.CheckNull;
 
 public class SearchConversationParam {
@@ -108,7 +110,22 @@ public class SearchConversationParam {
 	private Long postUserId;
 	
 	
-	
+	public Integer getOrder() {
+		return order;
+	}
+
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
+
+	/**
+	 * true：前进，false :
+	 */
+	@CheckNull
+	@CheckEnum(parser=EnumBoolean.class)
+	private Integer order ;
 	
 
 }

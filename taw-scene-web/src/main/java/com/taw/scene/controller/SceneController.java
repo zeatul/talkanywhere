@@ -164,10 +164,10 @@ public class SceneController {
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 	
-	待测试
-	@RequestMapping(value = "/scene/fuzzied.do", method = RequestMethod.POST)
-	public void testQueryFuzziedScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.testFuzzied()));
-	}
+//	待测试
+//	@RequestMapping(value = "/scene/fuzzied.do", method = RequestMethod.POST)
+//	public void testQueryFuzziedScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+//		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.testFuzzied()));
+//	}
 
 }
