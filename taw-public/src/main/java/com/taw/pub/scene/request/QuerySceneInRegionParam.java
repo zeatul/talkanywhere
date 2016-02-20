@@ -48,6 +48,7 @@ public class QuerySceneInRegionParam {
 	/**
 	 * 地图缩放比率
 	 */
+	@CheckNull
 	private Integer blk;
 
 
