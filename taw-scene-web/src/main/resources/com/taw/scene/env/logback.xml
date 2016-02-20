@@ -53,13 +53,13 @@
 		<appender-ref ref="rolling" />
 	</logger>
 	
-	<logger name="org.apache.ibatis" level="DEBUG">
+	<!-- <logger name="org.apache.ibatis" level="DEBUG">
 		<appender-ref ref="rolling" />
 	</logger>
 	
 	<logger name="java.sql" level="debug">
 	    <appender-ref ref="rolling" />
-	</logger> 
+	</logger>  -->
 	
 	
 
