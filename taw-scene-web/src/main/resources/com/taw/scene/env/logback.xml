@@ -40,10 +40,15 @@
 	
 	
 
-	<!-- <logger name="org.apache.ibatis" additivity="true" level="debug">
+	<logger name="org.apache.ibatis" additivity="true" level="debug">
 		<appender-ref ref="rolling" />
 		<appender-ref ref="stdout" />
-	</logger>   -->
+	</logger>
+	
+	<logger name="java.sql" additivity="true" level="debug">
+		<appender-ref ref="rolling" />
+		<appender-ref ref="stdout" />
+	</logger>
 
 	<logger name="com.taw" additivity="false" level="info">
 		<appender-ref ref="rolling" />
@@ -53,13 +58,7 @@
 		<appender-ref ref="rolling" />
 	</logger>
 	
-	<!-- <logger name="org.apache.ibatis" level="DEBUG">
-		<appender-ref ref="rolling" />
-	</logger>
 	
-	<logger name="java.sql" level="debug">
-	    <appender-ref ref="rolling" />
-	</logger>  -->
 	
 	
 

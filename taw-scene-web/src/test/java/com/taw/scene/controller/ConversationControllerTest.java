@@ -17,7 +17,7 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		super();
 	}
 	
-//	@Test
+	@Test
 	public void testSendConversation() throws Exception{
 		String path = contextPath + "/scene/conversation/send.do";
 		
@@ -43,7 +43,7 @@ public class ConversationControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testSearchConversation() throws Exception{
 		String path = contextPath + "/scene/conversation/search.do";
 		SearchConversationParam param = new SearchConversationParam();
