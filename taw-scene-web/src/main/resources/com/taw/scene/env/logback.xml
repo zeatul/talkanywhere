@@ -45,7 +45,7 @@
 		<appender-ref ref="stdout" />
 	</logger>
 	
-	<logger name="java.sql" additivity="true" level="debug">
+	<logger name="java.sqle" additivity="true" level="debug">
 		<appender-ref ref="rolling" />
 		<appender-ref ref="stdout" />
 	</logger>

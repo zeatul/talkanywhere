@@ -8,6 +8,25 @@
 			<pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
+	
+	
+	<logger name="org.apache.ibatis" additivity="true" level="debug">
+		<appender-ref ref="stdout" />
+	</logger>
+	
+	<logger name="java.sqle" additivity="true" level="debug">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="com.taw" additivity="false" level="info">
+		<appender-ref ref="stdout" />
+	</logger>
+	
+	<logger name="com.hawk" additivity="false" level="info">
+		<appender-ref ref="stdout" />
+	</logger>
+	
+	
 
 
 	<root level="info">
