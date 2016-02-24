@@ -57,7 +57,7 @@ public class BookmarkService {
 	
 	public List<BookmarkDomain> search(QueryBookmarkParam queryBookmarkParam) throws Exception{
 		CheckTools.check(queryBookmarkParam);
-		Map<String,Object> params = SqlParamHelper.generatePageParams("last_enter_time desc", queryBookmarkParam.getOffset(),queryBookmarkParam.getLimit());
+		Map<String,Object> params = SqlParamHelper.generatePageParams("book_time desc", queryBookmarkParam.getOffset(),queryBookmarkParam.getLimit());
 		params.put("userId", queryBookmarkParam.getUserId());
 		return bookmarkMapper.loadDynamic(params);
 	}
