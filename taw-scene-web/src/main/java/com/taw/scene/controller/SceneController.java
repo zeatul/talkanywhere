@@ -22,6 +22,7 @@ import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
+import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.service.SceneService;
@@ -145,6 +146,7 @@ public class SceneController {
 	public void changeOnlineCount(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
 		changeOnlineCountParam.setUserId(AuthThreadLocal.getUserId());
+		changeOnlineCountParam.setToken(AuthThreadLocal.getToken());
 		sceneService.ChangeOnlineCount(changeOnlineCountParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
@@ -162,6 +164,13 @@ public class SceneController {
 		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
 		sceneService.ChangeOnlineCount(changeOnlineCountParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	@RequestMapping(value = "/scene/online/users.do", method = RequestMethod.POST)
+	public void queryUsersOnlineScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		QueryUsersOnlineSceneParam queryUsersOnlineSceneParam = HttpRequestHandler.handle(request, QueryUsersOnlineSceneParam.class); 
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.queryUsersOnlineScene(queryUsersOnlineSceneParam)));
 	}
 	
 //	待测试

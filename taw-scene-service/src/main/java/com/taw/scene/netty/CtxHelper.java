@@ -9,11 +9,13 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.hawk.pub.spring.FrameworkContext;
 import com.hawk.utility.redis.RedisClient;
 import com.taw.scene.jms.Notification;
+import com.taw.scene.service.SceneCacheHelper;
 import com.taw.scene.service.SceneService;
 import com.taw.user.service.LoginService;
 
@@ -54,7 +56,7 @@ public class CtxHelper {
 	}
 
 	public static boolean existClientLogin(String token) {
-		return redisClient.exists(genClientLoginKey(token));
+		return redisClient.exist(genClientLoginKey(token));
 	}
 
 	/**
@@ -117,7 +119,7 @@ public class CtxHelper {
 	}
 
 	/**
-	 * 清除channelID对应的token注册的场景对应通道 清除用户id和通道的对应关系 清除channelId和token的对应关系
+	 * 清除channelID对应的token注册的场景对应通道 清除用户id和通道的对应关系 清除channelId和token的对应关系,清除场景缓存的物理在场用户
 	 * 
 	 * @param channelId
 	 */
@@ -152,6 +154,16 @@ public class CtxHelper {
 				ChannelGroup channelGroup = userIdChannelMap.get(userId);
 				if (channelGroup != null) {
 					channelGroup.remove(ctx.channel());
+				}
+			}
+			
+			/**
+			 * 清除场景缓存的物理在场用户
+			 */
+			Set<Long> onlineSceneIds = SceneCacheHelper.getCachedOnlineScenes(userId);
+			if (onlineSceneIds != null){
+				for (Long sceneId : onlineSceneIds){
+					SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
 				}
 			}
 

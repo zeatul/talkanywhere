@@ -1,5 +1,8 @@
 package com.hawk.utility.redis;
 
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,6 +100,8 @@ public class RedisClient {
 			@Override
 			public String exec(ShardedJedis shardedJedis) {
 				
+				
+				
 				return shardedJedis.get(key);
 			}
 
@@ -107,6 +112,110 @@ public class RedisClient {
 			}
 		}, false);
 	}
+	
+	/**
+	 * 添加set 元素
+	 * @param key set 的 key
+	 * @param values set 内元素
+	 */
+	public void  sset(final String key ,final List<String> values){
+		execute(new Executor() {
+
+			@Override
+			public <T> T exec(ShardedJedisPipeline pipeline) {
+				for (String value : values){
+					pipeline.sadd(key, value);
+				}
+				return null;
+			}
+
+			@Override
+			public <T> T exec(ShardedJedis shardedJedis) {
+				for (String value : values){
+					shardedJedis.sadd(key, value);
+				}
+				return null;
+			}
+		}, false);
+	}
+	
+	/**
+	 * 删除set元素
+	 * @param key
+	 * @param values
+	 */
+	public void sdel(final String key , final List<String> values){
+		execute(new Executor() {
+
+			@Override
+			public <T> T exec(ShardedJedisPipeline pipeline) {
+				for (String value : values){
+					pipeline.srem(key, value);
+				}
+				return null;
+			}
+
+			@Override
+			public <T> T exec(ShardedJedis shardedJedis) {
+				for (String value : values){
+					shardedJedis.srem(key, value);
+				}
+				return null;
+			}
+		}, false);
+
+	}
+	
+	/**
+	 * 判断value 是否是 key 对应的set 成员
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public boolean sexist(final String key , final String value){
+		return execute(new Executor() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public Boolean exec(ShardedJedis shardedJedis) {
+				// TODO Auto-generated method stub
+				return shardedJedis.sismember(key, value);
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public Boolean exec(ShardedJedisPipeline pipeline) {
+				// TODO Auto-generated method stub
+				return pipeline.sismember(key, value).get();
+			}
+
+		}, false);
+	}
+	
+	/**
+	 * 返回key 对应的set的全部成员
+	 * @param key
+	 * @return
+	 */
+	public Set<String> sget(final String key){
+		return execute(new Executor() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public Set<String> exec(ShardedJedis shardedJedis) {
+				
+				
+				
+				return shardedJedis.smembers(key);
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public Set<String> exec(ShardedJedisPipeline pipeline) {
+				return pipeline.smembers(key).get();
+			}
+		}, false);
+	}
 
 	/**
 	 * 判断key值是否存在
@@ -114,7 +223,7 @@ public class RedisClient {
 	 * @param key
 	 * @return
 	 */
-	public boolean exists(final String key) {
+	public boolean exist(final String key) {
 		return execute(new Executor() {
 
 			@SuppressWarnings("unchecked")

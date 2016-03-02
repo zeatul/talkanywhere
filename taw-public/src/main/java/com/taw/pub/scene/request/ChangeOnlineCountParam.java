@@ -5,6 +5,14 @@ import java.util.List;
 public class ChangeOnlineCountParam {
 	
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -40,5 +48,7 @@ public class ChangeOnlineCountParam {
 	private List<Long> outList;
 	
 	private Long userId;
+	
+	private String token;
 
 }

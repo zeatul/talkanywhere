@@ -77,6 +77,10 @@ public class MessageService {
 		
 		Long senderId = sendMessageParam.getSenderId();
 		Long sceneId = sendMessageParam.getSceneId();
+		
+		/**
+		 * 进入场景 或者 物理在场
+		 */
 		Long senderFpdId = sendMessageParam.getSenderFpdId();
 		
 		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(senderFpdId,true);

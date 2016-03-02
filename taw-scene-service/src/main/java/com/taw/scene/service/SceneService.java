@@ -3,7 +3,9 @@ package com.taw.scene.service;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,10 @@ import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
+import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.com.MapPoint;
+import com.taw.pub.scene.com.UserOnlineScene;
 import com.taw.pub.scene.enums.EnumLeaveType;
 import com.taw.pub.scene.request.ChangeOnlineCountParam;
 import com.taw.pub.scene.request.EnterSceneParam;
@@ -22,6 +26,7 @@ import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
+import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.FuzziedSceneResp;
 import com.taw.pub.scene.response.QuerySceneInRegionResp;
@@ -416,6 +421,48 @@ public class SceneService {
 			return null;
 		return footPrintDetailExMapper.queryUnLeavedSceneId(token);
 	}
+	
+	public String queryNickname(String token , Long sceneId,Long userId){
+		
+		if (StringTools.isNullOrEmpty(token) || sceneId == null ||userId == null)
+			return null;
+		
+		String nickname = SceneCacheHelper.getCachedNickname(token, sceneId);
+		
+		if (nickname != null)
+			return nickname;
+		
+		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(token, sceneId, userId);
+		if(list == null || list.size() == 0)
+			return null;
+		
+		nickname =  list.get(0).getNickname();
+		
+		SceneCacheHelper.cacheNickname(token, sceneId, nickname);
+		
+		return nickname;
+	}
+	
+	/**
+	 * 查询指定场景的全部物理在线用户
+	 * @param sceneId
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<UserOnlineScene> queryUsersOnlineScene( QueryUsersOnlineSceneParam queryUsersOnlineSceneParam ) throws Exception{
+		
+		CheckTools.check(queryUsersOnlineSceneParam);
+		
+		Long sceneId = queryUsersOnlineSceneParam.getSceneId();
+		
+		List<UserOnlineScene> list = SceneCacheHelper.getCachedSceneOnlineUsers(sceneId);
+		for (UserOnlineScene userOnlineScene : list){
+			String nickname = queryNickname(userOnlineScene.getToken(), sceneId, userOnlineScene.getUserId());
+			userOnlineScene.setToken(null);
+			userOnlineScene.setNickname(nickname);
+		}
+		return list;
+	}
 
 	/**
 	 * 根据前台通知，修改在场人数
@@ -428,6 +475,8 @@ public class SceneService {
 			return;
 		
 		Long userId = changeOnlineCountParam.getUserId();
+		
+		String token = changeOnlineCountParam.getToken();
 		
 		List<Long> scendIdList = changeOnlineCountParam.getInList();
 		
@@ -448,8 +497,10 @@ public class SceneService {
 					}else{
 						if (!onlineSceneIdSet.contains(sceneId)){  //登录用户维护online状态和 场景online 统计值
 							onlineSceneIdSet.add(sceneId);
-							sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() + 1);
+							sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() + 1);							
 						}
+						/* 缓存指定物理场景的物理在线用户*/							
+						SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token);
 					}
 					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
 				}
@@ -475,6 +526,8 @@ public class SceneService {
 							onlineSceneIdSet.remove(sceneId);
 							sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() - 1);
 						}
+						/* 删除指定物理场景的物理在线用户*/							
+						SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
 					}
 					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
 				}
@@ -493,6 +546,9 @@ public class SceneService {
 	}
 
 	private SceneStatCount querySceneStatCount(Long sceneId) throws Exception {
+		
+		
+		
 		SceneStatCount sceneStatCount = SceneCacheHelper.getCachedSceneStatCount(sceneId);
 		if (sceneStatCount == null) {
 			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();

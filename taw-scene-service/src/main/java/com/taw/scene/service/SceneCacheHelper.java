@@ -1,5 +1,8 @@
 package com.taw.scene.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.hawk.pub.spring.FrameworkContext;
@@ -7,6 +10,7 @@ import com.hawk.utility.CollectionTools;
 import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.redis.RedisClient;
+import com.taw.pub.scene.com.UserOnlineScene;
 import com.taw.scene.domain.SceneDomain;
 
 public class SceneCacheHelper {
@@ -27,6 +31,16 @@ public class SceneCacheHelper {
 	 * 缓存用户物理在线场景 online scene
 	 */
 	public final static String CACHED_USER_ONLINE_SCENES = "sceneOnline_";
+	
+	/**
+	 * 缓存场景物理在场的用户的id,nickname
+	 */
+	public final static String CACHED_SCENE_ONLINE_USERS = "usersOnlineScene_";
+	
+	/**
+	 * 缓存用户的nickname
+	 */
+	public final static String CACHED_SCENE_NICKNAME = "nickname_";
 
 	public static class SceneStatCount {
 		public Integer getEnterCount() {
@@ -104,8 +118,9 @@ public class SceneCacheHelper {
 
 		String jsonStr = redisClient.get(key);
 
-		if (StringTools.isNullOrEmpty(jsonStr))
-			return null;
+		if (StringTools.isNullOrEmpty(jsonStr)){
+			return new HashSet<Long>();
+		}
 
 		return JsonTools.toHashSet(jsonStr, Long.class);
 	}
@@ -121,5 +136,92 @@ public class SceneCacheHelper {
 			redisClient.set(key, jsonStr);			
 		}
 
+	}
+	
+	/**
+	 * 缓存用户在场景的昵称
+	 * @param token
+	 * @param scendId
+	 * @param nickname
+	 */
+	public static void cacheNickname(String token , Long sceneId ,String nickname){
+		if (StringTools.isNullOrEmpty(token) || sceneId == null || StringTools.isNullOrEmpty(nickname))
+			return ;
+		String key = CACHED_SCENE_NICKNAME + token + "_" + sceneId;
+		int expire = 3600 * 24;
+		redisClient.set(key, nickname, expire);
+	}
+	
+	/**
+	 * 获取缓存的用户昵称
+	 * @param token
+	 * @param scendId
+	 * @return
+	 */
+	public static String getCachedNickname(String token , Long sceneId){
+		if (StringTools.isNullOrEmpty(token) || sceneId == null )
+			return null;
+		
+		String key = CACHED_SCENE_NICKNAME + token + "_" + sceneId;
+		
+		return redisClient.get(key);
+	}
+
+	/**
+	 * 缓存指定物理场景的物理在线用户
+	 * @param sceneId
+	 * @param userOnlineScene
+	 */
+	public static void cacheSceneOnlineUser(Long sceneId,Long userId,String token ){
+		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
+		
+		UserOnlineScene userOnlineScene = new UserOnlineScene ();
+		
+		userOnlineScene.setToken(token);
+		userOnlineScene.setUserId(userId);
+		
+		List<String> list = new ArrayList<String>(1);
+		
+		list.add(JsonTools.toJsonString(userOnlineScene));
+		
+		redisClient.sset(key, list);
+	}
+	
+	/**
+	 * 查询缓存的指定物理场景的全部在线用户
+	 * @param sceneId
+	 * @return
+	 */
+	public static List<UserOnlineScene> getCachedSceneOnlineUsers(Long sceneId){
+		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
+		
+		List<UserOnlineScene> list = new ArrayList<UserOnlineScene>();
+		
+		Set<String> items = redisClient.sget(key);
+		
+		if (items != null){
+			for (String item : items){
+				UserOnlineScene userOnlineScene = JsonTools.toObject(item, UserOnlineScene.class);
+				list.add(userOnlineScene);
+			}
+		}
+		
+		return list ;
+	}
+	
+	/**
+	 * 删除指定物理场景的物理在线用户
+	 * @param sceneId
+	 * @param userId
+	 * @param token
+	 */
+	public static void removeCachedSceneOnlineUser(Long sceneId , Long userId ,String token){
+		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
+		UserOnlineScene userOnlineScene = new UserOnlineScene ();		
+		userOnlineScene.setToken(token);
+		userOnlineScene.setUserId(userId);
+		List<String> list = new ArrayList<String>(1);
+		list.add(JsonTools.toJsonString(userOnlineScene));
+		redisClient.sdel(key, list);
 	}
 }

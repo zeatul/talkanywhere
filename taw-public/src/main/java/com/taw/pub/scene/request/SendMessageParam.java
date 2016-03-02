@@ -91,8 +91,7 @@ public class SendMessageParam {
 	
 	/**
 	 * 接收者在场景唯一标识
-	 */
-	@CheckNull
+	 */	
 	private Long receiverFpdId;
 	
 	/**

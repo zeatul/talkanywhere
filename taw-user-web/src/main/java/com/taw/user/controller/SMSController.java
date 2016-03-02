@@ -77,7 +77,7 @@ public class SMSController {
 		/**
 		 * 一分钟内不重发
 		 */
-		if (redisClient.exists(timeControlKey)){
+		if (redisClient.exist(timeControlKey)){
 			throw new SendMessageQuickerException();
 		}
 		
