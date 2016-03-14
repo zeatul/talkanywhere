@@ -28,6 +28,9 @@ public class PicDescResp {
 		this.uuid = uuid;
 	}
 	
+	public PicDescResp(){
+		
+	}
 	
 
 }
