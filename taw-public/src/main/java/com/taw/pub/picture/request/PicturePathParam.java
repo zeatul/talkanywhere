@@ -1,18 +1,26 @@
 package com.taw.pub.picture.request;
 
+import java.util.List;
+
 import com.hawk.utility.check.CheckNull;
+import com.hawk.utility.check.CheckSize;
 
 public class PicturePathParam {
 	
-	public String getUuid() {
-		return uuid;
+	
+
+	
+
+	public List<String> getUuids() {
+		return uuids;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setUuids(List<String> uuids) {
+		this.uuids = uuids;
 	}
 
 	@CheckNull
-	private String uuid;
+	@CheckSize
+	private List<String> uuids;
 
 }

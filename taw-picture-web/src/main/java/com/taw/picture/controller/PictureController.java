@@ -1,6 +1,7 @@
 package com.taw.picture.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -87,11 +88,16 @@ public class PictureController {
 	@RequestMapping(value = "/pic/path.do", method = RequestMethod.POST)
 	public void path(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		PicturePathParam picturePathParam = HttpRequestHandler.handle(request, PicturePathParam.class);
-		String path = pictureService.computeDir(picturePathParam.getUuid()).getPath();
-		PicturePathResp picturePathResp = new PicturePathResp();
-		picturePathResp.setUrl(pictureServiceConfigure.getUrlHead()+path+"/"+picturePathParam.getUuid());
-		picturePathResp.setSurl(pictureServiceConfigure.getSurlHead()+path+"/"+picturePathParam.getUuid());
-		HttpResponseHandler.handle(response, SuccessResponse.build(picturePathResp));
+		List<PicturePathResp> picturePathRespList = new ArrayList<PicturePathResp>();
+		for (String uuid : picturePathParam.getUuids()){
+			String path = pictureService.computeDir(uuid).getPath();
+			PicturePathResp picturePathResp = new PicturePathResp();
+			picturePathResp.setUrl(pictureServiceConfigure.getUrlHead()+path+"/"+uuid);
+			picturePathResp.setSurl(pictureServiceConfigure.getSurlHead()+path+"/"+uuid);
+			picturePathResp.setUuid(uuid);
+			picturePathRespList.add(picturePathResp);
+		}
+		HttpResponseHandler.handle(response, SuccessResponse.build(picturePathRespList));
 	}
 	
 	/**

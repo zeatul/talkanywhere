@@ -4,6 +4,14 @@ public class PicturePathResp {
 	
 	
 
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 	public String getSurl() {
 		return surl;
 	}
@@ -29,5 +37,10 @@ public class PicturePathResp {
 	 * 图片地址
 	 */
 	private String url;
+	
+	/**
+	 * 图片uuid
+	 */
+	private String uuid;
 
 }
