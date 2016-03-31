@@ -8,23 +8,10 @@ import java.util.Map;
 public class GenerateSceneInitSql {
 	
 	private static List<String> sceneList = new ArrayList<String>();
-	private static Map<String,String> cityIdMap = new HashMap<String,String>();
-	private static Map<String,String> provinceIdMap = new HashMap<String,String>();
-	private static Map<String,String> countryIdMap = new HashMap<String,String>();
+	
 	
 	static{
-		cityIdMap.put("上海", "10001");
-		cityIdMap.put("西安", "10002");
-		cityIdMap.put("成都", "10003");
-		cityIdMap.put("杭州", "10004");
-		provinceIdMap.put("上海", "1001");
-		provinceIdMap.put("西安", "1002");
-		provinceIdMap.put("成都", "1003");
-		provinceIdMap.put("杭州", "1004");
-		countryIdMap.put("上海", "1");
-		countryIdMap.put("西安", "1");
-		countryIdMap.put("成都", "1");	
-		countryIdMap.put("杭州", "1");
+		
 //		城市,点场景,名称,西南-经度,西南-纬度,东北-经度,东北-纬度,,
 		sceneList.add("上海,是,象屿都城中庭,121.3401550,31.1309730,,,,");
 		sceneList.add("上海,否,象屿都城,121.3392390,31.1300760,121.3420960,31.1323330,,");
