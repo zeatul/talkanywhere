@@ -28,16 +28,16 @@
 		<property name="password" value="${maven.taw-user-service.jdbc.password}" />
 
 		<!-- 连接池中保留的最小连接数，默认为：3 -->
-		<property name="minPoolSize" value="20" />
+		<property name="minPoolSize" value="3" />
 
 		<!-- 接池中保留的最大连接数。默认为15 -->
-		<property name="maxPoolSize" value="200" />
+		<property name="maxPoolSize" value="60" />
 
 		<!-- 始化时创建的连接数，应在minPoolSize与maxPoolSize之间取值。默认为3； -->
-		<property name="initialPoolSize" value="20" />
+		<property name="initialPoolSize" value="3" />
 
 		<!-- 最大空闲时间(秒)，超过空闲时间的连接将被丢弃。为0或负数则永不丢弃。默认为0； -->
-		<property name="maxIdleTime" value="100" />
+		<property name="maxIdleTime" value="1800" />
 
 		<!-- 当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒，默认为0； -->
 		<property name="checkoutTimeout" value="10000" />
@@ -59,7 +59,7 @@
 		<property name="breakAfterAcquireFailure" value="false" />
 
 		<!--每60秒检查所有连接池中的空闲连接。默认值: 0，不检查 -->
-		<property name="idleConnectionTestPeriod" value="60" />
+		<property name="idleConnectionTestPeriod" value="900" />
 		
 		<!--定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。注意：测试的表必须在初始数据源的时候就存在。Default: null -->
 		<property name="preferredTestQuery" value="select 1 from t_um_user limit 0,1"/>
