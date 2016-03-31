@@ -10,6 +10,7 @@ public class DistrictDictonary {
 	public static Map<String,String> cityIdMap = new HashMap<String,String>();
 	public static Map<String,String> provinceIdMap = new HashMap<String,String>();
 	public static Map<String,String> countryIdMap = new HashMap<String,String>();
+	public static Map<String,String> countyIdMap = new HashMap<String,String>();
 	
 	public static List<District> countryList = new ArrayList<District>();
 	
@@ -76,19 +77,22 @@ public class DistrictDictonary {
 		
 		
 		
-		
+		countyIdMap.put("乾县", "30001");
 		cityIdMap.put("上海", "10001");
 		cityIdMap.put("西安", "10002");
 		cityIdMap.put("成都", "10003");
 		cityIdMap.put("杭州", "10004");
+		cityIdMap.put("乾县", "10005");
 		provinceIdMap.put("上海", "1001");
 		provinceIdMap.put("西安", "1002");
 		provinceIdMap.put("成都", "1003");
 		provinceIdMap.put("杭州", "1004");
+		provinceIdMap.put("乾县", "1002");
 		countryIdMap.put("上海", "1");
 		countryIdMap.put("西安", "1");
 		countryIdMap.put("成都", "1");	
 		countryIdMap.put("杭州", "1");
+		countryIdMap.put("乾县", "1");
 	}
 
 }

@@ -87,7 +87,7 @@ public class GenerateSceneInitSql {
 			String str = sceneList.get(i);
 			String[] strArray = str.split(",");
 			StringBuilder sb = new StringBuilder();
-			sb.append("insert into t_tm_scene(id,crdt,updt,status,name,kind,radius,center_lng,center_lat,left_top_lng,left_top_lat,left_bottom_lng,left_bottom_lat,right_top_lng,right_top_lat,right_bottom_lng,right_bottom_lat,country,province,city,address) values(");
+			sb.append("insert into t_tm_scene(id,crdt,updt,status,name,kind,radius,center_lng,center_lat,left_top_lng,left_top_lat,left_bottom_lng,left_bottom_lat,right_top_lng,right_top_lat,right_bottom_lng,right_bottom_lat,country,province,city,county,address) values(");
 			sb.append(i+1).append(","); //id
 			sb.append("current_timestamp").append(","); //crdt
 			sb.append("current_timestamp").append(","); //updt
@@ -145,9 +145,10 @@ public class GenerateSceneInitSql {
 			sb.append(rightBottomLng).append(",");  //rightBottomLng
 			sb.append(rightBottomLat).append(",");  //rightBottomLng
 				
-			sb.append(countryIdMap.get(strArray[0])).append(","); //country
-			sb.append(provinceIdMap.get(strArray[0])).append(","); //province
-			sb.append(cityIdMap.get(strArray[0])).append(","); //city
+			sb.append(DistrictDictonary.countryIdMap.get(strArray[0])).append(","); //country
+			sb.append(DistrictDictonary.provinceIdMap.get(strArray[0])).append(","); //province
+			sb.append(DistrictDictonary.cityIdMap.get(strArray[0])).append(","); //city
+			sb.append(DistrictDictonary.countyIdMap.get(strArray[0])).append(","); //county										
 			sb.append("'").append(strArray[0]).append("'").append(");"); //address
 			System.out.println(sb.toString());
 		}
