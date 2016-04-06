@@ -53,8 +53,8 @@
 	
 	
 	<select id="queryFuzziedScene"  resultType="FuzziedSceneDomain">
-		select round(cent_lng/#{density},0)*#{density} as leftBottomLng,
-			   round(cent_lat/#{density},0)*#{density} as leftBottomLat,
+		select round(center_lng/#{density},0)*#{density} as leftBottomLng,
+			   round(center_lat/#{density},0)*#{density} as leftBottomLat,
 			   count(1) as "count"
 		 from t_tm_scene 
 		where center_lng &lt;= #{maxLng} 
