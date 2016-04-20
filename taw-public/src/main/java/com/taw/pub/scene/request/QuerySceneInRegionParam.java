@@ -5,11 +5,18 @@ import com.taw.pub.scene.com.MapPoint;
 
 public class QuerySceneInRegionParam {
 	
-	public Integer getBlk() {
-		return blk;
+	
+	public Integer getLevel() {
+		return level;
 	}
-	public void setBlk(Integer blk) {
-		this.blk = blk;
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+	public Integer getBlock() {
+		return block;
+	}
+	public void setBlock(Integer block) {
+		this.block = block;
 	}
 	public Long getCity() {
 		return city;
@@ -49,7 +56,13 @@ public class QuerySceneInRegionParam {
 	 * 地图缩放比率
 	 */
 	@CheckNull
-	private Integer blk;
+	private Integer level;
+	
+	/**
+	 * 客户端提交的数据
+	 */
+	@CheckNull
+	private Integer block;
 
 
 }

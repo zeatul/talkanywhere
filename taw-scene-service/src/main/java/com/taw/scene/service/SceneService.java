@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,12 +81,14 @@ public class SceneService {
 
 	@Autowired
 	private FootPrintDetailExMapper footPrintDetailExMapper;
-	
+
 	@Autowired
 	private LoginService loginService;
-	
+
 	@Autowired
 	private SceneServiceConfigure sceneServiceConfigure;
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private java.math.BigDecimal min(java.math.BigDecimal p1, java.math.BigDecimal p2) {
 		if (p1.compareTo(p2) == -1)
@@ -110,9 +114,9 @@ public class SceneService {
 	public QuerySceneInRegionResp query(QuerySceneInRegionParam querySceneInRegionParam) throws Exception {
 
 		CheckTools.check(querySceneInRegionParam);
-		
+
 		QuerySceneInRegionResp querySceneInRegionResp = new QuerySceneInRegionResp();
-		
+
 		/**
 		 * 找出四个角的最大最小经纬度
 		 */
@@ -127,61 +131,92 @@ public class SceneService {
 		maxLng = max(maxLng, mapPoint.getLng());
 		minLat = min(minLat, mapPoint.getLat());
 		maxLat = max(maxLat, mapPoint.getLat());
-		
-		
-		
+
 		querySceneInRegionResp.setSceneCount(0);
 		querySceneInRegionResp.setFuzziedSceneCount(0);
-		
-		int blk = querySceneInRegionParam.getBlk();
-		if (blk >= 19 /*>=19,不需要模糊化*/){
+
+		int level = querySceneInRegionParam.getLevel();
+		if (level >= 19 /* >=19,不需要模糊化 */) {
 			List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
 			querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
 			querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
-		}else if (blk <=10 /*<=10 ,按照城市分组模糊化*/){
-			List<FuzziedSceneDomain>  fuzziedSceneDomainList = sceneExMapper.querySceneGroupByCity(minLng, maxLng, minLat, maxLat);
+		} else if (level <= 10 /* <=10 ,按照城市分组模糊化 */) {
+			List<FuzziedSceneDomain> fuzziedSceneDomainList = sceneExMapper.querySceneGroupByCity(minLng, maxLng, minLat, maxLat);
 			List<FuzziedSceneResp> fuzziedSceneRespsList = convert2(fuzziedSceneDomainList);
 			querySceneInRegionResp.setFuzziedSceneCount(fuzziedSceneRespsList.size());
 			querySceneInRegionResp.setFuzziedSceneResps(fuzziedSceneRespsList);
-		}else{
-			int count = sceneExMapper.countSceneInRegion(minLng, maxLng, minLat, maxLat);
-			
-			if (count > sceneServiceConfigure.getMaxSceneCountOfQueryOnRegion()){
-				/**
-				 * if ( 10<blk<19)
-				 * 计算 density
-				 */
-				double densityBase = 0.005;
-				double densityFactor = 100;
-				BigDecimal density = new BigDecimal( new DecimalFormat("#.00000").format( (densityBase * Math.pow(2, 20-blk))/densityFactor));
-				
-				/**
-				 * 根据密度做模糊化
-				 */
-				List<FuzziedSceneDomain>  fuzziedSceneDomainList = sceneExMapper.queryFuzziedScene(minLng, maxLng, minLat, maxLat, density);
-				List<FuzziedSceneResp> fuzziedSceneRespsList = convert2(fuzziedSceneDomainList);
-				querySceneInRegionResp.setFuzziedSceneCount(fuzziedSceneRespsList.size());
-				querySceneInRegionResp.setFuzziedSceneResps(fuzziedSceneRespsList);
-			}else{
+		} else {
 
+			int limitPerBlock = 500;
+
+			int block = querySceneInRegionParam.getBlock();
+
+			int count = sceneExMapper.countSceneInRegion(minLng, maxLng, minLat, maxLat);
+
+			logger.info("count1={}", count);
+
+			/**
+			 * if ( 10<blk<19) 计算 density @density = Round( $DensityBase *
+			 * power(2, (20.0 - @level)) \ $DensityFactor, 5)
+			 */
+			double densityBase = 0.005;
+			double densityFactor = 100;
+			BigDecimal density = new BigDecimal(new DecimalFormat("#.00000").format((densityBase * Math.pow(2, 20 - level)) / densityFactor));
+
+			/**
+			 * step1
+			 */
+			List<FuzziedSceneDomain> fuzziedSceneDomainList = sceneExMapper.queryFuzziedScene(minLng, maxLng, minLat, maxLat, density);
+
+			/**
+			 * Step 2 计算Step 1 中GroupSize列的AVG，及SUM
+			 */
+			long sum = 0;
+			long rowCount = 0;
+			for (FuzziedSceneDomain fuzziedSceneDomain : fuzziedSceneDomainList) {
+				sum = sum + fuzziedSceneDomain.getCount();
+				rowCount++;
+			}
+
+			/**
+			 * 如果AVG为1，或SUM < $LimitPerBlock * @block （其中$LimitPerBlock是预设常数，
+			 * 现定为500，@block是客户端提交的数据）， 直接返回真实场景数据，无需执行任何模糊集群化。返回的数据应携带场景热度级别值
+			 */
+			if (sum == rowCount || sum <= limitPerBlock * block) {
 				List<SceneDomain> sceneDomainList = sceneExMapper.querySceneInRegion(minLng, maxLng, minLat, maxLat);
 				querySceneInRegionResp.setSceneResps(convert(sceneDomainList));
 				querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
+			} else
+			/**
+			 * 计算 @minGroupSize = Round(@avg * 2.0, 0) （其中@avg为Step1中计算出的GroupSize平均值） 
+			 * 排除Step 1结果中GroupSize < @minGroupSize的所有行，并直接予以返回。无需携带场景热度值
+			 */
+			{
+				long minGroupSize = Math.round(((sum*1.0)/rowCount)*2.0);
+				List<FuzziedSceneDomain> result = new ArrayList<FuzziedSceneDomain>();
+				for (FuzziedSceneDomain fuzziedSceneDomain : fuzziedSceneDomainList){
+					if (fuzziedSceneDomain.getCount() >= minGroupSize){
+						result.add(fuzziedSceneDomain);
+					}
+				}
+				
+				List<FuzziedSceneResp> fuzziedSceneRespsList = convert2(result);
+				querySceneInRegionResp.setFuzziedSceneCount(fuzziedSceneRespsList.size());
+				querySceneInRegionResp.setFuzziedSceneResps(fuzziedSceneRespsList);
 			}
-		}
-		
-		
 
-		
+			
+		}
+
 		return querySceneInRegionResp;
-		
+
 	}
-	
-	private List<SceneResp> convert(List<SceneDomain> sceneDomainList) throws Exception{
+
+	private List<SceneResp> convert(List<SceneDomain> sceneDomainList) throws Exception {
 		if (CollectionTools.isNullOrEmpty(sceneDomainList)) {
 			return new ArrayList<SceneResp>();
 		}
-		
+
 		List<SceneResp> sceneRespsList = new ArrayList<SceneResp>(sceneDomainList.size());
 		for (SceneDomain sceneDomain : sceneDomainList) {
 			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
@@ -190,19 +225,19 @@ public class SceneService {
 			if (sceneResp != null)
 				sceneRespsList.add(sceneResp);
 		}
-		
+
 		return sceneRespsList;
 	}
-	
-	private List<FuzziedSceneResp> convert2(List<FuzziedSceneDomain> fuzziedSceneDomainList){
+
+	private List<FuzziedSceneResp> convert2(List<FuzziedSceneDomain> fuzziedSceneDomainList) {
 		if (CollectionTools.isNullOrEmpty(fuzziedSceneDomainList)) {
 			return new ArrayList<FuzziedSceneResp>();
 		}
-		
+
 		List<FuzziedSceneResp> fuzziedSceneRespList = new ArrayList<FuzziedSceneResp>();
-		
+
 		DomainTools.copy(fuzziedSceneDomainList, fuzziedSceneRespList, FuzziedSceneResp.class);
-		
+
 		return fuzziedSceneRespList;
 	}
 
@@ -421,42 +456,43 @@ public class SceneService {
 			return null;
 		return footPrintDetailExMapper.queryUnLeavedSceneId(token);
 	}
-	
-	public String queryNickname(String token , Long sceneId,Long userId){
-		
-		if (StringTools.isNullOrEmpty(token) || sceneId == null ||userId == null)
+
+	public String queryNickname(String token, Long sceneId, Long userId) {
+
+		if (StringTools.isNullOrEmpty(token) || sceneId == null || userId == null)
 			return null;
-		
+
 		String nickname = SceneCacheHelper.getCachedNickname(token, sceneId);
-		
+
 		if (nickname != null)
 			return nickname;
-		
+
 		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(token, sceneId, userId);
-		if(list == null || list.size() == 0)
+		if (list == null || list.size() == 0)
 			return null;
-		
-		nickname =  list.get(0).getNickname();
-		
+
+		nickname = list.get(0).getNickname();
+
 		SceneCacheHelper.cacheNickname(token, sceneId, nickname);
-		
+
 		return nickname;
 	}
-	
+
 	/**
 	 * 查询指定场景的全部物理在线用户
+	 * 
 	 * @param sceneId
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public List<UserOnlineScene> queryUsersOnlineScene( QueryUsersOnlineSceneParam queryUsersOnlineSceneParam ) throws Exception{
-		
+	public List<UserOnlineScene> queryUsersOnlineScene(QueryUsersOnlineSceneParam queryUsersOnlineSceneParam) throws Exception {
+
 		CheckTools.check(queryUsersOnlineSceneParam);
-		
+
 		Long sceneId = queryUsersOnlineSceneParam.getSceneId();
-		
+
 		List<UserOnlineScene> list = SceneCacheHelper.getCachedSceneOnlineUsers(sceneId);
-		for (UserOnlineScene userOnlineScene : list){
+		for (UserOnlineScene userOnlineScene : list) {
 			String nickname = queryNickname(userOnlineScene.getToken(), sceneId, userOnlineScene.getUserId());
 			userOnlineScene.setToken(null);
 			userOnlineScene.setNickname(nickname);
@@ -473,15 +509,15 @@ public class SceneService {
 	public void ChangeOnlineCount(ChangeOnlineCountParam changeOnlineCountParam) throws Exception {
 		if (changeOnlineCountParam == null)
 			return;
-		
+
 		Long userId = changeOnlineCountParam.getUserId();
-		
+
 		String token = changeOnlineCountParam.getToken();
-		
+
 		List<Long> scendIdList = changeOnlineCountParam.getInList();
-		
+
 		Set<Long> onlineSceneIdSet = SceneCacheHelper.getCachedOnlineScenes(userId);
-		
+
 		/**
 		 * 用户物理进入场景
 		 */
@@ -491,15 +527,17 @@ public class SceneService {
 				SceneStatCount sceneStatCount = querySceneStatCount(sceneId);
 
 				if (sceneStatCount != null) {
-					if (onlineSceneIdSet == null  ){
-						//非登录用户只能直接修改统计值
+					if (onlineSceneIdSet == null) {
+						// 非登录用户只能直接修改统计值
 						sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() + 1);
-					}else{
-						if (!onlineSceneIdSet.contains(sceneId)){  //登录用户维护online状态和 场景online 统计值
+					} else {
+						if (!onlineSceneIdSet.contains(sceneId)) { // 登录用户维护online状态和
+																	// 场景online
+																	// 统计值
 							onlineSceneIdSet.add(sceneId);
-							sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() + 1);							
+							sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() + 1);
 						}
-						/* 缓存指定物理场景的物理在线用户*/							
+						/* 缓存指定物理场景的物理在线用户 */
 						SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token);
 					}
 					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
@@ -518,15 +556,17 @@ public class SceneService {
 				SceneStatCount sceneStatCount = querySceneStatCount(sceneId);
 
 				if (sceneStatCount != null) {
-					if (onlineSceneIdSet == null  ){
-						//非登录用户只能直接修改统计值
+					if (onlineSceneIdSet == null) {
+						// 非登录用户只能直接修改统计值
 						sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() - 1);
-					}else{
-						if (onlineSceneIdSet.contains(sceneId)){  //登录用户维护online状态和 场景online 统计值
+					} else {
+						if (onlineSceneIdSet.contains(sceneId)) { // 登录用户维护online状态和
+																	// 场景online
+																	// 统计值
 							onlineSceneIdSet.remove(sceneId);
 							sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() - 1);
 						}
-						/* 删除指定物理场景的物理在线用户*/							
+						/* 删除指定物理场景的物理在线用户 */
 						SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
 					}
 					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
@@ -534,21 +574,18 @@ public class SceneService {
 
 			}
 		}
-		
-		
+
 		/**
 		 * 缓存用户的online 场景 id 集合
 		 */
-		
-		if (onlineSceneIdSet!=null){
+
+		if (onlineSceneIdSet != null) {
 			SceneCacheHelper.cacheOnineScenes(userId, onlineSceneIdSet);
 		}
 	}
 
 	private SceneStatCount querySceneStatCount(Long sceneId) throws Exception {
-		
-		
-		
+
 		SceneStatCount sceneStatCount = SceneCacheHelper.getCachedSceneStatCount(sceneId);
 		if (sceneStatCount == null) {
 			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
@@ -560,14 +597,15 @@ public class SceneService {
 			sceneStatCount = new SceneStatCount();
 			sceneStatCount.setEnterCount(sceneResp.getEnterCount());
 			sceneStatCount.setOnlineCount(sceneResp.getOnlineCount());
-			
+
 			SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
 		}
 
 		return sceneStatCount;
 	}
 
-	public List<FuzziedSceneDomain> testFuzzied(){
-		return sceneExMapper.queryFuzziedScene(new BigDecimal(-1000), new BigDecimal(1000), new BigDecimal(-1000), new BigDecimal(1000), new BigDecimal(0.91922));
+	public List<FuzziedSceneDomain> testFuzzied() {
+		return sceneExMapper.queryFuzziedScene(new BigDecimal(-1000), new BigDecimal(1000), new BigDecimal(-1000), new BigDecimal(1000),
+				new BigDecimal(0.91922));
 	}
 }
