@@ -9,6 +9,14 @@ public class ConversationResp {
 	
 
 
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	public Short getOnScene() {
 		return onScene;
 	}
@@ -68,6 +76,11 @@ public class ConversationResp {
 	
 	/*发言时间*/
 	private Date postDate;
+	
+	/**
+	 * 发言者性别
+	 */
+	private String sex;
 	
 	/**
 	 * 图片集合

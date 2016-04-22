@@ -32,6 +32,8 @@ import com.taw.scene.domain.ConversationDomain;
 import com.taw.scene.service.ConversationService;
 import com.taw.scene.service.SceneCacheHelper;
 import com.taw.user.auth.AuthThreadLocal;
+import com.taw.user.domain.UserDomain;
+import com.taw.user.service.UserService;
 
 
 @Controller
@@ -39,6 +41,9 @@ public class ConversationController {
 
 	@Autowired
 	private ConversationService conversationService;
+	
+	@Autowired
+	private UserService userService;
 	
 	/**
 	 * hello 测试用
@@ -79,6 +84,11 @@ public class ConversationController {
 		for (ConversationDomain conversationDomain : list){
 			ConversationResp conversationResp = new ConversationResp();
 			DomainTools.copy(conversationDomain, conversationResp);
+			
+			UserDomain userDomain = userService.loadUser(conversationDomain.getPostUserId(), true);
+			if (userDomain != null)
+				conversationResp.setSex(userDomain.getSex());
+			
 			if (StringTools.isNotNullOrEmpty(conversationDomain.getPics())){
 				conversationResp.setPicList(JsonTools.toArrayList(conversationDomain.getPics(),PicDescResp.class));
 			}

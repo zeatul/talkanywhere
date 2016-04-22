@@ -5,6 +5,30 @@ import java.util.List;
 
 public class MessageResp {
 	
+	public Long getReceiverId() {
+		return receiverId;
+	}
+
+	public void setReceiverId(Long receiverId) {
+		this.receiverId = receiverId;
+	}
+
+	public Long getSenderId() {
+		return senderId;
+	}
+
+	public void setSenderId(Long senderId) {
+		this.senderId = senderId;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	public Short getOnScene() {
 		return onScene;
 	}
@@ -90,6 +114,17 @@ public class MessageResp {
 	/*主键*/
 	private Long id;
 	
+	
+	/**
+	 * 发言者性别
+	 */
+	private String sex;
+	
+	/*接收者ID*/
+	private Long receiverId;
+	
+	/*发送者ID*/
+	private Long senderId;
 	
 	
 	/*场景ID*/

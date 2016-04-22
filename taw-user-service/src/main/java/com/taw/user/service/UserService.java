@@ -155,7 +155,19 @@ public class UserService {
 		if (userId == null)
 			return null;
 		
-		return userMapper.load(userId);
+		UserDomain userDomain = null;
+		if (cached){
+			userDomain = UserCacheHelper.getCachedUserById(userId);			
+		}
+		
+		if (userDomain == null){
+			userDomain = userMapper.load(userId);
+			if (userDomain !=null && cached)
+				UserCacheHelper.cacheUserById(userDomain);
+		}			
+		
+		
+		return userDomain;
 	}
 
 }
