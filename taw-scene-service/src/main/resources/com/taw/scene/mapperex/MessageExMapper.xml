@@ -12,4 +12,33 @@
 			</foreach>	
 	</delete>
 	
+	
+	
+	<select id="searchMessage" parameterType="hashmap"  resultType="MessageDomain">
+		SELECT 
+		<include refid="com.taw.scene.mapper.MessageMapper.columns" />
+		FROM t_tm_message
+		WHERE 1=1
+		 <if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
+		 <if test="maxPostDate != null"> AND post_date &lt; #{maxPostDate}  </if>
+		 <if test="minPostDate != null"> AND post_date &gt; #{minPostDate}  </if>		 
+		 <if test="senderId != null"> AND sender_id = #{partyId} </if>			 
+		 <choose>
+		 	<when test="includeSelf != null">
+		 		<choose>
+		 			<when test="partyId != null"> AND ((sender_id = #{partyId} and receiver_id = #{myId}) or (sender_id = #{myId} and receiver_id = #{partyId})) </when> 
+		 			<otherwise> AND (receiver_id = #{myId} or sender_id = #{myId}) </otherwise>
+		 		</choose>
+		 	</when>
+		 	<otherwise>
+		 		<choose>
+		 			<when test="partyId != null"> AND (sender_id = #{partyId} and receiver_id = #{myId}) </when>
+		 			<otherwise> AND (receiver_id = #{myId}) </otherwise>
+		 		</choose>
+		 	</otherwise>
+		 </choose>		 	 
+		 <if test="_orderby != null">ORDER BY ${_orderby} </if>
+		 <if test="_offset != null">LIMIT #{_offset},#{_limit} </if>			
+	</select>
+	
 </mapper>

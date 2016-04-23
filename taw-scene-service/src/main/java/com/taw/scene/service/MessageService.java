@@ -1,6 +1,7 @@
 package com.taw.scene.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -194,10 +195,38 @@ public class MessageService {
 	 */
 	public List<MessageDomain> search(SearchMessageParam searchMessageParam) throws Exception{
 		CheckTools.check(searchMessageParam);
+		Date minPostDate = searchMessageParam.getMinPostDate();
+		Date maxPostDate = searchMessageParam.getMaxPostDate();
+		if (minPostDate == null && maxPostDate == null )
+			throw new RuntimeException("MinPostDate and MaxPostDate shouldn't be null at the same time");
 		String orderBy = "send_time desc";
+		
+		/**
+		 * order == 1 : 按时间增序
+		 * 否则 ：按时间倒序
+		 */
+		if (searchMessageParam.getOrder().intValue() == 1){
+			orderBy = "send_time asc";
+		}
+		
 		Map<String,Object> params = SqlParamHelper.generatePageParams(orderBy, searchMessageParam.getOffset(), searchMessageParam.getLimit());
 		
-		return messageMapper.loadDynamic(params);
+		params.put("minPostDate", minPostDate);
+		params.put("maxPostDate", maxPostDate);
+		params.put("sceneId", searchMessageParam.getSceneId());
+		params.put("myId", searchMessageParam.getUserId()); //自身Id
+		/**
+		 * 是否包含自身发言
+		 */
+		if (searchMessageParam.getIncludeSelf() == 1){
+			params.put("includeSelf", "1");
+		}
+		
+		Long partyId = searchMessageParam.getPartyId(); //对话者Id ，为空，取所有发言者
+		params.put("sceneId", partyId);
+
+		
+		return messageExMapper.searchMessage(params);
 	}
 	
 	/**
