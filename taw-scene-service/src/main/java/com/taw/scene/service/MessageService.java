@@ -223,7 +223,7 @@ public class MessageService {
 		}
 		
 		Long partyId = searchMessageParam.getPartyId(); //对话者Id ，为空，取所有发言者
-		params.put("sceneId", partyId);
+		params.put("partyId", partyId);
 
 		
 		return messageExMapper.searchMessage(params);

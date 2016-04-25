@@ -20,9 +20,8 @@
 		FROM t_tm_message
 		WHERE 1=1
 		 <if test="sceneId != null"> AND scene_id = #{sceneId}  </if>
-		 <if test="maxPostDate != null"> AND post_date &lt; #{maxPostDate}  </if>
-		 <if test="minPostDate != null"> AND post_date &gt; #{minPostDate}  </if>		 
-		 <if test="senderId != null"> AND sender_id = #{partyId} </if>			 
+		 <if test="maxPostDate != null"> AND send_time &lt; #{maxPostDate}  </if>
+		 <if test="minPostDate != null"> AND send_time &gt; #{minPostDate}  </if>	
 		 <choose>
 		 	<when test="includeSelf != null">
 		 		<choose>
