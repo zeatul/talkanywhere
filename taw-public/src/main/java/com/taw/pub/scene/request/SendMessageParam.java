@@ -57,13 +57,13 @@ public class SendMessageParam {
 
 	
 
-//	public Long getReceiverId() {
-//		return receiverId;
-//	}
-//
-//	public void setReceiverId(Long receiverId) {
-//		this.receiverId = receiverId;
-//	}
+	public Long getReceiverId() {
+		return receiverId;
+	}
+
+	public void setReceiverId(Long receiverId) {
+		this.receiverId = receiverId;
+	}
 
 	public Long getSceneId() {
 		return sceneId;
@@ -83,11 +83,11 @@ public class SendMessageParam {
 		this.senderId = senderId;
 	}
 
-//	/**
-//	 * 接收者ID
-//	 */
-//	@CheckNull
-//	private Long receiverId;
+	/**
+	 * 接收者ID
+	 */
+	@CheckNull
+	private Long receiverId;
 	
 	/**
 	 * 接收者在场景唯一标识

@@ -100,7 +100,7 @@ public class MessageService {
 		
 		Long receiverFpdId = sendMessageParam.getReceiverFpdId();
 		
-		Long receiverId = footPrintDetailDomain.getUserId();
+		Long receiverId = sendMessageParam.getReceiverId();
 		
 		SceneDomain sceneDomain = sceneService.loadSceneDomain(sceneId, true);
 		
