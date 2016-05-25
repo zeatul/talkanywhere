@@ -59,11 +59,11 @@ public class BookmarkController {
 	public void add(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		AddBookmarkParam addBookmarkParam = HttpRequestHandler.handle(request, AddBookmarkParam.class);
 		addBookmarkParam.setUserId(AuthThreadLocal.getUserId());
-		bookmarkService.add(addBookmarkParam);		
+		;		
 		/**
 		 * 返回结果
 		 */		
-		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+		HttpResponseHandler.handle(response, SuccessResponse.build(bookmarkService.add(addBookmarkParam)));
 	}
 	
 	/**

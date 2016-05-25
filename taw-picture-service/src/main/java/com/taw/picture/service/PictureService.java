@@ -39,6 +39,7 @@ import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchPictureSentByMyselfParam;
 import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
 import com.taw.pub.picture.response.AddCommentResp;
@@ -131,6 +132,8 @@ public class PictureService {
 			pictureDomain.setPhotoTime(insrtPictureParam.getPhotoTime());
 			
 			pictureDomain.setOnScene(insrtPictureParam.getOnScene());
+			
+			pictureDomain.setDescription(insrtPictureParam.getDescription());
 			
 			pictureDomain.setCrdt(DateTools.now());
 			pictureDomain.setId(PkGenerator.genPk());
@@ -405,6 +408,36 @@ public class PictureService {
 	public List<PictureInfoResp> loadSceneHotPicture(SearchSceneHotPictureParam searchSceneHotPictureParam) throws Exception{
 		CheckTools.check(searchSceneHotPictureParam);
 		List<PictureDomain> pictureDomainList = pictureExMapper.loadSceneHotPicture(searchSceneHotPictureParam.getSceneId(),searchSceneHotPictureParam.getOffset(), searchSceneHotPictureParam.getLimit());
+		List<PictureInfoResp> pictureInfoRespList = new ArrayList<PictureInfoResp>();		
+		if (pictureDomainList != null){			
+			for (PictureDomain pictureDomain : pictureDomainList){				
+				PictureInfoResp pictureInfoResp = new PictureInfoResp();
+				DomainTools.copy(pictureDomain, pictureInfoResp);
+				fillPath(pictureInfoResp);
+				pictureInfoRespList.add(pictureInfoResp);
+			}
+		}		
+		return pictureInfoRespList;
+	}
+	
+	public List<PictureInfoResp> loadSceneCrdtDescPicture(SearchSceneHotPictureParam searchSceneHotPictureParam) throws Exception{
+		CheckTools.check(searchSceneHotPictureParam);
+		List<PictureDomain> pictureDomainList = pictureExMapper.loadSceneCrdtDescPicture(searchSceneHotPictureParam.getSceneId(),searchSceneHotPictureParam.getOffset(), searchSceneHotPictureParam.getLimit());
+		List<PictureInfoResp> pictureInfoRespList = new ArrayList<PictureInfoResp>();		
+		if (pictureDomainList != null){			
+			for (PictureDomain pictureDomain : pictureDomainList){				
+				PictureInfoResp pictureInfoResp = new PictureInfoResp();
+				DomainTools.copy(pictureDomain, pictureInfoResp);
+				fillPath(pictureInfoResp);
+				pictureInfoRespList.add(pictureInfoResp);
+			}
+		}		
+		return pictureInfoRespList;
+	}
+	
+	public List<PictureInfoResp> loadPictureSentByMyself(SearchPictureSentByMyselfParam searchPictureSentByMyselfParam) throws Exception{
+		CheckTools.check(searchPictureSentByMyselfParam);
+		List<PictureDomain> pictureDomainList = pictureExMapper.loadPictureSentByMyself(searchPictureSentByMyselfParam.getUserId(),searchPictureSentByMyselfParam.getOffset(), searchPictureSentByMyselfParam.getLimit());
 		List<PictureInfoResp> pictureInfoRespList = new ArrayList<PictureInfoResp>();		
 		if (pictureDomainList != null){			
 			for (PictureDomain pictureDomain : pictureDomainList){				

@@ -73,6 +73,8 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		protectedPaths.add("/pic/thumb.do");
 		protectedPaths.add("/pic/comment/add.do");		
 		protectedPaths.add("/pic/comment/remove.do");
+		protectedPaths.add("/pic/myself.do");
+		
 		
 	
 		

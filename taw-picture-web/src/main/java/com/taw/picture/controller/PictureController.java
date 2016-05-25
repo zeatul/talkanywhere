@@ -26,6 +26,7 @@ import com.taw.pub.picture.request.PicturePathParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchPictureSentByMyselfParam;
 import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
 import com.taw.pub.picture.response.AddCommentResp;
@@ -189,6 +190,37 @@ public class PictureController {
 	public void sceneHot(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		SearchSceneHotPictureParam sceneHotPictureParam = HttpRequestHandler.handle(request, SearchSceneHotPictureParam.class);
 		HttpResponseHandler.handle(response, SuccessResponse.build(pictureService.loadSceneHotPicture(sceneHotPictureParam)));
+		
+	}
+	
+	/**
+	 * 场景热门图片
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/pic/scene/crdt_desc.do", method = {RequestMethod.POST,RequestMethod.GET})
+	public void sceneCrdtDesc(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		SearchSceneHotPictureParam sceneHotPictureParam = HttpRequestHandler.handle(request, SearchSceneHotPictureParam.class);
+		HttpResponseHandler.handle(response, SuccessResponse.build(pictureService.loadSceneCrdtDescPicture(sceneHotPictureParam)));
+		
+	}
+	
+	/**
+	 * 场景热门图片
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/pic/myself.do", method = {RequestMethod.POST,RequestMethod.GET})
+	public void picSendByMyself(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		SearchPictureSentByMyselfParam searchPictureSentByMyselfParam = HttpRequestHandler.handle(request, SearchPictureSentByMyselfParam.class);
+		searchPictureSentByMyselfParam.setUserId(AuthThreadLocal.getUserId());
+		HttpResponseHandler.handle(response, SuccessResponse.build(pictureService.loadPictureSentByMyself(searchPictureSentByMyselfParam)));
 		
 	}
 

@@ -7,6 +7,12 @@ import com.taw.pub.picture.enums.EnumAppSrc;
 
 public class InsrtPictureParam {
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Short getOnScene() {
 		return onScene;
 	}
@@ -107,5 +113,10 @@ public class InsrtPictureParam {
 	 */
 	@CheckNull
 	private Short onScene;
+	
+	/**
+	 * 图片描述
+	 */
+	private String description;
 
 }

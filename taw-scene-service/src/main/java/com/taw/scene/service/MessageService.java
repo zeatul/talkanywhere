@@ -144,6 +144,7 @@ public class MessageService {
 				insrtPictureParam.setSceneId(sceneId);
 				insrtPictureParam.setSceneName(sceneDomain.getName());
 				insrtPictureParam.setAppSrc(EnumAppSrc.MESSAGE);
+				insrtPictureParam.setDescription(sendMessageParam.getMessage());
 				/**
 				 * 图片id ，插入图片管理表
 				 */

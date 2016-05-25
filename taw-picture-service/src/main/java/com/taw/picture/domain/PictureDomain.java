@@ -95,6 +95,9 @@ public class PictureDomain implements Serializable {
 	/**/
 	private Short onScene;
 	
+	/**/
+	private String description;
+	
 	
 	/**
 	 * 
@@ -526,6 +529,22 @@ public class PictureDomain implements Serializable {
 	 */	
 	public void setOnScene (Short onScene) {
 		this.onScene = onScene;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public String getDescription(){
+		return description;
+	}
+	
+	/**
+	 * 
+	 * @param description 
+	 */	
+	public void setDescription (String description) {
+		this.description = description;
 	}
 	
 

@@ -1,5 +1,6 @@
 package com.taw.scene.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +15,11 @@ import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.check.CheckTools;
+import com.taw.pub.scene.enums.EnumAddBookmarkRespResult;
 import com.taw.pub.scene.request.AddBookmarkParam;
 import com.taw.pub.scene.request.QueryBookmarkParam;
 import com.taw.pub.scene.request.RemoveBookmarkParam;
+import com.taw.pub.scene.response.AddBookmarkResp;
 import com.taw.scene.domain.BookmarkDomain;
 import com.taw.scene.domain.SceneDomain;
 import com.taw.scene.mapper.BookmarkMapper;
@@ -33,14 +36,23 @@ public class BookmarkService {
 	@Autowired
 	private BookmarkMapper bookmarkMapper;
 
-	public void add(AddBookmarkParam addBookmarkParam ) throws Exception{
+	public List<AddBookmarkResp> add(AddBookmarkParam addBookmarkParam ) throws Exception{
 		CheckTools.check(addBookmarkParam);
 		Long userId = addBookmarkParam.getUserId();
 		
+		List<AddBookmarkResp> result = new ArrayList<AddBookmarkResp>(addBookmarkParam.getSceneIds().size());
+		
 		for (Long sceneId : addBookmarkParam.getSceneIds()){
+			AddBookmarkResp  addBookmarkResp  = new AddBookmarkResp();
+			addBookmarkResp.setSceneId(sceneId);
+			result.add(addBookmarkResp);
 			SceneDomain sceneDomain = sceneService.loadSceneDomain(sceneId, true);
-			if (sceneDomain == null)
+			if (sceneDomain == null){
+				addBookmarkResp.setResult(EnumAddBookmarkRespResult.SCENE_NOTEXIST.getValue());
 				continue;
+			}
+				
+			
 			try {
 				BookmarkDomain bookmarkDomain = new BookmarkDomain();
 				bookmarkDomain.setBookTime(DateTools.now());
@@ -49,10 +61,14 @@ public class BookmarkService {
 				bookmarkDomain.setUserId(userId);
 				bookmarkDomain.setId(PkGenerator.genPk());
 				bookmarkMapper.insert(bookmarkDomain);
+				addBookmarkResp.setResult(EnumAddBookmarkRespResult.BOOKED.getValue());
 			} catch (DuplicateKeyException e) {
+				addBookmarkResp.setResult(EnumAddBookmarkRespResult.BOOKED_BEFORE.getValue());
 				logger.error("The Scene={}"+sceneId +" is booked before",e);
 			}
 		}
+		
+		return result;
 	}
 	
 	public List<BookmarkDomain> search(QueryBookmarkParam queryBookmarkParam) throws Exception{

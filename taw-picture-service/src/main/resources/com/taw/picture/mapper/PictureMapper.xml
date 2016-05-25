@@ -31,7 +31,8 @@
 		kind as "kind" ,
 		suffix as "suffix" ,
 		app_src as "appSrc" ,
-		on_scene as "onScene" 
+		on_scene as "onScene" ,
+		description as "description" 
 	</sql>
 	
 	<sql id="where">
@@ -63,6 +64,7 @@
 			<if test="suffix != null"> AND suffix = #{suffix}  </if>
 			<if test="appSrc != null"> AND app_src = #{appSrc}  </if>
 			<if test="onScene != null"> AND on_scene = #{onScene}  </if>
+			<if test="description != null"> AND description = #{description}  </if>
 		</trim>	
 	</sql>
 	
@@ -95,6 +97,7 @@
 			AND suffix = #{old_suffix}
 			AND app_src = #{old_appSrc}
 			AND on_scene = #{old_onScene}
+			AND description = #{old_description}
 		</trim>
 	</sql>
 	
@@ -126,6 +129,7 @@
 			suffix = #{suffix},
 			app_src = #{appSrc},
 			on_scene = #{onScene},
+			description = #{description},
 		</set>
 	</sql>
 	
@@ -157,6 +161,7 @@
 				<if test="suffix != null">suffix = #{suffix},</if>
 				<if test="appSrc != null">app_src = #{appSrc},</if>
 				<if test="onScene != null">on_scene = #{onScene},</if>
+				<if test="description != null">description = #{description},</if>
 		</set>
 	</sql>
 	
@@ -217,7 +222,8 @@
 				kind,				
 				suffix,				
 				app_src,				
-				on_scene				
+				on_scene,				
+				description				
 		)		
 		VALUES (	
 			#{id},
@@ -246,7 +252,8 @@
 			#{kind},
 			#{suffix},
 			#{appSrc},
-			#{onScene}
+			#{onScene},
+			#{description}
 		) 
 	</insert>
 	

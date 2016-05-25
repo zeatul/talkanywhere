@@ -4,6 +4,24 @@ import java.util.Date;
 
 public class PictureInfoResp {
 
+	public String getSceneName() {
+		return sceneName;
+	}
+	public void setSceneName(String sceneName) {
+		this.sceneName = sceneName;
+	}
+	public Short getOnScene() {
+		return onScene;
+	}
+	public void setOnScene(Short onScene) {
+		this.onScene = onScene;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Date getCrdt() {
 		return crdt;
 	}
@@ -108,5 +126,14 @@ public class PictureInfoResp {
 	private String surl;
 	
 	private Date crdt;
+	
+	/*场景名称*/
+	private String sceneName;
+	
+	/**/
+	private Short onScene;
+	
+	/**/
+	private String description; 
 
 }
