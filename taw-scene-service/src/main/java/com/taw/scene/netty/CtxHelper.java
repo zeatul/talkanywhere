@@ -21,9 +21,9 @@ import com.taw.user.service.LoginService;
 
 public class CtxHelper {
 
-	public final static int READ_TIMEOUT = 60 * 5;// 秒
+	public final static int READ_TIMEOUT = 60 * 2;// 秒
 
-	public final static int HEART_BEAT_INTERVAL = 60 * 2 * 1000; // 毫秒
+	public final static int HEART_BEAT_INTERVAL = 60 * 1 * 1000; // 毫秒
 
 	private static RedisClient redisClient = FrameworkContext.getApplicationContext().getBean(RedisClient.class);
 

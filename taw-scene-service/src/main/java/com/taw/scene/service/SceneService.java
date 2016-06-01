@@ -50,6 +50,7 @@ import com.taw.scene.mapper.SceneMapper;
 import com.taw.scene.mapperex.FootPrintDetailExMapper;
 import com.taw.scene.mapperex.SceneExMapper;
 import com.taw.scene.service.SceneCacheHelper.SceneStatCount;
+import com.taw.scene.service.SceneCacheHelper.UserOnScene;
 import com.taw.user.service.LoginService;
 
 @Service
@@ -457,25 +458,32 @@ public class SceneService {
 		return footPrintDetailExMapper.queryUnLeavedSceneId(token);
 	}
 
-	public String queryNickname(String token, Long sceneId, Long userId) {
+	public UserOnScene queryNickname(String token, Long sceneId, Long userId) {
 
 		if (StringTools.isNullOrEmpty(token) || sceneId == null || userId == null)
 			return null;
 
-		String nickname = SceneCacheHelper.getCachedNickname(token, sceneId);
+		UserOnScene userOnScene = SceneCacheHelper.getCachedNickname(token, sceneId);
 
-		if (nickname != null)
-			return nickname;
+		if (userOnScene != null)
+			return userOnScene;
 
 		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(token, sceneId, userId);
 		if (list == null || list.size() == 0)
 			return null;
 
-		nickname = list.get(0).getNickname();
+		String nickname = list.get(0).getNickname();
+		long fpdId = list.get(0).getId();
+		
+		userOnScene= new UserOnScene();
+		userOnScene.setNickname(nickname);
+		userOnScene.setFpdId(fpdId);
 
-		SceneCacheHelper.cacheNickname(token, sceneId, nickname);
-
-		return nickname;
+		SceneCacheHelper.cacheNickname(token, sceneId, userOnScene);
+		
+		
+		
+		return userOnScene;
 	}
 
 	/**
@@ -493,9 +501,10 @@ public class SceneService {
 
 		List<UserOnlineScene> list = SceneCacheHelper.getCachedSceneOnlineUsers(sceneId);
 		for (UserOnlineScene userOnlineScene : list) {
-			String nickname = queryNickname(userOnlineScene.getToken(), sceneId, userOnlineScene.getUserId());
+			UserOnScene userOnScene = queryNickname(userOnlineScene.getToken(), sceneId, userOnlineScene.getUserId());
 			userOnlineScene.setToken(null);
-			userOnlineScene.setNickname(nickname);
+			userOnlineScene.setNickname(userOnScene.getNickname());
+			userOnlineScene.setFpdId(userOnScene.getFpdId());
 		}
 		return list;
 	}

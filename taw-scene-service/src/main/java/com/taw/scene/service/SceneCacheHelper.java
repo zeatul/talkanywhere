@@ -63,6 +63,8 @@ public class SceneCacheHelper {
 		private Integer onlineCount = 0;
 	}
 
+	 
+	
 	public static SceneStatCount getCachedSceneStatCount(Long sceneId) {
 
 		if (sceneId == null)
@@ -138,18 +140,37 @@ public class SceneCacheHelper {
 
 	}
 	
+	public static class UserOnScene{
+		private String nickname;
+		public String getNickname() {
+			return nickname;
+		}
+		public void setNickname(String nickname) {
+			this.nickname = nickname;
+		}
+		public long getFpdId() {
+			return fpdId;
+		}
+		public void setFpdId(long fpdId) {
+			this.fpdId = fpdId;
+		}
+		private long fpdId;
+	}
+	
 	/**
 	 * 缓存用户在场景的昵称
 	 * @param token
 	 * @param scendId
 	 * @param nickname
 	 */
-	public static void cacheNickname(String token , Long sceneId ,String nickname){
-		if (StringTools.isNullOrEmpty(token) || sceneId == null || StringTools.isNullOrEmpty(nickname))
-			return ;
+	public static UserOnScene cacheNickname(String token , Long sceneId ,UserOnScene userOnScene){
+		if (StringTools.isNullOrEmpty(token) || sceneId == null || userOnScene == null)
+			return null ;
 		String key = CACHED_SCENE_NICKNAME + token + "_" + sceneId;
 		int expire = 3600 * 24;
-		redisClient.set(key, nickname, expire);
+		
+		redisClient.set(key, JsonTools.toJsonString(userOnScene), expire);
+		return userOnScene;
 	}
 	
 	/**
@@ -158,13 +179,18 @@ public class SceneCacheHelper {
 	 * @param scendId
 	 * @return
 	 */
-	public static String getCachedNickname(String token , Long sceneId){
+	public static UserOnScene getCachedNickname(String token , Long sceneId){
 		if (StringTools.isNullOrEmpty(token) || sceneId == null )
 			return null;
 		
 		String key = CACHED_SCENE_NICKNAME + token + "_" + sceneId;
 		
-		return redisClient.get(key);
+		String jsonStr =  redisClient.get(key);
+		
+		if (StringTools.isNotNullOrEmpty(jsonStr))
+			return null;
+		
+		return JsonTools.toObject(jsonStr, UserOnScene.class);
 	}
 
 	/**
