@@ -26,7 +26,7 @@ public class FileUploadControllerTest extends AbstractControllerTest {
 	@Test
 	public void testFileUpload() {
 
-		String localFilePath = "C:\\taw\\img\\img13.jpg";
+		String localFilePath = "C:\\mydata\\share\\jpg\\QQ20160603102259.png";
 		FileInputStream fileInputStream = null;
 		try {
 			File file = new File(localFilePath);
