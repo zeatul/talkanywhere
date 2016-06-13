@@ -17,9 +17,7 @@
 		<module>../taw-scene-web</module>
 		<module>../taw-picture-service</module>
 		<module>../taw-picture-web</module>
-		<!-- <module>../taw-openfire</module> 
-		<module>../taw-talk-client</module>
-		<module>../taw-talk-server</module>-->
+		<!-- <module>../taw-openfire</module> <module>../taw-talk-client</module> <module>../taw-talk-server</module> -->
 	</modules>
 
 	<profiles>
@@ -347,6 +345,12 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-io</artifactId>
+				<version>1.3.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
 				<version>1.3.2</version>
 			</dependency>
 
