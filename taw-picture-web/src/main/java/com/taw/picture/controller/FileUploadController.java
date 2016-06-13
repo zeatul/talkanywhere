@@ -19,6 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
@@ -224,28 +227,32 @@ public class FileUploadController {
 		String uuid = request.getParameter("uuid");
 		ComputeResult computeResult = pictureService.computeDir(uuid);
 		String dir = computeResult.getDir();
-		
 
-		InputStream in = request.getInputStream();
+		
 		mkdir(dir);
 		String filePath = dir + File.separator + uuid;
-		File file = new File(filePath + ".tmp");
+		File file = new File(filePath + ".tmp"); // 目标保存文件名
 
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(file, false);
-			IOUtils.copyLarge(in, fos);
-		} finally {
-			try {
-				if (fos != null)
-					fos.close();
-			} catch (Exception e) {
-				logger.error("failed to close file");
-			}
-
+		// 创建一个通用的多部分解析器.
+		CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+		// 设置编码
+		commonsMultipartResolver.setDefaultEncoding("utf-8");
+		//判断 request 是否有文件上传,即多部分请求...
+		if (commonsMultipartResolver.isMultipart(request)) {
+			//转换成多部分request
+			MultipartHttpServletRequest multipartRequest = commonsMultipartResolver.resolveMultipart(request);
+			// file 是指 文件上传标签的 name=值  
+		    // 根据 name 获取上传的文件...  
+		    MultipartFile multipartFile = multipartRequest.getFile("file");  
+		    if (multipartFile == null)
+		    	throw new Exception("the file element tag should be 'file' ");
+		    multipartFile.transferTo(file); 
+		    logger.info("Success to upload file = {}", file.getName());
+		}else{
+			throw new Exception("The request is not multipartHttpServletRequest");
 		}
 
-		logger.info("Success to upload file = {}", file.getName());
+		
 		boolean flag = file.renameTo(new File(filePath));
 
 		/**
