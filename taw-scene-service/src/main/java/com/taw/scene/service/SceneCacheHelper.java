@@ -187,7 +187,7 @@ public class SceneCacheHelper {
 		
 		String jsonStr =  redisClient.get(key);
 		
-		if (StringTools.isNotNullOrEmpty(jsonStr))
+		if (StringTools.isNullOrEmpty(jsonStr))
 			return null;
 		
 		return JsonTools.toObject(jsonStr, UserOnScene.class);
