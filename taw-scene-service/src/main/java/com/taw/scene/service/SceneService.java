@@ -25,6 +25,7 @@ import com.taw.pub.scene.enums.EnumLeaveType;
 import com.taw.pub.scene.request.ChangeOnlineCountParam;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
+import com.taw.pub.scene.request.QueryBookmarkParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
@@ -34,6 +35,7 @@ import com.taw.pub.scene.response.FuzziedSceneResp;
 import com.taw.pub.scene.response.QuerySceneInRegionResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.configure.SceneServiceConfigure;
+import com.taw.scene.domain.BookmarkDomain;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.FootPrintDomain;
 import com.taw.scene.domain.SceneDomain;
@@ -51,6 +53,7 @@ import com.taw.scene.mapperex.FootPrintDetailExMapper;
 import com.taw.scene.mapperex.SceneExMapper;
 import com.taw.scene.service.SceneCacheHelper.SceneStatCount;
 import com.taw.scene.service.SceneCacheHelper.UserOnScene;
+import com.taw.user.auth.AuthThreadLocal;
 import com.taw.user.service.LoginService;
 
 @Service
@@ -85,6 +88,9 @@ public class SceneService {
 
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private BookmarkService bookmarkService;
 
 	@Autowired
 	private SceneServiceConfigure sceneServiceConfigure;
@@ -214,17 +220,37 @@ public class SceneService {
 	}
 
 	private List<SceneResp> convert(List<SceneDomain> sceneDomainList) throws Exception {
+		
+		Long userId = AuthThreadLocal.getUserId() ;
+		
 		if (CollectionTools.isNullOrEmpty(sceneDomainList)) {
 			return new ArrayList<SceneResp>();
 		}
 
 		List<SceneResp> sceneRespsList = new ArrayList<SceneResp>(sceneDomainList.size());
+		
+		Map<Long,BookmarkDomain> bookedSceneIdMap = new HashMap<Long,BookmarkDomain>();
+		if (userId != null){
+			QueryBookmarkParam queryBookmarkParam = new QueryBookmarkParam();
+			queryBookmarkParam.setLimit(10000);
+			queryBookmarkParam.setOffset(0);
+			queryBookmarkParam.setUserId(userId);
+			List<BookmarkDomain> bookedSceneList =  bookmarkService.search(queryBookmarkParam);
+			
+			if (bookedSceneList != null){
+				for (BookmarkDomain  bookmarkDomain : bookedSceneList){
+					bookedSceneIdMap.put(bookmarkDomain.getSceneId(), bookmarkDomain);
+				}
+			}
+		}
+		
 		for (SceneDomain sceneDomain : sceneDomainList) {
 			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
 			querySingleSceneParam.setSceneId(sceneDomain.getId());
-			SceneResp sceneResp = querySingleScene(querySingleSceneParam);
-			if (sceneResp != null)
+			SceneResp sceneResp = querySingleScene(querySingleSceneParam,bookedSceneIdMap);
+			if (sceneResp != null){			
 				sceneRespsList.add(sceneResp);
+			}
 		}
 
 		return sceneRespsList;
@@ -243,6 +269,7 @@ public class SceneService {
 	}
 
 	public List<SceneResp> query(QuerySceneByNameParam querySceneByNameParam) throws Exception {
+		
 		List<SceneDomain> sceneDomainList = sceneExMapper.querySceneByName("%" + querySceneByNameParam.getName() + "%");
 
 		return convert(sceneDomainList);
@@ -268,7 +295,7 @@ public class SceneService {
 		return sceneDomain;
 	}
 
-	public SceneResp querySingleScene(QuerySingleSceneParam param) throws Exception {
+	public SceneResp querySingleScene(QuerySingleSceneParam param,Map<Long,BookmarkDomain> bookedSceneIdMap) throws Exception {
 		CheckTools.check(param);
 
 		Long sceneId = param.getSceneId();
@@ -292,6 +319,9 @@ public class SceneService {
 
 		sceneResp.setEnterCount(sceneStatCount.getEnterCount());
 		sceneResp.setOnlineCount(sceneStatCount.getOnlineCount());
+		
+		if (bookedSceneIdMap!=null && bookedSceneIdMap.get(sceneResp.getId())!=null)
+			sceneResp.setFavored(1);
 
 		return sceneResp;
 	}
@@ -599,7 +629,7 @@ public class SceneService {
 		if (sceneStatCount == null) {
 			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
 			querySingleSceneParam.setSceneId(sceneId);
-			SceneResp sceneResp = querySingleScene(querySingleSceneParam);
+			SceneResp sceneResp = querySingleScene(querySingleSceneParam,null);
 			if (sceneResp == null)
 				return null;
 

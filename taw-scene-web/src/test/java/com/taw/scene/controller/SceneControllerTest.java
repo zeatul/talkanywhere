@@ -28,7 +28,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		
 		querySceneInRegionParam.setLeftBottom(new MapPoint(new BigDecimal(120), new BigDecimal(32)));
 		querySceneInRegionParam.setRightTop((new MapPoint(new BigDecimal(122), new BigDecimal(30))));
-		querySceneInRegionParam.setBlk(10);
+		querySceneInRegionParam.setBlock(1);
 		
 		
 		String content = JsonTools.toJsonString(querySceneInRegionParam);

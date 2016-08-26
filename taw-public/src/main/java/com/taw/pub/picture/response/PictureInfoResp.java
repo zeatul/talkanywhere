@@ -4,6 +4,19 @@ import java.util.Date;
 
 public class PictureInfoResp {
 
+	public String getUp() {
+		return up;
+	}
+	public void setUp(String up) {
+		this.up = up;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
 	public String getSceneName() {
 		return sceneName;
 	}
@@ -135,5 +148,13 @@ public class PictureInfoResp {
 	
 	/**/
 	private String description; 
+	
+	/*上传者昵称*/
+	private String nickname;
+	
+	/**
+	 * 0,踩， 1点赞，2未踩未点赞
+	 */
+	private String up = "2";
 
 }

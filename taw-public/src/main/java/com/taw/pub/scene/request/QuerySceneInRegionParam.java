@@ -6,6 +6,12 @@ import com.taw.pub.scene.com.MapPoint;
 public class QuerySceneInRegionParam {
 	
 	
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 	public Integer getLevel() {
 		return level;
 	}
@@ -63,6 +69,11 @@ public class QuerySceneInRegionParam {
 	 */
 	@CheckNull
 	private Integer block;
+	
+	/**
+	 * 用户id
+	 */
+	private long userId;
 
 
 }

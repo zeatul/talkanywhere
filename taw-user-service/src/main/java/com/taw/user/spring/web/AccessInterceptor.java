@@ -33,6 +33,10 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 	private LoginService loginService;
 	
 	public AccessInterceptor(){
+		
+		/**
+		 * 必须登录
+		 */
 		protectedPaths = new HashSet<String>();
 		
 		protectedPaths.add("/user/logout.do");
@@ -96,24 +100,10 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		logger.info("+++++ receive access http request = {}" ,JsonTools.toJsonString(httpRequestInfo));
 
 		if (protectedPaths.contains(httpRequestInfo.getPath())){
-			/**
-			 * 解密出token
-			 */
-			String token = tokenSecurityHelper.computeToken(httpRequestInfo.getTicket());
-			/**
-			 * 根据token计算出用户ID
-			 * TODO: 是否需要将用户id做签名 影藏在token里，做验证?
-			 */
-			Long userId = loginService.queryUserId(token);
-			
-			if (userId == null){
-				throw new InvalidTokenException();
-			}else{
-				/**
-				 * userId 加入threadlocal
-				 */
-				AuthThreadLocal.setUserId(userId);
-				AuthThreadLocal.setToken(token);
+			ddd(httpRequestInfo);
+		}else{
+			if (httpRequestInfo.getTicket()!=null){
+				ddd(httpRequestInfo);
 			}
 		}
 		
@@ -122,6 +112,28 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		 * TODO:更新用户最后访问时间
 		 */
 		return true;
+	}
+	
+	private void ddd(HttpRequestInfo httpRequestInfo) throws Exception{
+		/**
+		 * 解密出token
+		 */
+		String token = tokenSecurityHelper.computeToken(httpRequestInfo.getTicket());
+		/**
+		 * 根据token计算出用户ID
+		 * TODO: 是否需要将用户id做签名 影藏在token里，做验证?
+		 */
+		Long userId = loginService.queryUserId(token);
+		
+		if (userId == null){
+			throw new InvalidTokenException();
+		}else{
+			/**
+			 * userId 加入threadlocal
+			 */
+			AuthThreadLocal.setUserId(userId);
+			AuthThreadLocal.setToken(token);
+		}
 	}
 	
 	

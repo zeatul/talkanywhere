@@ -26,6 +26,7 @@ import com.taw.pub.picture.request.PicturePathParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchPictureAsSpecOrderParam;
 import com.taw.pub.picture.request.SearchPictureSentByMyselfParam;
 import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
@@ -205,6 +206,21 @@ public class PictureController {
 	public void sceneCrdtDesc(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		SearchSceneHotPictureParam sceneHotPictureParam = HttpRequestHandler.handle(request, SearchSceneHotPictureParam.class);
 		HttpResponseHandler.handle(response, SuccessResponse.build(pictureService.loadSceneCrdtDescPicture(sceneHotPictureParam)));
+		
+	}
+	
+	/**
+	 * 按照指定顺序搜索图片
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/pic/scene/as_spec_order.do", method = {RequestMethod.POST,RequestMethod.GET})
+	public void sceneAsSpecOrder(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		SearchPictureAsSpecOrderParam searchPictureAsSpecOrderParam = HttpRequestHandler.handle(request, SearchPictureAsSpecOrderParam.class);
+		HttpResponseHandler.handle(response, SuccessResponse.build(pictureService.loadScenePictureAsSpecOrder(searchPictureAsSpecOrderParam)));
 		
 	}
 	

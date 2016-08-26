@@ -32,6 +32,7 @@ import com.taw.picture.mapperex.PictureCommentExMapper;
 import com.taw.picture.mapperex.PictureExMapper;
 import com.taw.pub.picture.enums.EnumPictureHotLevel;
 import com.taw.pub.picture.enums.EnumPictureStatus;
+import com.taw.pub.picture.enums.EnumSearchPictureOrder;
 import com.taw.pub.picture.enums.EnumThumbType;
 import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.InsrtPictureParam;
@@ -39,6 +40,7 @@ import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchPictureAsSpecOrderParam;
 import com.taw.pub.picture.request.SearchPictureSentByMyselfParam;
 import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
@@ -46,6 +48,7 @@ import com.taw.pub.picture.response.AddCommentResp;
 import com.taw.pub.picture.response.PictureCommentInfoResp;
 import com.taw.pub.picture.response.PictureInfoResp;
 import com.taw.pub.picture.response.PictureStatResp;
+import com.taw.user.auth.AuthThreadLocal;
 
 @Service
 public class PictureService {
@@ -376,6 +379,9 @@ public class PictureService {
 		PictureInfoResp pictureInfoResp = new PictureInfoResp();
 		DomainTools.copy(pictureDomain, pictureInfoResp);
 		fillPath(pictureInfoResp);
+		List<PictureInfoResp> pictureInfoRespList =new ArrayList<PictureInfoResp>();
+		pictureInfoRespList.add(pictureInfoResp);
+		fillMyUpInfo(pictureInfoRespList);
 		return pictureInfoResp;
 	}
 	
@@ -401,7 +407,7 @@ public class PictureService {
 				pictureInfoRespList.add(pictureInfoResp);
 			}
 		}
-		
+		fillMyUpInfo(pictureInfoRespList);
 		return pictureInfoRespList;
 	}
 	
@@ -415,8 +421,9 @@ public class PictureService {
 				DomainTools.copy(pictureDomain, pictureInfoResp);
 				fillPath(pictureInfoResp);
 				pictureInfoRespList.add(pictureInfoResp);
-			}
-		}		
+			}			
+		}	
+		fillMyUpInfo(pictureInfoRespList);
 		return pictureInfoRespList;
 	}
 	
@@ -431,7 +438,25 @@ public class PictureService {
 				fillPath(pictureInfoResp);
 				pictureInfoRespList.add(pictureInfoResp);
 			}
-		}		
+		}	
+		fillMyUpInfo(pictureInfoRespList);
+		return pictureInfoRespList;
+	}
+	
+	public List<PictureInfoResp> loadScenePictureAsSpecOrder(SearchPictureAsSpecOrderParam searchPictureAsSpecOrderParam) throws Exception{
+		CheckTools.check(searchPictureAsSpecOrderParam);
+		List<PictureDomain> pictureDomainList = pictureExMapper.loadScenePictureAsSpecOrder(searchPictureAsSpecOrderParam.getSceneId()
+				,searchPictureAsSpecOrderParam.getOffset(), searchPictureAsSpecOrderParam.getLimit(),EnumSearchPictureOrder.toOrderByString(searchPictureAsSpecOrderParam.getOrderBy()));
+		List<PictureInfoResp> pictureInfoRespList = new ArrayList<PictureInfoResp>();		
+		if (pictureDomainList != null){			
+			for (PictureDomain pictureDomain : pictureDomainList){				
+				PictureInfoResp pictureInfoResp = new PictureInfoResp();
+				DomainTools.copy(pictureDomain, pictureInfoResp);
+				fillPath(pictureInfoResp);
+				pictureInfoRespList.add(pictureInfoResp);
+			}
+		}	
+		fillMyUpInfo(pictureInfoRespList);
 		return pictureInfoRespList;
 	}
 	
@@ -446,7 +471,41 @@ public class PictureService {
 				fillPath(pictureInfoResp);
 				pictureInfoRespList.add(pictureInfoResp);
 			}
-		}		
+		}	
+		fillMyUpInfo(pictureInfoRespList);
 		return pictureInfoRespList;
+	}
+	
+	/**
+	 * 填写我的点赞信息
+	 */
+	private void fillMyUpInfo(List<PictureInfoResp> pictureInfoRespList ){
+		
+		if (pictureInfoRespList == null || pictureInfoRespList.size() ==0)
+			return ;
+		
+		Long userId = AuthThreadLocal.getUserId();
+		if (userId == null)
+			return;
+		Map<String,Object> params = new HashMap<String,Object>();
+		
+		params.put("userId", userId);		
+		
+		List<PictureThumbDomain> list = pictureThumbMapper.loadDynamic(params);
+		
+		if (list == null || list.size() == 0)
+			return;
+		
+		Map<Long,PictureThumbDomain> map = new HashMap<Long,PictureThumbDomain>();
+		for (PictureThumbDomain pictureThumbDomain : list){
+			map.put(pictureThumbDomain.getPicId(), pictureThumbDomain);
+		}
+		
+		for (PictureInfoResp pictureInfoResp :pictureInfoRespList){
+			PictureThumbDomain pictureThumbDomain = map.get(pictureInfoResp.getId());
+			if (pictureThumbDomain != null){
+				pictureInfoResp.setUp(pictureThumbDomain.getKind());
+			}
+		}
 	}
 }

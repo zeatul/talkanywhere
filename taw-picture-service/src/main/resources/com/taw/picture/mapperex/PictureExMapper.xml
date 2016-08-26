@@ -29,6 +29,17 @@
 		ORDER BY crdt desc LIMIT #{offset},#{limit}		
 	</select>
 	
+	<select id="loadScenePictureAsSpecOrder" parameterType="hashmap"  resultType="PictureDomain">
+		SELECT 
+		<include refid="com.taw.picture.mapper.PictureMapper.columns" />
+		FROM t_pm_picture
+		WHERE scene_id = #{sceneId}
+		ORDER BY ${orderby}  LIMIT #{offset},#{limit}		
+	</select>
+	
+	
+	
+	
 	<select id="loadPictureSentByMyself" parameterType="hashmap"  resultType="PictureDomain">
 		SELECT 
 		<include refid="com.taw.picture.mapper.PictureMapper.columns" />

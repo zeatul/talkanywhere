@@ -3,6 +3,14 @@ package com.taw.pub.scene.response;
 public class SceneResp {
 	
 
+	public Integer getFavored() {
+		return favored;
+	}
+
+	public void setFavored(Integer favored) {
+		this.favored = favored;
+	}
+
 	public java.math.BigDecimal getLeftBottomLng() {
 		return leftBottomLng;
 	}
@@ -129,5 +137,10 @@ public class SceneResp {
 	 * 进入人数
 	 */
 	private Integer enterCount;
+	
+	/**
+	 * 是否收藏 0：未收藏， 1：已收藏
+	 */
+	private Integer favored = 0;
 
 }

@@ -94,7 +94,7 @@ public class SceneController {
 	public void info(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		QuerySingleSceneParam param = HttpRequestHandler.handle(request, QuerySingleSceneParam.class);
 		
-		SceneResp sceneResp = sceneService.querySingleScene(param);
+		SceneResp sceneResp = sceneService.querySingleScene(param,null);
 		
 		HttpResponseHandler.handle(response, SuccessResponse.build(sceneResp));
 	}
