@@ -270,7 +270,8 @@ public class SceneService {
 
 	public List<SceneResp> query(QuerySceneByNameParam querySceneByNameParam) throws Exception {
 		
-		List<SceneDomain> sceneDomainList = sceneExMapper.querySceneByName("%" + querySceneByNameParam.getName() + "%");
+		List<SceneDomain> sceneDomainList = sceneExMapper.querySceneByName("%" + querySceneByNameParam.getName() + "%"
+				,querySceneByNameParam.getOffset(),querySceneByNameParam.getLimit());
 
 		return convert(sceneDomainList);
 	}

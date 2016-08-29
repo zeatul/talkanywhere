@@ -49,7 +49,7 @@ public interface SceneExMapper {
 	 * @param name
 	 * @return
 	 */
-	public List<SceneDomain> querySceneByName(@Param("name") String name);
+	public List<SceneDomain> querySceneByName(@Param("name") String name,@Param("offset")Integer offset , @Param("limit")Integer limit);
 	
 	/**
 	 * 按照城市分组模糊化计算
