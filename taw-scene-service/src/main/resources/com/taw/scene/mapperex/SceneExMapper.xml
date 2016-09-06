@@ -35,7 +35,7 @@
 		SELECT 
 		<include refid="com.taw.scene.mapper.SceneMapper.columns" />
 		FROM t_tm_scene
-		WHERE name like #{name} LIMIT #{offset},#{_limit}	
+		WHERE name like #{name} LIMIT #{offset},#{limit}	
 	</select>
 	
 	<select id="querySceneGroupByCity"  resultType="FuzziedSceneDomain">
