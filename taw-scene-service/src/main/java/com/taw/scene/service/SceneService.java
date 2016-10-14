@@ -88,7 +88,7 @@ public class SceneService {
 
 	@Autowired
 	private LoginService loginService;
-	
+
 	@Autowired
 	private BookmarkService bookmarkService;
 
@@ -195,60 +195,65 @@ public class SceneService {
 				querySceneInRegionResp.setSceneCount(querySceneInRegionResp.getSceneResps().size());
 			} else
 			/**
-			 * 计算 @minGroupSize = Round(@avg * 2.0, 0) （其中@avg为Step1中计算出的GroupSize平均值） 
-			 * 排除Step 1结果中GroupSize < @minGroupSize的所有行，并直接予以返回。无需携带场景热度值
+			 * 计算 @minGroupSize = Round(@avg * 2.0, 0)
+			 * （其中@avg为Step1中计算出的GroupSize平均值） 排除Step 1结果中GroupSize
+			 * < @minGroupSize的所有行，并直接予以返回。无需携带场景热度值
 			 */
 			{
-				long minGroupSize = Math.round(((sum*1.0)/rowCount)*2.0);
+				long minGroupSize = Math.round(((sum * 1.0) / rowCount) * 2.0);
 				List<FuzziedSceneDomain> result = new ArrayList<FuzziedSceneDomain>();
-				for (FuzziedSceneDomain fuzziedSceneDomain : fuzziedSceneDomainList){
-					if (fuzziedSceneDomain.getCount() >= minGroupSize){
+				for (FuzziedSceneDomain fuzziedSceneDomain : fuzziedSceneDomainList) {
+					if (fuzziedSceneDomain.getCount() >= minGroupSize) {
 						result.add(fuzziedSceneDomain);
 					}
 				}
-				
+
 				List<FuzziedSceneResp> fuzziedSceneRespsList = convert2(result);
 				querySceneInRegionResp.setFuzziedSceneCount(fuzziedSceneRespsList.size());
 				querySceneInRegionResp.setFuzziedSceneResps(fuzziedSceneRespsList);
 			}
 
-			
 		}
 
 		return querySceneInRegionResp;
 
 	}
 
+	public Map<Long, BookmarkDomain> bookedSceneIdMap(Long userId) throws Exception {
+		Map<Long, BookmarkDomain> bookedSceneIdMap = new HashMap<Long, BookmarkDomain>();
+		if (userId != null) {
+			QueryBookmarkParam queryBookmarkParam = new QueryBookmarkParam();
+			queryBookmarkParam.setLimit(10000);
+			queryBookmarkParam.setOffset(0);
+			queryBookmarkParam.setUserId(userId);
+			List<BookmarkDomain> bookedSceneList = bookmarkService.search(queryBookmarkParam);
+
+			if (bookedSceneList != null) {
+				for (BookmarkDomain bookmarkDomain : bookedSceneList) {
+					bookedSceneIdMap.put(bookmarkDomain.getSceneId(), bookmarkDomain);
+				}
+			}
+		}
+		return bookedSceneIdMap;
+	}
+
 	private List<SceneResp> convert(List<SceneDomain> sceneDomainList) throws Exception {
-		
-		Long userId = AuthThreadLocal.getUserId() ;
-		
+
+		Long userId = AuthThreadLocal.getUserId();
+
 		if (CollectionTools.isNullOrEmpty(sceneDomainList)) {
 			return new ArrayList<SceneResp>();
 		}
 
 		List<SceneResp> sceneRespsList = new ArrayList<SceneResp>(sceneDomainList.size());
-		
-		Map<Long,BookmarkDomain> bookedSceneIdMap = new HashMap<Long,BookmarkDomain>();
-		if (userId != null){
-			QueryBookmarkParam queryBookmarkParam = new QueryBookmarkParam();
-			queryBookmarkParam.setLimit(10000);
-			queryBookmarkParam.setOffset(0);
-			queryBookmarkParam.setUserId(userId);
-			List<BookmarkDomain> bookedSceneList =  bookmarkService.search(queryBookmarkParam);
-			
-			if (bookedSceneList != null){
-				for (BookmarkDomain  bookmarkDomain : bookedSceneList){
-					bookedSceneIdMap.put(bookmarkDomain.getSceneId(), bookmarkDomain);
-				}
-			}
-		}
-		
+
+		Map<Long, BookmarkDomain> bookedSceneIdMap = bookedSceneIdMap(userId);
+
 		for (SceneDomain sceneDomain : sceneDomainList) {
 			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
 			querySingleSceneParam.setSceneId(sceneDomain.getId());
-			SceneResp sceneResp = querySingleScene(querySingleSceneParam,bookedSceneIdMap);
-			if (sceneResp != null){			
+			SceneResp sceneResp = querySingleScene(querySingleSceneParam, bookedSceneIdMap);
+			if (sceneResp != null) {
 				sceneRespsList.add(sceneResp);
 			}
 		}
@@ -269,9 +274,9 @@ public class SceneService {
 	}
 
 	public List<SceneResp> query(QuerySceneByNameParam querySceneByNameParam) throws Exception {
-		
-		List<SceneDomain> sceneDomainList = sceneExMapper.querySceneByName("%" + querySceneByNameParam.getName() + "%"
-				,querySceneByNameParam.getOffset(),querySceneByNameParam.getLimit());
+
+		List<SceneDomain> sceneDomainList = sceneExMapper.querySceneByName("%" + querySceneByNameParam.getName() + "%", querySceneByNameParam.getOffset(),
+				querySceneByNameParam.getLimit());
 
 		return convert(sceneDomainList);
 	}
@@ -296,7 +301,7 @@ public class SceneService {
 		return sceneDomain;
 	}
 
-	public SceneResp querySingleScene(QuerySingleSceneParam param,Map<Long,BookmarkDomain> bookedSceneIdMap) throws Exception {
+	public SceneResp querySingleScene(QuerySingleSceneParam param,Map<Long, BookmarkDomain> bookedSceneIdMap) throws Exception {
 		CheckTools.check(param);
 
 		Long sceneId = param.getSceneId();
@@ -320,8 +325,8 @@ public class SceneService {
 
 		sceneResp.setEnterCount(sceneStatCount.getEnterCount());
 		sceneResp.setOnlineCount(sceneStatCount.getOnlineCount());
-		
-		if (bookedSceneIdMap!=null && bookedSceneIdMap.get(sceneResp.getId())!=null)
+
+		if (bookedSceneIdMap != null && bookedSceneIdMap.get(sceneResp.getId()) != null)
 			sceneResp.setFavored(1);
 
 		return sceneResp;
@@ -360,8 +365,8 @@ public class SceneService {
 		 * 记录用户进入场景历史明细表
 		 */
 		FootPrintDetailDomain footPrintDetailDomain = null;
-		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(enterSceneParam.getToken(),
-				enterSceneParam.getSceneId(), enterSceneParam.getUserId());
+		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(enterSceneParam.getToken(), enterSceneParam.getSceneId(),
+				enterSceneParam.getUserId());
 		if (list != null && list.size() > 0) {
 			footPrintDetailDomain = list.get(0);
 		} else {
@@ -505,15 +510,13 @@ public class SceneService {
 
 		String nickname = list.get(0).getNickname();
 		long fpdId = list.get(0).getId();
-		
-		userOnScene= new UserOnScene();
+
+		userOnScene = new UserOnScene();
 		userOnScene.setNickname(nickname);
 		userOnScene.setFpdId(fpdId);
 
 		SceneCacheHelper.cacheNickname(token, sceneId, userOnScene);
-		
-		
-		
+
 		return userOnScene;
 	}
 
@@ -630,7 +633,7 @@ public class SceneService {
 		if (sceneStatCount == null) {
 			QuerySingleSceneParam querySingleSceneParam = new QuerySingleSceneParam();
 			querySingleSceneParam.setSceneId(sceneId);
-			SceneResp sceneResp = querySingleScene(querySingleSceneParam,null);
+			SceneResp sceneResp = querySingleScene(querySingleSceneParam, null);
 			if (sceneResp == null)
 				return null;
 

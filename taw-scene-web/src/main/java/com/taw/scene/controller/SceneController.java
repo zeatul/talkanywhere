@@ -3,6 +3,7 @@ package com.taw.scene.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.SceneResp;
+import com.taw.scene.domain.BookmarkDomain;
 import com.taw.scene.service.SceneService;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -94,7 +96,13 @@ public class SceneController {
 	public void info(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		QuerySingleSceneParam param = HttpRequestHandler.handle(request, QuerySingleSceneParam.class);
 		
-		SceneResp sceneResp = sceneService.querySingleScene(param,null);
+		Long userId = AuthThreadLocal.getUserId();
+		Map<Long, BookmarkDomain> bookedSceneIdMap = null;
+		if (userId != null) {
+			bookedSceneIdMap = sceneService.bookedSceneIdMap(userId);			
+		}
+		
+		SceneResp sceneResp = sceneService.querySingleScene(param,bookedSceneIdMap);
 		
 		HttpResponseHandler.handle(response, SuccessResponse.build(sceneResp));
 	}
