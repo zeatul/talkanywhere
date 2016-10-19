@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hawk.pub.spring.FrameworkContext;
 import com.hawk.utility.redis.RedisClient;
 import com.taw.scene.jms.Notification;
@@ -20,6 +23,8 @@ import com.taw.scene.service.SceneService;
 import com.taw.user.service.LoginService;
 
 public class CtxHelper {
+	
+	private final static Logger logger = LoggerFactory.getLogger(CtxHelper.class);
 
 	public final static int READ_TIMEOUT = 60 * 2;// 秒
 
@@ -195,6 +200,8 @@ public class CtxHelper {
 					return true;
 				}
 			});
+			
+			logger.info("notifyConversationCreate:"+message);
 		}
 	}
 
@@ -207,6 +214,7 @@ public class CtxHelper {
 		if (channelGroup != null){
 			String message = EnumMessageType.MESSAGE_NOTIFICATION.toString();
 			channelGroup.writeAndFlush(message);
+			logger.info("notifyMessageCreate:"+message);
 		}
 
 	}
