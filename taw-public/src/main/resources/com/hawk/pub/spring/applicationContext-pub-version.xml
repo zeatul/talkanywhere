@@ -8,7 +8,7 @@
 
 	
 	
-
+<!-- 
 	<bean id="versionMap" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
@@ -30,7 +30,7 @@
 				</entry>
 			</map>
 		</constructor-arg>
-	</bean>
+	</bean> -->
 
 
 </beans>

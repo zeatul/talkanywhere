@@ -9,6 +9,7 @@ import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
+import com.taw.pub.picture.request.SearchPictureAsSpecOrderParam;
 import com.taw.pub.picture.request.SearchSceneHotPictureParam;
 import com.taw.pub.picture.request.ThumbPictureParam;
 
@@ -105,7 +106,7 @@ public class PictureControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testSearchSceneHotPicture() throws Exception{
 		String path = contextPath + "/pic/scene/hot.do";
 		SearchSceneHotPictureParam param = new SearchSceneHotPictureParam();
@@ -116,6 +117,20 @@ public class PictureControllerTest extends AbstractControllerTest{
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());
 		
+		printResult(result);
+	}
+	
+	@Test
+	public void testSceneAsSpecOrder()throws Exception{
+		String path = contextPath + "/pic/scene/as_spec_order.do";
+		SearchPictureAsSpecOrderParam param = new SearchPictureAsSpecOrderParam();
+		param.setOffset(0);
+		param.setLimit(5);
+		param.setSceneId(1l);
+		param.setOrderBy("1");
+		String content = JsonTools.toJsonString(param);
+		printSend(content);
+		String result = httpClientHelper.post(path, content, null);
 		printResult(result);
 	}
 

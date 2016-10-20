@@ -23,7 +23,7 @@ public interface PictureExMapper  {
 	
 	List<PictureDomain> loadSceneCrdtDescPicture(@Param("sceneId") Long sceneId,@Param("offset")Integer offset , @Param("limit")Integer limit);
 	
-	List<PictureDomain> loadScenePictureAsSpecOrder(@Param("sceneId") Long sceneId,@Param("offset")Integer offset , @Param("limit")Integer limit,@Param("orderBy")String orderBy);
+	List<PictureDomain> loadScenePictureAsSpecOrder(@Param("sceneId") Long sceneId,@Param("offset")Integer offset , @Param("limit")Integer limit,@Param("orderby")String orderby);
 
 	List<PictureDomain> loadPictureSentByMyself(@Param("userId") Long userId,@Param("offset")Integer offset , @Param("limit")Integer limit);
 	

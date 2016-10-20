@@ -6,6 +6,14 @@ public class UserServiceConfigure {
 	
 	
 
+	public String getDownloadPrefix() {
+		return downloadPrefix;
+	}
+
+	public void setDownloadPrefix(String downloadPrefix) {
+		this.downloadPrefix = downloadPrefix;
+	}
+
 	public String getTokenKey() {
 		return tokenKey;
 	}
@@ -52,6 +60,6 @@ public class UserServiceConfigure {
 	 */
 	private boolean prod=false;
 	
-	
+	private String downloadPrefix;
 
 }
