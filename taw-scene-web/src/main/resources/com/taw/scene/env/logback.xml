@@ -41,10 +41,12 @@
 	
 	<logger name="com.taw" additivity="false" level="info">
 		<appender-ref ref="rolling" />
+		<appender-ref ref="stdout" />
 	</logger>
 	
 	<logger name="com.hawk" additivity="false" level="info">
 		<appender-ref ref="rolling" />
+		<appender-ref ref="stdout" />
 	</logger>
 	
 	

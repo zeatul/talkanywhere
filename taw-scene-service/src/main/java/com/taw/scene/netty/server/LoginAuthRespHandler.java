@@ -27,7 +27,7 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter{
 		String messageType = message.substring(0, 2);
 		if (messageType.equals(EnumMessageType.LOGIN_REQ.toString())){
 			String ticket = message.substring(2);
-			System.out.println("ticket="+ticket);
+			logger.info("ticket={}",ticket);
 			executor.execute(new LoginAuthTask(ctx, ticket));
 			
 		}else{
@@ -61,16 +61,17 @@ public class LoginAuthRespHandler extends ChannelHandlerAdapter{
 				 * 检查重复登录
 				 */
 				if (CtxHelper.existClientLogin(token)){
-					System.out.println("Duplicated login,token="+token);
+					logger.error("======Duplicated login,token={}",token);
 					errMsg = "Duplicated Login";
 					loginResult = false;
 				}else{
 					CtxHelper.registClientLogin(token,ctx);
 					loginResult = true;
+					logger.info("======Success login,token={}",token);
 				}
 			} catch (Exception ex) {
 				errMsg = "Invalid Token";
-				logger.info("Failed to pass auth check",ex);
+				logger.error("=====Failed to pass auth check",ex);
 			}
 			
 			ctx.writeAndFlush(buildLoginAuthResp(loginResult,errMsg));
