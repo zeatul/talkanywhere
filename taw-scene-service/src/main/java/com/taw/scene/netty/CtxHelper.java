@@ -182,7 +182,7 @@ public class CtxHelper {
 	 */
 	public static void notifyConversationCreate(final Notification notification) {
 		ChannelGroup channelGroup = scenedIdChannelMap.get(notification.getSceneId());		
-
+		logger.info("notifyConversationCreate_Start:");
 		if (channelGroup != null) {
 			String message = EnumMessageType.CONVERSATION_NOTIFICATION.toString() + notification.getSceneId();
 			channelGroup.writeAndFlush(message, new ChannelMatcher() {
@@ -211,6 +211,7 @@ public class CtxHelper {
 	 */
 	public static void notifyMessageCreate(final Notification notification) {
 		ChannelGroup channelGroup = userIdChannelMap.get(notification.getUserId());
+		logger.info("notifyMessageCreate_Start:");
 		if (channelGroup != null){
 			String message = EnumMessageType.MESSAGE_NOTIFICATION.toString();
 			channelGroup.writeAndFlush(message);
@@ -235,6 +236,7 @@ public class CtxHelper {
 					channelGroup.add(channel);
 				}
 			}
+			logger.info("notifySceneEnter:sceneId={}",sceneId);
 		}
 	}
 	
@@ -253,6 +255,7 @@ public class CtxHelper {
 					channelGroup.remove(channel);
 				}
 			}
+			logger.info("notifySceneLeave:sceneId={}",sceneId);
 		}
 	}
 

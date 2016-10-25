@@ -39,17 +39,6 @@
 	</appender>
 	
 	
-
-	<logger name="org.apache.ibatis" additivity="true" level="debug">
-		<appender-ref ref="rolling" />
-		<appender-ref ref="stdout" />
-	</logger>
-	
-	<logger name="java.sqle" additivity="true" level="debug">
-		<appender-ref ref="rolling" />
-		<appender-ref ref="stdout" />
-	</logger>
-
 	<logger name="com.taw" additivity="false" level="info">
 		<appender-ref ref="rolling" />
 	</logger>

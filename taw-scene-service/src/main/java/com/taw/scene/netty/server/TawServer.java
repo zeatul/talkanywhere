@@ -2,6 +2,8 @@ package com.taw.scene.netty.server;
 
 import java.nio.charset.Charset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.taw.scene.netty.CtxHelper;
@@ -23,6 +25,8 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class TawServer {
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	
@@ -62,7 +66,7 @@ public class TawServer {
 					});
 			// 绑定端口，同步等待成功
 			ChannelFuture f = b.bind(port).sync();
-			System.out.println("taw server listen in port " + port);
+			logger.info("+++++taw server listen in port {}" , port);
 			f.channel().closeFuture().sync();
 		} finally {
 			bossGroup.shutdownGracefully();

@@ -2,6 +2,9 @@ package com.taw.scene.netty.server;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.taw.scene.netty.CtxHelper;
 import com.taw.scene.netty.EnumMessageType;
 
@@ -13,6 +16,7 @@ public class HeartBeatRespHandler extends ChannelHandlerAdapter {
 	
 	private final static String HEART_BEAT_RESP = EnumMessageType.HEARTBEAT_RESP + "Heart beat response";
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -20,8 +24,10 @@ public class HeartBeatRespHandler extends ChannelHandlerAdapter {
 		String messageType = message.substring(0, 2);
 		
 		if (messageType.equals(EnumMessageType.HEARTBEAT_REQ.toString())){
+			logger.info("======Receive Heart Beat Request : {}",message);
 			ctx.writeAndFlush(HEART_BEAT_RESP);
-			CtxHelper.refreshClientLogin(ctx.channel().id().toString());
+			logger.info("======Send Heart Beat Response : {}",HEART_BEAT_RESP);
+			CtxHelper.refreshClientLogin(ctx.channel().id().toString());			
 		}else{
 			ctx.fireChannelRead(msg);
 		}
