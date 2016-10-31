@@ -24,7 +24,7 @@ public class EnumTools {
 				 return t;			 
 		 }
 		 
-		 throw new RuntimeException("parse error:no match enum value");
+		 throw new RuntimeException("parse error:no match enum value,obj="+obj+",clazz="+clazz.getName());
 		
 	}
 
