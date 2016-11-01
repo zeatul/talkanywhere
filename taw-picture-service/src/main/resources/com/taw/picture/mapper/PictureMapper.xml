@@ -32,7 +32,8 @@
 		suffix as "suffix" ,
 		app_src as "appSrc" ,
 		on_scene as "onScene" ,
-		description as "description" 
+		description as "description" ,
+		app_src_id as "appSrcId" 
 	</sql>
 	
 	<sql id="where">
@@ -65,6 +66,7 @@
 			<if test="appSrc != null"> AND app_src = #{appSrc}  </if>
 			<if test="onScene != null"> AND on_scene = #{onScene}  </if>
 			<if test="description != null"> AND description = #{description}  </if>
+			<if test="appSrcId != null"> AND app_src_id = #{appSrcId}  </if>
 		</trim>	
 	</sql>
 	
@@ -98,6 +100,7 @@
 			AND app_src = #{old_appSrc}
 			AND on_scene = #{old_onScene}
 			AND description = #{old_description}
+			AND app_src_id = #{old_appSrcId}
 		</trim>
 	</sql>
 	
@@ -130,6 +133,7 @@
 			app_src = #{appSrc},
 			on_scene = #{onScene},
 			description = #{description},
+			app_src_id = #{appSrcId},
 		</set>
 	</sql>
 	
@@ -162,6 +166,7 @@
 				<if test="appSrc != null">app_src = #{appSrc},</if>
 				<if test="onScene != null">on_scene = #{onScene},</if>
 				<if test="description != null">description = #{description},</if>
+				<if test="appSrcId != null">app_src_id = #{appSrcId},</if>
 		</set>
 	</sql>
 	
@@ -223,7 +228,8 @@
 				suffix,				
 				app_src,				
 				on_scene,				
-				description				
+				description,				
+				app_src_id				
 		)		
 		VALUES (	
 			#{id},
@@ -253,7 +259,8 @@
 			#{suffix},
 			#{appSrc},
 			#{onScene},
-			#{description}
+			#{description},
+			#{appSrcId}
 		) 
 	</insert>
 	

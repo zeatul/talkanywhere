@@ -34,10 +34,10 @@ public class AppTaw {
 	}
 
 	public static void main(String[] args) {
-		generateUm();
+//		generateUm();
 //		generateSM();
 //		generateTM();
-//		generatePM();
+		generatePM();
 	}
 	
 	/**

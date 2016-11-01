@@ -98,6 +98,9 @@ public class PictureDomain implements Serializable {
 	/**/
 	private String description;
 	
+	/*应用来源ID*/
+	private Long appSrcId;
+	
 	
 	/**
 	 * 
@@ -545,6 +548,22 @@ public class PictureDomain implements Serializable {
 	 */	
 	public void setDescription (String description) {
 		this.description = description;
+	}
+	
+	/**
+	 * 
+	 * @return 应用来源ID
+	 */
+	public Long getAppSrcId(){
+		return appSrcId;
+	}
+	
+	/**
+	 * 
+	 * @param appSrcId 应用来源ID
+	 */	
+	public void setAppSrcId (Long appSrcId) {
+		this.appSrcId = appSrcId;
 	}
 	
 

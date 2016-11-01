@@ -38,6 +38,7 @@ import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.InsrtPictureParam;
 import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
+import com.taw.pub.picture.request.RemovePictureParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
 import com.taw.pub.picture.request.SearchPictureAsSpecOrderParam;
@@ -72,6 +73,18 @@ public class PictureService {
 	@Autowired
 	private PictureExMapper pictureExMapper;
 	
+	
+	public void removePicture(RemovePictureParam removePictureParam) throws Exception{
+		CheckTools.check(removePictureParam);
+		long picId = removePictureParam.getPicId();
+		long userId = removePictureParam.getUserId();
+		PictureDomain pictureDomain = pictureMapper.load(picId);
+		if (pictureDomain == null )
+			return ;
+		if (pictureDomain.getUserId() != userId)
+			throw new UnauthorizedOperateException();
+		pictureMapper.delete(picId);
+	}
 	
 	
 	/**
@@ -125,6 +138,7 @@ public class PictureService {
 			pictureDomain.setForwardCount(0);	
 			
 			pictureDomain.setAppSrc(insrtPictureParam.getAppSrc().toString());
+			pictureDomain.setAppSrcId(insrtPictureParam.getAppSrcId());
 			
 			pictureDomain.setLSize(length);
 			

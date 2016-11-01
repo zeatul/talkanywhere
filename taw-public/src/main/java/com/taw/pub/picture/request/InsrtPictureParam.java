@@ -7,6 +7,12 @@ import com.taw.pub.picture.enums.EnumAppSrc;
 
 public class InsrtPictureParam {
 	
+	public Long getAppSrcId() {
+		return appSrcId;
+	}
+	public void setAppSrcId(Long appSrcId) {
+		this.appSrcId = appSrcId;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -107,6 +113,9 @@ public class InsrtPictureParam {
 	 * 
 	 */
 	private EnumAppSrc appSrc;
+	
+	/*应用来源ID*/
+	private Long appSrcId;
 	
 	/**
 	 * 在场

@@ -187,6 +187,7 @@ public class ConversationService {
 				insrtPictureParam.setAppSrc(EnumAppSrc.CONVERSATION);
 				insrtPictureParam.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
 				insrtPictureParam.setDescription(sendConverstaionParam.getMessage());
+				insrtPictureParam.setAppSrcId(conversationDomain.getId());
 				/**
 				 * 图片id ，插入图片管理表
 				 */

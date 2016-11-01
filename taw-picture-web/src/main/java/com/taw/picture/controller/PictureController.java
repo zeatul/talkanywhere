@@ -24,6 +24,7 @@ import com.taw.pub.picture.request.AddCommentParam;
 import com.taw.pub.picture.request.PictureInfoParam;
 import com.taw.pub.picture.request.PicturePathParam;
 import com.taw.pub.picture.request.RemoveCommentParam;
+import com.taw.pub.picture.request.RemovePictureParam;
 import com.taw.pub.picture.request.SearchCommentParam;
 import com.taw.pub.picture.request.SearchGlobalHotPictureParam;
 import com.taw.pub.picture.request.SearchPictureAsSpecOrderParam;
@@ -77,6 +78,25 @@ public class PictureController {
 		PictureStatResp pictureInfoResp = pictureService.thumbPicture(thumbPictureParam);
 		HttpResponseHandler.handle(response, SuccessResponse.build(pictureInfoResp));
 	}
+	
+	/**
+	 * 点赞
+	 * @param locale
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/pic/remove.do", method = RequestMethod.POST)
+	public void remove(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		RemovePictureParam removePictureParam = HttpRequestHandler.handle(request, RemovePictureParam.class);
+		removePictureParam.setUserId(AuthThreadLocal.getUserId());
+		
+		pictureService.removePicture(removePictureParam);
+		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	
 	
 	
 	/**

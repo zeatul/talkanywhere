@@ -34,7 +34,8 @@ create table t_pm_picture
    status               char(1) comment '图片状态',
    kind                 varchar(50) comment '图片类型',
    suffix               varchar(50) comment '图片后缀',
-   app_src              varchar(50) comment '图片来源',
+   app_src              varchar(50) comment '图片来源（会话，私信）',
+   app_src_id           bigint(20) comment '应用来源ID',
    location             varchar(1000) comment '拍摄地点',
    photo_time           timestamp(3) null default null comment '拍摄时间',
    s_url                varchar(200) comment '小图片地址',
@@ -50,6 +51,8 @@ create table t_pm_picture
    s_size               bigint(20) comment '小图片大小',
    m_size               bigint(20) comment '中图片大小',
    l_size               bigint(20) comment '大图片大小',
+   on_scene             tinyint comment '图片发送者是否在场',
+   description          varchar(1000) comment '图片描述',
    crdt                 timestamp(3) null default null comment '创建时间',
    primary key (id)
 )
