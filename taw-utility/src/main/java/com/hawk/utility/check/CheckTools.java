@@ -81,7 +81,7 @@ public class CheckTools {
 					EnumTools.parse(value, checkEnum.parser());
 				} catch (Exception e) {
 					logger.error("enum parse error", e);
-					throw new BasicException(fieldName + " can't pass enum check");
+					throw new BasicException(fieldName + " can't pass enum check!,cause="+e.getMessage());
 				}
 			}
 

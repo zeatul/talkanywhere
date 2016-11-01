@@ -15,6 +15,15 @@
 		  AND out_time is null	
 	</select>
 	
+	<select id="queryUnLeavedFootPrintDetailDomains2"  resultType="FootPrintDetailDomain">
+		SELECT 
+		<include refid="com.taw.scene.mapper.FootPrintDetailMapper.columns" />
+		FROM t_tm_foot_print_detail
+		WHERE scene_id = #{sceneId}
+		  AND user_id = #{userId}
+		  AND out_time is null	
+	</select>
+	
 	<select id="queryUnLeavedSceneId"  resultType="Long">
 		SELECT 
 		DISTINCT SCENE_ID as "sceneId"

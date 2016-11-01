@@ -32,9 +32,11 @@ import com.taw.scene.domain.ScenePicDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
+import com.taw.scene.exception.UserNotOnSceneException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.scene.mapper.MessageMapper;
+import com.taw.scene.mapperex.FootPrintDetailExMapper;
 import com.taw.scene.mapperex.MessageExMapper;
 
 @Service
@@ -60,6 +62,9 @@ public class MessageService {
 	
 	@Autowired
 	private PictureService pictureService;
+	
+	@Autowired
+	private FootPrintDetailExMapper footPrintDetailExMapper;
 
 	/**
 	 * 发送私信
@@ -111,6 +116,9 @@ public class MessageService {
 		 * 消息入库
 		 * TODO:检测接收者是否在场
 		 */
+		List<FootPrintDetailDomain> l = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(sceneId, receiverId);
+		if (l == null || l.size() == 0)
+			throw new UserNotOnSceneException();
 		
 		MessageDomain messageDomain = new MessageDomain();
 		
