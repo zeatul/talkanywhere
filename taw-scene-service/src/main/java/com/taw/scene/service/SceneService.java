@@ -17,6 +17,7 @@ import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
+import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.com.MapPoint;
@@ -87,13 +88,7 @@ public class SceneService {
 	private FootPrintDetailExMapper footPrintDetailExMapper;
 
 	@Autowired
-	private LoginService loginService;
-
-	@Autowired
 	private BookmarkService bookmarkService;
-
-	@Autowired
-	private SceneServiceConfigure sceneServiceConfigure;
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -550,8 +545,14 @@ public class SceneService {
 	 * @throws Exception
 	 */
 	public void ChangeOnlineCount(ChangeOnlineCountParam changeOnlineCountParam) throws Exception {
-		if (changeOnlineCountParam == null)
+		logger.info("++++ChangeOnlineCount+++");
+		if (changeOnlineCountParam == null){
+			logger.info("++++ChangeOnlineCount+++,changeOnlineCountParam is null!");
 			return;
+		}else{
+			logger.info("++++ChangeOnlineCount+++,changeOnlineCountParam={}",JsonTools.toJsonString(changeOnlineCountParam));
+		}
+		
 
 		Long userId = changeOnlineCountParam.getUserId();
 
@@ -582,8 +583,11 @@ public class SceneService {
 						}
 						/* 缓存指定物理场景的物理在线用户 */
 						SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token);
+						logger.info("++++ChangeOnlineCount+++, add sceneId={},userId={},token={}",sceneId,userId,token);
 					}
 					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
+				}else{
+					logger.info("++++ChangeOnlineCount+++, changed none");
 				}
 
 			}
@@ -611,6 +615,7 @@ public class SceneService {
 						}
 						/* 删除指定物理场景的物理在线用户 */
 						SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
+						logger.info("++++ChangeOnlineCount+++, remove sceneId={},userId={},token={}",sceneId,userId,token);
 					}
 					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
 				}

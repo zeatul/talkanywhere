@@ -4,20 +4,19 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
-import com.hawk.utility.redis.RedisClient;
 import com.taw.pub.user.request.LoginParam;
 import com.taw.pub.user.request.LogoutParam;
 import com.taw.pub.user.response.LoginResp;
 import com.taw.user.domain.LoginDomain;
 import com.taw.user.domain.UserDomain;
 import com.taw.user.exception.UnMatchUserPasswordException;
+import com.taw.user.exception.UserNotFoundException;
 import com.taw.user.mapper.LoginMapper;
 
 @Service
@@ -29,17 +28,6 @@ public class LoginService {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private RedisClient redisClient;
-	
-	private final int expire = 3600 *24 ; //token缓存24小时
-	
-	
-	
-	
-	
-	
 	
 	/**
 	 * 返回登录token
@@ -58,7 +46,7 @@ public class LoginService {
 		 */
 		UserDomain userDomain = userService.queryUser(loginParam.getMobile());
 		if (userDomain == null)
-			throw new UnMatchUserPasswordException();
+			throw new UserNotFoundException();
 		String signedPassword = userService.signedPassword(loginParam.getPassword());
 		if (!signedPassword.equals(userDomain.getPassword()))
 			throw new UnMatchUserPasswordException();

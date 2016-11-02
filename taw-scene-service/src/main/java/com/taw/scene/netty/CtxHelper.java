@@ -169,6 +169,7 @@ public class CtxHelper {
 			if (onlineSceneIds != null){
 				for (Long sceneId : onlineSceneIds){
 					SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
+					logger.info("+++removeClientLogin+++,remove online user,sceneId={},userId={},token={}",sceneId,userId,token);
 				}
 			}
 
@@ -215,7 +216,7 @@ public class CtxHelper {
 		if (channelGroup != null){
 			String message = EnumMessageType.MESSAGE_NOTIFICATION.toString();
 			channelGroup.writeAndFlush(message);
-			logger.info("notifyMessageCreate:"+message);
+			logger.info("*****notifyMessageCreate:message={},channelGroup.size()={},userId={}",message,channelGroup.size(),notification.getUserId());;
 		}
 
 	}
