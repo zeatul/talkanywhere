@@ -23,6 +23,7 @@ import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
+import com.taw.pub.scene.request.QueryUsersOnSceneParam;
 import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.SceneResp;
@@ -179,6 +180,13 @@ public class SceneController {
 		QueryUsersOnlineSceneParam queryUsersOnlineSceneParam = HttpRequestHandler.handle(request, QueryUsersOnlineSceneParam.class); 
 		
 		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.queryUsersOnlineScene(queryUsersOnlineSceneParam)));
+	}
+	
+	@RequestMapping(value = "/scene/users.do", method = RequestMethod.POST)
+	public void queryUsersOnScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		QueryUsersOnSceneParam queryUsersOnSceneParam = HttpRequestHandler.handle(request, QueryUsersOnSceneParam.class); 
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.queryUsersOnScene(queryUsersOnSceneParam)));
 	}
 	
 //	待测试

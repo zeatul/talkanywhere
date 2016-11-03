@@ -30,6 +30,7 @@ import com.taw.pub.scene.request.QueryBookmarkParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
+import com.taw.pub.scene.request.QueryUsersOnSceneParam;
 import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.FuzziedSceneResp;
@@ -360,8 +361,7 @@ public class SceneService {
 		 * 记录用户进入场景历史明细表
 		 */
 		FootPrintDetailDomain footPrintDetailDomain = null;
-		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(enterSceneParam.getToken(), enterSceneParam.getSceneId(),
-				enterSceneParam.getUserId());
+		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(enterSceneParam.getSceneId(),enterSceneParam.getUserId());
 		if (list != null && list.size() > 0) {
 			footPrintDetailDomain = list.get(0);
 		} else {
@@ -440,7 +440,7 @@ public class SceneService {
 		if (!userId.equals(footPrintDetailDomain.getUserId()))
 			throw new RuntimeException("UnMathed UserId");
 
-		if (sceneId != footPrintDetailDomain.getSceneId())
+		if (!sceneId.equals (footPrintDetailDomain.getSceneId()))
 			throw new RuntimeException("UnMathed SceneId");
 
 		/**
@@ -534,6 +534,28 @@ public class SceneService {
 			userOnlineScene.setToken(null);
 			userOnlineScene.setNickname(userOnScene.getNickname());
 			userOnlineScene.setFpdId(userOnScene.getFpdId());
+		}
+		return list;
+	}
+	
+	public List<UserOnlineScene> queryUsersOnScene(QueryUsersOnSceneParam queryUsersOnSceneParam) throws Exception {
+
+		CheckTools.check(queryUsersOnSceneParam);
+
+		Long sceneId = queryUsersOnSceneParam.getSceneId();
+		Integer offset = queryUsersOnSceneParam.getOffset();
+		Integer limit = queryUsersOnSceneParam.getLimit();
+		
+		
+		List<FootPrintDetailDomain> footPrintDetailDomainsList =  footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains3(sceneId, offset, limit);
+
+		List<UserOnlineScene> list = new ArrayList<UserOnlineScene>();
+		for (FootPrintDetailDomain footPrintDetailDomain : footPrintDetailDomainsList) {
+			UserOnlineScene userOnlineScene = new UserOnlineScene();
+			userOnlineScene.setToken(null);
+			userOnlineScene.setNickname(footPrintDetailDomain.getNickname());
+			userOnlineScene.setFpdId(footPrintDetailDomain.getId());
+			userOnlineScene.setUserId(footPrintDetailDomain.getUserId());
 		}
 		return list;
 	}
