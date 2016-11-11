@@ -4,6 +4,14 @@ public class UserOnlineScene {
 	
 	
 
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	public Long getFpdId() {
 		return fpdId;
 	}
@@ -43,5 +51,8 @@ public class UserOnlineScene {
 	private String token;
 	
 	private Long fpdId;
+	
+	/*用户性别*/
+	private String sex;
 
 }

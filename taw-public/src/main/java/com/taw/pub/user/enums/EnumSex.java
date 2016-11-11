@@ -8,12 +8,12 @@ package com.taw.pub.user.enums;
 public enum EnumSex {
 	
 	/**
-	 * 普通用户
+	 * 男
 	 */
 	MALE("M"),
 	
 	/**
-	 * 管理员
+	 * 女
 	 */
 	FEMALE("F");
 

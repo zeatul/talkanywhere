@@ -132,6 +132,7 @@ create table t_tm_foot_print_detail
    scene_id             bigint(20) not null comment '场景主键',
    scene_name           varchar(100) comment '场景名称',
    nickname             varchar(100) comment '分配昵称',
+   sex                  char(1) comment '用户性别',
    in_time              timestamp(3) null comment '最后进入时间',
    out_time             timestamp(3) null comment '进入次数累计',
    stay_span            integer comment '总停留时间',

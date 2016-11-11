@@ -19,7 +19,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		// TODO Auto-generated constructor stub
 	}
 
-//	@Test
+	@Test
 	public void testCreateUser() throws Exception {
 		/**
 		 * taw-user-web/user/create.do
@@ -32,7 +32,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		createUserParam.setDeviceKind(EnumDeviceKind.ANDROID.toString());
 		createUserParam.setImei("hwll");
 		createUserParam.setIp("127.0.0.1");
-		createUserParam.setMobile("13311658157");
+		createUserParam.setMobile("13916082481");
 		createUserParam.setOsVersion("1111.11");
 		createUserParam.setPassword("123456");
 		createUserParam.setSex(EnumSex.MALE.toString());
@@ -82,7 +82,7 @@ public class UserControllerTest extends AbstractControllerTest {
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testUpdatePassword() throws Exception {
 		String path = contextPath + "/user/pwd/update.do";
 		UpdatePasswordParam param = new UpdatePasswordParam();

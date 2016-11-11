@@ -32,6 +32,9 @@ public class PictureThumbDomain implements Serializable {
 	/*点赞时间*/
 	private Date crdt;
 	
+	/*用户性别*/
+	private String sex;
+	
 	
 	/**
 	 * 
@@ -127,6 +130,22 @@ public class PictureThumbDomain implements Serializable {
 	 */	
 	public void setCrdt (Date crdt) {
 		this.crdt = crdt;
+	}
+	
+	/**
+	 * 
+	 * @return 用户性别
+	 */
+	public String getSex(){
+		return sex;
+	}
+	
+	/**
+	 * 
+	 * @param sex 用户性别
+	 */	
+	public void setSex (String sex) {
+		this.sex = sex;
 	}
 	
 

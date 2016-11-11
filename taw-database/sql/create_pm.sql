@@ -29,6 +29,7 @@ create table t_pm_picture
    uuid                 varchar(60) comment 'UUID',
    user_id              bigint(20) comment '上传者ID',
    nickname             varchar(50) comment '上传者昵称',
+   sex                  char(1) comment '用户性别',
    scene_id             bigint(20) comment '场景Id',
    scene_name           varchar(100) comment '场景名称',
    status               char(1) comment '图片状态',
@@ -75,6 +76,7 @@ create table t_pm_picture_comment
    pic_id               bigint(20) comment '图片ID',
    user_id              bigint(20) comment '评论者ID',
    nickname             varchar(50) comment '评论者昵称',
+   sex                  char(1) comment '用户性别',
    content              varchar(1000) comment '评论内容',
    crdt                 timestamp(3) null default null comment '评论时间',
    primary key (id)
@@ -99,6 +101,7 @@ create table t_pm_picture_forward
    pic_id               bigint(20) comment '图片ID',
    user_id              bigint(20) comment '转发者ID',
    nickname             varchar(50) comment '转发者昵称',
+   sex                  char(1) comment '用户性别',
    crdt                 timestamp(3) null default null comment '转发时间',
    primary key (id)
 )
@@ -122,6 +125,7 @@ create table t_pm_picture_thumb
    pic_id               bigint(20) comment '图片ID',
    user_id              bigint(20) comment '点赞者ID',
    nickname             varchar(100) comment '点赞者昵称',
+   sex                  char(1) comment '用户性别',
    kind                 char(1) comment 'up down',
    crdt                 timestamp(3) null default null comment '点赞时间',
    primary key (id)

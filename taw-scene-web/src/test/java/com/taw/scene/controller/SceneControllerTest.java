@@ -10,6 +10,7 @@ import com.hawk.utility.JsonTools;
 import com.taw.pub.scene.com.MapPoint;
 import com.taw.pub.scene.request.ChangeOnlineCountParam;
 import com.taw.pub.scene.request.EnterSceneParam;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
@@ -21,7 +22,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		super();
 	}
 	
-	@Test
+//	@Test
 	public void testSearch() throws Exception{
 		String path = contextPath + "/scene/region/search.do";
 		QuerySceneInRegionParam querySceneInRegionParam = new QuerySceneInRegionParam();
@@ -40,12 +41,13 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	
+	@Test
 	public void testChangeOnlineCount() throws Exception{
 		String path = contextPath + "/scene/online/change.do";
 		ChangeOnlineCountParam param = new ChangeOnlineCountParam();
 		List<Long> inList = new ArrayList<Long>();
-		inList.add(1l);
+		inList.add(10l);
+		inList.add(30l);
 		param.setInList(inList);
 		List<Long> outList = new ArrayList<Long>();
 		outList.add(2l);
@@ -54,12 +56,32 @@ public class SceneControllerTest extends AbstractControllerTest{
 		
 		printSend(content);
 		
-		String result = httpClientHelper.post(path, content, null);
+		String result = httpClientHelper.post(path, content, genAuthMap());
 		
 		printResult(result);
 	}
 	
+//	@Test
+	public void testUserOnlineScene() throws Exception{
+		String path = contextPath + "/scene/online/exist.do";
+		ExistFootPrintParam param = new ExistFootPrintParam();
+		param.setSceneId(10l);
+		param.setUserId(76l);
+		String content = JsonTools.toJsonString(param);
+		printSend(content);
+        String result = httpClientHelper.post(path, content, null);		
+		printResult(result);
+		
+		param.setSceneId(30l);
+		param.setUserId(76l);
+		content = JsonTools.toJsonString(param);
+		printSend(content);
+        result = httpClientHelper.post(path, content, null);		
+		printResult(result);
+	}
 	
+	
+//	@Test
 	public void testSearchByName() throws Exception{
 		String path = contextPath + "/scene/name/search.do";
 		
@@ -75,7 +97,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	
+//	@Test
 	public void testInfo() throws Exception{
 		String path = contextPath + "/scene/info.do";
 		
@@ -101,7 +123,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	
+//	@Test
 	public void testEnterScene() throws Exception{
 		String path = contextPath + "/scene/enter.do";
 		EnterSceneParam enterSceneParam = new EnterSceneParam();

@@ -44,6 +44,9 @@ public class FootPrintDetailDomain implements Serializable {
 	/*离开类型*/
 	private String leaveType;
 	
+	/*用户性别*/
+	private String sex;
+	
 	
 	/**
 	 * 
@@ -203,6 +206,22 @@ public class FootPrintDetailDomain implements Serializable {
 	 */	
 	public void setLeaveType (String leaveType) {
 		this.leaveType = leaveType;
+	}
+	
+	/**
+	 * 
+	 * @return 用户性别
+	 */
+	public String getSex(){
+		return sex;
+	}
+	
+	/**
+	 * 
+	 * @param sex 用户性别
+	 */	
+	public void setSex (String sex) {
+		this.sex = sex;
 	}
 	
 

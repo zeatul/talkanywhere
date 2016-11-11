@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hawk.exception.BasicException;
+import com.hawk.pub.enums.EnumBoolean;
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
@@ -32,7 +34,7 @@ import com.taw.scene.domain.ScenePicDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
-import com.taw.scene.exception.UserNotOnSceneException;
+import com.taw.scene.exception.UserNotOnLineSceneException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.scene.mapper.MessageMapper;
@@ -114,11 +116,12 @@ public class MessageService {
 		
 		/**
 		 * 消息入库
-		 * TODO:检测接收者是否在场
+		 * TODO:检测接收者是否物理在场
 		 */
-		List<FootPrintDetailDomain> l = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(sceneId, receiverId);
-		if (l == null || l.size() == 0)
-			throw new UserNotOnSceneException();
+		
+		Set<Long> sceneIdSet = SceneCacheHelper.getCachedOnlineScenes(receiverId);
+		if (sceneIdSet == null || sceneIdSet.size() == 0 || !sceneIdSet.contains(sceneId))
+			throw new UserNotOnLineSceneException();
 		
 		MessageDomain messageDomain = new MessageDomain();
 		
@@ -154,6 +157,7 @@ public class MessageService {
 				insrtPictureParam.setAppSrc(EnumAppSrc.MESSAGE);
 				insrtPictureParam.setAppSrcId(messageDomain.getId());
 				insrtPictureParam.setDescription(sendMessageParam.getMessage());
+				insrtPictureParam.setOnScene(EnumBoolean.TRUE.getValue());
 				/**
 				 * 图片id ，插入图片管理表
 				 */

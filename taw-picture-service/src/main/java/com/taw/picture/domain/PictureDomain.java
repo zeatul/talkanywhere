@@ -101,6 +101,9 @@ public class PictureDomain implements Serializable {
 	/*应用来源ID*/
 	private Long appSrcId;
 	
+	/*用户性别*/
+	private String sex;
+	
 	
 	/**
 	 * 
@@ -564,6 +567,22 @@ public class PictureDomain implements Serializable {
 	 */	
 	public void setAppSrcId (Long appSrcId) {
 		this.appSrcId = appSrcId;
+	}
+	
+	/**
+	 * 
+	 * @return 用户性别
+	 */
+	public String getSex(){
+		return sex;
+	}
+	
+	/**
+	 * 
+	 * @param sex 用户性别
+	 */	
+	public void setSex (String sex) {
+		this.sex = sex;
 	}
 	
 

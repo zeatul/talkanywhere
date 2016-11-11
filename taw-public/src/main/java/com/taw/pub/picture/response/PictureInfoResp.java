@@ -4,6 +4,18 @@ import java.util.Date;
 
 public class PictureInfoResp {
 
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 	public String getUp() {
 		return up;
 	}
@@ -156,5 +168,11 @@ public class PictureInfoResp {
 	 * 0,踩， 1点赞，2未踩未点赞
 	 */
 	private String up = "2";
+	
+	/*上传者ID*/
+	private Long userId;
+	
+	/*用户性别*/
+	private String sex;
 
 }

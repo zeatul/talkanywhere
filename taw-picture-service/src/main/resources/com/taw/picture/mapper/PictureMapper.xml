@@ -33,7 +33,8 @@
 		app_src as "appSrc" ,
 		on_scene as "onScene" ,
 		description as "description" ,
-		app_src_id as "appSrcId" 
+		app_src_id as "appSrcId" ,
+		sex as "sex" 
 	</sql>
 	
 	<sql id="where">
@@ -67,6 +68,7 @@
 			<if test="onScene != null"> AND on_scene = #{onScene}  </if>
 			<if test="description != null"> AND description = #{description}  </if>
 			<if test="appSrcId != null"> AND app_src_id = #{appSrcId}  </if>
+			<if test="sex != null"> AND sex = #{sex}  </if>
 		</trim>	
 	</sql>
 	
@@ -101,6 +103,7 @@
 			AND on_scene = #{old_onScene}
 			AND description = #{old_description}
 			AND app_src_id = #{old_appSrcId}
+			AND sex = #{old_sex}
 		</trim>
 	</sql>
 	
@@ -134,6 +137,7 @@
 			on_scene = #{onScene},
 			description = #{description},
 			app_src_id = #{appSrcId},
+			sex = #{sex},
 		</set>
 	</sql>
 	
@@ -167,6 +171,7 @@
 				<if test="onScene != null">on_scene = #{onScene},</if>
 				<if test="description != null">description = #{description},</if>
 				<if test="appSrcId != null">app_src_id = #{appSrcId},</if>
+				<if test="sex != null">sex = #{sex},</if>
 		</set>
 	</sql>
 	
@@ -229,7 +234,8 @@
 				app_src,				
 				on_scene,				
 				description,				
-				app_src_id				
+				app_src_id,				
+				sex				
 		)		
 		VALUES (	
 			#{id},
@@ -260,7 +266,8 @@
 			#{appSrc},
 			#{onScene},
 			#{description},
-			#{appSrcId}
+			#{appSrcId},
+			#{sex}
 		) 
 	</insert>
 	

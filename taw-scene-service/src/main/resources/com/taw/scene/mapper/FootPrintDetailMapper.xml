@@ -14,7 +14,8 @@
 		in_time as "inTime" ,
 		out_time as "outTime" ,
 		stay_span as "staySpan" ,
-		leave_type as "leaveType" 
+		leave_type as "leaveType" ,
+		sex as "sex" 
 	</sql>
 	
 	<sql id="where">
@@ -29,6 +30,7 @@
 			<if test="outTime != null"> AND out_time = #{outTime}  </if>
 			<if test="staySpan != null"> AND stay_span = #{staySpan}  </if>
 			<if test="leaveType != null"> AND leave_type = #{leaveType}  </if>
+			<if test="sex != null"> AND sex = #{sex}  </if>
 		</trim>	
 	</sql>
 	
@@ -44,6 +46,7 @@
 			AND out_time = #{old_outTime}
 			AND stay_span = #{old_staySpan}
 			AND leave_type = #{old_leaveType}
+			AND sex = #{old_sex}
 		</trim>
 	</sql>
 	
@@ -58,6 +61,7 @@
 			out_time = #{outTime},
 			stay_span = #{staySpan},
 			leave_type = #{leaveType},
+			sex = #{sex},
 		</set>
 	</sql>
 	
@@ -72,6 +76,7 @@
 				<if test="outTime != null">out_time = #{outTime},</if>
 				<if test="staySpan != null">stay_span = #{staySpan},</if>
 				<if test="leaveType != null">leave_type = #{leaveType},</if>
+				<if test="sex != null">sex = #{sex},</if>
 		</set>
 	</sql>
 	
@@ -115,7 +120,8 @@
 				in_time,				
 				out_time,				
 				stay_span,				
-				leave_type				
+				leave_type,				
+				sex				
 		)		
 		VALUES (	
 			#{id},
@@ -127,7 +133,8 @@
 			#{inTime},
 			#{outTime},
 			#{staySpan},
-			#{leaveType}
+			#{leaveType},
+			#{sex}
 		) 
 	</insert>
 	

@@ -505,10 +505,12 @@ public class SceneService {
 
 		String nickname = list.get(0).getNickname();
 		long fpdId = list.get(0).getId();
+		String sex = list.get(0).getSex();
 
 		userOnScene = new UserOnScene();
 		userOnScene.setNickname(nickname);
 		userOnScene.setFpdId(fpdId);
+		userOnScene.setSex(sex);
 
 		SceneCacheHelper.cacheNickname(token, sceneId, userOnScene);
 
@@ -534,6 +536,7 @@ public class SceneService {
 			userOnlineScene.setToken(null);
 			userOnlineScene.setNickname(userOnScene.getNickname());
 			userOnlineScene.setFpdId(userOnScene.getFpdId());
+			userOnlineScene.setSex(userOnScene.getSex());
 		}
 		return list;
 	}
@@ -556,6 +559,7 @@ public class SceneService {
 			userOnlineScene.setNickname(footPrintDetailDomain.getNickname());
 			userOnlineScene.setFpdId(footPrintDetailDomain.getId());
 			userOnlineScene.setUserId(footPrintDetailDomain.getUserId());
+			userOnlineScene.setSex(footPrintDetailDomain.getSex());
 		}
 		return list;
 	}
@@ -583,6 +587,10 @@ public class SceneService {
 		List<Long> scendIdList = changeOnlineCountParam.getInList();
 
 		Set<Long> onlineSceneIdSet = SceneCacheHelper.getCachedOnlineScenes(userId);
+		
+		String sex = null;
+		
+		String nickname = null;
 
 		/**
 		 * 用户物理进入场景
@@ -591,6 +599,11 @@ public class SceneService {
 			for (Long sceneId : scendIdList) {
 
 				SceneStatCount sceneStatCount = querySceneStatCount(sceneId);
+				UserOnScene userOnScene = queryNickname(token, sceneId, userId);
+				if (userOnScene!=null){
+					sex = userOnScene.getSex();
+					nickname = userOnScene.getNickname();
+				}
 
 				if (sceneStatCount != null) {
 					if (onlineSceneIdSet == null) {
@@ -604,8 +617,8 @@ public class SceneService {
 							sceneStatCount.setOnlineCount(sceneStatCount.getOnlineCount() + 1);
 						}
 						/* 缓存指定物理场景的物理在线用户 */
-						SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token);
-						logger.info("++++ChangeOnlineCount+++, add sceneId={},userId={},token={}",sceneId,userId,token);
+						SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token,nickname,sex);
+						logger.info("++++ChangeOnlineCount+++, add sceneId={},userId={},token={},nickname={},sex={}",sceneId,userId,token,nickname,sex);
 					}
 					SceneCacheHelper.cacheSceneStatCount(sceneId, sceneStatCount);
 				}else{

@@ -141,6 +141,12 @@ public class SceneCacheHelper {
 	}
 	
 	public static class UserOnScene{
+		public String getSex() {
+			return sex;
+		}
+		public void setSex(String sex) {
+			this.sex = sex;
+		}
 		private String nickname;
 		public String getNickname() {
 			return nickname;
@@ -155,6 +161,9 @@ public class SceneCacheHelper {
 			this.fpdId = fpdId;
 		}
 		private long fpdId;
+		
+		/*用户性别*/
+		private String sex;
 	}
 	
 	/**
@@ -198,13 +207,15 @@ public class SceneCacheHelper {
 	 * @param sceneId
 	 * @param userOnlineScene
 	 */
-	public static void cacheSceneOnlineUser(Long sceneId,Long userId,String token ){
+	public static void cacheSceneOnlineUser(Long sceneId,Long userId,String token,String nickname,String sex ){
 		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
 		
 		UserOnlineScene userOnlineScene = new UserOnlineScene ();
 		
 		userOnlineScene.setToken(token);
 		userOnlineScene.setUserId(userId);
+		userOnlineScene.setSex(sex);
+		userOnlineScene.setNickname(nickname);
 		
 		List<String> list = new ArrayList<String>(1);
 		

@@ -10,7 +10,8 @@
 		user_id as "userId" ,
 		nickname as "nickname" ,
 		kind as "kind" ,
-		crdt as "crdt" 
+		crdt as "crdt" ,
+		sex as "sex" 
 	</sql>
 	
 	<sql id="where">
@@ -21,6 +22,7 @@
 			<if test="nickname != null"> AND nickname = #{nickname}  </if>
 			<if test="kind != null"> AND kind = #{kind}  </if>
 			<if test="crdt != null"> AND crdt = #{crdt}  </if>
+			<if test="sex != null"> AND sex = #{sex}  </if>
 		</trim>	
 	</sql>
 	
@@ -32,6 +34,7 @@
 			AND nickname = #{old_nickname}
 			AND kind = #{old_kind}
 			AND crdt = #{old_crdt}
+			AND sex = #{old_sex}
 		</trim>
 	</sql>
 	
@@ -42,6 +45,7 @@
 			nickname = #{nickname},
 			kind = #{kind},
 			crdt = #{crdt},
+			sex = #{sex},
 		</set>
 	</sql>
 	
@@ -52,6 +56,7 @@
 				<if test="nickname != null">nickname = #{nickname},</if>
 				<if test="kind != null">kind = #{kind},</if>
 				<if test="crdt != null">crdt = #{crdt},</if>
+				<if test="sex != null">sex = #{sex},</if>
 		</set>
 	</sql>
 	
@@ -91,7 +96,8 @@
 				user_id,				
 				nickname,				
 				kind,				
-				crdt				
+				crdt,				
+				sex				
 		)		
 		VALUES (	
 			#{id},
@@ -99,7 +105,8 @@
 			#{userId},
 			#{nickname},
 			#{kind},
-			#{crdt}
+			#{crdt},
+			#{sex}
 		) 
 	</insert>
 	

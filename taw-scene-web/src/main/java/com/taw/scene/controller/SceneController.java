@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
+import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.request.ChangeOnlineCountParam;
 import com.taw.pub.scene.request.EnterSceneParam;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
@@ -26,8 +29,11 @@ import com.taw.pub.scene.request.QuerySingleSceneParam;
 import com.taw.pub.scene.request.QueryUsersOnSceneParam;
 import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
+import com.taw.pub.scene.response.ExistFootPrintResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.domain.BookmarkDomain;
+import com.taw.scene.domain.FootPrintDetailDomain;
+import com.taw.scene.service.SceneCacheHelper;
 import com.taw.scene.service.SceneService;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -158,6 +164,24 @@ public class SceneController {
 		changeOnlineCountParam.setToken(AuthThreadLocal.getToken());
 		sceneService.ChangeOnlineCount(changeOnlineCountParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	}
+	
+	@RequestMapping(value = "/scene/online/exist.do", method = RequestMethod.POST)
+	public void userOnlineScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ExistFootPrintParam existFootPrintParam = HttpRequestHandler.handle(request, ExistFootPrintParam.class); 
+		CheckTools.check(existFootPrintParam);
+		
+		Set<Long> sceneIdSet = SceneCacheHelper.getCachedOnlineScenes(existFootPrintParam.getUserId());
+		
+		ExistFootPrintResp existFootPrintResp = new ExistFootPrintResp();
+		
+		if (sceneIdSet == null || sceneIdSet.size() == 0 || !sceneIdSet.contains(existFootPrintParam.getSceneId())){
+			existFootPrintResp.setExist("0");
+		}else{
+			existFootPrintResp.setExist("1");
+		}
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(existFootPrintResp));
 	}
 	
 	/**

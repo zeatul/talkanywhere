@@ -13,6 +13,9 @@ public abstract class AbstractControllerTest {
 	
 	private final  static ClassPathXmlApplicationContext context ;
 	
+	private boolean dev = true;
+	private boolean test = false;
+	
 	static{
 		String[] configPath = {"classpath*:com/taw/user/spring/applicationContext-user-service-bean.xml"
 		};
@@ -21,14 +24,17 @@ public abstract class AbstractControllerTest {
 	}
 	
 	protected HttpClientHelper httpClientHelper;
-//	protected String contextPath = "/taw-user-web"; //开发环境
-	
-	protected String contextPath = "/taw";  //测试环境
+	protected String contextPath;
 	
 	public AbstractControllerTest() throws Exception{
 		httpClientHelper = new HttpClientHelper();
-//		httpClientHelper.setHostname("localhost");	//开发环境
-		httpClientHelper.setHostname("211.157.19.83");	//测试环境
+		if (dev){
+			httpClientHelper.setHostname("localhost");	//开发环境
+			contextPath = "/taw-user-web"; //开发环境
+		}else if (test){
+			httpClientHelper.setHostname("211.157.19.83");	//测试环境
+			contextPath = "/taw";  //测试环境
+		}
 		httpClientHelper.setPort(8080);
 		httpClientHelper.setScheme("http");
 	}

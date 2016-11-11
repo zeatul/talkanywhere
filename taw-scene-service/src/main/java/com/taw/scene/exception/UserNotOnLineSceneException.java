@@ -2,15 +2,15 @@ package com.taw.scene.exception;
 
 import com.hawk.exception.BasicException;
 
-public class UserNotOnSceneException extends BasicException{
+public class UserNotOnLineSceneException extends BasicException{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5431758744673654087L;
 
-	public UserNotOnSceneException() {
-		super("-10005","用户不在场景");
+	public UserNotOnLineSceneException() {
+		super("-10005","用户物理不在场景");
 	}
 
 }

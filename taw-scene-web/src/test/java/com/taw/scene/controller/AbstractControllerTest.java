@@ -20,7 +20,8 @@ public abstract class AbstractControllerTest {
 		context = new ClassPathXmlApplicationContext(configPath);
 	}
 	
-	private boolean TEST = true;
+	private boolean test = false;
+	private boolean dev = true;
 
 	
 	protected HttpClientHelper httpClientHelper;
@@ -33,17 +34,19 @@ public abstract class AbstractControllerTest {
 		
 		httpClientHelper = new HttpClientHelper();
 		
-		if (TEST){
+		if (test){
 			contextPath = "/taw";  //测试环境
 			httpClientHelper.setHostname("211.157.19.83");	//测试环境
 			token = "febf20697fbb4b94bca60e0796388c0c"; //测试环境
 			httpClientHelper.setPort(9080);//测试环境
-		}else{
+		}else if (dev){
 			contextPath = "/taw-scene-web"; //开发环境
 			httpClientHelper.setHostname("localhost");	//开发环境
 			httpClientHelper.setPort(8080);//开发环境
-			token = "7c9006da62634727a8686b05631a0387";  //sender
+			token = "0fc5378f78394964b242cee1a07309c2";  //sender userId=76
 //			token = "a8576d6e804d4916a753e03d8a68b2c0";  //receiver
+		}else{
+			throw new RuntimeException("Not Support profile");
 		}
 		
 		

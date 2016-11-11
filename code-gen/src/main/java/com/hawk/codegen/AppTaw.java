@@ -36,8 +36,8 @@ public class AppTaw {
 	public static void main(String[] args) {
 //		generateUm();
 //		generateSM();
-//		generateTM();
-		generatePM();
+		generateTM();
+//		generatePM();
 	}
 	
 	/**
