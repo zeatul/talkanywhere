@@ -44,7 +44,7 @@ public abstract class AbstractControllerTest {
 			httpClientHelper.setHostname("localhost");	//开发环境
 			httpClientHelper.setPort(8080);//开发环境
 			token = "0fc5378f78394964b242cee1a07309c2";  //sender userId=76
-//			token = "a8576d6e804d4916a753e03d8a68b2c0";  //receiver
+//			token = "0658a7ba45fb499eabf3843e49420bab";  //receiver userId=78
 		}else{
 			throw new RuntimeException("Not Support profile");
 		}

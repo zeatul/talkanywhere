@@ -192,14 +192,12 @@ public class SceneCacheHelper {
 		
 		userOnlineScene.setToken(token);
 		userOnlineScene.setUserId(userId);
+		String field = JsonTools.toJsonString(userOnlineScene);
+		
 		userOnlineScene.setSex(sex);
 		userOnlineScene.setNickname(nickname);
-		
-		List<String> list = new ArrayList<String>(1);
-		
-		list.add(JsonTools.toJsonString(userOnlineScene));
-		
-		redisClient.sset(key, list);
+		String value = JsonTools.toJsonString(userOnlineScene);
+		redisClient.hset(key, field, value);
 	}
 	
 	/**
@@ -212,7 +210,7 @@ public class SceneCacheHelper {
 		
 		List<UserOnlineScene> list = new ArrayList<UserOnlineScene>();
 		
-		Set<String> items = redisClient.sget(key);
+		List<String> items = redisClient.hGetAllValues(key);
 		
 		if (items != null){
 			for (String item : items){
@@ -235,8 +233,7 @@ public class SceneCacheHelper {
 		UserOnlineScene userOnlineScene = new UserOnlineScene ();		
 		userOnlineScene.setToken(token);
 		userOnlineScene.setUserId(userId);
-		List<String> list = new ArrayList<String>(1);
-		list.add(JsonTools.toJsonString(userOnlineScene));
-		redisClient.sdel(key, list);
+		String field = JsonTools.toJsonString(userOnlineScene);
+		redisClient.hdel(key, field);
 	}
 }

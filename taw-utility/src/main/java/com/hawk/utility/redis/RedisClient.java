@@ -110,6 +110,89 @@ public class RedisClient {
 	}
 	
 	/**
+	 * 添加hashset元素
+	 * @param key
+	 * @param field
+	 * @param value
+	 */
+	public void hset(final String key, final String field , final String value){
+		execute(new Executor(){
+
+			@Override
+			public <T> T exec(ShardedJedis shardedJedis) {
+				shardedJedis.hset(key, field, value);
+				return null;
+			}
+
+			@Override
+			public <T> T exec(ShardedJedisPipeline pipeline) {
+				pipeline.hset(key, field, value);
+				return null;
+			}},false);
+	}
+	
+	/**
+	 * 删除hashset元素
+	 * @param key
+	 * @param field
+	 */
+	public void hdel(final String key,final String field){
+		execute(new Executor(){
+
+			@Override
+			public <T> T exec(ShardedJedis shardedJedis) {
+				shardedJedis.hdel(key, field);
+				return null;
+			}
+
+			@Override
+			public <T> T exec(ShardedJedisPipeline pipeline) {
+				pipeline.hdel(key, field);
+				return null;
+			}},false);
+	}
+	
+	/**
+	 * 查询hashset元素个数
+	 * @param key
+	 * @return
+	 */
+	public Long hcount(final String key){
+		return execute(new Executor(){
+
+			@Override
+			public Long exec(ShardedJedis shardedJedis) {
+				return shardedJedis.hlen(key);
+			}
+
+			@Override
+			public Long exec(ShardedJedisPipeline pipeline) {
+				return pipeline.hlen(key).get();
+			}},false);
+	}
+	
+	/**
+	 * 返回hset所有元素值
+	 * @param key
+	 * @return
+	 */
+	public List<String> hGetAllValues(final String key){
+		return execute(new Executor(){
+		@SuppressWarnings("unchecked")
+		@Override
+		public List<String> exec(ShardedJedis shardedJedis) {
+			return shardedJedis.hvals(key);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public List<String> exec(ShardedJedisPipeline pipeline) {
+			return pipeline.hvals(key).get();
+		}},false);
+	}
+	
+	
+	/**
 	 * 添加set 元素
 	 * @param key set 的 key
 	 * @param values set 内元素

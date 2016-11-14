@@ -29,7 +29,7 @@ import com.taw.pub.scene.response.PicDescResp;
 import com.taw.pub.scene.response.SendMessageResp;
 import com.taw.scene.domain.MessageDomain;
 import com.taw.scene.service.MessageService;
-import com.taw.scene.service.SceneCacheHelper;
+import com.taw.scene.service.SceneService;
 import com.taw.user.auth.AuthThreadLocal;
 import com.taw.user.domain.UserDomain;
 import com.taw.user.service.UserService;
@@ -42,6 +42,8 @@ public class MessageController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private SceneService sceneService;
 	
 	/**
 	 * hello 测试用
@@ -94,11 +96,8 @@ public class MessageController {
 			if (userDomain != null)
 				messageResp.setSex(userDomain.getSex());
 			
-			boolean onScene = SceneCacheHelper.getCachedOnlineScenes(messageDomain.getSenderId()).contains(messageDomain.getSceneId());
+			boolean onScene = sceneService.isOnlineInScene(messageDomain.getSenderId(), messageDomain.getSceneId());
 			messageResp.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
-			
-			
-			
 			if (StringTools.isNotNullOrEmpty(messageDomain.getPics())){
 				messageResp.setPicList(JsonTools.toArrayList(messageDomain.getPics(),PicDescResp.class));
 			}

@@ -189,8 +189,8 @@ public class SceneController {
 	 */
 	@RequestMapping(value = "/scene/online/change2.do", method = RequestMethod.POST)
 	public void changeOnlineCount2(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
-		sceneService.ChangeOnlineCount(changeOnlineCountParam);
+//		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
+//		sceneService.ChangeOnlineCount(changeOnlineCountParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 	

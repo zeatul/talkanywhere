@@ -360,7 +360,8 @@ public class SceneService {
 			footPrintDetailDomain.setStaySpan(0);
 			footPrintDetailDomain.setUserId(userId);
 			footPrintDetailDomain.setToken(enterSceneParam.getToken());
-
+			UserDomain userDomain = userService.loadUser(userId, true);
+			footPrintDetailDomain.setSex(userDomain==null?null:userDomain.getSex());	
 			footPrintDetailDomain.setId(PkGenerator.genPk());
 			footPrintDetailMapper.insert(footPrintDetailDomain);
 

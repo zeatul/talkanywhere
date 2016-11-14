@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+
 import com.hawk.utility.JsonTools;
 import com.taw.pub.scene.com.MapPoint;
 import com.taw.pub.scene.request.ChangeOnlineCountParam;
@@ -13,6 +15,7 @@ import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
+import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
 
 public class SceneControllerTest extends AbstractControllerTest{
 
@@ -45,10 +48,10 @@ public class SceneControllerTest extends AbstractControllerTest{
 		ChangeOnlineCountParam param = new ChangeOnlineCountParam();
 		List<Long> inList = new ArrayList<Long>();
 		inList.add(10l);
-		inList.add(30l);
+//		inList.add(30l);
 		param.setInList(inList);
 		List<Long> outList = new ArrayList<Long>();
-		outList.add(2l);
+//		outList.add(10l);
 		param.setOutList(outList);
 		String content = JsonTools.toJsonString(param);
 		
@@ -59,7 +62,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-//	@Test
+	@Test
 	public void testUserOnlineScene() throws Exception{
 		String path = contextPath + "/scene/online/exist.do";
 		ExistFootPrintParam param = new ExistFootPrintParam();
@@ -70,16 +73,18 @@ public class SceneControllerTest extends AbstractControllerTest{
         String result = httpClientHelper.post(path, content, null);		
 		printResult(result);
 		
-		param.setSceneId(30l);
-		param.setUserId(76l);
-		content = JsonTools.toJsonString(param);
-		printSend(content);
-        result = httpClientHelper.post(path, content, null);		
-		printResult(result);
+		
 	}
 	
+//	@Test
 	public void testQueryUsersOnlineScene() throws Exception{
 		String path = contextPath + "/scene/online/users.do";
+		QueryUsersOnlineSceneParam param = new QueryUsersOnlineSceneParam();
+		param.setSceneId(10l);
+		String content = JsonTools.toJsonString(param);
+		printSend(content);
+        String result = httpClientHelper.post(path, content, null);		
+		printResult(result);
 	}
 	
 	
@@ -104,7 +109,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		String path = contextPath + "/scene/info.do";
 		
 		QuerySingleSceneParam param = new QuerySingleSceneParam();
-		param.setSceneId(1l);
+		param.setSceneId(10l);
 		
 		String content = JsonTools.toJsonString(param);
 		
@@ -114,22 +119,22 @@ public class SceneControllerTest extends AbstractControllerTest{
 		
 		printResult(result);
 		
-		param.setSceneId(2l);
-		
-		content = JsonTools.toJsonString(param);
-		
-		printSend(content);
-		
-		result = httpClientHelper.post(path, content, null);
-		
-		printResult(result);
+//		param.setSceneId(2l);
+//		
+//		content = JsonTools.toJsonString(param);
+//		
+//		printSend(content);
+//		
+//		result = httpClientHelper.post(path, content, null);
+//		
+//		printResult(result);
 	}
 	
 //	@Test
 	public void testEnterScene() throws Exception{
 		String path = contextPath + "/scene/enter.do";
 		EnterSceneParam enterSceneParam = new EnterSceneParam();
-		enterSceneParam.setSceneId(1L);
+		enterSceneParam.setSceneId(10L);
 		String content = JsonTools.toJsonString(enterSceneParam);
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());
@@ -141,8 +146,8 @@ public class SceneControllerTest extends AbstractControllerTest{
 	public void testLeaveScene() throws Exception{
 		String path = contextPath + "/scene/leave.do";
 		LeaveSceneParam param = new LeaveSceneParam();
-		param.setFpdId(94L);
-		param.setSceneId(1L);
+		param.setFpdId(85L);
+		param.setSceneId(10L);
 		String content = JsonTools.toJsonString(param);
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());		
