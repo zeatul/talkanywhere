@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
 import com.hawk.utility.JsonTools;
 import com.taw.pub.scene.com.MapPoint;
 import com.taw.pub.scene.request.ChangeOnlineCountParam;
@@ -41,7 +39,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testChangeOnlineCount() throws Exception{
 		String path = contextPath + "/scene/online/change.do";
 		ChangeOnlineCountParam param = new ChangeOnlineCountParam();
@@ -78,6 +76,10 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printSend(content);
         result = httpClientHelper.post(path, content, null);		
 		printResult(result);
+	}
+	
+	public void testQueryUsersOnlineScene() throws Exception{
+		String path = contextPath + "/scene/online/users.do";
 	}
 	
 	

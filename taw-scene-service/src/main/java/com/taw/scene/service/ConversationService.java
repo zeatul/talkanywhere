@@ -171,7 +171,7 @@ public class ConversationService {
 			conversationDomain.setPicCount(pics.size());
 			picDescRespList = new ArrayList<PicDescResp>(pics.size());
 			
-			boolean onScene = SceneCacheHelper.getCachedOnlineScenes(conversationDomain.getPostUserId()).contains(conversationDomain.getSceneId());
+			boolean onScene = sceneService.isOnlineInScene(postUserId, sceneId);
 			
 			for (String uuid : pics){
 				

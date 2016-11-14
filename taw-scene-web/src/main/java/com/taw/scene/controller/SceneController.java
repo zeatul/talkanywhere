@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,8 +30,6 @@ import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.ExistFootPrintResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.domain.BookmarkDomain;
-import com.taw.scene.domain.FootPrintDetailDomain;
-import com.taw.scene.service.SceneCacheHelper;
 import com.taw.scene.service.SceneService;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -171,14 +167,13 @@ public class SceneController {
 		ExistFootPrintParam existFootPrintParam = HttpRequestHandler.handle(request, ExistFootPrintParam.class); 
 		CheckTools.check(existFootPrintParam);
 		
-		Set<Long> sceneIdSet = SceneCacheHelper.getCachedOnlineScenes(existFootPrintParam.getUserId());
-		
 		ExistFootPrintResp existFootPrintResp = new ExistFootPrintResp();
 		
-		if (sceneIdSet == null || sceneIdSet.size() == 0 || !sceneIdSet.contains(existFootPrintParam.getSceneId())){
-			existFootPrintResp.setExist("0");
-		}else{
+		
+		if (sceneService.isOnlineInScene(existFootPrintParam.getUserId(),existFootPrintParam.getSceneId())){
 			existFootPrintResp.setExist("1");
+		}else{
+			existFootPrintResp.setExist("0");
 		}
 		
 		HttpResponseHandler.handle(response, SuccessResponse.build(existFootPrintResp));

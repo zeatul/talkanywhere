@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +36,6 @@ import com.taw.scene.exception.UserNotOnLineSceneException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.scene.mapper.MessageMapper;
-import com.taw.scene.mapperex.FootPrintDetailExMapper;
 import com.taw.scene.mapperex.MessageExMapper;
 
 @Service
@@ -65,9 +62,6 @@ public class MessageService {
 	@Autowired
 	private PictureService pictureService;
 	
-	@Autowired
-	private FootPrintDetailExMapper footPrintDetailExMapper;
-
 	/**
 	 * 发送私信
 	 * @param sendMessageParam
@@ -115,13 +109,14 @@ public class MessageService {
 			throw new SceneNotExistsException();
 		
 		/**
-		 * 消息入库
-		 * TODO:检测接收者是否物理在场
+		 * 检测接收者是否物理在场
 		 */
-		
-		Set<Long> sceneIdSet = SceneCacheHelper.getCachedOnlineScenes(receiverId);
-		if (sceneIdSet == null || sceneIdSet.size() == 0 || !sceneIdSet.contains(sceneId))
+		if (!sceneService.isOnlineInScene(receiverId, sceneId)){
 			throw new UserNotOnLineSceneException();
+		}
+		
+		
+			
 		
 		MessageDomain messageDomain = new MessageDomain();
 		

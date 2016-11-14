@@ -23,7 +23,7 @@ import com.taw.scene.service.SceneService;
 import com.taw.user.service.LoginService;
 
 public class CtxHelper {
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(CtxHelper.class);
 
 	public final static int READ_TIMEOUT = 60 * 2;// 秒
@@ -50,11 +50,11 @@ public class CtxHelper {
 	 * channelid 对应的 token
 	 */
 	private static Map<String, String> channelIdTokenMap = new ConcurrentHashMap<String, String>();
-	
+
 	/**
 	 * token对应的Channel
 	 */
-	private static Map<String,Channel> tokenChannelMap = new ConcurrentHashMap<String,Channel>();
+	private static Map<String, Channel> tokenChannelMap = new ConcurrentHashMap<String, Channel>();
 
 	private static String genClientLoginKey(String token) {
 		return "ctxLogin-" + token;
@@ -124,7 +124,8 @@ public class CtxHelper {
 	}
 
 	/**
-	 * 清除channelID对应的token注册的场景对应通道 清除用户id和通道的对应关系 清除channelId和token的对应关系,清除场景缓存的物理在场用户
+	 * 清除channelID对应的token注册的场景对应通道 清除用户id和通道的对应关系
+	 * 清除channelId和token的对应关系,清除场景缓存的物理在场用户
 	 * 
 	 * @param channelId
 	 */
@@ -161,15 +162,19 @@ public class CtxHelper {
 					channelGroup.remove(ctx.channel());
 				}
 			}
-			
+
 			/**
 			 * 清除场景缓存的物理在场用户
 			 */
-			Set<Long> onlineSceneIds = SceneCacheHelper.getCachedOnlineScenes(userId);
-			if (onlineSceneIds != null){
-				for (Long sceneId : onlineSceneIds){
-					SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
-					logger.info("+++removeClientLogin+++,remove online user,sceneId={},userId={},token={}",sceneId,userId,token);
+			Set<String> onlineSceneIds = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
+			if (onlineSceneIds != null) {
+				for (String onlineScenesOfUserItem : onlineSceneIds) {
+					String registeredToken = SceneCacheHelper.parseTokenFromOnlineScenesOfUserItem(onlineScenesOfUserItem);
+					if (registeredToken.equals(token)) {
+						Long sceneId = SceneCacheHelper.parseSceneIdFromOnlineScenesOfUserItem(onlineScenesOfUserItem);
+						SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
+						logger.info("+++netty-----removeClientLogin+++,remove online user,sceneId={},userId={},token={}", sceneId, userId, token);
+					}
 				}
 			}
 
@@ -182,7 +187,7 @@ public class CtxHelper {
 	 * 场景收到消息后，通知所有该场景的在线用户
 	 */
 	public static void notifyConversationCreate(final Notification notification) {
-		ChannelGroup channelGroup = scenedIdChannelMap.get(notification.getSceneId());		
+		ChannelGroup channelGroup = scenedIdChannelMap.get(notification.getSceneId());
 		logger.info("notifyConversationCreate_Start:");
 		if (channelGroup != null) {
 			String message = EnumMessageType.CONVERSATION_NOTIFICATION.toString() + notification.getSceneId();
@@ -201,62 +206,65 @@ public class CtxHelper {
 					return true;
 				}
 			});
-			
-			logger.info("notifyConversationCreate:"+message);
+
+			logger.info("notifyConversationCreate:" + message);
 		}
 	}
 
 	/**
 	 * 发送私信后，通知接收者
+	 * 
 	 * @param notification
 	 */
 	public static void notifyMessageCreate(final Notification notification) {
 		ChannelGroup channelGroup = userIdChannelMap.get(notification.getUserId());
 		logger.info("notifyMessageCreate_Start:");
-		if (channelGroup != null){
+		if (channelGroup != null) {
 			String message = EnumMessageType.MESSAGE_NOTIFICATION.toString();
 			channelGroup.writeAndFlush(message);
-			logger.info("*****notifyMessageCreate:message={},channelGroup.size()={},userId={}",message,channelGroup.size(),notification.getUserId());;
+			logger.info("*****notifyMessageCreate:message={},channelGroup.size()={},userId={}", message, channelGroup.size(), notification.getUserId());
+			;
 		}
 
 	}
-	
+
 	/**
 	 * 进入场景，修改绑定的通道
+	 * 
 	 * @param notification
 	 */
-	public static void notifySceneEnter(final Notification notification){
+	public static void notifySceneEnter(final Notification notification) {
 		String token = notification.getToken();
 		Long sceneId = notification.getSceneId();
-		if (sceneId!=null && token != null){
+		if (sceneId != null && token != null) {
 			Channel channel = tokenChannelMap.get(token);
-			if (channel!=null){
+			if (channel != null) {
 				ChannelGroup channelGroup = scenedIdChannelMap.get(sceneId);
-				if (channelGroup!=null){
+				if (channelGroup != null) {
 					channelGroup.remove(channel);
 					channelGroup.add(channel);
 				}
 			}
-			logger.info("notifySceneEnter:sceneId={}",sceneId);
+			logger.info("notifySceneEnter:sceneId={}", sceneId);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param notification
 	 */
-	public static void notifySceneLeave(final Notification notification){
+	public static void notifySceneLeave(final Notification notification) {
 		String token = notification.getToken();
 		Long sceneId = notification.getSceneId();
-		if (sceneId!=null && token != null){
+		if (sceneId != null && token != null) {
 			Channel channel = tokenChannelMap.get(token);
-			if (channel!=null){
+			if (channel != null) {
 				ChannelGroup channelGroup = scenedIdChannelMap.get(sceneId);
-				if (channelGroup!=null){
+				if (channelGroup != null) {
 					channelGroup.remove(channel);
 				}
 			}
-			logger.info("notifySceneLeave:sceneId={}",sceneId);
+			logger.info("notifySceneLeave:sceneId={}", sceneId);
 		}
 	}
 

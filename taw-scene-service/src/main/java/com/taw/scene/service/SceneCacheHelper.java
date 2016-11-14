@@ -33,7 +33,7 @@ public class SceneCacheHelper {
 	public final static String CACHED_USER_ONLINE_SCENES = "sceneOnline_";
 	
 	/**
-	 * 缓存场景物理在场的用户的id,nickname
+	 * 缓存场景物理在场的用户的id,nickname,token
 	 */
 	public final static String CACHED_SCENE_ONLINE_USERS = "usersOnlineScene_";
 	
@@ -41,53 +41,7 @@ public class SceneCacheHelper {
 	 * 缓存用户的nickname
 	 */
 	public final static String CACHED_SCENE_NICKNAME = "nickname_";
-
-	public static class SceneStatCount {
-		public Integer getEnterCount() {
-			return enterCount;
-		}
-
-		public void setEnterCount(Integer enterCount) {
-			this.enterCount = enterCount;
-		}
-
-		public Integer getOnlineCount() {
-			return onlineCount;
-		}
-
-		public void setOnlineCount(Integer onlineCount) {
-			this.onlineCount = onlineCount;
-		}
-
-		private Integer enterCount = 0;
-		private Integer onlineCount = 0;
-	}
-
-	 
 	
-	public static SceneStatCount getCachedSceneStatCount(Long sceneId) {
-
-		if (sceneId == null)
-			return null;
-
-		String key = CACHED_SCENE_STAT_COUNT_KEY_HEAD + sceneId.toString();
-		String jsonStr = redisClient.get(key);
-
-		if (StringTools.isNullOrEmpty(jsonStr))
-			return null;
-
-		return JsonTools.toObject(jsonStr, SceneStatCount.class);
-
-	}
-
-	public static void cacheSceneStatCount(Long sceneId, SceneStatCount sceneStatCount) {
-		if (sceneStatCount == null || sceneId == null)
-			return;
-
-		String key = CACHED_SCENE_STAT_COUNT_KEY_HEAD + sceneId.toString();
-		String jsonStr = JsonTools.toJsonString(sceneStatCount);
-		redisClient.set(key, jsonStr);
-	}
 
 	public static SceneDomain getCachedSceneDomain(Long sceneId) {
 
@@ -112,22 +66,46 @@ public class SceneCacheHelper {
 		redisClient.set(key, jsonStr, expire);
 	}
 
-	public static Set<Long> getCachedOnlineScenes(Long userId) {
+	/**
+	 * 返回用户物理在场的场景id集合
+	 * @param userId
+	 * @return
+	 */
+	public static Set<String> getCachedOnlineScenesOfUser(Long userId) {
 		if (userId == null)
 			return null;
 
-		String key = CACHED_USER_ONLINE_SCENES + userId.toString();
+		String key = CACHED_USER_ONLINE_SCENES + userId;
 
 		String jsonStr = redisClient.get(key);
 
 		if (StringTools.isNullOrEmpty(jsonStr)){
-			return new HashSet<Long>();
+			return new HashSet<String>();
 		}
 
-		return JsonTools.toHashSet(jsonStr, Long.class);
+		return JsonTools.toHashSet(jsonStr, String.class);
+	}
+	
+	public static String buildOnlineScenesOfUserItem(String token , Long sceneId){
+		return token+":"+sceneId;
+	}
+	
+	public static Long parseSceneIdFromOnlineScenesOfUserItem(String onlineScenesOfUserItem){
+		String[] str = onlineScenesOfUserItem.split(":");
+		return new Long (str[str.length-1]);
+	}
+	
+	public static String parseTokenFromOnlineScenesOfUserItem(String onlineScenesOfUserItem){
+		String[] str = onlineScenesOfUserItem.split(":");
+		return str[0];
 	}
 
-	public static void cacheOnineScenes(Long userId, Set<Long> sceneIdSet) {
+	/**
+	 * 修改用户物理在场的场景集合
+	 * @param userId
+	 * @param sceneIdSet
+	 */
+	public static void cacheOnineScenesOfUser(Long userId, Set<String> sceneIdSet) {
 		if (userId == null)
 			return;
 		String key = CACHED_USER_ONLINE_SCENES + userId.toString();

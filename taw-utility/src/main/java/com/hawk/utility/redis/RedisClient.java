@@ -6,13 +6,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPipeline;
 import redis.clients.jedis.ShardedJedisPool;
-import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.jedis.exceptions.JedisException;
 
 public class RedisClient {
 

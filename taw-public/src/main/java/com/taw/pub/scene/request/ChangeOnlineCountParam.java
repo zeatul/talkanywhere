@@ -2,6 +2,8 @@ package com.taw.pub.scene.request;
 
 import java.util.List;
 
+import com.hawk.utility.check.CheckNull;
+
 public class ChangeOnlineCountParam {
 	
 
@@ -47,8 +49,9 @@ public class ChangeOnlineCountParam {
 	 */
 	private List<Long> outList;
 	
+	@CheckNull
 	private Long userId;
-	
+	@CheckNull
 	private String token;
 
 }
