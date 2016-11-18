@@ -1,9 +1,20 @@
 package com.taw.pub.scene.response;
 
+import java.util.Date;
 import java.util.List;
 
 public class SendMessageResp {
 	
+	
+
+	public Date getSendTime() {
+		return SendTime;
+	}
+
+	public void setSendTime(Date sendTime) {
+		SendTime = sendTime;
+	}
+
 	public List<PicDescResp> getPicList() {
 		return picList;
 	}
@@ -27,5 +38,8 @@ public class SendMessageResp {
 	
 	
 	private List<PicDescResp> picList;
+	
+	/*发言时间*/
+	private Date SendTime;
 
 }

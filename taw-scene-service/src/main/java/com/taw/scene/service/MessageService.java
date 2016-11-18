@@ -193,6 +193,7 @@ public class MessageService {
 		SendMessageResp sendMessageResp = new SendMessageResp();
 		sendMessageResp.setId(messageDomain.getId());
 		sendMessageResp.setPicList(picDescRespList);
+		sendMessageResp.setSendTime(messageDomain.getSendTime());
 		return sendMessageResp;
 	}
 	

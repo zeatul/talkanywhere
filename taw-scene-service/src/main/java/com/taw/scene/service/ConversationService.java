@@ -232,6 +232,7 @@ public class ConversationService {
 		SendConverstaionResp sendConverstaionResp = new SendConverstaionResp();
 		sendConverstaionResp.setId(conversationDomain.getId());
 		sendConverstaionResp.setPicList(picDescRespList);
+		sendConverstaionResp.setPostDate(conversationDomain.getPostDate());
 		
 		return sendConverstaionResp;
 
