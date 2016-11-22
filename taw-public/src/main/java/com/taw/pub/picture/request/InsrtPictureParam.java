@@ -7,6 +7,12 @@ import com.taw.pub.picture.enums.EnumAppSrc;
 
 public class InsrtPictureParam {
 	
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 	public Long getAppSrcId() {
 		return appSrcId;
 	}
@@ -127,5 +133,8 @@ public class InsrtPictureParam {
 	 * 图片描述
 	 */
 	private String description;
+	
+	
+	private String sex;
 
 }

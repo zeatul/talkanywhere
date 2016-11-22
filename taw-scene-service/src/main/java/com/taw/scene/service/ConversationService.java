@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,8 @@ import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneConversationProducer;
 import com.taw.scene.mapper.ConversationMapper;
 import com.taw.scene.mapperex.ConversationExMapper;
+import com.taw.user.domain.UserDomain;
+import com.taw.user.service.UserService;
 
 
 
@@ -63,6 +67,11 @@ public class ConversationService {
 	
 	@Autowired
 	private ScenePicService scenePicService;
+	
+	@Autowired
+	private UserService userService;
+	
+	private final Logger  logger = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * 发送场景消息
@@ -72,6 +81,10 @@ public class ConversationService {
 	 */	
 	public SendConverstaionResp send(SendConverstaionParam sendConverstaionParam) throws Exception {
 		CheckTools.check(sendConverstaionParam);
+		
+		logger.info("SendConverstaionParam={}",JsonTools.toJsonString(sendConverstaionParam));
+		
+		
 		String message = sendConverstaionParam.getMessage();
 		List<String> pics =sendConverstaionParam.getPics();
 		if (StringTools.isNullOrEmpty(message) && CollectionTools.isNullOrEmpty(pics))
@@ -80,6 +93,12 @@ public class ConversationService {
 		Long postUserFpdId = sendConverstaionParam.getPostUserFpdId();
 		Long postUserId = sendConverstaionParam.getPostUserId();
 		Long sceneId = sendConverstaionParam.getSceneId();
+		String sex = null;
+		UserDomain userDomain = userService.loadUser(postUserId, true);
+		if (userDomain != null){
+			sex = userDomain.getSex();
+		}
+		
 
 		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(postUserFpdId, true);
 
@@ -173,6 +192,8 @@ public class ConversationService {
 			
 			boolean onScene = sceneService.isOnlineInScene(postUserId, sceneId);
 			
+			
+			
 			for (String uuid : pics){
 				
 				if (StringTools.isNullOrEmpty(uuid))
@@ -188,6 +209,7 @@ public class ConversationService {
 				insrtPictureParam.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
 				insrtPictureParam.setDescription(sendConverstaionParam.getMessage());
 				insrtPictureParam.setAppSrcId(conversationDomain.getId());
+				insrtPictureParam.setSex(sex);
 				/**
 				 * 图片id ，插入图片管理表
 				 */

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DuplicateKeyException;
@@ -18,6 +20,7 @@ import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
 import com.hawk.utility.DomainTools;
+import com.hawk.utility.JsonTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.picture.configure.PictureServiceConfigure;
 import com.taw.picture.domain.PictureCommentDomain;
@@ -50,6 +53,8 @@ import com.taw.pub.picture.response.PictureCommentInfoResp;
 import com.taw.pub.picture.response.PictureInfoResp;
 import com.taw.pub.picture.response.PictureStatResp;
 import com.taw.user.auth.AuthThreadLocal;
+import com.taw.user.domain.UserDomain;
+import com.taw.user.service.UserService;
 
 @Service
 public class PictureService {
@@ -72,6 +77,11 @@ public class PictureService {
 	
 	@Autowired
 	private PictureExMapper pictureExMapper;
+	
+	@Autowired
+	private UserService userService;
+	
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	
 	public void removePicture(RemovePictureParam removePictureParam) throws Exception{
@@ -151,6 +161,7 @@ public class PictureService {
 			pictureDomain.setOnScene(insrtPictureParam.getOnScene());
 			
 			pictureDomain.setDescription(insrtPictureParam.getDescription());
+			pictureDomain.setSex(insrtPictureParam.getSex());
 			
 			pictureDomain.setCrdt(DateTools.now());
 			pictureDomain.setId(PkGenerator.genPk());
@@ -292,6 +303,13 @@ public class PictureService {
 		pictureThumbDomain.setCrdt(DateTools.now());
 		pictureThumbDomain.setId(PkGenerator.genPk());
 		
+		String sex = null;
+		UserDomain userDomain = userService.loadUser(pictureThumbDomain.getUserId(), true);
+		if (userDomain != null){
+			sex = userDomain.getSex();
+		}
+		pictureThumbDomain.setSex(sex);
+		
 		if (EnumThumbType.UP.toString().equals(thumbPictureParam.getThumbType())){
 			upOffset = upOffset +1;
 		}else{
@@ -325,9 +343,16 @@ public class PictureService {
 			throw new Exception("Couldn't find the picture record which id = " + addCommentParam.getPicId());
 		PictureCommentDomain pictureCommentDomain = new PictureCommentDomain();
 		pictureCommentDomain.setContent(addCommentParam.getContent());
+		
 		pictureCommentDomain.setNickname(addCommentParam.getNickname());
 		pictureCommentDomain.setPicId(addCommentParam.getPicId());
 		pictureCommentDomain.setUserId(addCommentParam.getUserId());	
+		String sex = null;
+		UserDomain userDomain = userService.loadUser(addCommentParam.getUserId(), true);
+		if (userDomain != null){
+			sex = userDomain.getSex();
+		}
+		pictureCommentDomain.setSex(sex);
 		pictureCommentDomain.setCrdt(DateTools.now());
 		pictureCommentDomain.setId(PkGenerator.genPk());
 		pictureCommentMapper.insert(pictureCommentDomain);
@@ -396,6 +421,8 @@ public class PictureService {
 		List<PictureInfoResp> pictureInfoRespList =new ArrayList<PictureInfoResp>();
 		pictureInfoRespList.add(pictureInfoResp);
 		fillMyUpInfo(pictureInfoRespList);
+		
+		logger.info("info = {}",JsonTools.toJsonString(pictureInfoRespList));
 		return pictureInfoResp;
 	}
 	
@@ -422,6 +449,8 @@ public class PictureService {
 			}
 		}
 		fillMyUpInfo(pictureInfoRespList);
+		
+		logger.info("loadGlobalHotPicture = {}",JsonTools.toJsonString(pictureInfoRespList));
 		return pictureInfoRespList;
 	}
 	
@@ -438,6 +467,8 @@ public class PictureService {
 			}			
 		}	
 		fillMyUpInfo(pictureInfoRespList);
+		
+		logger.info("loadSceneHotPicture = {}",JsonTools.toJsonString(pictureInfoRespList));
 		return pictureInfoRespList;
 	}
 	
@@ -454,6 +485,7 @@ public class PictureService {
 			}
 		}	
 		fillMyUpInfo(pictureInfoRespList);
+		logger.info("loadSceneCrdtDescPicture = {}",JsonTools.toJsonString(pictureInfoRespList));
 		return pictureInfoRespList;
 	}
 	
@@ -471,6 +503,7 @@ public class PictureService {
 			}
 		}	
 		fillMyUpInfo(pictureInfoRespList);
+		logger.info("loadScenePictureAsSpecOrder = {}",JsonTools.toJsonString(pictureInfoRespList));
 		return pictureInfoRespList;
 	}
 	
@@ -487,6 +520,7 @@ public class PictureService {
 			}
 		}	
 		fillMyUpInfo(pictureInfoRespList);
+		logger.info("loadPictureSentByMyself = {}",JsonTools.toJsonString(pictureInfoRespList));
 		return pictureInfoRespList;
 	}
 	

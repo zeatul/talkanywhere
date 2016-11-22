@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,8 @@ import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.scene.mapper.MessageMapper;
 import com.taw.scene.mapperex.MessageExMapper;
+import com.taw.user.domain.UserDomain;
+import com.taw.user.service.UserService;
 
 @Service
 public class MessageService {
@@ -62,6 +67,11 @@ public class MessageService {
 	@Autowired
 	private PictureService pictureService;
 	
+	@Autowired
+	private UserService userService;
+	
+	private final Logger  logger = LoggerFactory.getLogger(getClass());
+	
 	/**
 	 * 发送私信
 	 * @param sendMessageParam
@@ -71,6 +81,8 @@ public class MessageService {
 	public SendMessageResp send(SendMessageParam sendMessageParam) throws Exception{
 		CheckTools.check(sendMessageParam);
 		
+		logger.info("SendMessageParam={}",JsonTools.toJsonString(sendMessageParam));
+		
 		String message = sendMessageParam.getMessage();
 		List<String> pics =sendMessageParam.getPics();
 		if (StringTools.isNullOrEmpty(message) && CollectionTools.isNullOrEmpty(pics))
@@ -79,6 +91,12 @@ public class MessageService {
 		
 		Long senderId = sendMessageParam.getSenderId();
 		Long sceneId = sendMessageParam.getSceneId();
+		String sex = null;
+		UserDomain userDomain = userService.loadUser(senderId, true);
+		if (userDomain != null){
+			sex = userDomain.getSex();
+		}
+		
 		
 		/**
 		 * 进入场景 或者 物理在场
@@ -153,6 +171,7 @@ public class MessageService {
 				insrtPictureParam.setAppSrcId(messageDomain.getId());
 				insrtPictureParam.setDescription(sendMessageParam.getMessage());
 				insrtPictureParam.setOnScene(EnumBoolean.TRUE.getValue());
+				insrtPictureParam.setSex(sex);
 				/**
 				 * 图片id ，插入图片管理表
 				 */

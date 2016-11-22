@@ -62,7 +62,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		printResult(result);
 	}
 	
-	@Test
+//	@Test
 	public void testUserOnlineScene() throws Exception{
 		String path = contextPath + "/scene/online/exist.do";
 		ExistFootPrintParam param = new ExistFootPrintParam();
@@ -76,11 +76,11 @@ public class SceneControllerTest extends AbstractControllerTest{
 		
 	}
 	
-//	@Test
+	@Test
 	public void testQueryUsersOnlineScene() throws Exception{
 		String path = contextPath + "/scene/online/users.do";
 		QueryUsersOnlineSceneParam param = new QueryUsersOnlineSceneParam();
-		param.setSceneId(10l);
+		param.setSceneId(31l);
 		String content = JsonTools.toJsonString(param);
 		printSend(content);
         String result = httpClientHelper.post(path, content, null);		

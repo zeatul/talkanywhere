@@ -416,6 +416,7 @@ public class SceneService {
 		Long userId = leaveSceneParam.getUserId();
 		Long sceneId = leaveSceneParam.getSceneId();
 		Long fpdId = leaveSceneParam.getFpdId();
+		String token = leaveSceneParam.getToken();
 
 		FootPrintDetailDomain footPrintDetailDomain = footPrintService.loadFootPrintDetailDomain(fpdId, false);
 
@@ -446,6 +447,22 @@ public class SceneService {
 		footPrintDomain.setLastLeaveTime(footPrintDetailDomain.getOutTime());
 		footPrintDomain.setStaySpan(footPrintDomain.getStaySpan() + footPrintDetailDomain.getStaySpan());
 		footPrintMapper.update(footPrintDomain);
+		
+		
+		
+		/**
+		 * 修改场景的物理在场的用户集合
+		 */		
+		SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
+		
+		/**
+		 * 修改用户物理在场的场景集合
+		 */
+		String onlineScenesOfUserItem= SceneCacheHelper.buildOnlineScenesOfUserItem(token,sceneId);
+		Set<String> onlineSceneIdSet = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
+		onlineSceneIdSet.remove(onlineScenesOfUserItem);
+		SceneCacheHelper.cacheOnineScenesOfUser(userId, onlineSceneIdSet);
+		
 
 		/**
 		 * 通知netty
@@ -521,13 +538,6 @@ public class SceneService {
 		Long sceneId = queryUsersOnlineSceneParam.getSceneId();
 
 		List<UserOnlineScene> list = SceneCacheHelper.getCachedSceneOnlineUsers(sceneId);
-		for (UserOnlineScene userOnlineScene : list) {
-			UserOnScene userOnScene = queryNickname(userOnlineScene.getToken(), sceneId, userOnlineScene.getUserId());
-			userOnlineScene.setToken(null);
-			userOnlineScene.setNickname(userOnScene.getNickname());
-			userOnlineScene.setFpdId(userOnScene.getFpdId());
-			userOnlineScene.setSex(userOnScene.getSex());
-		}
 		return list;
 	}
 	
@@ -573,6 +583,8 @@ public class SceneService {
 		String sex = null;
 		
 		String nickname = null;
+		
+		Long fpdId = null;
 
 		/**
 		 * 用户物理进入场景
@@ -587,6 +599,7 @@ public class SceneService {
 				if (userOnScene!=null){
 					sex = userOnScene.getSex();
 					nickname = userOnScene.getNickname();
+					fpdId = userOnScene.getFpdId();
 				}
 				
 				String onlineScenesOfUserItem= SceneCacheHelper.buildOnlineScenesOfUserItem(token,sceneId);
@@ -599,7 +612,7 @@ public class SceneService {
 					/**
 					 * 修改场景的物理在场的用户集合
 					 */
-					SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token, nickname, sex);
+					SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token, nickname, sex,fpdId);
 					
 					/**
 					 * 记录日志

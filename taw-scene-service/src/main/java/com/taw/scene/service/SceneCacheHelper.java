@@ -185,7 +185,7 @@ public class SceneCacheHelper {
 	 * @param sceneId
 	 * @param userOnlineScene
 	 */
-	public static void cacheSceneOnlineUser(Long sceneId,Long userId,String token,String nickname,String sex ){
+	public static void cacheSceneOnlineUser(Long sceneId,Long userId,String token,String nickname,String sex,Long fpdId ){
 		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
 		
 		UserOnlineScene userOnlineScene = new UserOnlineScene ();
@@ -196,8 +196,9 @@ public class SceneCacheHelper {
 		
 		userOnlineScene.setSex(sex);
 		userOnlineScene.setNickname(nickname);
+		userOnlineScene.setFpdId(fpdId);
 		String value = JsonTools.toJsonString(userOnlineScene);
-		redisClient.hset(key, field, value);
+		redisClient.hset(key, field,value);
 	}
 	
 	/**
