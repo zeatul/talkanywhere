@@ -450,18 +450,18 @@ public class SceneService {
 		
 		
 		
-		/**
-		 * 修改场景的物理在场的用户集合
-		 */		
-		SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
-		
-		/**
-		 * 修改用户物理在场的场景集合
-		 */
-		String onlineScenesOfUserItem= SceneCacheHelper.buildOnlineScenesOfUserItem(token,sceneId);
-		Set<String> onlineSceneIdSet = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
-		onlineSceneIdSet.remove(onlineScenesOfUserItem);
-		SceneCacheHelper.cacheOnineScenesOfUser(userId, onlineSceneIdSet);
+//		/**
+//		 * 修改场景的物理在场的用户集合
+//		 */		
+//		SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
+//		
+//		/**
+//		 * 修改用户物理在场的场景集合
+//		 */
+//		String onlineScenesOfUserItem= SceneCacheHelper.buildOnlineScenesOfUserItem(token,sceneId);
+//		Set<String> onlineSceneIdSet = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
+//		onlineSceneIdSet.remove(onlineScenesOfUserItem);
+//		SceneCacheHelper.cacheOnineScenesOfUser(userId, onlineSceneIdSet);
 		
 
 		/**
