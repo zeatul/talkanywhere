@@ -139,6 +139,7 @@ public class MessageService {
 //		}
 		List<FootPrintDetailDomain> list =  footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(sceneId, receiverId);
 		if (list == null || list.size() == 0){
+			logger.error("sceneId={},receiverId={}",sceneId,receiverId);
 			throw new UserNotEnterSceneException();
 		}
 		
