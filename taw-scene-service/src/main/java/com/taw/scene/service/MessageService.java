@@ -35,10 +35,12 @@ import com.taw.scene.domain.ScenePicDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
+import com.taw.scene.exception.UserNotEnterSceneException;
 import com.taw.scene.exception.UserNotOnLineSceneException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.scene.mapper.MessageMapper;
+import com.taw.scene.mapperex.FootPrintDetailExMapper;
 import com.taw.scene.mapperex.MessageExMapper;
 import com.taw.user.domain.UserDomain;
 import com.taw.user.service.UserService;
@@ -69,6 +71,9 @@ public class MessageService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private FootPrintDetailExMapper footPrintDetailExMapper;
 	
 	private final Logger  logger = LoggerFactory.getLogger(getClass());
 	
@@ -129,8 +134,12 @@ public class MessageService {
 		/**
 		 * 检测接收者是否物理在场
 		 */
-		if (!sceneService.isOnlineInScene(receiverId, sceneId)){
-			throw new UserNotOnLineSceneException();
+//		if (!sceneService.isOnlineInScene(receiverId, sceneId)){
+//			throw new UserNotOnLineSceneException();
+//		}
+		List<FootPrintDetailDomain> list =  footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(sceneId, receiverId);
+		if (list == null || list.size() == 0){
+			throw new UserNotEnterSceneException();
 		}
 		
 		

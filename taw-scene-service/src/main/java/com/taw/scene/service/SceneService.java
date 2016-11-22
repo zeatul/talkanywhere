@@ -652,12 +652,12 @@ public class SceneService {
 
 			}
 		}
-
 		
 	}
 	
 	public boolean isOnlineInScene(Long userId , Long sceneId){
 		Set<String> sceneIdSet = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
+		logger.info("isOnlineInScene.sceneIdSet={}",JsonTools.toJsonString(sceneIdSet));
 		if (sceneIdSet != null){
 			for (String onlineScenesOfUserItem : sceneIdSet){
 				if (sceneId.equals( SceneCacheHelper.parseSceneIdFromOnlineScenesOfUserItem(onlineScenesOfUserItem))){
