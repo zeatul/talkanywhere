@@ -2,7 +2,7 @@ package com.taw.pub.scene.request;
 
 import com.hawk.utility.check.CheckNull;
 
-public class QueryUsersOnlineSceneParam {
+public class QueryPresentUsersOfSceneParam {
 	
 	
 	public Long getSceneId() {

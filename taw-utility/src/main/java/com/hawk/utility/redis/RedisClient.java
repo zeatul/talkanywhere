@@ -219,6 +219,28 @@ public class RedisClient {
 	}
 	
 	/**
+	 * 添加set 元素
+	 * @param key set 的 key
+	 * @param values set 内元素
+	 */
+	public void  sset(final String key ,final String value){
+		execute(new Executor() {
+
+			@Override
+			public <T> T exec(ShardedJedisPipeline pipeline) {
+				pipeline.sadd(key, value);
+				return null;
+			}
+
+			@Override
+			public <T> T exec(ShardedJedis shardedJedis) {
+				shardedJedis.sadd(key, value);
+				return null;
+			}
+		}, false);
+	}
+	
+	/**
 	 * 删除set元素
 	 * @param key
 	 * @param values

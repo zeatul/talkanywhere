@@ -3,6 +3,14 @@ package com.taw.pub.scene.request;
 import com.hawk.utility.check.CheckNull;
 
 public class LeaveSceneParam {
+//	public String getToken() {
+//		return token;
+//	}
+//
+//	public void setToken(String token) {
+//		this.token = token;
+//	}
+
 	public String getToken() {
 		return token;
 	}

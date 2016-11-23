@@ -1,16 +1,12 @@
 package com.taw.scene.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import com.hawk.pub.spring.FrameworkContext;
-import com.hawk.utility.CollectionTools;
 import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.redis.RedisClient;
-import com.taw.pub.scene.com.UserOnlineScene;
+import com.taw.pub.scene.com.PresentUser;
 import com.taw.scene.domain.SceneDomain;
 
 public class SceneCacheHelper {
@@ -30,7 +26,7 @@ public class SceneCacheHelper {
 	/**
 	 * 缓存用户物理在线场景 online scene
 	 */
-	public final static String CACHED_USER_ONLINE_SCENES = "sceneOnline_";
+	public final static String CACHED_PRESENT_SCENE_ID = "presentSceneId_";
 	
 	/**
 	 * 缓存场景物理在场的用户的id,nickname,token
@@ -67,55 +63,39 @@ public class SceneCacheHelper {
 	}
 
 	/**
-	 * 返回用户物理在场的场景id集合
+	 * 返回现场场景Id
 	 * @param userId
 	 * @return
 	 */
-	public static Set<String> getCachedOnlineScenesOfUser(Long userId) {
-		if (userId == null)
+	public static Long getCachedPresentSceneId(long userId) {
+		
+		String key = CACHED_PRESENT_SCENE_ID + userId;
+
+		String value = redisClient.get(key);
+
+		if (StringTools.isNullOrEmpty(value)){
 			return null;
-
-		String key = CACHED_USER_ONLINE_SCENES + userId;
-
-		String jsonStr = redisClient.get(key);
-
-		if (StringTools.isNullOrEmpty(jsonStr)){
-			return new HashSet<String>();
 		}
 
-		return JsonTools.toHashSet(jsonStr, String.class);
+		return Long.parseLong(value);
 	}
 	
-	public static String buildOnlineScenesOfUserItem(String token , Long sceneId){
-		return token+":"+sceneId;
-	}
-	
-	public static Long parseSceneIdFromOnlineScenesOfUserItem(String onlineScenesOfUserItem){
-		String[] str = onlineScenesOfUserItem.split(":");
-		return new Long (str[str.length-1]);
-	}
-	
-	public static String parseTokenFromOnlineScenesOfUserItem(String onlineScenesOfUserItem){
-		String[] str = onlineScenesOfUserItem.split(":");
-		return str[0];
-	}
 
 	/**
 	 * 修改用户物理在场的场景集合
 	 * @param userId
 	 * @param sceneIdSet
 	 */
-	public static void cacheOnineScenesOfUser(Long userId, Set<String> sceneIdSet) {
-		if (userId == null)
-			return;
-		String key = CACHED_USER_ONLINE_SCENES + userId.toString();
-		if (CollectionTools.isNullOrEmpty(sceneIdSet)) {
-			redisClient.delete(key);
-		} else {
-			String jsonStr = JsonTools.toJsonString(sceneIdSet);
-			redisClient.set(key, jsonStr);			
-		}
+	public static void cachePresentSceneId(long userId, long sceneId) {
+		
+		String key = CACHED_PRESENT_SCENE_ID + userId;
+		redisClient.set(key, String.valueOf(sceneId) );
 
+	}
+	
+	public static void removeCachedPresentSceneId(long userId){
+		String key = CACHED_PRESENT_SCENE_ID + userId;
+		redisClient.delete(key);
 	}
 	
 	public static class UserOnScene{
@@ -125,7 +105,7 @@ public class SceneCacheHelper {
 		public void setSex(String sex) {
 			this.sex = sex;
 		}
-		private String nickname;
+		
 		public String getNickname() {
 			return nickname;
 		}
@@ -138,10 +118,15 @@ public class SceneCacheHelper {
 		public void setFpdId(long fpdId) {
 			this.fpdId = fpdId;
 		}
-		private long fpdId;
 		
-		/*用户性别*/
+		private String nickname;
+		private long fpdId;
 		private String sex;
+	}
+	
+	
+	private static String buildCacheNickNameKey(long userId,long sceneId){
+		return CACHED_SCENE_NICKNAME + userId + "_" + sceneId;
 	}
 	
 	/**
@@ -150,13 +135,12 @@ public class SceneCacheHelper {
 	 * @param scendId
 	 * @param nickname
 	 */
-	public static UserOnScene cacheNickname(String token , Long sceneId ,UserOnScene userOnScene){
-		if (StringTools.isNullOrEmpty(token) || sceneId == null || userOnScene == null)
-			return null ;
-		String key = CACHED_SCENE_NICKNAME + token + "_" + sceneId;
+	public static UserOnScene cacheNickname(long userId , long sceneId ,UserOnScene userOnScene){
+		
+		
 		int expire = 3600 * 24;
 		
-		redisClient.set(key, JsonTools.toJsonString(userOnScene), expire);
+		redisClient.set(buildCacheNickNameKey(userId,sceneId), JsonTools.toJsonString(userOnScene), expire);
 		return userOnScene;
 	}
 	
@@ -166,13 +150,9 @@ public class SceneCacheHelper {
 	 * @param scendId
 	 * @return
 	 */
-	public static UserOnScene getCachedNickname(String token , Long sceneId){
-		if (StringTools.isNullOrEmpty(token) || sceneId == null )
-			return null;
+	public static UserOnScene getCachedNickname(long userId , long sceneId){
 		
-		String key = CACHED_SCENE_NICKNAME + token + "_" + sceneId;
-		
-		String jsonStr =  redisClient.get(key);
+		String jsonStr =  redisClient.get(buildCacheNickNameKey(userId,sceneId));
 		
 		if (StringTools.isNullOrEmpty(jsonStr))
 			return null;
@@ -185,38 +165,34 @@ public class SceneCacheHelper {
 	 * @param sceneId
 	 * @param userOnlineScene
 	 */
-	public static void cacheSceneOnlineUser(Long sceneId,Long userId,String token,String nickname,String sex,Long fpdId ){
+	public static void cachePresentUserOfScene(long sceneId,long userId,String nickname,String sex,Long fpdId ){
 		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
 		
-		UserOnlineScene userOnlineScene = new UserOnlineScene ();
-		
-		userOnlineScene.setToken(token);
-		userOnlineScene.setUserId(userId);
-		String field = JsonTools.toJsonString(userOnlineScene);
-		
-		userOnlineScene.setSex(sex);
-		userOnlineScene.setNickname(nickname);
-		userOnlineScene.setFpdId(fpdId);
-		String value = JsonTools.toJsonString(userOnlineScene);
-		redisClient.hset(key, field,value);
+		PresentUser presentUser = new PresentUser ();
+		presentUser.setUserId(userId);		
+		presentUser.setSex(sex);
+		presentUser.setNickname(nickname);
+		presentUser.setFpdId(fpdId);
+		String value = JsonTools.toJsonString(presentUser);
+		redisClient.hset(key, String.valueOf(userId), value);
 	}
 	
 	/**
-	 * 查询缓存的指定物理场景的全部在线用户
+	 * 查询缓存的指定场景的全部在现场用户
 	 * @param sceneId
 	 * @return
 	 */
-	public static List<UserOnlineScene> getCachedSceneOnlineUsers(Long sceneId){
+	public static List<PresentUser> getCachedPresentUsersOfScene(long sceneId){
 		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
 		
-		List<UserOnlineScene> list = new ArrayList<UserOnlineScene>();
+		List<PresentUser> list = new ArrayList<PresentUser>();
 		
 		List<String> items = redisClient.hGetAllValues(key);
 		
 		if (items != null){
 			for (String item : items){
-				UserOnlineScene userOnlineScene = JsonTools.toObject(item, UserOnlineScene.class);
-				list.add(userOnlineScene);
+				PresentUser presentUser = JsonTools.toObject(item, PresentUser.class);
+				list.add(presentUser);
 			}
 		}
 		
@@ -229,12 +205,8 @@ public class SceneCacheHelper {
 	 * @param userId
 	 * @param token
 	 */
-	public static void removeCachedSceneOnlineUser(Long sceneId , Long userId ,String token){
+	public static void removeCachedPresentUserOfScene(long sceneId , long userId ){
 		String key = CACHED_SCENE_ONLINE_USERS + sceneId ;
-		UserOnlineScene userOnlineScene = new UserOnlineScene ();		
-		userOnlineScene.setToken(token);
-		userOnlineScene.setUserId(userId);
-		String field = JsonTools.toJsonString(userOnlineScene);
-		redisClient.hdel(key, field);
+		redisClient.hdel(key, String.valueOf(userId));
 	}
 }

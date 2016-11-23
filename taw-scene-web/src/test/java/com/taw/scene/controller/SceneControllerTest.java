@@ -8,14 +8,14 @@ import org.junit.Test;
 
 import com.hawk.utility.JsonTools;
 import com.taw.pub.scene.com.MapPoint;
-import com.taw.pub.scene.request.ChangeOnlineCountParam;
+import com.taw.pub.scene.request.ChangePresentParam;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
-import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
+import com.taw.pub.scene.request.QueryPresentUsersOfSceneParam;
 
 public class SceneControllerTest extends AbstractControllerTest{
 
@@ -43,16 +43,11 @@ public class SceneControllerTest extends AbstractControllerTest{
 	}
 	
 //	@Test
-	public void testChangeOnlineCount() throws Exception{
-		String path = contextPath + "/scene/online/change.do";
-		ChangeOnlineCountParam param = new ChangeOnlineCountParam();
-		List<Long> inList = new ArrayList<Long>();
-		inList.add(10l);
-//		inList.add(30l);
-		param.setInList(inList);
-		List<Long> outList = new ArrayList<Long>();
-//		outList.add(10l);
-		param.setOutList(outList);
+	public void testChangePresent() throws Exception{
+		String path = contextPath + "/scene/present/change.do";
+		ChangePresentParam param = new ChangePresentParam();
+		param.setInSceneId(10L);
+		param.setOutSceneId(30L);
 		String content = JsonTools.toJsonString(param);
 		
 		printSend(content);
@@ -63,8 +58,8 @@ public class SceneControllerTest extends AbstractControllerTest{
 	}
 	
 //	@Test
-	public void testUserOnlineScene() throws Exception{
-		String path = contextPath + "/scene/online/exist.do";
+	public void testIsPresentedInScene() throws Exception{
+		String path = contextPath + "/scene/present/exist.do";
 		ExistFootPrintParam param = new ExistFootPrintParam();
 		param.setSceneId(10l);
 		param.setUserId(76l);
@@ -77,9 +72,9 @@ public class SceneControllerTest extends AbstractControllerTest{
 	}
 	
 	@Test
-	public void testQueryUsersOnlineScene() throws Exception{
-		String path = contextPath + "/scene/online/users.do";
-		QueryUsersOnlineSceneParam param = new QueryUsersOnlineSceneParam();
+	public void testQueryPresentUsersOfScene() throws Exception{
+		String path = contextPath + "/scene/present/users.do";
+		QueryPresentUsersOfSceneParam param = new QueryPresentUsersOfSceneParam();
 		param.setSceneId(31l);
 		String content = JsonTools.toJsonString(param);
 		printSend(content);

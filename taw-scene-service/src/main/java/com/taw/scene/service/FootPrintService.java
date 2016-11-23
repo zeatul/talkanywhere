@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hawk.pub.mybatis.SqlParamHelper;
 import com.hawk.utility.check.CheckTools;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.QueryFootPrintParam;
 import com.taw.scene.domain.FootPrintDetailDomain;
 import com.taw.scene.domain.FootPrintDomain;
 import com.taw.scene.mapper.FootPrintDetailMapper;
 import com.taw.scene.mapper.FootPrintMapper;
+import com.taw.scene.mapperex.FootPrintDetailExMapper;
 
 @Service
 public class FootPrintService {
@@ -22,6 +24,9 @@ public class FootPrintService {
 	
 	@Autowired
 	private FootPrintDetailMapper footPrintDetailMapper;
+	
+	@Autowired
+	private FootPrintDetailExMapper footPrintDetailExMapper;
 	
 	public List<FootPrintDomain> search(QueryFootPrintParam queryFootPrintParam) throws Exception{
 		CheckTools.check(queryFootPrintParam);
@@ -95,5 +100,16 @@ public class FootPrintService {
 		}
 		
 		return footPrintDomain;
+	}
+
+	public boolean hasEnteredScene(ExistFootPrintParam existFootPrintParam) throws Exception{
+		CheckTools.check(existFootPrintParam);
+		List<FootPrintDetailDomain> list =  footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(existFootPrintParam.getSceneId(), existFootPrintParam.getUserId());
+		
+		if (list == null || list.size() == 0){
+			return false;
+		}
+		
+		return true;
 	}
 }

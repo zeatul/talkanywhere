@@ -2,7 +2,7 @@ package com.taw.pub.scene.request;
 
 import com.hawk.utility.check.CheckNull;
 
-public class QueryUsersOnSceneParam {
+public class QueryEnteredUsersOfSceneParam {
 	
 	
 	public Integer getOffset() {

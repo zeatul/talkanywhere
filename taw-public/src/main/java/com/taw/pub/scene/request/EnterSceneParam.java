@@ -1,15 +1,27 @@
 package com.taw.pub.scene.request;
 
+import com.hawk.pub.enums.EnumBoolean;
+import com.hawk.utility.check.CheckEnum;
 import com.hawk.utility.check.CheckNull;
 
 public class EnterSceneParam {
 	
+	
+
 	public String getToken() {
 		return token;
 	}
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public short getPresent() {
+		return present;
+	}
+
+	public void setPresent(short present) {
+		this.present = present;
 	}
 
 	public Long getUserId() {
@@ -45,6 +57,11 @@ public class EnterSceneParam {
 	 */
 	@CheckNull
 	private Long sceneId;
+	
+	
+	@CheckNull
+	@CheckEnum(parser = EnumBoolean.class)
+	private short present;
 	
 	
 

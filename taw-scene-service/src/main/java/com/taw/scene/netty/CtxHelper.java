@@ -9,7 +9,6 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -164,18 +163,19 @@ public class CtxHelper {
 			}
 
 			/**
-			 * 清除场景缓存的物理在场用户
+			 * 清除缓存的在场信息
 			 */
-			Set<String> onlineSceneIds = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
-			if (onlineSceneIds != null) {
-				for (String onlineScenesOfUserItem : onlineSceneIds) {
-					String registeredToken = SceneCacheHelper.parseTokenFromOnlineScenesOfUserItem(onlineScenesOfUserItem);
-					if (registeredToken.equals(token)) {
-						Long sceneId = SceneCacheHelper.parseSceneIdFromOnlineScenesOfUserItem(onlineScenesOfUserItem);
-						SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
-						logger.info("+++netty-----removeClientLogin+++,remove online user,sceneId={},userId={},token={}", sceneId, userId, token);
-					}
-				}
+			Long sceneId = SceneCacheHelper.getCachedPresentSceneId(userId);
+			if (sceneId != null) {
+				/**
+				 * 清除缓存的用户的在场场景
+				 */
+				SceneCacheHelper.removeCachedPresentSceneId(userId);
+				/**
+				 * 清除缓存的场景的用户集合里的断网用户
+				 */
+				SceneCacheHelper.removeCachedPresentUserOfScene(sceneId, userId);
+				
 			}
 
 			channelIdTokenMap.remove(channelId);

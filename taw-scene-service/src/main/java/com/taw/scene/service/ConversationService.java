@@ -24,6 +24,7 @@ import com.taw.pub.picture.enums.EnumAppSrc;
 import com.taw.pub.picture.request.InsrtPictureParam;
 import com.taw.pub.scene.enums.EnumMessageType;
 import com.taw.pub.scene.request.DeleteConversationParam;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
 import com.taw.pub.scene.response.PicDescResp;
@@ -190,7 +191,10 @@ public class ConversationService {
 			conversationDomain.setPicCount(pics.size());
 			picDescRespList = new ArrayList<PicDescResp>(pics.size());
 			
-			boolean onScene = sceneService.isOnlineInScene(postUserId, sceneId);
+			ExistFootPrintParam existFootPrintParam = new ExistFootPrintParam();
+			existFootPrintParam.setSceneId(sceneId);
+			existFootPrintParam.setUserId(postUserId);
+			boolean onScene = sceneService.isPresentedInScene(existFootPrintParam);
 			
 			
 			

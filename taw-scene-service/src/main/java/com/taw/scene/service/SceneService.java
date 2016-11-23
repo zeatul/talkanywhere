@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hawk.pub.enums.EnumBoolean;
 import com.hawk.pub.pkgen.PkGenerator;
 import com.hawk.utility.CollectionTools;
 import com.hawk.utility.DateTools;
@@ -21,17 +22,18 @@ import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.hawk.utility.check.CheckTools;
 import com.taw.pub.scene.com.MapPoint;
-import com.taw.pub.scene.com.UserOnlineScene;
+import com.taw.pub.scene.com.PresentUser;
 import com.taw.pub.scene.enums.EnumLeaveType;
-import com.taw.pub.scene.request.ChangeOnlineCountParam;
+import com.taw.pub.scene.request.ChangePresentParam;
 import com.taw.pub.scene.request.EnterSceneParam;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QueryBookmarkParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
-import com.taw.pub.scene.request.QueryUsersOnSceneParam;
-import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
+import com.taw.pub.scene.request.QueryEnteredUsersOfSceneParam;
+import com.taw.pub.scene.request.QueryPresentUsersOfSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.FuzziedSceneResp;
 import com.taw.pub.scene.response.QuerySceneInRegionResp;
@@ -44,6 +46,7 @@ import com.taw.scene.domainex.FuzziedSceneDomain;
 import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.FootPrintNotExistsException;
 import com.taw.scene.exception.SceneNotExistsException;
+import com.taw.scene.exception.UserNotEnterSceneException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneEnterProducer;
 import com.taw.scene.jms.SceneLeaveProducer;
@@ -89,7 +92,7 @@ public class SceneService {
 
 	@Autowired
 	private BookmarkService bookmarkService;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -299,7 +302,7 @@ public class SceneService {
 		return sceneDomain;
 	}
 
-	public SceneResp querySingleScene(QuerySingleSceneParam param,Map<Long, BookmarkDomain> bookedSceneIdMap) throws Exception {
+	public SceneResp querySingleScene(QuerySingleSceneParam param, Map<Long, BookmarkDomain> bookedSceneIdMap) throws Exception {
 		CheckTools.check(param);
 
 		Long sceneId = param.getSceneId();
@@ -313,15 +316,13 @@ public class SceneService {
 		DomainTools.copy(sceneDomain, sceneResp);
 
 		sceneResp.setEnterCount(sceneExMapper.queryEnterCount(sceneId));
-		sceneResp.setOnlineCount(SceneCacheHelper.getCachedSceneOnlineUsers(sceneId).size());
+		sceneResp.setOnlineCount(SceneCacheHelper.getCachedPresentUsersOfScene(sceneId).size());
 
 		if (bookedSceneIdMap != null && bookedSceneIdMap.get(sceneResp.getId()) != null)
 			sceneResp.setFavored(1);
 
 		return sceneResp;
 	}
-
-	
 
 	/**
 	 * 进入场景
@@ -335,20 +336,20 @@ public class SceneService {
 
 		CheckTools.check(enterSceneParam);
 
-		Long sceneId = enterSceneParam.getSceneId();
+		long sceneId = enterSceneParam.getSceneId();
 
 		SceneDomain sceneDomain = loadSceneDomain(sceneId, true);
 
 		if (sceneDomain == null)
 			throw new SceneNotExistsException();
 
-		Long userId = enterSceneParam.getUserId();
+		long userId = enterSceneParam.getUserId();
 
 		/**
 		 * 记录用户进入场景历史明细表
 		 */
 		FootPrintDetailDomain footPrintDetailDomain = null;
-		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(enterSceneParam.getSceneId(),enterSceneParam.getUserId());
+		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(sceneId, userId);
 		if (list != null && list.size() > 0) {
 			footPrintDetailDomain = list.get(0);
 		} else {
@@ -361,11 +362,9 @@ public class SceneService {
 			footPrintDetailDomain.setUserId(userId);
 			footPrintDetailDomain.setToken(enterSceneParam.getToken());
 			UserDomain userDomain = userService.loadUser(userId, true);
-			footPrintDetailDomain.setSex(userDomain==null?null:userDomain.getSex());	
+			footPrintDetailDomain.setSex(userDomain == null ? null : userDomain.getSex());
 			footPrintDetailDomain.setId(PkGenerator.genPk());
 			footPrintDetailMapper.insert(footPrintDetailDomain);
-
-			
 
 			/**
 			 * 记录用户进入场景历史表
@@ -398,6 +397,16 @@ public class SceneService {
 		notification.setToken(enterSceneParam.getToken());
 		sceneEnterProducer.send(notification);
 
+		/**
+		 * TODO:处理present
+		 */
+		if (enterSceneParam.getPresent() == EnumBoolean.TRUE.getValue()) {
+			ChangePresentParam changePresentParam = new ChangePresentParam();
+			changePresentParam.setInSceneId(sceneId);
+			changePresentParam.setUserId(userId);
+			changePresent(changePresentParam);
+		}
+
 		EnterSceneResp enterSceneResp = new EnterSceneResp();
 		enterSceneResp.setFpdId(footPrintDetailDomain.getId());
 		enterSceneResp.setNickName(footPrintDetailDomain.getNickname());
@@ -426,7 +435,7 @@ public class SceneService {
 		if (!userId.equals(footPrintDetailDomain.getUserId()))
 			throw new RuntimeException("UnMathed UserId");
 
-		if (!sceneId.equals (footPrintDetailDomain.getSceneId()))
+		if (!sceneId.equals(footPrintDetailDomain.getSceneId()))
 			throw new RuntimeException("UnMathed SceneId");
 
 		/**
@@ -447,22 +456,14 @@ public class SceneService {
 		footPrintDomain.setLastLeaveTime(footPrintDetailDomain.getOutTime());
 		footPrintDomain.setStaySpan(footPrintDomain.getStaySpan() + footPrintDetailDomain.getStaySpan());
 		footPrintMapper.update(footPrintDomain);
-		
-		
-		
-//		/**
-//		 * 修改场景的物理在场的用户集合
-//		 */		
-//		SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
-//		
-//		/**
-//		 * 修改用户物理在场的场景集合
-//		 */
-//		String onlineScenesOfUserItem= SceneCacheHelper.buildOnlineScenesOfUserItem(token,sceneId);
-//		Set<String> onlineSceneIdSet = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
-//		onlineSceneIdSet.remove(onlineScenesOfUserItem);
-//		SceneCacheHelper.cacheOnineScenesOfUser(userId, onlineSceneIdSet);
-		
+
+		/**
+		 * 修改在现场信息
+		 */
+		ChangePresentParam changePresentParam = new ChangePresentParam();
+		changePresentParam.setOutSceneId(sceneId);
+		changePresentParam.setUserId(userId);
+		changePresent(changePresentParam);
 
 		/**
 		 * 通知netty
@@ -470,7 +471,7 @@ public class SceneService {
 		Notification notification = new Notification();
 		notification.setSceneId(sceneId);
 		notification.setUserId(userId);
-		notification.setToken(leaveSceneParam.getToken());
+		notification.setToken(token);
 		sceneLeaveProducer.send(notification);
 	}
 
@@ -486,19 +487,16 @@ public class SceneService {
 		return footPrintDetailExMapper.queryUnLeavedSceneId(token);
 	}
 
-	public UserOnScene queryNickname(String token, Long sceneId, Long userId) {
+	public UserOnScene queryNickname(long sceneId, long userId) throws UserNotEnterSceneException {
 
-		if (StringTools.isNullOrEmpty(token) || sceneId == null || userId == null)
-			return null;
-
-		UserOnScene userOnScene = SceneCacheHelper.getCachedNickname(token, sceneId);
+		UserOnScene userOnScene = SceneCacheHelper.getCachedNickname(userId, sceneId);
 
 		if (userOnScene != null)
 			return userOnScene;
 
-		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains(token, sceneId, userId);
+		List<FootPrintDetailDomain> list = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(sceneId, userId);
 		if (list == null || list.size() == 0)
-			return null;
+			throw new UserNotEnterSceneException();
 
 		String nickname = list.get(0).getNickname();
 		long fpdId = list.get(0).getId();
@@ -508,18 +506,8 @@ public class SceneService {
 		userOnScene.setNickname(nickname);
 		userOnScene.setFpdId(fpdId);
 		userOnScene.setSex(sex);
-		
-		/**
-		 * 用户如果没有进入场景，则没有昵称，但是需要查询性别
-		 */
-		if(sex == null){
-			UserDomain userDomain = userService.loadUser(userId, true);
-			if (userDomain !=null){
-				userOnScene.setSex(sex);
-			}
-		}
 
-		SceneCacheHelper.cacheNickname(token, sceneId, userOnScene);
+		SceneCacheHelper.cacheNickname(userId, sceneId, userOnScene);
 
 		return userOnScene;
 	}
@@ -531,35 +519,33 @@ public class SceneService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<UserOnlineScene> queryUsersOnlineScene(QueryUsersOnlineSceneParam queryUsersOnlineSceneParam) throws Exception {
+	public List<PresentUser> queryPresentUsersOfScene(QueryPresentUsersOfSceneParam queryPresentUsersOfSceneParam) throws Exception {
 
-		CheckTools.check(queryUsersOnlineSceneParam);
+		CheckTools.check(queryPresentUsersOfSceneParam);
 
-		Long sceneId = queryUsersOnlineSceneParam.getSceneId();
+		long sceneId = queryPresentUsersOfSceneParam.getSceneId();
 
-		List<UserOnlineScene> list = SceneCacheHelper.getCachedSceneOnlineUsers(sceneId);
+		List<PresentUser> list = SceneCacheHelper.getCachedPresentUsersOfScene(sceneId);
 		return list;
 	}
-	
-	public List<UserOnlineScene> queryUsersOnScene(QueryUsersOnSceneParam queryUsersOnSceneParam) throws Exception {
 
-		CheckTools.check(queryUsersOnSceneParam);
+	public List<PresentUser> queryEnteredUsersOfScene(QueryEnteredUsersOfSceneParam queryEnteredUsersOfSceneParam) throws Exception {
 
-		Long sceneId = queryUsersOnSceneParam.getSceneId();
-		Integer offset = queryUsersOnSceneParam.getOffset();
-		Integer limit = queryUsersOnSceneParam.getLimit();
-		
-		
-		List<FootPrintDetailDomain> footPrintDetailDomainsList =  footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains3(sceneId, offset, limit);
+		CheckTools.check(queryEnteredUsersOfSceneParam);
 
-		List<UserOnlineScene> list = new ArrayList<UserOnlineScene>();
+		long sceneId = queryEnteredUsersOfSceneParam.getSceneId();
+		int offset = queryEnteredUsersOfSceneParam.getOffset();
+		int limit = queryEnteredUsersOfSceneParam.getLimit();
+
+		List<FootPrintDetailDomain> footPrintDetailDomainsList = footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains3(sceneId, offset, limit);
+
+		List<PresentUser> list = new ArrayList<PresentUser>();
 		for (FootPrintDetailDomain footPrintDetailDomain : footPrintDetailDomainsList) {
-			UserOnlineScene userOnlineScene = new UserOnlineScene();
-			userOnlineScene.setToken(null);
-			userOnlineScene.setNickname(footPrintDetailDomain.getNickname());
-			userOnlineScene.setFpdId(footPrintDetailDomain.getId());
-			userOnlineScene.setUserId(footPrintDetailDomain.getUserId());
-			userOnlineScene.setSex(footPrintDetailDomain.getSex());
+			PresentUser presentUser = new PresentUser();
+			presentUser.setNickname(footPrintDetailDomain.getNickname());
+			presentUser.setFpdId(footPrintDetailDomain.getId());
+			presentUser.setUserId(footPrintDetailDomain.getUserId());
+			presentUser.setSex(footPrintDetailDomain.getSex());
 		}
 		return list;
 	}
@@ -570,106 +556,85 @@ public class SceneService {
 	 * @param changeOnlineCountParam
 	 * @throws Exception
 	 */
-	public void ChangeOnlineCount(ChangeOnlineCountParam changeOnlineCountParam) throws Exception {
-		logger.info("++++ChangeOnlineCount+++,changeOnlineCountParam={}",JsonTools.toJsonString(changeOnlineCountParam));		
+	public void changePresent(ChangePresentParam changePresentParam) throws Exception {
+		CheckTools.check(changePresentParam);
 
-		Long userId = changeOnlineCountParam.getUserId();
-		String token = changeOnlineCountParam.getToken();
-		List<Long> inList = changeOnlineCountParam.getInList();
-		
+		Long userId = changePresentParam.getUserId();
+		Long inSceneId = changePresentParam.getInSceneId();
 
-		Set<String> onlineSceneIdSet = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
-		
 		String sex = null;
-		
+
 		String nickname = null;
-		
+
 		Long fpdId = null;
 
 		/**
 		 * 用户物理进入场景
 		 */
-		if (inList != null && inList.size() >0) {
-			for (Long sceneId : inList) {
-				
+		if (inSceneId != null) {
+
+			/**
+			 * 查询用户昵称和性别
+			 */
+			UserOnScene userOnScene = queryNickname(inSceneId, userId);
+			sex = userOnScene.getSex();
+			nickname = userOnScene.getNickname();
+			fpdId = userOnScene.getFpdId();
+
+			Long cachedPresentSceneId = SceneCacheHelper.getCachedPresentSceneId(userId);
+
+			if (!inSceneId.equals(cachedPresentSceneId)) {
 				/**
-				 * 查询可能的用户昵称和性别
+				 * 缓存用户在现场的场景id
 				 */
-				UserOnScene userOnScene = queryNickname(token, sceneId, userId);
-				if (userOnScene!=null){
-					sex = userOnScene.getSex();
-					nickname = userOnScene.getNickname();
-					fpdId = userOnScene.getFpdId();
-				}
-				
-				String onlineScenesOfUserItem= SceneCacheHelper.buildOnlineScenesOfUserItem(token,sceneId);
-				if (!onlineSceneIdSet.contains(onlineScenesOfUserItem)){
-					/**
-					 * 修改用户物理在场的场景集合
-					 */
-					onlineSceneIdSet.add(onlineScenesOfUserItem);
-					SceneCacheHelper.cacheOnineScenesOfUser(userId, onlineSceneIdSet);
-					/**
-					 * 修改场景的物理在场的用户集合
-					 */
-					SceneCacheHelper.cacheSceneOnlineUser(sceneId, userId, token, nickname, sex,fpdId);
-					
-					/**
-					 * 记录日志
-					 */
-					logger.info("++++ChangeOnlineCount+++, add sceneId={},userId={},token={},nickname={},sex={}",sceneId,userId,token,nickname,sex);
-				}else{
-					logger.info("++++ChangeOnlineCount+++, user is online ,add none,sceneId={},userId={},token={},nickname={},sex={}",sceneId,userId,token,nickname,sex);
-				}
+				SceneCacheHelper.cachePresentSceneId(userId, inSceneId);
+				/**
+				 * 修改场景的在现场用户集合
+				 */
+				SceneCacheHelper.cachePresentUserOfScene(inSceneId, userId, nickname, sex, fpdId);
 
 			}
+
 		}
 
 		/**
-		 * 用户物理离开场景
+		 * 用户离开现场
 		 */
-		List<Long> outList = changeOnlineCountParam.getOutList();
-		if (outList != null && outList.size() > 0) {
-			for (Long sceneId : outList) {
-				String onlineScenesOfUserItem= SceneCacheHelper.buildOnlineScenesOfUserItem(token,sceneId);
-				if (!onlineSceneIdSet.contains(onlineScenesOfUserItem)){
-					logger.info("++++ChangeOnlineCount+++, user is not online ,remove none,sceneId={},userId={},token={},nickname={},sex={}",sceneId,userId,token,nickname,sex);
-				}else{
-					/**
-					 * 修改用户物理在场的场景集合
-					 */
-					onlineSceneIdSet.remove(onlineScenesOfUserItem);
-					SceneCacheHelper.cacheOnineScenesOfUser(userId, onlineSceneIdSet);
-					/**
-					 * 修改场景的物理在场的用户集合
-					 */
-					SceneCacheHelper.removeCachedSceneOnlineUser(sceneId, userId, token);
-					/**
-					 * 记录日志
-					 */
-					logger.info("++++ChangeOnlineCount+++, remove sceneId={},userId={},token={}",sceneId,userId,token);
-				}
+		Long outSceneId = changePresentParam.getOutSceneId();
+		if (outSceneId != null) {
 
+			Long cachedPresentSceneId = SceneCacheHelper.getCachedPresentSceneId(userId);
+
+			if (outSceneId.equals(cachedPresentSceneId)) {
+
+				/**
+				 * 去掉缓存的用户在现场的场景Id
+				 */
+				SceneCacheHelper.removeCachedPresentSceneId(userId);
+				/**
+				 * 修改场景的物理在场的用户集合
+				 */
+				SceneCacheHelper.removeCachedPresentUserOfScene(outSceneId, userId);
 			}
+
 		}
-		
+
 	}
-	
-	public boolean isOnlineInScene(Long userId , Long sceneId){
-		Set<String> sceneIdSet = SceneCacheHelper.getCachedOnlineScenesOfUser(userId);
-		logger.info("isOnlineInScene.sceneIdSet={}",JsonTools.toJsonString(sceneIdSet));
-		if (sceneIdSet != null){
-			for (String onlineScenesOfUserItem : sceneIdSet){
-				if (sceneId.equals( SceneCacheHelper.parseSceneIdFromOnlineScenesOfUserItem(onlineScenesOfUserItem))){
-					return true;
-				}
-			}
+
+	public boolean isPresentedInScene(ExistFootPrintParam existFootPrintParam) {
+		long userId = existFootPrintParam.getUserId();
+		long scenedId = existFootPrintParam.getSceneId();
+		
+		Long cachedSceneId = SceneCacheHelper.getCachedPresentSceneId(userId);
+		
+		if (cachedSceneId!=null && cachedSceneId.longValue() == scenedId){
+			return true;
 		}
 		
 		return false;
+		
+		
 	}
-
-	
 
 	public List<FuzziedSceneDomain> testFuzzied() {
 		return sceneExMapper.queryFuzziedScene(new BigDecimal(-1000), new BigDecimal(1000), new BigDecimal(-1000), new BigDecimal(1000),

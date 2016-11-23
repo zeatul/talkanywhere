@@ -68,7 +68,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 		
 		protectedPaths.add("/scene/footprint/search.do");
 		
-		protectedPaths.add("/scene/online/change.do");
+		protectedPaths.add("/scene/present/change.do");
 		
 		
 		

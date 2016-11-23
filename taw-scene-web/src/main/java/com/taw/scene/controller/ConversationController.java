@@ -21,6 +21,7 @@ import com.hawk.utility.DomainTools;
 import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.taw.pub.scene.request.DeleteConversationParam;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.SearchConversationParam;
 import com.taw.pub.scene.request.SendConverstaionParam;
 import com.taw.pub.scene.response.ConversationResp;
@@ -92,7 +93,11 @@ public class ConversationController {
 			if (StringTools.isNotNullOrEmpty(conversationDomain.getPics())){
 				conversationResp.setPicList(JsonTools.toArrayList(conversationDomain.getPics(),PicDescResp.class));
 			}
-			boolean onScene = sceneService.isOnlineInScene(conversationDomain.getPostUserId(), conversationDomain.getSceneId());
+			
+			ExistFootPrintParam existFootPrintParam = new ExistFootPrintParam();
+			existFootPrintParam.setSceneId(conversationDomain.getSceneId());
+			existFootPrintParam.setUserId(conversationDomain.getPostUserId());
+			boolean onScene = sceneService.isPresentedInScene(existFootPrintParam);
 			conversationResp.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
 			result.add(conversationResp);
 		}

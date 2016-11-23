@@ -24,6 +24,7 @@ import com.taw.pub.picture.enums.EnumAppSrc;
 import com.taw.pub.picture.request.InsrtPictureParam;
 import com.taw.pub.scene.enums.EnumMessageType;
 import com.taw.pub.scene.request.DeleteMessageParam;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.SearchMessageParam;
 import com.taw.pub.scene.request.SendMessageParam;
 import com.taw.pub.scene.response.PicDescResp;
@@ -36,7 +37,6 @@ import com.taw.scene.exception.FootPrintDetailNotExistsException;
 import com.taw.scene.exception.InvalidFootPrintDetailException;
 import com.taw.scene.exception.SceneNotExistsException;
 import com.taw.scene.exception.UserNotEnterSceneException;
-import com.taw.scene.exception.UserNotOnLineSceneException;
 import com.taw.scene.jms.Notification;
 import com.taw.scene.jms.SceneMessageProducer;
 import com.taw.scene.mapper.MessageMapper;
@@ -72,8 +72,7 @@ public class MessageService {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private FootPrintDetailExMapper footPrintDetailExMapper;
+	
 	
 	private final Logger  logger = LoggerFactory.getLogger(getClass());
 	
@@ -132,14 +131,12 @@ public class MessageService {
 			throw new SceneNotExistsException();
 		
 		/**
-		 * 检测接收者是否物理在场
+		 * 检测接收者是否进入场景
 		 */
-//		if (!sceneService.isOnlineInScene(receiverId, sceneId)){
-//			throw new UserNotOnLineSceneException();
-//		}
-		List<FootPrintDetailDomain> list =  footPrintDetailExMapper.queryUnLeavedFootPrintDetailDomains2(sceneId, receiverId);
-		if (list == null || list.size() == 0){
-			logger.error("sceneId={},receiverId={}",sceneId,receiverId);
+		ExistFootPrintParam existFootPrintParam = new ExistFootPrintParam();
+		existFootPrintParam.setSceneId(sceneId);
+		existFootPrintParam.setUserId(receiverId);
+		if (!footPrintService.hasEnteredScene(existFootPrintParam)){
 			throw new UserNotEnterSceneException();
 		}
 		

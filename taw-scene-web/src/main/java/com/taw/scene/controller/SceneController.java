@@ -17,19 +17,20 @@ import com.hawk.pub.web.HttpRequestHandler;
 import com.hawk.pub.web.HttpResponseHandler;
 import com.hawk.pub.web.SuccessResponse;
 import com.hawk.utility.check.CheckTools;
-import com.taw.pub.scene.request.ChangeOnlineCountParam;
+import com.taw.pub.scene.request.ChangePresentParam;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
-import com.taw.pub.scene.request.QueryUsersOnSceneParam;
-import com.taw.pub.scene.request.QueryUsersOnlineSceneParam;
+import com.taw.pub.scene.request.QueryEnteredUsersOfSceneParam;
+import com.taw.pub.scene.request.QueryPresentUsersOfSceneParam;
 import com.taw.pub.scene.response.EnterSceneResp;
 import com.taw.pub.scene.response.ExistFootPrintResp;
 import com.taw.pub.scene.response.SceneResp;
 import com.taw.scene.domain.BookmarkDomain;
+import com.taw.scene.service.FootPrintService;
 import com.taw.scene.service.SceneService;
 import com.taw.user.auth.AuthThreadLocal;
 
@@ -38,6 +39,8 @@ public class SceneController {
 	
 	@Autowired
 	private SceneService sceneService;
+	@Autowired
+	private FootPrintService footPrintService;
 	
 	/**
 	 * hello 测试用
@@ -146,31 +149,30 @@ public class SceneController {
 	}
 	
 	/**
-	 * 注册用户，修改现场人数
+	 * 注册用户，修改在现场人数
 	 * @param locale
 	 * @param model
 	 * @param request
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/scene/online/change.do", method = RequestMethod.POST)
-	public void changeOnlineCount(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
-		changeOnlineCountParam.setUserId(AuthThreadLocal.getUserId());
-		changeOnlineCountParam.setToken(AuthThreadLocal.getToken());
-		sceneService.ChangeOnlineCount(changeOnlineCountParam);
+	@RequestMapping(value = "/scene/present/change.do", method = RequestMethod.POST)
+	public void changePresent(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ChangePresentParam changePresentParam = HttpRequestHandler.handle(request, ChangePresentParam.class); 
+		changePresentParam.setUserId(AuthThreadLocal.getUserId());
+		sceneService.changePresent(changePresentParam);
 		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
 	}
 	
-	@RequestMapping(value = "/scene/online/exist.do", method = RequestMethod.POST)
-	public void userOnlineScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+	@RequestMapping(value = "/scene/present/exist.do", method = RequestMethod.POST)
+	public void isPresentedInScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
 		ExistFootPrintParam existFootPrintParam = HttpRequestHandler.handle(request, ExistFootPrintParam.class); 
 		CheckTools.check(existFootPrintParam);
 		
-		ExistFootPrintResp existFootPrintResp = new ExistFootPrintResp();
+		ExistFootPrintResp existFootPrintResp = new ExistFootPrintResp();		
 		
 		
-		if (sceneService.isOnlineInScene(existFootPrintParam.getUserId(),existFootPrintParam.getSceneId())){
+		if (sceneService.isPresentedInScene(existFootPrintParam)){
 			existFootPrintResp.setExist("1");
 		}else{
 			existFootPrintResp.setExist("0");
@@ -179,33 +181,35 @@ public class SceneController {
 		HttpResponseHandler.handle(response, SuccessResponse.build(existFootPrintResp));
 	}
 	
-	/**
-	 * 游客，修改现场人数
-	 * @param locale
-	 * @param model
-	 * @param request
-	 * @param response
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/scene/online/change2.do", method = RequestMethod.POST)
-	public void changeOnlineCount2(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-//		ChangeOnlineCountParam changeOnlineCountParam = HttpRequestHandler.handle(request, ChangeOnlineCountParam.class); 
-//		sceneService.ChangeOnlineCount(changeOnlineCountParam);
-		HttpResponseHandler.handle(response, SuccessResponse.SUCCESS_RESPONSE);
+	
+	
+	@RequestMapping(value = "/scene/present/users.do", method = RequestMethod.POST)
+	public void queryPresentUsersOfScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		QueryPresentUsersOfSceneParam queryPresentUsersOfSceneParam = HttpRequestHandler.handle(request, QueryPresentUsersOfSceneParam.class); 
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.queryPresentUsersOfScene(queryPresentUsersOfSceneParam)));
 	}
 	
-	@RequestMapping(value = "/scene/online/users.do", method = RequestMethod.POST)
-	public void queryUsersOnlineScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		QueryUsersOnlineSceneParam queryUsersOnlineSceneParam = HttpRequestHandler.handle(request, QueryUsersOnlineSceneParam.class); 
+	@RequestMapping(value = "/scene/enter/users.do", method = RequestMethod.POST)
+	public void queryEnteredUsersOfScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		QueryEnteredUsersOfSceneParam queryEnteredUsersOfSceneParam = HttpRequestHandler.handle(request, QueryEnteredUsersOfSceneParam.class); 
 		
-		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.queryUsersOnlineScene(queryUsersOnlineSceneParam)));
+		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.queryEnteredUsersOfScene(queryEnteredUsersOfSceneParam)));
 	}
 	
-	@RequestMapping(value = "/scene/users.do", method = RequestMethod.POST)
-	public void queryUsersOnScene(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		QueryUsersOnSceneParam queryUsersOnSceneParam = HttpRequestHandler.handle(request, QueryUsersOnSceneParam.class); 
+	@RequestMapping(value = "/scene/enter/exist.do", method = RequestMethod.POST)
+	public void exist(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		ExistFootPrintParam existFootPrintParam = HttpRequestHandler.handle(request, ExistFootPrintParam.class); 
 		
-		HttpResponseHandler.handle(response, SuccessResponse.build(sceneService.queryUsersOnScene(queryUsersOnSceneParam)));
+		ExistFootPrintResp existFootPrintResp = new ExistFootPrintResp();
+		
+		if (footPrintService.hasEnteredScene(existFootPrintParam)){
+			existFootPrintResp.setExist("1");
+		}else{
+			existFootPrintResp.setExist("0");
+		}
+		
+		HttpResponseHandler.handle(response, SuccessResponse.build(existFootPrintResp));
 	}
 	
 //	待测试

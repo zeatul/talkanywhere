@@ -22,6 +22,7 @@ import com.hawk.utility.DomainTools;
 import com.hawk.utility.JsonTools;
 import com.hawk.utility.StringTools;
 import com.taw.pub.scene.request.DeleteMessageParam;
+import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.SearchMessageParam;
 import com.taw.pub.scene.request.SendMessageParam;
 import com.taw.pub.scene.response.MessageResp;
@@ -96,7 +97,11 @@ public class MessageController {
 			if (userDomain != null)
 				messageResp.setSex(userDomain.getSex());
 			
-			boolean onScene = sceneService.isOnlineInScene(messageDomain.getSenderId(), messageDomain.getSceneId());
+			
+			ExistFootPrintParam existFootPrintParam = new ExistFootPrintParam();
+			existFootPrintParam.setSceneId(messageDomain.getSceneId());
+			existFootPrintParam.setUserId(messageDomain.getSenderId());
+			boolean onScene = sceneService.isPresentedInScene(existFootPrintParam);
 			messageResp.setOnScene(onScene?EnumBoolean.TRUE.getValue():EnumBoolean.FALSE.getValue());
 			if (StringTools.isNotNullOrEmpty(messageDomain.getPics())){
 				messageResp.setPicList(JsonTools.toArrayList(messageDomain.getPics(),PicDescResp.class));
