@@ -12,6 +12,7 @@ import com.taw.pub.scene.request.ChangePresentParam;
 import com.taw.pub.scene.request.EnterSceneParam;
 import com.taw.pub.scene.request.ExistFootPrintParam;
 import com.taw.pub.scene.request.LeaveSceneParam;
+import com.taw.pub.scene.request.QueryEnteredUsersOfSceneParam;
 import com.taw.pub.scene.request.QuerySceneByNameParam;
 import com.taw.pub.scene.request.QuerySceneInRegionParam;
 import com.taw.pub.scene.request.QuerySingleSceneParam;
@@ -71,7 +72,7 @@ public class SceneControllerTest extends AbstractControllerTest{
 		
 	}
 	
-	@Test
+//	@Test
 	public void testQueryPresentUsersOfScene() throws Exception{
 		String path = contextPath + "/scene/present/users.do";
 		QueryPresentUsersOfSceneParam param = new QueryPresentUsersOfSceneParam();
@@ -133,6 +134,21 @@ public class SceneControllerTest extends AbstractControllerTest{
 		String content = JsonTools.toJsonString(enterSceneParam);
 		printSend(content);
 		String result = httpClientHelper.post(path, content, genAuthMap());
+		
+		printResult(result);
+	}
+	
+	@Test
+	public void testQueryEnteredUsersOfScene() throws Exception{
+		String path = contextPath + "/scene/enter/users.do";
+		QueryEnteredUsersOfSceneParam param = new QueryEnteredUsersOfSceneParam();
+		param.setOffset(0);
+		param.setLimit(10);
+		param.setSceneId(30L);
+		
+		String content = JsonTools.toJsonString(param);
+		printSend(content);
+		String result = httpClientHelper.post(path, content, null);
 		
 		printResult(result);
 	}

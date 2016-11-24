@@ -546,6 +546,7 @@ public class SceneService {
 			presentUser.setFpdId(footPrintDetailDomain.getId());
 			presentUser.setUserId(footPrintDetailDomain.getUserId());
 			presentUser.setSex(footPrintDetailDomain.getSex());
+			list.add(presentUser);
 		}
 		return list;
 	}
