@@ -44,7 +44,7 @@ create table t_um_login
    logout_date          timestamp(3) null comment '注销日期',
    primary key (token)
 )
- engine=myisam default charset=utf8;
+ engine=InnoDB default charset=utf8;
 
 alter table t_um_login comment '维护登录信息,';
 
@@ -60,7 +60,7 @@ create table t_um_partner
    crdt                 timestamp(3) null comment '创建日期',
    primary key (id)
 )
- engine=myisam default charset=utf8;
+ engine=InnoDB default charset=utf8;
 
 alter table t_um_partner comment '第三方用户表';
 
@@ -105,7 +105,7 @@ create table t_um_user
    updt                 timestamp(3) null comment '修改日期',
    primary key (id)
 )
-engine=myisam default charset=utf8;
+engine=InnoDB default charset=utf8;
 
 alter table t_um_user comment '用户表';
 
@@ -131,7 +131,7 @@ create table t_um_user_contact
    updt                 timestamp(3) null comment '修改日期',
    primary key (id)
 )
- engine=myisam default charset=utf8;
+ engine=InnoDB default charset=utf8;
 
 alter table t_um_user_contact comment '用户关系表';
 
@@ -158,7 +158,7 @@ create table t_um_version
    updt                 timestamp(3) null comment '修改日期',
    primary key (id)
 )
- engine=myisam default charset=utf8;
+ engine=InnoDB default charset=utf8;
 
 alter table t_um_version comment '版本';
 
